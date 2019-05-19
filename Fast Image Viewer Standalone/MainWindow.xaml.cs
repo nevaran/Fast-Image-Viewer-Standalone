@@ -1,32 +1,30 @@
-﻿using Microsoft.Win32;
+﻿using MahApps.Metro.Controls;
+using Microsoft.VisualBasic.FileIO;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-//using System.Runtime.InteropServices;
-//using System.Security.AccessControl;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Imaging;
-using WpfAnimatedGif;
 
 namespace FIVStandard
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         //[DllImport("Shell32", CharSet = CharSet.Auto, SetLastError = true)]
         //public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
-        BitmapImage bm;
+        //BitmapImage bm;
 
         int imageIndex = 0;
         List<string> imagesFound = new List<string>();
         readonly string[] filters = new string[] { "jpg", "jpeg", "png", "gif", "tiff", "bmp", "svg", "ico" };
 
-        ImageAnimationController controller;
         bool isAnimated = false;
         bool isPaused = false;
 
-        private string startupPath;//program startup path
+        //private string startupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
@@ -40,10 +38,10 @@ namespace FIVStandard
 
             if (args.Length > 0)//get startup path
             {
-                startupPath = Path.GetDirectoryName(args[0]);
+                //startupPath = Path.GetDirectoryName(args[0]);
 
 #if DEBUG
-                string path = "D:\\Google Drive\\temp\\p1asN.gif";
+                string path = "D:\\Google Drive\\temp\\qmrns28.gif";
                 GetDirectoryFiles(Path.GetDirectoryName(path));
 
                 FindIndexInFiles(path);
@@ -64,6 +62,18 @@ namespace FIVStandard
 
                 NewUri(args[1]);
             }
+        }
+
+        public void OpenNewFile(string path)
+        {
+            if (isDeletingFile) return;
+
+            GetDirectoryFiles(Path.GetDirectoryName(path));
+
+            FindIndexInFiles(path);
+            SetTitleInformation();
+
+            NewUri(path);
         }
 
         private void GetDirectoryFiles(string searchFolder)
@@ -93,8 +103,8 @@ namespace FIVStandard
                 if(openedPathFile == imagesFound[i])
                 {
                     imageIndex = i;
-                    break;
                     //MessageBox.Show(imagesFound.Count + " | " + imageIndex);//DEBUG
+                    break;
                 }
             }
         }
@@ -107,22 +117,49 @@ namespace FIVStandard
 
         private void ChangeImage(int jump)
         {
-            if (imagesFound.Count < 2) return;//dont try change if only image found
+            if (imagesFound.Count == 0)//no more images in the folder - go back to default null
+            {
+                ClearAllMedia();
+                return;
+            }
 
             imageIndex += jump;
             if (imageIndex < 0) imageIndex = imagesFound.Count - 1;
             if (imageIndex >= imagesFound.Count) imageIndex = 0;
 
+            if (!FileSystem.FileExists(imagesFound[imageIndex]))//keep moving onward until we find an existing file
+            {
+                //refresh the file lists in the directory
+                //GetDirectoryFiles(Path.GetDirectoryName(imagesFound[imageIndex]));
+                //FindIndexInFiles(imagesFound[imageIndex]);
+
+                //remove nonexistent file from list - if there are more than 1
+                if (imagesFound.Count > 1)
+                {
+                    imagesFound.RemoveAt(imageIndex);
+                    SetTitleInformation();
+                }
+
+                ChangeImage(jump);
+
+                return;
+            }
+
             NewUri(imagesFound[imageIndex]);
 
             SetTitleInformation();
+        }
 
-            /*if (filters.Any(Path.GetExtension(imagesFound[imageIndex]).Contains))//if file is with one of the filter exceptions
-            {
-                NewUri(imagesFound[imageIndex]);
-            }
-            else
-                ChangeImage(jump);*/
+        /// <summary>
+        /// Clear all saved paths and clean media view and finally cleanup memory
+        /// </summary>
+        private void ClearAllMedia()
+        {
+            imagesFound.Clear();
+            MediaView.Source = null;
+            this.Title = "FIV";
+
+            GC.Collect();
         }
 
         private void SetTitleInformation()
@@ -200,6 +237,8 @@ namespace FIVStandard
 
         private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            if (isDeletingFile) return;
+
             if(e.Key == System.Windows.Input.Key.Right)
             {
                 ChangeImage(1);//go forward
@@ -222,20 +261,31 @@ namespace FIVStandard
             {
                 TogglePause();
             }
+
+            if (e.Key == System.Windows.Input.Key.Delete && imagesFound.Count > 0)
+            {
+                DeleteToRecycle(imagesFound[imageIndex]);
+            }
         }
 
         private void OnClick_Next(object sender, RoutedEventArgs e)
         {
+            if (isDeletingFile) return;
+
             ChangeImage(1);//go forward
         }
 
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
+            if (isDeletingFile) return;
+
             ChangeImage(-1);//go back
         }
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (isDeletingFile) return;
+
             if(e.ChangedButton == System.Windows.Input.MouseButton.XButton1)
             {
                 ChangeImage(-1);//go back
@@ -251,7 +301,50 @@ namespace FIVStandard
         {
             ofd.ShowDialog();
 
+            OpenNewFile(ofd.FileName);
+
             GC.Collect();
+        }
+
+        static bool isDeletingFile = false;
+        private void DeleteToRecycle(string path)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    isDeletingFile = true;
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Title = "Deleting " + Path.GetFileName(path) + "...";
+                    });
+
+                    if (FileSystem.FileExists(path))
+                    {
+                        FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
+                        //remove removed item from list
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            imagesFound.RemoveAt(imageIndex);
+                            ChangeImage(-1);//go back to a previous file after deletion
+                            //SetTitleInformation();
+                        });
+                    }
+                    else
+                    {
+                        MessageBox.Show("File not found: " + path);
+                    }
+
+                    isDeletingFile = false;
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.Message + "\nIndex: " + imageIndex);
+                }
+            }
+            );
         }
 
         /*public static void Associate(string startupPath)
