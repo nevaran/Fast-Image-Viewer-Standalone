@@ -16,6 +16,12 @@
         MouseDown="OnMouseDown" MinWidth="600" MinHeight="480"
         >
 
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="settings" Click="OnSettingsClick" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
     <Grid Margin="0,0,0,0">
         <Button x:Name="Btn_Prev" 
                 Width="60" Height="40" 

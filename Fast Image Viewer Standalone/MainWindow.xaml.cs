@@ -296,12 +296,18 @@ namespace FIVStandard
             }
         }
 
-        OpenFileDialog ofd = new OpenFileDialog();
+        OpenFileDialog ofd = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.TIFF, *.BMP, *SVG, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.TIFF;*.BMP;*SVG;*ICO"/* + "|All files (*.*)|*.*" */};
         private void OpenBrowseImage(object sender, RoutedEventArgs e)
         {
-            ofd.ShowDialog();
-
-            OpenNewFile(ofd.FileName);
+            Nullable<bool> result = ofd.ShowDialog();
+            if (result == true)
+            {
+                OpenNewFile(ofd.FileName);
+            }
+            else
+            {
+                //cancelled dialog
+            }
 
             GC.Collect();
         }
@@ -345,6 +351,11 @@ namespace FIVStandard
                 }
             }
             );
+        }
+
+        private void OnSettingsClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("No settings yet, dawg.");
         }
 
         /*public static void Associate(string startupPath)
