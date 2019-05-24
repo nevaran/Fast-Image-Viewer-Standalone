@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -54,7 +56,7 @@ namespace FIVStandard
 #endif
             }
 
-            //Associate(startupPath);
+            Associate(startupPath);
 
             /*Associate(startupPath, "jpg");
             Associate(startupPath, "jpeg");
@@ -423,19 +425,18 @@ namespace FIVStandard
             FileRegIco.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
             FileRegIco.CreateSubKey("PerievedType").SetValue("", startupPath + "Image");
 
-            AppReg.CreateSubKey("shell\\open\\command").SetValue("", startupPath + "\" %1");//open context
+            AppReg.CreateSubKey("shell\\open\\command").SetValue("", "\"" + startupPath + "\\Fast Image Viewer.exe\" \"%1\"");//open context
             //AppReg.CreateSubKey("shell\\edit\\command").SetValue("", startupPath + "\" %1");//edit context
             AppReg.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
 
             ReWriteKey(AppAssocJpg);
-
-            AppAssocJpeg.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
-            AppAssocPng.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
-            AppAssocGif.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
-            AppAssocTiff.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
-            AppAssocBmp.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
-            AppAssocSvg.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
-            AppAssocIco.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
+            ReWriteKey(AppAssocJpeg);
+            ReWriteKey(AppAssocPng);
+            ReWriteKey(AppAssocGif);
+            ReWriteKey(AppAssocTiff);
+            ReWriteKey(AppAssocBmp);
+            ReWriteKey(AppAssocSvg);
+            ReWriteKey(AppAssocIco);
 
             SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
         }
@@ -443,15 +444,45 @@ namespace FIVStandard
         private static object ReWriteKey(RegistryKey key)
         {
             //key.OpenSubKey("UserChoice");
-            object hashkey = key.GetValue("Hash");
-            key.DeleteSubKey("UserChoice");
+            object hashkey = null;
+
+            if(key.OpenSubKey("UserChoice") != null)
+            {
+                hashkey = key.OpenSubKey("UserChoice").GetValue("Hash");
+                key.DeleteSubKey("UserChoice");
+            }
 
             //re-create key with the 2 values
             key = key.CreateSubKey("UserChoice");
-            key.SetValue("Hash", (string)hashkey, RegistryValueKind.String);
+
+            if (hashkey != null)
+            {
+                key.SetValue("Hash", (string)hashkey, RegistryValueKind.String);
+            }
+            else
+            {
+                MessageBox.Show($"No hash key at {key.ToString()}");
+                //key.SetValue("Hash", GetHashString("Fast Image Viewer.exe"));
+            }
+
             key.SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
 
             return hashkey;
+        }
+
+        public static string GetHashString(string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in GetHash(inputString))
+                sb.Append(b.ToString("X2"));
+
+            return sb.ToString();
+        }
+
+        public static byte[] GetHash(string inputString)
+        {
+            HashAlgorithm algorithm = SHA256.Create();
+            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
     }
 }
