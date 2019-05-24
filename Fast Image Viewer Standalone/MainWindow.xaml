@@ -17,11 +17,130 @@
         >
 
     <Controls:MetroWindow.RightWindowCommands>
-        <Controls:WindowCommands>
-            <Button Content="settings" Click="OnSettingsClick" />
+        <Controls:WindowCommands IsTabStop="False" Focusable="False">
+            <Button Content="settings" Click="OnSettingsClick" IsTabStop="False" Focusable="False" />
+            <Button Content="donate" Click="OnDonateClick" IsTabStop="False" Focusable="False" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-
+    
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl IsTabStop="False" Focusable="False">
+            <Controls:Flyout x:Name="SettingsFlyout" 
+                             Width="440"
+                             Header="Settings" 
+                             Position="Right" 
+                             Theme="Adapt" 
+                             AllowFocusElement="False" 
+                             IsTabStop="False" 
+                             Focusable="False"
+                             >
+                <!-- Your custom content here -->
+                <StackPanel>
+                    <Separator/>
+                    
+                    <!-- Dark Mode Toggle -->
+                    <Grid>
+                        <Controls:ToggleSwitch x:Name="DarkModeToggle" 
+                                               Header="Dark Mode" 
+                                               Width="120" 
+                                               Height="100" 
+                                               Padding="20,20,0,0" 
+                                               HorizontalAlignment="Left" 
+                                               VerticalAlignment="Center" 
+                                               Focusable="False" 
+                                               IsTabStop="False" 
+                                               IsChecked="true" 
+                                               />
+                        
+                        <StackPanel Orientation="Horizontal" Margin="130,0,0,0" Height="60" VerticalAlignment="Bottom">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+                        
+                        <TextBlock HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom" 
+                                   Width="300"
+                                   Height="60" 
+                                   Padding="0,0,20,0" 
+                                   Margin="0"
+                                   TextWrapping="Wrap" 
+                                   Text="Switch between Light and Dark mode."
+                                   >
+                            <TextBlock.Foreground>
+                                <SolidColorBrush Color="White" Opacity="0.5"/>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                    </Grid>
+                    
+                    <!-- Stretch Image Toggle -->
+                    <Grid>
+                        <Controls:ToggleSwitch x:Name="StretchImageToggle" 
+                                               Header="Stretch Image" 
+                                               Width="120" 
+                                               Height="100" 
+                                               Padding="20,20,0,0" 
+                                               HorizontalAlignment="Left" 
+                                               VerticalAlignment="Center" 
+                                               Focusable="False" 
+                                               IsTabStop="False" 
+                                               IsChecked="true" 
+                                               />
+                        
+                        <StackPanel Orientation="Horizontal" Margin="130,0,0,0" Height="60" VerticalAlignment="Bottom">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+                        
+                        <TextBlock HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom" 
+                                   Width="300"
+                                   Height="60" 
+                                   Padding="0,0,20,0" 
+                                   Margin="0"
+                                   TextWrapping="Wrap" 
+                                   Text="Always stretch images to fit the window. Quick toggle shortcut: 'F'"
+                                   >
+                            <TextBlock.Foreground>
+                                <SolidColorBrush Color="White" Opacity="0.5"/>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                    </Grid>
+                    
+                    <!-- Theme Accent Dropdown-->
+                    <Grid>
+                        <Controls:ToggleSwitch x:Name="togledummy2" 
+                                               Header="nun" 
+                                               Width="120" 
+                                               Height="100" 
+                                               Padding="20,20,0,0" 
+                                               HorizontalAlignment="Left" 
+                                               VerticalAlignment="Center" 
+                                               Focusable="False" 
+                                               IsTabStop="False" 
+                                               IsChecked="true" 
+                                               />
+                        
+                        <StackPanel Orientation="Horizontal" Margin="130,0,0,0" Height="60" VerticalAlignment="Bottom">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+                        
+                        <TextBlock HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom" 
+                                   Width="300"
+                                   Height="60" 
+                                   Padding="0,0,20,0" 
+                                   Margin="0"
+                                   TextWrapping="Wrap" 
+                                   Text="nun"
+                                   >
+                            <TextBlock.Foreground>
+                                <SolidColorBrush Color="White" Opacity="0.5"/>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+    
     <Grid Margin="0,0,0,0">
         <Button x:Name="Btn_Prev" 
                 Width="60" Height="40" 
@@ -58,6 +177,7 @@
                 IsTabStop="False" 
                 Focusable="False" 
                 ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                Padding="0" 
                 />
 
         <utils:ZoomBorder x:Name="border" 

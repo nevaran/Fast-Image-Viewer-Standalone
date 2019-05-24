@@ -3,8 +3,11 @@ using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -12,19 +15,19 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow
     {
-        //[DllImport("Shell32", CharSet = CharSet.Auto, SetLastError = true)]
-        //public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+        [DllImport("Shell32", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
         //BitmapImage bm;
 
-        int imageIndex = 0;
+        public int imageIndex = 0;
         List<string> imagesFound = new List<string>();
         readonly string[] filters = new string[] { "jpg", "jpeg", "png", "gif", "tiff", "bmp", "svg", "ico" };
 
         bool isAnimated = false;
         bool isPaused = false;
 
-        //private string startupPath;//program startup path
+        private string startupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
@@ -38,7 +41,7 @@ namespace FIVStandard
 
             if (args.Length > 0)//get startup path
             {
-                //startupPath = Path.GetDirectoryName(args[0]);
+                startupPath = Path.GetDirectoryName(args[0]);
 
 #if DEBUG
                 string path = "D:\\Google Drive\\temp\\qmrns28.gif";
@@ -52,6 +55,15 @@ namespace FIVStandard
             }
 
             //Associate(startupPath);
+
+            /*Associate(startupPath, "jpg");
+            Associate(startupPath, "jpeg");
+            Associate(startupPath, "png");
+            Associate(startupPath, "gif");
+            Associate(startupPath, "tiff");
+            Associate(startupPath, "bmp");
+            Associate(startupPath, "svg");
+            Associate(startupPath, "ico");*/
 
             if (args.Length > 1)
             {
@@ -299,6 +311,8 @@ namespace FIVStandard
         OpenFileDialog ofd = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.TIFF, *.BMP, *SVG, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.TIFF;*.BMP;*SVG;*ICO"/* + "|All files (*.*)|*.*" */};
         private void OpenBrowseImage(object sender, RoutedEventArgs e)
         {
+            if (isDeletingFile) return;
+
             Nullable<bool> result = ofd.ShowDialog();
             if (result == true)
             {
@@ -355,21 +369,27 @@ namespace FIVStandard
 
         private void OnSettingsClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("No settings yet, dawg.");
+            SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
 
-        /*public static void Associate(string startupPath)
+        private void OnDonateClick(object sender, RoutedEventArgs e)
         {
-            RegistryKey FileRegJpg  = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.jpg");
-            RegistryKey FileRegJpeg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.jpeg");
-            RegistryKey FileRegPng  = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.png");
-            RegistryKey FileRegGif  = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.gif");
-            RegistryKey FileRegTiff = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.tiff");
-            RegistryKey FileRegBmp  = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.bmp");
-            RegistryKey FileRegSvg  = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.svg");
-            RegistryKey FileRegIco  = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.ico");
+            ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CNWYKDLHJW9CW");
+            Process.Start(sInfo);
+        }
 
-            RegistryKey AppReg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\Applications\\Fast Image Viewer Standalone.exe");//TODO: Check if app name is correct
+        public static void Associate(string startupPath)
+        {
+            RegistryKey FileRegJpg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.jpg");
+            RegistryKey FileRegJpeg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.jpeg");
+            RegistryKey FileRegPng = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.png");
+            RegistryKey FileRegGif = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.gif");
+            RegistryKey FileRegTiff = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.tiff");
+            RegistryKey FileRegBmp = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.bmp");
+            RegistryKey FileRegSvg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.svg");
+            RegistryKey FileRegIco = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.ico");
+
+            RegistryKey AppReg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\Applications\\Fast Image Viewer.exe");//TODO: Check if app name is correct
 
             //TODO: check if this is required
             string user = Environment.UserDomainName + "\\" + Environment.UserName;
@@ -378,12 +398,12 @@ namespace FIVStandard
 
             RegistryKey AppAssocJpg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.jpg", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
             RegistryKey AppAssocJpeg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.jpeg", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocPng  = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.png", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocGif  = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.gif", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
+            RegistryKey AppAssocPng = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.png", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
+            RegistryKey AppAssocGif = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.gif", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
             RegistryKey AppAssocTiff = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.tiff", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocBmp  = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.bmp", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocSvg  = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.svg", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocIco  = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.ico", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
+            RegistryKey AppAssocBmp = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.bmp", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
+            RegistryKey AppAssocSvg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.svg", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
+            RegistryKey AppAssocIco = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.ico", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
 
             //animated = anim.ico ; normal = def.ico
             FileRegJpg.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
@@ -407,17 +427,31 @@ namespace FIVStandard
             //AppReg.CreateSubKey("shell\\edit\\command").SetValue("", startupPath + "\" %1");//edit context
             AppReg.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
 
-            //TODO: fix access denied on UserChoice
-            AppAssocJpg.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer Standalone.exe");
-            AppAssocJpeg.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer Standalone.exe");
-            AppAssocPng.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer Standalone.exe");
-            AppAssocGif.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer Standalone.exe");
-            AppAssocTiff.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer Standalone.exe");
-            AppAssocBmp.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer Standalone.exe");
-            AppAssocSvg.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer Standalone.exe");
-            AppAssocIco.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer Standalone.exe");
+            ReWriteKey(AppAssocJpg);
+
+            AppAssocJpeg.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
+            AppAssocPng.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
+            AppAssocGif.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
+            AppAssocTiff.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
+            AppAssocBmp.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
+            AppAssocSvg.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
+            AppAssocIco.CreateSubKey("UserChoice", RegistryKeyPermissionCheck.ReadWriteSubTree, rs).SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
 
             SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
-        }*/
+        }
+
+        private static object ReWriteKey(RegistryKey key)
+        {
+            //key.OpenSubKey("UserChoice");
+            object hashkey = key.GetValue("Hash");
+            key.DeleteSubKey("UserChoice");
+
+            //re-create key with the 2 values
+            key = key.CreateSubKey("UserChoice");
+            key.SetValue("Hash", (string)hashkey, RegistryValueKind.String);
+            key.SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
+
+            return hashkey;
+        }
     }
 }
