@@ -6,10 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -17,19 +13,16 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow
     {
-        [DllImport("Shell32", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
-
         //BitmapImage bm;
 
         public int imageIndex = 0;
         List<string> imagesFound = new List<string>();
-        readonly string[] filters = new string[] { "jpg", "jpeg", "png", "gif", "tiff", "bmp", "svg", "ico" };
+        readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico", ".mp4" };//TODO: doesnt work: tiff svg ico
 
         bool isAnimated = false;
         bool isPaused = false;
 
-        private string startupPath;//program startup path
+        //private string startupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
@@ -43,7 +36,7 @@ namespace FIVStandard
 
             if (args.Length > 0)//get startup path
             {
-                startupPath = Path.GetDirectoryName(args[0]);
+                //startupPath = Path.GetDirectoryName(args[0]);
 
 #if DEBUG
                 string path = "D:\\Google Drive\\temp\\qmrns28.gif";
@@ -55,17 +48,6 @@ namespace FIVStandard
                 NewUri(path);
 #endif
             }
-
-            Associate(startupPath);
-
-            /*Associate(startupPath, "jpg");
-            Associate(startupPath, "jpeg");
-            Associate(startupPath, "png");
-            Associate(startupPath, "gif");
-            Associate(startupPath, "tiff");
-            Associate(startupPath, "bmp");
-            Associate(startupPath, "svg");
-            Associate(startupPath, "ico");*/
 
             if (args.Length > 1)
             {
@@ -235,7 +217,7 @@ namespace FIVStandard
             MediaView.Source = null;
             MediaView.Source = new Uri(path, UriKind.Absolute);
 
-            if (Path.GetExtension(path) == ".gif")
+            if (Path.GetExtension(path) == ".gif" || Path.GetExtension(path) == ".mp4")
             {
                 isAnimated = true;
             }
@@ -310,7 +292,8 @@ namespace FIVStandard
             }
         }
 
-        OpenFileDialog ofd = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.TIFF, *.BMP, *SVG, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.TIFF;*.BMP;*SVG;*ICO"/* + "|All files (*.*)|*.*" */};
+        //"Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.TIFF, *.BMP, *SVG, *ICO, *.MP4)|*.JPG;*.JPEG;*.PNG;*.GIF;*.TIFF;*.BMP;*SVG;*ICO;*MP4"
+        OpenFileDialog ofd = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO, *.MP4)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*ICO;*MP4"/* + "|All files (*.*)|*.*" */};
         private void OpenBrowseImage(object sender, RoutedEventArgs e)
         {
             if (isDeletingFile) return;
@@ -378,111 +361,6 @@ namespace FIVStandard
         {
             ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CNWYKDLHJW9CW");
             Process.Start(sInfo);
-        }
-
-        public static void Associate(string startupPath)
-        {
-            RegistryKey FileRegJpg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.jpg");
-            RegistryKey FileRegJpeg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.jpeg");
-            RegistryKey FileRegPng = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.png");
-            RegistryKey FileRegGif = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.gif");
-            RegistryKey FileRegTiff = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.tiff");
-            RegistryKey FileRegBmp = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.bmp");
-            RegistryKey FileRegSvg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.svg");
-            RegistryKey FileRegIco = Registry.CurrentUser.CreateSubKey("Software\\Classes\\.ico");
-
-            RegistryKey AppReg = Registry.CurrentUser.CreateSubKey("Software\\Classes\\Applications\\Fast Image Viewer.exe");//TODO: Check if app name is correct
-
-            //TODO: check if this is required
-            string user = Environment.UserDomainName + "\\" + Environment.UserName;
-            RegistrySecurity rs = new RegistrySecurity();
-            rs.AddAccessRule(new RegistryAccessRule(user, RegistryRights.WriteKey | RegistryRights.ChangePermissions, InheritanceFlags.None, PropagationFlags.None, AccessControlType.Deny));
-
-            RegistryKey AppAssocJpg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.jpg", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocJpeg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.jpeg", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocPng = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.png", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocGif = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.gif", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocTiff = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.tiff", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocBmp = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.bmp", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocSvg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.svg", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-            RegistryKey AppAssocIco = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.ico", RegistryKeyPermissionCheck.ReadWriteSubTree, rs);
-
-            //animated = anim.ico ; normal = def.ico
-            FileRegJpg.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
-            FileRegJpg.CreateSubKey("PerievedType").SetValue("", startupPath + "Image");
-            FileRegJpeg.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
-            FileRegJpeg.CreateSubKey("PerievedType").SetValue("", startupPath + "Image");
-            FileRegPng.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
-            FileRegPng.CreateSubKey("PerievedType").SetValue("", startupPath + "Image");
-            FileRegGif.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\anim.ico");
-            FileRegGif.CreateSubKey("PerievedType").SetValue("", startupPath + "Animated Image");
-            FileRegTiff.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
-            FileRegTiff.CreateSubKey("PerievedType").SetValue("", startupPath + "Image");
-            FileRegBmp.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
-            FileRegBmp.CreateSubKey("PerievedType").SetValue("", startupPath + "Image");
-            FileRegSvg.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
-            FileRegSvg.CreateSubKey("PerievedType").SetValue("", startupPath + "Image");
-            FileRegIco.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
-            FileRegIco.CreateSubKey("PerievedType").SetValue("", startupPath + "Image");
-
-            AppReg.CreateSubKey("shell\\open\\command").SetValue("", "\"" + startupPath + "\\Fast Image Viewer.exe\" \"%1\"");//open context
-            //AppReg.CreateSubKey("shell\\edit\\command").SetValue("", startupPath + "\" %1");//edit context
-            AppReg.CreateSubKey("DefaultIcon").SetValue("", startupPath + "\\def.ico");
-
-            ReWriteKey(AppAssocJpg);
-            ReWriteKey(AppAssocJpeg);
-            ReWriteKey(AppAssocPng);
-            ReWriteKey(AppAssocGif);
-            ReWriteKey(AppAssocTiff);
-            ReWriteKey(AppAssocBmp);
-            ReWriteKey(AppAssocSvg);
-            ReWriteKey(AppAssocIco);
-
-            SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
-        }
-
-        private static object ReWriteKey(RegistryKey key)
-        {
-            //key.OpenSubKey("UserChoice");
-            object hashkey = null;
-
-            if(key.OpenSubKey("UserChoice") != null)
-            {
-                hashkey = key.OpenSubKey("UserChoice").GetValue("Hash");
-                key.DeleteSubKey("UserChoice");
-            }
-
-            //re-create key with the 2 values
-            key = key.CreateSubKey("UserChoice");
-
-            if (hashkey != null)
-            {
-                key.SetValue("Hash", (string)hashkey, RegistryValueKind.String);
-            }
-            else
-            {
-                MessageBox.Show($"No hash key at {key.ToString()}");
-                //key.SetValue("Hash", GetHashString("Fast Image Viewer.exe"));
-            }
-
-            key.SetValue("ProgId", "Applications\\Fast Image Viewer.exe");
-
-            return hashkey;
-        }
-
-        public static string GetHashString(string inputString)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in GetHash(inputString))
-                sb.Append(b.ToString("X2"));
-
-            return sb.ToString();
-        }
-
-        public static byte[] GetHash(string inputString)
-        {
-            HashAlgorithm algorithm = SHA256.Create();
-            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
     }
 }
