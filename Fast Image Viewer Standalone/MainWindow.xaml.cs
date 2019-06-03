@@ -283,7 +283,6 @@ namespace FIVStandard
             //GC.Collect();
         }
 
-
         private BitmapImage LoadImage(Uri uri)
         {
             BitmapImage imgTemp = new BitmapImage();
@@ -299,7 +298,6 @@ namespace FIVStandard
                     imgTemp.DecodePixelHeight = (int)borderImg.ActualHeight;
             }
             imgTemp.EndInit();
-            //GC.Collect();
             imgTemp.Freeze();
 
             return imgTemp;

@@ -272,7 +272,7 @@
         <utils:ZoomBorder x:Name="borderImg" 
                           ClipToBounds="True" 
                           Background="#FF2F3136" 
-                          Margin="15,44,0,0" Padding="0" Canvas.Left="0" Canvas.Top="0" Grid.Row="1" Grid.RowSpan="9" Grid.ColumnSpan="10" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                          Margin="0,44,0,0" Padding="0" Canvas.Left="0" Canvas.Top="0" Grid.Row="1" Grid.RowSpan="9" Grid.ColumnSpan="10" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <Image Name="PictureView" 
                    StretchDirection="DownOnly" 
                    ScrollViewer.VerticalScrollBarVisibility="Disabled" 
