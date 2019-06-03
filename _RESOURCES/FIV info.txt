@@ -1,14 +1,19 @@
 -----------------OPTIONS
 
-Theme colors:
----
-Rich Black - #FF010203
-Discord Gray - #FF2F3136
-Dimgray - #FF696969
-Quick Silver - #FFA6A6A6
-Modern Orange - #FFE27D60
-OPTIONAL: custom
+Theme Accent colors
 
+Dark/White theme
 
+Zoom sensitivity
+
+Image stretched
+
+OPTIONAL: drag and drop image
+
+Image information (resolution etc.)
+
+OPTIONAL: Rotate image
+
+Open in explorer context menu/shortcut
 
 -----------------
