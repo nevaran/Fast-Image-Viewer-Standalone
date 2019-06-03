@@ -82,5 +82,17 @@ namespace FIVStandard.Properties {
                 this["ImageInfo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DownsizeImage {
+            get {
+                return ((bool)(this["DownsizeImage"]));
+            }
+            set {
+                this["DownsizeImage"] = value;
+            }
+        }
     }
 }

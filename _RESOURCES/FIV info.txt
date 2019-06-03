@@ -1,19 +1,14 @@
 -----------------OPTIONS
 
-Theme Accent colors
-
-Dark/White theme
+Theme Accent colors***
+Image information (resolution etc.)***
+Open in explorer context menu/shortcut***
+Dark/White theme***
+Image stretched***
+Downsize Image***
 
 Zoom sensitivity
-
-Image stretched
-
 OPTIONAL: drag and drop image
-
-Image information (resolution etc.)
-
 OPTIONAL: Rotate image
-
-Open in explorer context menu/shortcut
 
 -----------------

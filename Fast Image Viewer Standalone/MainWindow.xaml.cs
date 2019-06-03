@@ -22,6 +22,9 @@ namespace FIVStandard
         bool isAnimated = false;
         bool isPaused = false;
 
+        int imgWidth = 0;
+        int imgHeight = 0;
+
         //private string startupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
@@ -36,7 +39,10 @@ namespace FIVStandard
             LoadAllSettings();
 
             //AppWindow = this;//used for debugging ZoomBorder
+        }
 
+        private void OnAppLoaded(object sender, RoutedEventArgs e)
+        {
             string[] args = Environment.GetCommandLineArgs();
 
             if (args.Length > 0)//get startup path
@@ -45,23 +51,14 @@ namespace FIVStandard
 
 #if DEBUG
                 string path = "D:\\Google Drive\\temp\\qmrns28.gif";
-                GetDirectoryFiles(Path.GetDirectoryName(path));
 
-                FindIndexInFiles(path);
-                SetTitleInformation();
-
-                NewUri(path);
+                OpenNewFile(path);
 #endif
             }
 
             if (args.Length > 1)
             {
-                GetDirectoryFiles(Path.GetDirectoryName(args[1]));
-
-                FindIndexInFiles(args[1]);
-                SetTitleInformation();
-
-                NewUri(args[1]);
+                OpenNewFile(args[1]);
             }
         }
 
@@ -117,10 +114,10 @@ namespace FIVStandard
             using (var imageStream = File.OpenRead(imagesFound[imageIndex]))
             {
                 var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                var height = decoder.Frames[0].PixelHeight;
-                var width = decoder.Frames[0].PixelWidth;
+                imgWidth = decoder.Frames[0].PixelWidth;
+                imgHeight = decoder.Frames[0].PixelHeight;
 
-                ImageInfoText.Text = $"{width}x{height} {PictureView.ActualWidth}";
+                ImageInfoText.Text = $"{imgWidth}x{imgHeight}";
             }
 
             /*if (MediaView.NaturalDuration.HasTimeSpan)
@@ -275,30 +272,67 @@ namespace FIVStandard
                 borderImg.Visibility = Visibility.Visible;
                 border.Visibility = Visibility.Hidden;
 
-                /*var bmi = new BitmapImage();
-                bmi.BeginInit();
-                bmi.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                bmi.UriSource = uri;
-                bmi.EndInit();*/
-
-                //PictureView.Source = bmi;
-
-                var imgTemp = new BitmapImage();
-                imgTemp.BeginInit();
-                imgTemp.CacheOption = BitmapCacheOption.OnLoad;
-                imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                imgTemp.UriSource = uri;
-                imgTemp.DecodePixelWidth = (int)PictureView.Source.Width;
-                imgTemp.EndInit();
-                PictureView.Source = imgTemp;
-
                 OnClipOpened(null, null);
+
+                PictureView.Source = LoadImage(uri);
+                //UpdateImage(path);
             }
             
             OnImageChanged();
 
             //GC.Collect();
         }
+
+
+        private BitmapImage LoadImage(Uri uri)
+        {
+            BitmapImage imgTemp = new BitmapImage();
+            imgTemp.BeginInit();
+            imgTemp.CacheOption = BitmapCacheOption.OnLoad;
+            imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            imgTemp.UriSource = uri;
+            if (Properties.Settings.Default.DownsizeImage)
+            {
+                if(imgWidth > borderImg.ActualWidth)
+                    imgTemp.DecodePixelWidth = (int)borderImg.ActualWidth;
+                else if(imgHeight > borderImg.ActualHeight)
+                    imgTemp.DecodePixelHeight = (int)borderImg.ActualHeight;
+            }
+            imgTemp.EndInit();
+            //GC.Collect();
+            imgTemp.Freeze();
+
+            return imgTemp;
+        }
+
+        /*Stream mediaStream;
+
+        void DisposeMediaStream()
+        {
+            if (mediaStream != null)
+            {
+                mediaStream.Close();
+                mediaStream.Dispose();
+                mediaStream = null;
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+            }
+        }
+
+        void UpdateImage(string path)
+        {
+            DisposeMediaStream();
+
+            var bitmap = new BitmapImage();
+            mediaStream = new FileStream(path, FileMode.Open);
+
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.None;
+            bitmap.StreamSource = mediaStream;
+            bitmap.EndInit();
+
+            bitmap.Freeze();
+            PictureView.Source = bitmap;
+        }*/
 
         private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
@@ -385,7 +419,7 @@ namespace FIVStandard
                 //cancelled dialog
             }
 
-            GC.Collect();
+            //GC.Collect();
         }
 
         static bool isDeletingFile = false;
@@ -450,6 +484,8 @@ namespace FIVStandard
             ThemeAccentDrop.SelectedIndex = Properties.Settings.Default.ThemeAccent;
             //Image Stretch
             StretchImageToggle.IsChecked = Properties.Settings.Default.ImageStretched;
+            //Downsize Images
+            DownsizeImageToggle.IsChecked = Properties.Settings.Default.DownsizeImage;
 
             ChangeStretch();
 
@@ -560,6 +596,20 @@ namespace FIVStandard
         {
             SettingsFlyout.IsOpen = false;
             HelpFlyout.IsOpen = !HelpFlyout.IsOpen;
+        }
+
+        private void OnDownsizeSwitch(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.DownsizeImage = !Properties.Settings.Default.DownsizeImage;
+            ChangeDownsize();
+        }
+
+        private void ChangeDownsize()
+        {
+            PictureView.Source = LoadImage(new Uri(imagesFound[imageIndex], UriKind.Absolute));
+            //UpdateImage(imagesFound[imageIndex]);
+
+            Properties.Settings.Default.Save();
         }
     }
 }

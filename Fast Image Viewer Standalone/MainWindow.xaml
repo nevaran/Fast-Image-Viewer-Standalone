@@ -15,7 +15,7 @@
                       KeyDown="OnKeyDown" 
                       Icon="Resources/FIVIcon.ico" WindowState="Maximized"
                       MouseDown="OnMouseDown" 
-                      IsTabStop="False" 
+                      IsTabStop="False" Loaded="OnAppLoaded" 
         >
 
     <Controls:MetroWindow.RightWindowCommands>
@@ -35,7 +35,7 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl IsTabStop="False" Focusable="False">
             <Controls:Flyout x:Name="SettingsFlyout" 
-                             Width="440"
+                             Width="500"
                              Header="Settings" 
                              Position="Right" 
                              Theme="Adapt" 
@@ -51,7 +51,7 @@
                     <Grid>
                         <Controls:ToggleSwitch x:Name="DarkModeToggle" 
                                                Header="Dark Mode" 
-                                               Width="120" 
+                                               Width="140" 
                                                Height="100" 
                                                Padding="20,40,0,0" 
                                                HorizontalAlignment="Left" 
@@ -63,13 +63,13 @@
                                                Unchecked="OnThemeSwitch"
                                                />
 
-                        <StackPanel Orientation="Horizontal" Margin="130,0,0,0" Height="60" VerticalAlignment="Bottom">
+                        <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                         </StackPanel>
 
                         <TextBlock HorizontalAlignment="Right"
                                    VerticalAlignment="Bottom" 
-                                   Width="300"
+                                   Width="340"
                                    Height="60" 
                                    Padding="0,0,20,0" 
                                    Margin="0"
@@ -81,7 +81,7 @@
                     <!-- Theme Accent Dropdown-->
                     <Grid>
                         <Controls:SplitButton x:Name="ThemeAccentDrop" 
-                                              Width="100" 
+                                              Width="120" 
                                               Height="60" 
                                               Margin="20,40,0,0"
                                               HorizontalAlignment="Left" 
@@ -93,13 +93,13 @@
                                               Click="OnAccentClick" 
                                                />
 
-                        <StackPanel Orientation="Horizontal" Margin="130,0,0,0" Height="60" VerticalAlignment="Bottom">
+                        <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                         </StackPanel>
 
                         <TextBlock HorizontalAlignment="Right"
                                    VerticalAlignment="Bottom" 
-                                   Width="300"
+                                   Width="340"
                                    Height="60" 
                                    Padding="0,0,20,0" 
                                    Margin="0"
@@ -112,7 +112,7 @@
                     <Grid>
                         <Controls:ToggleSwitch x:Name="StretchImageToggle" 
                                                Header="Stretch Image" 
-                                               Width="120" 
+                                               Width="140" 
                                                Height="100" 
                                                Padding="20,40,0,0" 
                                                HorizontalAlignment="Left" 
@@ -124,20 +124,53 @@
                                                Unchecked="OnStretchSwitch" 
                                                />
 
-                        <StackPanel Orientation="Horizontal" Margin="130,0,0,0" Height="60" VerticalAlignment="Bottom">
+                        <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                         </StackPanel>
 
                         <TextBlock HorizontalAlignment="Right"
                                    VerticalAlignment="Bottom" 
-                                   Width="300"
+                                   Width="340"
                                    Height="60" 
                                    Padding="0,0,20,0" 
                                    Margin="0"
                                    TextWrapping="Wrap" 
-                                   Text="Always stretch images to fit the window. Quick toggle shortcut: 'F'"
+                                   Text="Always stretch images to fit the window. Toggle shortcut: ''F''"
                                    />
                     </Grid>
+
+                    <!-- Downsize Image -->
+                    <Grid>
+                        <Controls:ToggleSwitch x:Name="DownsizeImageToggle" 
+                                               Header="Downsize Image" 
+                                               Width="140" 
+                                               Height="100" 
+                                               Padding="20,40,0,0" 
+                                               HorizontalAlignment="Left" 
+                                               VerticalAlignment="Center" 
+                                               Focusable="False" 
+                                               IsTabStop="False" 
+                                               IsChecked="true" 
+                                               Checked="OnDownsizeSwitch" 
+                                               Unchecked="OnDownsizeSwitch" 
+                                               />
+
+                        <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+
+                        <TextBlock HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom" 
+                                   Width="340"
+                                   Height="60" 
+                                   Padding="0,0,20,0" 
+                                   Margin="0"
+                                   TextWrapping="Wrap" 
+                                   Text="Reduce image size to current window's. This reduces memory usage for images larger than screen's."
+                                   />
+                    </Grid>
+                    
+                    <!-- Zoom Sensitivity -->
                 </StackPanel>
             </Controls:Flyout>
 
@@ -239,7 +272,7 @@
         <utils:ZoomBorder x:Name="borderImg" 
                           ClipToBounds="True" 
                           Background="#FF2F3136" 
-                          Margin="0,44,0,0" Padding="0" Canvas.Left="0" Canvas.Top="0" Grid.Row="1" Grid.RowSpan="9" Grid.ColumnSpan="10" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                          Margin="15,44,0,0" Padding="0" Canvas.Left="0" Canvas.Top="0" Grid.Row="1" Grid.RowSpan="9" Grid.ColumnSpan="10" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <Image Name="PictureView" 
                    StretchDirection="DownOnly" 
                    ScrollViewer.VerticalScrollBarVisibility="Disabled" 
