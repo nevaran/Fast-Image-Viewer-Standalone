@@ -1,12 +1,10 @@
-﻿using MahApps.Metro;
+﻿using FIVStandard.Backend;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -15,30 +13,30 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow
     {
-        private int imageIndex = 0;
-        private List<string> imagesFound = new List<string>();
+        public int imageIndex = 0;
 
-        private bool isAnimated = false;
         private bool isPaused = false;
 
-        private int imgWidth = 0;
-        private int imgHeight = 0;
+        public int imgWidth = 0;
+        public int imgHeight = 0;
 
         //private string startupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
         private readonly string[] themeAccents = new string[] { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
-        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
-        private OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
-        private static bool isDeletingFile = false;
+        public static bool isDeletingFile { get; private set; } = false;
 
         public static double zoomSensitivity = 0.2;
+
+        private readonly FileLoader fileLoader;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            fileLoader = new FileLoader(this);
 
             LoadAllSettings();
 
@@ -62,58 +60,14 @@ namespace FIVStandard
 
             if (args.Length > 1)
             {
-                OpenNewFile(args[1]);
+                fileLoader.OpenNewFile(args[1]);
+                SetTitleInformation();
             }
         }
 
-        public void OpenNewFile(string path)
+        public void SetTitleInformation()
         {
-            if (isDeletingFile) return;
-
-            GetDirectoryFiles(Path.GetDirectoryName(path));
-
-            FindIndexInFiles(path);
-            SetTitleInformation();
-
-            NewUri(path);
-        }
-
-        private void GetDirectoryFiles(string searchFolder)
-        {
-            imagesFound.Clear();
-            List<string> filesFound = new List<string>();
-
-            //filesFound.AddRange(Directory.GetFiles(searchFolder, "*.*", SearchOption.TopDirectoryOnly));
-            filesFound.AddRange(Directory.EnumerateFiles(searchFolder).OrderBy(filename => filename));
-            //filesFound.OrderBy(p => p.Substring(0)).ToList();//probably doesnt work
-
-            int c = filesFound.Count;
-            for (int i = 0; i < c; i++)
-            {
-                if (filters.Any(Path.GetExtension(filesFound[i]).Contains))
-                {
-                    imagesFound.Add(filesFound[i]);
-                }
-            }
-        }
-
-        private void FindIndexInFiles(string openedPathFile)
-        {
-            int L = imagesFound.Count;
-            for (int i = 0; i < L; i++)
-            {
-                if(openedPathFile == imagesFound[i])
-                {
-                    imageIndex = i;
-                    //MessageBox.Show(imagesFound.Count + " | " + imageIndex);//DEBUG
-                    break;
-                }
-            }
-        }
-
-        private void SetTitleInformation()
-        {
-            this.Title = $"[{imageIndex + 1}/{imagesFound.Count}] {Path.GetFileName(imagesFound[imageIndex])}";
+            this.Title = $"[{imageIndex + 1}/{fileLoader.imagesFound.Count}] {Path.GetFileName(fileLoader.imagesFound[imageIndex])}";
         }
 
         /// <summary>
@@ -121,7 +75,7 @@ namespace FIVStandard
         /// </summary>
         private void ClearAllMedia()
         {
-            imagesFound.Clear();
+            fileLoader.imagesFound.Clear();
             MediaView.Source = null;
             PictureView.Source = null;
             ImageInfoText.Text = string.Empty;
@@ -130,11 +84,11 @@ namespace FIVStandard
             //GC.Collect();
         }
 
-        private void OnClipOpened(object sender, RoutedEventArgs e)
+        public void OnClipOpened(object sender, RoutedEventArgs e)
         {
-            if (imagesFound.Count == 0) return;
+            if (fileLoader.imagesFound.Count == 0) return;
 
-            using (var imageStream = File.OpenRead(imagesFound[imageIndex]))
+            using (var imageStream = File.OpenRead(fileLoader.imagesFound[imageIndex]))
             {
                 var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
                 imgWidth = decoder.Frames[0].PixelWidth;
@@ -171,26 +125,26 @@ namespace FIVStandard
 
         private void ChangeImage(int jump)
         {
-            if (imagesFound.Count == 0)//no more images in the folder - go back to default null
+            if (fileLoader.imagesFound.Count == 0)//no more images in the folder - go back to default null
             {
                 ClearAllMedia();
                 return;
             }
 
             imageIndex += jump;
-            if (imageIndex < 0) imageIndex = imagesFound.Count - 1;
-            if (imageIndex >= imagesFound.Count) imageIndex = 0;
+            if (imageIndex < 0) imageIndex = fileLoader.imagesFound.Count - 1;
+            if (imageIndex >= fileLoader.imagesFound.Count) imageIndex = 0;
 
-            if (!FileSystem.FileExists(imagesFound[imageIndex]))//keep moving onward until we find an existing file
+            if (!FileSystem.FileExists(fileLoader.imagesFound[imageIndex]))//keep moving onward until we find an existing file
             {
                 //refresh the file lists in the directory
                 //GetDirectoryFiles(Path.GetDirectoryName(imagesFound[imageIndex]));
                 //FindIndexInFiles(imagesFound[imageIndex]);
 
                 //remove nonexistent file from list - if there are more than 1
-                if (imagesFound.Count > 1)
+                if (fileLoader.imagesFound.Count > 1)
                 {
-                    imagesFound.RemoveAt(imageIndex);
+                    fileLoader.imagesFound.RemoveAt(imageIndex);
                     SetTitleInformation();
                 }
 
@@ -199,7 +153,7 @@ namespace FIVStandard
                 return;
             }
 
-            NewUri(imagesFound[imageIndex]);
+            fileLoader.NewUri(fileLoader.imagesFound[imageIndex]);
 
             SetTitleInformation();
         }
@@ -215,7 +169,7 @@ namespace FIVStandard
             else
                 controller.Pause();*/
 
-            if (isAnimated)
+            if (fileLoader.isAnimated)
             {
                 if (isPaused)
                 {
@@ -230,9 +184,9 @@ namespace FIVStandard
             }
         }
 
-        private void ImageChanged()
+        public void ImageChanged()
         {
-            if (isAnimated)
+            if (fileLoader.isAnimated)
             {
                 isPaused = false;
 
@@ -245,65 +199,6 @@ namespace FIVStandard
             }
 
             //MainImage.Source = bm;
-        }
-
-        private void NewUri(string path)
-        {
-            string pathext = Path.GetExtension(path);
-            if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
-            {
-                isAnimated = true;
-            }
-            else
-                isAnimated = false;
-
-            Uri uri = new Uri(path, UriKind.Absolute);
-
-            MediaView?.Close();
-            MediaView.Source = null;
-
-            PictureView.Source = null;
-
-            if (isAnimated)
-            {
-                borderImg.Visibility = Visibility.Hidden;
-                border.Visibility = Visibility.Visible;
-
-                MediaView.Source = uri;
-            }
-            else
-            {
-                borderImg.Visibility = Visibility.Visible;
-                border.Visibility = Visibility.Hidden;
-
-                OnClipOpened(null, null);
-
-                PictureView.Source = LoadImage(uri);
-            }
-            
-            ImageChanged();
-
-            //GC.Collect();
-        }
-
-        private BitmapImage LoadImage(Uri uri)
-        {
-            BitmapImage imgTemp = new BitmapImage();
-            imgTemp.BeginInit();
-            imgTemp.CacheOption = BitmapCacheOption.OnLoad;
-            imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-            imgTemp.UriSource = uri;
-            if (Properties.Settings.Default.DownsizeImage)
-            {
-                if(imgWidth > borderImg.ActualWidth)
-                    imgTemp.DecodePixelWidth = (int)borderImg.ActualWidth;
-                else if(imgHeight > borderImg.ActualHeight)
-                    imgTemp.DecodePixelHeight = (int)borderImg.ActualHeight;
-            }
-            imgTemp.EndInit();
-            imgTemp.Freeze();
-
-            return imgTemp;
         }
 
         private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -324,9 +219,9 @@ namespace FIVStandard
                 TogglePause();
             }
 
-            if (e.Key == System.Windows.Input.Key.Delete && imagesFound.Count > 0)
+            if (e.Key == System.Windows.Input.Key.Delete && fileLoader.imagesFound.Count > 0)
             {
-                DeleteToRecycle(imagesFound[imageIndex]);
+                DeleteToRecycle(fileLoader.imagesFound[imageIndex]);
             }
 
             if (e.Key == System.Windows.Input.Key.F)
@@ -372,10 +267,10 @@ namespace FIVStandard
         {
             if (isDeletingFile) return;
 
-            Nullable<bool> result = openFileDialog.ShowDialog();
+            Nullable<bool> result = fileLoader.openFileDialog.ShowDialog();
             if (result == true)
             {
-                OpenNewFile(openFileDialog.FileName);
+                fileLoader.OpenNewFile(fileLoader.openFileDialog.FileName);
             }
             else
             {
@@ -385,7 +280,7 @@ namespace FIVStandard
             //GC.Collect();
         }
 
-#region FlyoutCommands
+        #region FlyoutCommands
         private void OnSettingsClick(object sender, RoutedEventArgs e)
         {
             HelpFlyout.IsOpen = false;
@@ -505,10 +400,10 @@ namespace FIVStandard
         {
             try
             {
-                if (File.Exists(imagesFound[imageIndex]))
+                if (File.Exists(fileLoader.imagesFound[imageIndex]))
                 {
                     //Clean up file path so it can be navigated OK
-                    Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(imagesFound[imageIndex])));
+                    Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(fileLoader.imagesFound[imageIndex])));
                 }
             }
             catch (Exception e)
@@ -521,7 +416,7 @@ namespace FIVStandard
         {
             if (isDeletingFile) return;
 
-            DeleteToRecycle(imagesFound[imageIndex]);
+            DeleteToRecycle(fileLoader.imagesFound[imageIndex]);
         }
 
         private async void DeleteToRecycle(string path)
@@ -544,7 +439,7 @@ namespace FIVStandard
 
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            imagesFound.RemoveAt(imageIndex);
+                            fileLoader.imagesFound.RemoveAt(imageIndex);
                             ChangeImage(-1);//go back to a previous file after deletion
                             //SetTitleInformation();
                         });
@@ -572,7 +467,7 @@ namespace FIVStandard
 
         private void ChangeDownsize()
         {
-            PictureView.Source = LoadImage(new Uri(imagesFound[imageIndex], UriKind.Absolute));
+            PictureView.Source = fileLoader.LoadImage(new Uri(fileLoader.imagesFound[imageIndex], UriKind.Absolute));
 
             Properties.Settings.Default.Save();
         }

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FIVStandard"
         xmlns:utils="clr-namespace:FIVStandard.Utils"
+        xmlns:backend="clr-namespace:FIVStandard.Backend"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
                       Title="FIV" 
@@ -173,12 +174,18 @@
                         
                         <!-- Zoom Sensitivity -->
                         <Grid>
-                            <TextBlock x:Name="ZoomSensitivityText"/>
+                            <TextBlock x:Name="ZoomSensitivityText"
+                                       Width="140" 
+                                       Margin="10,50,0,0"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Left" 
+                                       VerticalAlignment="Center" 
+                                       />
                             <Slider x:Name="ZoomSensitivitySlider" 
                                     Width="140" 
                                     Height="100" 
                                     Padding="20,40,0,0" 
-                                    Margin="10,0"
+                                    Margin="5,0"
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Center" 
                                     Focusable="False" 
