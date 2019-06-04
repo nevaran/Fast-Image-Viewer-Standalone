@@ -423,7 +423,7 @@ namespace FIVStandard
             //Downsize Images
             DownsizeImageToggle.IsChecked = Properties.Settings.Default.DownsizeImage;
             //Zoom Sensitivity
-            //ZoomSensitivitySlider.Value = Properties.Settings.Default.ZoomSensitivity;
+            ZoomSensitivitySlider.Value = Properties.Settings.Default.ZoomSensitivity;
 
             ChangeStretch();
 
@@ -579,7 +579,6 @@ namespace FIVStandard
 
         private void OnZoomSensitivitySlider(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MessageBox.Show("");
             Properties.Settings.Default.ZoomSensitivity = ZoomSensitivitySlider.Value;
             ChangeZoomSensitivity();
         }
