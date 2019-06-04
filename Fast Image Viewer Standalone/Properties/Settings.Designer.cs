@@ -50,9 +50,9 @@ namespace FIVStandard.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0.2")]
-        public float ZoomSensitivity {
+        public double ZoomSensitivity {
             get {
-                return ((float)(this["ZoomSensitivity"]));
+                return ((double)(this["ZoomSensitivity"]));
             }
             set {
                 this["ZoomSensitivity"] = value;

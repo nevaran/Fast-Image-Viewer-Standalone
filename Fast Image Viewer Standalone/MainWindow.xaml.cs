@@ -15,22 +15,26 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow
     {
-        int imageIndex = 0;
-        List<string> imagesFound = new List<string>();
-        readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
+        private int imageIndex = 0;
+        private List<string> imagesFound = new List<string>();
 
-        bool isAnimated = false;
-        bool isPaused = false;
+        private bool isAnimated = false;
+        private bool isPaused = false;
 
-        int imgWidth = 0;
-        int imgHeight = 0;
+        private int imgWidth = 0;
+        private int imgHeight = 0;
 
         //private string startupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        readonly string[] themeAccents = new string[] { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
-        OpenFileDialog ofd = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
+        private readonly string[] themeAccents = new string[] { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
+        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
+        private OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
+
+        private static bool isDeletingFile = false;
+
+        public static double zoomSensitivity = 0.2;
 
         public MainWindow()
         {
@@ -50,9 +54,9 @@ namespace FIVStandard
                 //startupPath = Path.GetDirectoryName(args[0]);
 
 #if DEBUG
-                string path = "D:\\Google Drive\\temp\\qmrns28.gif";
+                //string path = "D:\\Google Drive\\temp\\qmrns28.gif";
 
-                OpenNewFile(path);
+                //OpenNewFile(path);
 #endif
             }
 
@@ -107,6 +111,25 @@ namespace FIVStandard
             }
         }
 
+        private void SetTitleInformation()
+        {
+            this.Title = $"[{imageIndex + 1}/{imagesFound.Count}] {Path.GetFileName(imagesFound[imageIndex])}";
+        }
+
+        /// <summary>
+        /// Clear all saved paths and clean media view and finally cleanup memory
+        /// </summary>
+        private void ClearAllMedia()
+        {
+            imagesFound.Clear();
+            MediaView.Source = null;
+            PictureView.Source = null;
+            ImageInfoText.Text = string.Empty;
+            this.Title = "FIV";
+
+            //GC.Collect();
+        }
+
         private void OnClipOpened(object sender, RoutedEventArgs e)
         {
             if (imagesFound.Count == 0) return;
@@ -120,7 +143,7 @@ namespace FIVStandard
                 ImageInfoText.Text = $"{imgWidth}x{imgHeight}";
             }
 
-            /*if (MediaView.NaturalDuration.HasTimeSpan)
+            /*if (MediaView.NaturalDuration.HasTimeSpan)//used for videos (avi mp4 etc.)
             {
                 TimeSpan ts = MediaView.NaturalDuration.TimeSpan;
 
@@ -181,25 +204,6 @@ namespace FIVStandard
             SetTitleInformation();
         }
 
-        /// <summary>
-        /// Clear all saved paths and clean media view and finally cleanup memory
-        /// </summary>
-        private void ClearAllMedia()
-        {
-            imagesFound.Clear();
-            MediaView.Source = null;
-            PictureView.Source = null;
-            ImageInfoText.Text = string.Empty;
-            this.Title = "FIV";
-
-            GC.Collect();
-        }
-
-        private void SetTitleInformation()
-        {
-            this.Title = $"[{imageIndex + 1}/{imagesFound.Count}] {Path.GetFileName(imagesFound[imageIndex])}";
-        }
-
         private void TogglePause()
         {
             /*controller = ImageBehavior.GetAnimationController(MainImage);
@@ -226,7 +230,7 @@ namespace FIVStandard
             }
         }
 
-        private void OnImageChanged()
+        private void ImageChanged()
         {
             if (isAnimated)
             {
@@ -275,10 +279,9 @@ namespace FIVStandard
                 OnClipOpened(null, null);
 
                 PictureView.Source = LoadImage(uri);
-                //UpdateImage(path);
             }
             
-            OnImageChanged();
+            ImageChanged();
 
             //GC.Collect();
         }
@@ -303,35 +306,6 @@ namespace FIVStandard
             return imgTemp;
         }
 
-        /*Stream mediaStream;
-
-        void DisposeMediaStream()
-        {
-            if (mediaStream != null)
-            {
-                mediaStream.Close();
-                mediaStream.Dispose();
-                mediaStream = null;
-                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
-            }
-        }
-
-        void UpdateImage(string path)
-        {
-            DisposeMediaStream();
-
-            var bitmap = new BitmapImage();
-            mediaStream = new FileStream(path, FileMode.Open);
-
-            bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.None;
-            bitmap.StreamSource = mediaStream;
-            bitmap.EndInit();
-
-            bitmap.Freeze();
-            PictureView.Source = bitmap;
-        }*/
-
         private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (isDeletingFile) return;
@@ -344,15 +318,6 @@ namespace FIVStandard
             {
                 ChangeImage(-1);//go back
             }
-
-            /*if (e.Key == System.Windows.Input.Key.Up)
-            {
-                ChangeFrame(1);//go forward
-            }
-            if (e.Key == System.Windows.Input.Key.Down)
-            {
-                ChangeFrame(-1);//go back
-            }*/
 
             if (e.Key == System.Windows.Input.Key.Space)
             {
@@ -403,14 +368,14 @@ namespace FIVStandard
             }
         }
 
-        private void OpenBrowseImage(object sender, RoutedEventArgs e)
+        private void OnOpenBrowseImage(object sender, RoutedEventArgs e)
         {
             if (isDeletingFile) return;
 
-            Nullable<bool> result = ofd.ShowDialog();
+            Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
             {
-                OpenNewFile(ofd.FileName);
+                OpenNewFile(openFileDialog.FileName);
             }
             else
             {
@@ -420,51 +385,23 @@ namespace FIVStandard
             //GC.Collect();
         }
 
-        static bool isDeletingFile = false;
-        private void DeleteToRecycle(string path)
-        {
-            Task.Run(() =>
-            {
-                try
-                {
-                    isDeletingFile = true;
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        Title = "Deleting " + Path.GetFileName(path) + "...";
-                    });
-
-                    if (FileSystem.FileExists(path))
-                    {
-                        FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
-                        //remove removed item from list
-                        
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            imagesFound.RemoveAt(imageIndex);
-                            ChangeImage(-1);//go back to a previous file after deletion
-                            //SetTitleInformation();
-                        });
-                    }
-                    else
-                    {
-                        MessageBox.Show("File not found: " + path);
-                    }
-
-                    isDeletingFile = false;
-                }
-                catch(Exception e)
-                {
-                    MessageBox.Show(e.Message + "\nIndex: " + imageIndex);
-                }
-            }
-            );
-        }
-
+#region FlyoutCommands
         private void OnSettingsClick(object sender, RoutedEventArgs e)
         {
             HelpFlyout.IsOpen = false;
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
+        }
+
+        private void OnHelpClick(object sender, RoutedEventArgs e)
+        {
+            SettingsFlyout.IsOpen = false;
+            HelpFlyout.IsOpen = !HelpFlyout.IsOpen;
+        }
+
+        private void OnCloseFlyoutsClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            SettingsFlyout.IsOpen = false;
+            HelpFlyout.IsOpen = false;
         }
 
         private void OnDonateClick(object sender, RoutedEventArgs e)
@@ -472,6 +409,7 @@ namespace FIVStandard
             ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
             Process.Start(sInfo);
         }
+#endregion
 
         private void LoadAllSettings()
         {
@@ -484,11 +422,19 @@ namespace FIVStandard
             StretchImageToggle.IsChecked = Properties.Settings.Default.ImageStretched;
             //Downsize Images
             DownsizeImageToggle.IsChecked = Properties.Settings.Default.DownsizeImage;
+            //Zoom Sensitivity
+            //ZoomSensitivitySlider.Value = Properties.Settings.Default.ZoomSensitivity;
 
             ChangeStretch();
 
             ChangeTheme(Properties.Settings.Default.ThemeAccent);
             //ChangeAccent();//not needed since we calling ChangeTheme in there
+        }
+
+        private void OnThemeSwitch(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.DarkTheme = !Properties.Settings.Default.DarkTheme;
+            ChangeTheme(Properties.Settings.Default.ThemeAccent);
         }
 
         private void ChangeTheme(int themeIndex)
@@ -505,37 +451,15 @@ namespace FIVStandard
             Properties.Settings.Default.Save();
         }
 
-        private void ChangeAccent()
-        {
-            ChangeTheme(Properties.Settings.Default.ThemeAccent);//since theme also is rooted with accent
-        }
-
-        private void ChangeStretch()
-        {
-            if (Properties.Settings.Default.ImageStretched)
-            {
-                MediaView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
-                PictureView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
-            }
-            else
-            {
-                MediaView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
-                PictureView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
-            }
-
-            Properties.Settings.Default.Save();
-        }
-
-        private void OnThemeSwitch(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.DarkTheme = !Properties.Settings.Default.DarkTheme;
-            ChangeTheme(Properties.Settings.Default.ThemeAccent);
-        }
-
         private void OnAccentChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             Properties.Settings.Default.ThemeAccent = ThemeAccentDrop.SelectedIndex;
             ChangeAccent();
+        }
+
+        private void ChangeAccent()
+        {
+            ChangeTheme(Properties.Settings.Default.ThemeAccent);//since theme also is rooted with accent
         }
 
         private void OnAccentClick(object sender, RoutedEventArgs e)
@@ -556,6 +480,27 @@ namespace FIVStandard
             ChangeStretch();
         }
 
+        private void ChangeStretch()
+        {
+            if (Properties.Settings.Default.ImageStretched)
+            {
+                MediaView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
+                PictureView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
+            }
+            else
+            {
+                MediaView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
+                PictureView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
+            }
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void OnOpenFileLocation(object sender, RoutedEventArgs e)
+        {
+            ExploreFile();
+        }
+
         public void ExploreFile()
         {
             try
@@ -572,17 +517,6 @@ namespace FIVStandard
             }
         }
 
-        private void ClickCloseSettings(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            SettingsFlyout.IsOpen = false;
-            HelpFlyout.IsOpen = false;
-        }
-
-        private void OnOpenFileLocation(object sender, RoutedEventArgs e)
-        {
-            ExploreFile();
-        }
-
         private void OnDeleteClick(object sender, RoutedEventArgs e)
         {
             if (isDeletingFile) return;
@@ -590,10 +524,44 @@ namespace FIVStandard
             DeleteToRecycle(imagesFound[imageIndex]);
         }
 
-        private void OnHelpClick(object sender, RoutedEventArgs e)
+        private async void DeleteToRecycle(string path)
         {
-            SettingsFlyout.IsOpen = false;
-            HelpFlyout.IsOpen = !HelpFlyout.IsOpen;
+            await Task.Run(() =>
+            {
+                try
+                {
+                    isDeletingFile = true;
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Title = "Deleting " + Path.GetFileName(path) + "...";
+                    });
+
+                    if (FileSystem.FileExists(path))
+                    {
+                        FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
+                        //remove removed item from list
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            imagesFound.RemoveAt(imageIndex);
+                            ChangeImage(-1);//go back to a previous file after deletion
+                            //SetTitleInformation();
+                        });
+                    }
+                    else
+                    {
+                        MessageBox.Show("File not found: " + path);
+                    }
+
+                    isDeletingFile = false;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message + "\nIndex: " + imageIndex);
+                }
+            }
+            );
         }
 
         private void OnDownsizeSwitch(object sender, RoutedEventArgs e)
@@ -605,7 +573,21 @@ namespace FIVStandard
         private void ChangeDownsize()
         {
             PictureView.Source = LoadImage(new Uri(imagesFound[imageIndex], UriKind.Absolute));
-            //UpdateImage(imagesFound[imageIndex]);
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void OnZoomSensitivitySlider(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            MessageBox.Show("");
+            Properties.Settings.Default.ZoomSensitivity = ZoomSensitivitySlider.Value;
+            ChangeZoomSensitivity();
+        }
+
+        private void ChangeZoomSensitivity()
+        {
+            zoomSensitivity = Properties.Settings.Default.ZoomSensitivity;
+            ZoomSensitivityText.Text = zoomSensitivity.ToString();
 
             Properties.Settings.Default.Save();
         }

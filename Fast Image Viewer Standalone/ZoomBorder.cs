@@ -72,7 +72,6 @@ namespace FIVStandard.Utils
         }
 
         #region Child Events
-
         private void Child_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (child != null)
@@ -80,7 +79,7 @@ namespace FIVStandard.Utils
                 var st = GetScaleTransform(child);
                 var tt = GetTranslateTransform(child);
 
-                double zoom = e.Delta > 0 ? .2 : -.2;
+                double zoom = e.Delta > 0 ? FIVStandard.MainWindow.zoomSensitivity : -FIVStandard.MainWindow.zoomSensitivity;
                 if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
                     return;
 
@@ -95,10 +94,10 @@ namespace FIVStandard.Utils
                 st.ScaleY += zoom;
 
                 //zoom clamp max
-                if (st.ScaleX > 30.0)
-                    st.ScaleX = 30.0;
-                if (st.ScaleY > 30.0)
-                    st.ScaleY = 30.0;
+                if (st.ScaleX > 50.0)
+                    st.ScaleX = 50.0;
+                if (st.ScaleY > 50.0)
+                    st.ScaleY = 50.0;
 
                 //zoom clamp min
                 if (st.ScaleX < 1.0)

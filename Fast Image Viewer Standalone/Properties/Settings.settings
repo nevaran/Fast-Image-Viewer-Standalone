@@ -8,7 +8,7 @@
     <Setting Name="ThemeAccent" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">4</Value>
     </Setting>
-    <Setting Name="ZoomSensitivity" Type="System.Single" Scope="User">
+    <Setting Name="ZoomSensitivity" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.2</Value>
     </Setting>
     <Setting Name="ImageStretched" Type="System.Boolean" Scope="User">
