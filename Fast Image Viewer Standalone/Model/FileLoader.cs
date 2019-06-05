@@ -10,14 +10,14 @@ namespace FIVStandard.Backend
 {
     class FileLoader
     {
-        MainWindow that;
+        private readonly MainWindow that;
 
-        public bool isAnimated = false;
+        public bool isAnimated { get; private set; } = false;
 
-        public List<string> imagesFound = new List<string>();
+        public List<string> imagesFound { get; set; } = new List<string>();
 
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
-        public OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
+        public OpenFileDialog openFileDialog { get; set; }  = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
         public FileLoader(MainWindow mainWindow)
         {
