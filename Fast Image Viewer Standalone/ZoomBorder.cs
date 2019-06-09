@@ -79,7 +79,7 @@ namespace FIVStandard.Utils
                 var st = GetScaleTransform(child);
                 var tt = GetTranslateTransform(child);
 
-                double zoom = e.Delta > 0 ? FIVStandard.MainWindow.zoomSensitivity : -FIVStandard.MainWindow.zoomSensitivity;
+                double zoom = e.Delta > 0 ? FIVStandard.MainWindow.ZoomSensitivity : -FIVStandard.MainWindow.ZoomSensitivity;
                 if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
                     return;
 
