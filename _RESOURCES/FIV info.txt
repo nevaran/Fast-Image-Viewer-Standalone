@@ -7,8 +7,16 @@ Dark/White theme***
 Image stretched***
 Downsize Image***
 
+Include Subfolders
+Change Border Background Color
 Zoom sensitivity
 OPTIONAL: drag and drop image
 OPTIONAL: Rotate image
+
+-----------------
+
+-----------------UPGRADES
+
+separate file path: one string for folder path, and list of files with only names + extension
 
 -----------------

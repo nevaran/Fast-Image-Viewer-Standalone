@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -41,8 +42,10 @@ namespace FIVStandard.Backend
             List<string> filesFound = new List<string>();//all files found in the directory
 
             //filesFound.AddRange(Directory.GetFiles(searchFolder, "*.*", SearchOption.TopDirectoryOnly));
-            filesFound.AddRange(Directory.EnumerateFiles(searchFolder).OrderBy(filename => filename));
+            //filesFound.AddRange(Directory.EnumerateFiles(searchFolder).OrderBy(filename => filename));
             //filesFound.OrderBy(p => p.Substring(0)).ToList();//probably doesnt work
+
+            filesFound.AddRange(Directory.EnumerateFiles(searchFolder));
 
             int c = filesFound.Count;
             for (int i = 0; i < c; i++)
@@ -52,6 +55,8 @@ namespace FIVStandard.Backend
                     imagesFound.Add(filesFound[i]);
                 }
             }
+
+            imagesFound.Sort(new NameComparer());
         }
 
         private void FindIndexInFiles(string openedPathFile)
@@ -125,6 +130,17 @@ namespace FIVStandard.Backend
             imgTemp.Freeze();
 
             return imgTemp;
+        }
+    }
+
+    public class NameComparer : IComparer<string>
+    {
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        static extern int StrCmpLogicalW(string x, string y);
+
+        public int Compare(string x, string y)
+        {
+            return StrCmpLogicalW(x, y);
         }
     }
 }
