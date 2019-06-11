@@ -103,7 +103,7 @@ namespace FIVStandard.Backend
 
                 MainVM.OnClipOpened(null, null);
 
-                MainVM.ImageSource = LoadImage(uri);
+                MainVM.ImageSource = LoadImage(uri, MainVM.DownsizeImageToggle);
             }
 
             MainVM.ImageChanged();
@@ -111,19 +111,19 @@ namespace FIVStandard.Backend
             //GC.Collect();
         }
 
-        public BitmapImage LoadImage(Uri uri)
+        public BitmapImage LoadImage(Uri uri, bool downsizedImage)
         {
             BitmapImage imgTemp = new BitmapImage();
             imgTemp.BeginInit();
             imgTemp.CacheOption = BitmapCacheOption.OnLoad;
             imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
             imgTemp.UriSource = uri;
-            if (Properties.Settings.Default.DownsizeImage)
+            if (downsizedImage)
             {
                 if (MainVM.ImgWidth > MainVM.BorderImageWidth)
                     imgTemp.DecodePixelWidth = (int)MainVM.BorderImageWidth;
-                else if (MainVM.ImgHeight > MainVM.BorderImageWidth)
-                    imgTemp.DecodePixelHeight = (int)MainVM.BorderImageWidth;
+                else if (MainVM.ImgHeight > MainVM.BorderImageHeight)
+                    imgTemp.DecodePixelHeight = (int)MainVM.BorderImageHeight;
             }
             imgTemp.EndInit();
             imgTemp.Freeze();

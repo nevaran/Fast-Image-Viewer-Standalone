@@ -22,14 +22,17 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands IsTabStop="False" Focusable="False">
-            <Button Content="settings" x:Name="OnSettingsClick" 
+            <Button Content="settings" 
                     IsTabStop="False" Focusable="False" 
+                    Command="{Binding SettingsCommand}"
                     />
-            <Button Content="donate" x:Name="OnDonateClick" 
+            <Button Content="donate"
                     IsTabStop="False" Focusable="False" 
+                    Command="{Binding DonateCommand}"
                     />
-            <Button Content="help" x:Name="OnHelpClick" 
+            <Button Content="help"
                     IsTabStop="False" Focusable="False" 
+                    Command="{Binding HelpCommand}"
                     />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
@@ -61,7 +64,6 @@
                                                    VerticalAlignment="Center" 
                                                    Focusable="False" 
                                                    IsTabStop="False" 
-                                                   cal:Message.Attach="[Event Checked] = [Action OnThemeSwitch($source, $eventArgs)]; [Event Unchecked] = [Action OnThemeSwitch($source, $eventArgs)]"
                                                    />
 
                             <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
@@ -82,7 +84,8 @@
                         <!-- Theme Accent Dropdown-->
                         <Grid>
                             <Controls:SplitButton SelectedIndex="{Binding Path=ThemeAccentDropIndex, Mode=TwoWay}"
-                                                  ItemsSource="{Binding Path=ThemeAccents, Mode=TwoWay}"
+                                                  ItemsSource="{Binding Path=ThemeAccents, Mode=OneWay}"
+                                                  Command="{Binding AccentSplitCommand}"
                                                   Width="120" 
                                                   Height="60" 
                                                   Margin="20,40,0,0"
@@ -91,7 +94,6 @@
                                                   Focusable="False" 
                                                   IsTabStop="False" 
                                                   Orientation="Vertical" 
-                                                  cal:Message.Attach="[Event SelectionChanged] = [Action OnAccentChanged($source, $eventArgs)]; [Event Click] = [Action OnAccentClick($source, $eventArgs)]"
                                                   />
 
                             <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
@@ -120,7 +122,6 @@
                                                    VerticalAlignment="Center" 
                                                    Focusable="False" 
                                                    IsTabStop="False" 
-                                                   cal:Message.Attach="[Event Checked] = [Action OnStretchSwitch($source, $eventArgs)]; [Event Unchecked] = [Action OnStretchSwitch($source, $eventArgs)]"
                                                    />
 
                             <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
@@ -149,7 +150,6 @@
                                                    VerticalAlignment="Center" 
                                                    Focusable="False" 
                                                    IsTabStop="False" 
-                                                   cal:Message.Attach="[Event Checked] = [Action OnDownsizeSwitch($source, $eventArgs)]; [Event Unchecked] = [Action OnDownsizeSwitch($source, $eventArgs)]"
                                                    />
 
                             <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
@@ -176,7 +176,7 @@
                                        HorizontalAlignment="Left" 
                                        VerticalAlignment="Center" 
                                        />
-                            <Slider x:Name="ZoomSensitivitySlider" 
+                            <Slider Value="{Binding Path=ZoomSensitivity, Mode=TwoWay}"
                                     Width="140" 
                                     Height="100" 
                                     Padding="20,40,0,0" 
@@ -188,10 +188,8 @@
                                     LargeChange="0.1" 
                                     Minimum="0.1" 
                                     Maximum="10" 
-                                    Value="0.2" 
                                     TickFrequency="0.1" 
                                     IsSnapToTickEnabled="True" 
-                                    cal:Message.Attach="[Event ValueChanged] = [Action OnZoomSensitivitySlider($source, $eventArgs)]"
                                     />
 
                             <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
@@ -237,11 +235,11 @@
         <Grid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Open File Location"
-                          cal:Message.Attach="[Event Click] = [Action OnOpenFileLocation($source, $eventArgs)]"
+                          Command="{Binding OpenFileLocationCommand}"
                           />
                 <Separator/>
                 <MenuItem Header="Delete"
-                          cal:Message.Attach="[Event Click] = [Action OnDeleteClick($source, $eventArgs)]"
+                          Command="{Binding DeleteCommand}"
                           />
             </ContextMenu>
         </Grid.ContextMenu>
@@ -300,22 +298,23 @@
                 Content="Open" 
                 />
 
-        <utils:ZoomBorder 
+        <utils:ZoomBorder x:Name="MediaBorder"
                           Visibility="{Binding Path=BorderMediaVisible, Mode=TwoWay}"
                           ClipToBounds="True" 
                           Background="#FF2F3136" 
                           Margin="0,44,0,0" Padding="0" Canvas.Left="0" Canvas.Top="0" Grid.Row="1" Grid.RowSpan="9" Grid.ColumnSpan="10" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <MediaElement Name="MediaView" 
+            <MediaElement Name="MediaView"
                           Source="{Binding Path=MediaSource, Mode=TwoWay}"
+                          StretchDirection="{Binding Path=ImageViewStretchDir, Mode=TwoWay}" 
                           LoadedBehavior="Manual" UnloadedBehavior="Manual" 
                           ScrubbingEnabled="True" 
-                          StretchDirection="{Binding Path=ImageViewStretchDir, Mode=TwoWay}" 
                           ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                           cal:Message.Attach="[Event MediaEnded] = [Action OnClipEnded($source, $eventArgs)]; [Event MediaOpened] = [Action OnClipOpened($source, $eventArgs)]"
                           />
         </utils:ZoomBorder>
-        <utils:ZoomBorder 
-                          Width="{Binding Path=BorderImageWidth}"
+        <utils:ZoomBorder x:Name="ImageBorder"
+                          Width="{Binding Path=BorderImageWidth, Mode=OneWayToSource}"
+                          Height="{Binding Path=BorderImageHeight, Mode=OneWayToSource}"
                           Visibility="{Binding Path=BorderImgVisible, Mode=TwoWay}"
                           ClipToBounds="True" 
                           Background="#FF2F3136" 
