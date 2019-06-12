@@ -32,96 +32,96 @@ namespace FIVStandard.ViewModels
         public bool IsDeletingFile { get; private set; } = false;
         public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
 
-        private int themeAccentDropIndex = 0;
+        private int _themeAccentDropIndex = 0;
 
         public int ThemeAccentDropIndex
         {
             get
             {
-                return themeAccentDropIndex;
+                return _themeAccentDropIndex;
             }
             set
             {
-                themeAccentDropIndex = value;
+                _themeAccentDropIndex = value;
                 NotifyOfPropertyChange(() => ThemeAccentDropIndex);
                 OnAccentChanged();
             }
         }
 
-        private bool darkModeToggle = true;
+        private bool _darkModeToggle = true;
 
         public bool DarkModeToggle
         {
             get
             {
-                return darkModeToggle;
+                return _darkModeToggle;
             }
             set
             {
-                darkModeToggle = value;
+                _darkModeToggle = value;
                 NotifyOfPropertyChange(() => DarkModeToggle);
                 OnThemeSwitch();
             }
         }
 
-        private bool stretchImageToggle = true;
+        private bool _stretchImageToggle = true;
 
         public bool StretchImageToggle
         {
             get
             {
-                return stretchImageToggle;
+                return _stretchImageToggle;
             }
             set
             {
-                stretchImageToggle = value;
+                _stretchImageToggle = value;
                 NotifyOfPropertyChange(() => StretchImageToggle);
                 OnStretchSwitch();
             }
         }
 
-        private bool downsizeImageToggle = false;
+        private bool _downsizeImageToggle = false;
 
         public bool DownsizeImageToggle
         {
             get
             {
-                return downsizeImageToggle;
+                return _downsizeImageToggle;
             }
             set
             {
-                downsizeImageToggle = value;
+                _downsizeImageToggle = value;
                 NotifyOfPropertyChange(() => DownsizeImageToggle);
                 OnDownsizeChanged();
             }
         }
 
-        private string windowTitle = "FIV";
+        private string _windowTitle = "FIV";
 
         public string WindowTitle
         {
             get
             {
-                return windowTitle;
+                return _windowTitle;
             }
             set
             {
-                windowTitle = value;
+                _windowTitle = value;
                 NotifyOfPropertyChange(() => WindowTitle);
             }
         }
 
-        private double zoomSensitivity = 0.2;
+        private double _zoomSensitivity = 0.2;
 
         public double ZoomSensitivity
         {
             get
             {
-                return zoomSensitivity;
+                return _zoomSensitivity;
             }
             set
             {
-                zoomSensitivity = value;
+                _zoomSensitivity = value;
                 NotifyOfPropertyChange(() => ZoomSensitivity);
                 NotifyOfPropertyChange(() => ZoomSensitivityString);
                 OnZoomSensitivityChanged();
@@ -136,152 +136,152 @@ namespace FIVStandard.ViewModels
             }
         }
 
-        private Uri mediaSource = null;
+        private Uri _mediaSource = null;
 
         public Uri MediaSource
         {
             get
             {
-                return mediaSource;
+                return _mediaSource;
             }
             set
             {
-                mediaSource = value;
+                _mediaSource = value;
                 NotifyOfPropertyChange(() => MediaSource);
             }
         }
 
-        private BitmapImage imageSource = null;
+        private BitmapImage _imageSource = null;
 
         public BitmapImage ImageSource
         {
             get
             {
-                return imageSource;
+                return _imageSource;
             }
             set
             {
-                imageSource = value;
+                _imageSource = value;
                 NotifyOfPropertyChange(() => ImageSource);
             }
         }
 
-        private Visibility borderImgVisibility = Visibility.Visible;
+        private Visibility _borderImgVisibility = Visibility.Visible;
 
         public Visibility BorderImgVisible
         {
             get
             {
-                return borderImgVisibility;
+                return _borderImgVisibility;
             }
             set
             {
-                borderImgVisibility = value;
+                _borderImgVisibility = value;
                 NotifyOfPropertyChange(() => BorderImgVisible);
             }
         }
 
-        private Visibility borderMediaVisible = Visibility.Hidden;
+        private Visibility _borderMediaVisible = Visibility.Hidden;
 
         public Visibility BorderMediaVisible
         {
             get
             {
-                return borderMediaVisible;
+                return _borderMediaVisible;
             }
             set
             {
-                borderMediaVisible = value;
+                _borderMediaVisible = value;
                 NotifyOfPropertyChange(() => BorderMediaVisible);
             }
         }
 
-        private double borderImageWidth;
+        private double _borderImageWidth;
 
         public double BorderImageWidth
         {
             get
             {
-                return borderImageWidth;
+                return _borderImageWidth;
             }
             set
             {
-                borderImageWidth = value;
+                _borderImageWidth = value;
                 NotifyOfPropertyChange(() => BorderImageWidth);
             }
         }
 
-        private double borderImageHeight;
+        private double _borderImageHeight;
 
         public double BorderImageHeight
         {
             get
             {
-                return borderImageHeight;
+                return _borderImageHeight;
             }
             set
             {
-                borderImageHeight = value;
+                _borderImageHeight = value;
                 NotifyOfPropertyChange(() => BorderImageHeight);
             }
         }
 
-        private string imageInfo;
+        private string _imageInfo;
 
         public string ImageInfo
         {
             get
             {
-                return imageInfo;
+                return _imageInfo;
             }
             set
             {
-                imageInfo = value;
+                _imageInfo = value;
                 NotifyOfPropertyChange(() => ImageInfo);
             }
         }
 
-        private bool settingsFlyout = false;
+        private bool _settingsFlyout = false;
 
         public bool SettingsFlyout
         {
             get
             {
-                return settingsFlyout;
+                return _settingsFlyout;
             }
             set
             {
-                settingsFlyout = value;
+                _settingsFlyout = value;
                 NotifyOfPropertyChange(() => SettingsFlyout);
             }
         }
 
-        private bool helpFlyout = false;
+        private bool _helpFlyout = false;
 
         public bool HelpFlyout
         {
             get
             {
-                return helpFlyout;
+                return _helpFlyout;
             }
             set
             {
-                helpFlyout = value;
+                _helpFlyout = value;
                 NotifyOfPropertyChange(() => HelpFlyout);
             }
         }
 
-        private StretchDirection imageViewStretchDir = StretchDirection.DownOnly;
+        private StretchDirection _imageViewStretchDir = StretchDirection.DownOnly;
 
         public StretchDirection ImageViewStretchDir
         {
             get
             {
-                return imageViewStretchDir;
+                return _imageViewStretchDir;
             }
             set
             {
-                imageViewStretchDir = value;
+                _imageViewStretchDir = value;
                 NotifyOfPropertyChange(() => ImageViewStretchDir);
             }
         }
