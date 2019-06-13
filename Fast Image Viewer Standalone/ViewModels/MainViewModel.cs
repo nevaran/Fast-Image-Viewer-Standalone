@@ -18,7 +18,6 @@ namespace FIVStandard.ViewModels
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
-<<<<<<< HEAD
         
 =======
 =======
@@ -1338,8 +1337,5 @@ namespace FIVStandard.ViewModels
 >>>>>>> parent of 59af935... Last MVVM before removal
 =======
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        
->>>>>>> parent of 947139d... fix
     }
 }
