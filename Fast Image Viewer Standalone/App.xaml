@@ -2,7 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:FIVStandard"
+<<<<<<< HEAD
              StartupUri="MainWindow.xaml">
+=======
+             StartupUri="MainView.xaml"
+             >
+>>>>>>> parent of 003606e... wth is going on
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
