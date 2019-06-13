@@ -11,7 +11,11 @@ namespace FIVStandard.Backend
 {
     class FileLoader
     {
+<<<<<<< HEAD:Fast Image Viewer Standalone/Models/FileLoader.cs
         private readonly MainWindow that;
+=======
+        private readonly MainView MainVM;
+>>>>>>> parent of 003606e... wth is going on:Fast Image Viewer Standalone/Models/FileLoaderModel.cs
 
         public bool IsAnimated { get; private set; } = false;
 
@@ -20,9 +24,15 @@ namespace FIVStandard.Backend
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
         public OpenFileDialog DoOpenFileDialog { get; set; }  = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
+<<<<<<< HEAD:Fast Image Viewer Standalone/Models/FileLoader.cs
         public FileLoader(MainWindow mainWindow)
         {
             that = mainWindow;
+=======
+        public FileLoaderModel(MainView _mainView)
+        {
+            MainVM = _mainView;
+>>>>>>> parent of 003606e... wth is going on:Fast Image Viewer Standalone/Models/FileLoaderModel.cs
         }
 
         public void OpenNewFile(string path)
