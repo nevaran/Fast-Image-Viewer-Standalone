@@ -1,12 +1,29 @@
-﻿
+﻿using Caliburn.Micro;
+using FIVStandard.Backend;
+using FIVStandard.Models;
+using FIVStandard.Views;
+using MahApps.Metro;
+using Microsoft.VisualBasic.FileIO;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace FIVStandard.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : Screen
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
         
 =======
+=======
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
         public int ImageIndex { get; set; } = 0;
 
         private bool isPaused = false;
@@ -21,96 +38,168 @@ namespace FIVStandard.ViewModels
         public bool IsDeletingFile { get; private set; } = false;
         public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
 
+<<<<<<< HEAD
         private int themeAccentDropIndex = 0;
+=======
+        private int _themeAccentDropIndex = 0;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public int ThemeAccentDropIndex
         {
             get
             {
+<<<<<<< HEAD
                 return themeAccentDropIndex;
             }
             set
             {
                 themeAccentDropIndex = value;
+=======
+                return _themeAccentDropIndex;
+            }
+            set
+            {
+                _themeAccentDropIndex = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => ThemeAccentDropIndex);
                 OnAccentChanged();
             }
         }
 
+<<<<<<< HEAD
         private bool darkModeToggle = true;
+=======
+        private bool _darkModeToggle = true;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public bool DarkModeToggle
         {
             get
             {
+<<<<<<< HEAD
                 return darkModeToggle;
             }
             set
             {
                 darkModeToggle = value;
+=======
+                return _darkModeToggle;
+            }
+            set
+            {
+                _darkModeToggle = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => DarkModeToggle);
                 OnThemeSwitch();
             }
         }
 
+<<<<<<< HEAD
         private bool stretchImageToggle = true;
+=======
+        private bool _stretchImageToggle = true;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public bool StretchImageToggle
         {
             get
             {
+<<<<<<< HEAD
                 return stretchImageToggle;
             }
             set
             {
                 stretchImageToggle = value;
+=======
+                return _stretchImageToggle;
+            }
+            set
+            {
+                _stretchImageToggle = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => StretchImageToggle);
                 OnStretchSwitch();
             }
         }
 
+<<<<<<< HEAD
         private bool downsizeImageToggle = false;
+=======
+        private bool _downsizeImageToggle = false;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public bool DownsizeImageToggle
         {
             get
             {
+<<<<<<< HEAD
                 return downsizeImageToggle;
             }
             set
             {
                 downsizeImageToggle = value;
+=======
+                return _downsizeImageToggle;
+            }
+            set
+            {
+                _downsizeImageToggle = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => DownsizeImageToggle);
                 OnDownsizeChanged();
             }
         }
 
+<<<<<<< HEAD
         private string windowTitle = "FIV";
+=======
+        private string _windowTitle = "FIV";
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public string WindowTitle
         {
             get
             {
+<<<<<<< HEAD
                 return windowTitle;
             }
             set
             {
                 windowTitle = value;
+=======
+                return _windowTitle;
+            }
+            set
+            {
+                _windowTitle = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => WindowTitle);
             }
         }
 
+<<<<<<< HEAD
         private double zoomSensitivity = 0.2;
+=======
+        private double _zoomSensitivity = 0.2;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public double ZoomSensitivity
         {
             get
             {
+<<<<<<< HEAD
                 return zoomSensitivity;
             }
             set
             {
                 zoomSensitivity = value;
+=======
+                return _zoomSensitivity;
+            }
+            set
+            {
+                _zoomSensitivity = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => ZoomSensitivity);
                 NotifyOfPropertyChange(() => ZoomSensitivityString);
                 OnZoomSensitivityChanged();
@@ -125,152 +214,272 @@ namespace FIVStandard.ViewModels
             }
         }
 
+<<<<<<< HEAD
         private Uri mediaSource = null;
+=======
+        private Uri _mediaSource = null;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public Uri MediaSource
         {
             get
             {
+<<<<<<< HEAD
                 return mediaSource;
             }
             set
             {
                 mediaSource = value;
+=======
+                return _mediaSource;
+            }
+            set
+            {
+                _mediaSource = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => MediaSource);
             }
         }
 
+<<<<<<< HEAD
         private BitmapImage imageSource = null;
+=======
+        private BitmapImage _imageSource = null;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public BitmapImage ImageSource
         {
             get
             {
+<<<<<<< HEAD
                 return imageSource;
             }
             set
             {
                 imageSource = value;
+=======
+                return _imageSource;
+            }
+            set
+            {
+                _imageSource = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => ImageSource);
             }
         }
 
+<<<<<<< HEAD
         private Visibility borderImgVisibility = Visibility.Visible;
+=======
+        private Visibility _borderImgVisibility = Visibility.Visible;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public Visibility BorderImgVisible
         {
             get
             {
+<<<<<<< HEAD
                 return borderImgVisibility;
             }
             set
             {
                 borderImgVisibility = value;
+=======
+                return _borderImgVisibility;
+            }
+            set
+            {
+                _borderImgVisibility = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => BorderImgVisible);
             }
         }
 
+<<<<<<< HEAD
         private Visibility borderMediaVisible = Visibility.Hidden;
+=======
+        private Visibility _borderMediaVisible = Visibility.Hidden;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public Visibility BorderMediaVisible
         {
             get
             {
+<<<<<<< HEAD
                 return borderMediaVisible;
             }
             set
             {
                 borderMediaVisible = value;
+=======
+                return _borderMediaVisible;
+            }
+            set
+            {
+                _borderMediaVisible = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => BorderMediaVisible);
             }
         }
 
+<<<<<<< HEAD
         private double borderImageWidth;
+=======
+        private double _borderImageWidth;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public double BorderImageWidth
         {
             get
             {
+<<<<<<< HEAD
                 return borderImageWidth;
             }
             set
             {
                 borderImageWidth = value;
+=======
+                return _borderImageWidth;
+            }
+            set
+            {
+                _borderImageWidth = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => BorderImageWidth);
             }
         }
 
+<<<<<<< HEAD
         private double borderImageHeight;
+=======
+        private double _borderImageHeight;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public double BorderImageHeight
         {
             get
             {
+<<<<<<< HEAD
                 return borderImageHeight;
             }
             set
             {
                 borderImageHeight = value;
+=======
+                return _borderImageHeight;
+            }
+            set
+            {
+                _borderImageHeight = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => BorderImageHeight);
             }
         }
 
+<<<<<<< HEAD
         private string imageInfo;
+=======
+        private string _imageInfo;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public string ImageInfo
         {
             get
             {
+<<<<<<< HEAD
                 return imageInfo;
             }
             set
             {
                 imageInfo = value;
+=======
+                return _imageInfo;
+            }
+            set
+            {
+                _imageInfo = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => ImageInfo);
             }
         }
 
+<<<<<<< HEAD
         private bool settingsFlyout = false;
+=======
+        private bool _settingsFlyout = false;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public bool SettingsFlyout
         {
             get
             {
+<<<<<<< HEAD
                 return settingsFlyout;
             }
             set
             {
                 settingsFlyout = value;
+=======
+                return _settingsFlyout;
+            }
+            set
+            {
+                _settingsFlyout = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => SettingsFlyout);
             }
         }
 
+<<<<<<< HEAD
         private bool helpFlyout = false;
+=======
+        private bool _helpFlyout = false;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public bool HelpFlyout
         {
             get
             {
+<<<<<<< HEAD
                 return helpFlyout;
             }
             set
             {
                 helpFlyout = value;
+=======
+                return _helpFlyout;
+            }
+            set
+            {
+                _helpFlyout = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => HelpFlyout);
             }
         }
 
+<<<<<<< HEAD
         private StretchDirection imageViewStretchDir = StretchDirection.DownOnly;
+=======
+        private StretchDirection _imageViewStretchDir = StretchDirection.DownOnly;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
 
         public StretchDirection ImageViewStretchDir
         {
             get
             {
+<<<<<<< HEAD
                 return imageViewStretchDir;
             }
             set
             {
                 imageViewStretchDir = value;
+=======
+                return _imageViewStretchDir;
+            }
+            set
+            {
+                _imageViewStretchDir = value;
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
                 NotifyOfPropertyChange(() => ImageViewStretchDir);
             }
         }
@@ -705,6 +914,9 @@ namespace FIVStandard.ViewModels
             Properties.Settings.Default.ZoomSensitivity = ZoomSensitivity;
             Properties.Settings.Default.Save();
         }
+<<<<<<< HEAD
 >>>>>>> parent of 59af935... Last MVVM before removal
+=======
+>>>>>>> parent of f19e50d... failed attempt to remove mvvm
     }
 }
