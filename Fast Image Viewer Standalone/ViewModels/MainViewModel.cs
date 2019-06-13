@@ -39,20 +39,15 @@ namespace FIVStandard.ViewModels
         public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private int themeAccentDropIndex = 0;
 =======
         private int _themeAccentDropIndex = 0;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private int themeAccentDropIndex = 0;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public int ThemeAccentDropIndex
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return themeAccentDropIndex;
             }
@@ -66,33 +61,21 @@ namespace FIVStandard.ViewModels
             {
                 _themeAccentDropIndex = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return themeAccentDropIndex;
-            }
-            set
-            {
-                themeAccentDropIndex = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => ThemeAccentDropIndex);
                 OnAccentChanged();
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private bool darkModeToggle = true;
 =======
         private bool _darkModeToggle = true;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private bool darkModeToggle = true;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public bool DarkModeToggle
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return darkModeToggle;
             }
@@ -106,33 +89,21 @@ namespace FIVStandard.ViewModels
             {
                 _darkModeToggle = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return darkModeToggle;
-            }
-            set
-            {
-                darkModeToggle = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => DarkModeToggle);
                 OnThemeSwitch();
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private bool stretchImageToggle = true;
 =======
         private bool _stretchImageToggle = true;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private bool stretchImageToggle = true;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public bool StretchImageToggle
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return stretchImageToggle;
             }
@@ -146,33 +117,21 @@ namespace FIVStandard.ViewModels
             {
                 _stretchImageToggle = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return stretchImageToggle;
-            }
-            set
-            {
-                stretchImageToggle = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => StretchImageToggle);
                 OnStretchSwitch();
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private bool downsizeImageToggle = false;
 =======
         private bool _downsizeImageToggle = false;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private bool downsizeImageToggle = false;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public bool DownsizeImageToggle
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return downsizeImageToggle;
             }
@@ -186,33 +145,21 @@ namespace FIVStandard.ViewModels
             {
                 _downsizeImageToggle = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return downsizeImageToggle;
-            }
-            set
-            {
-                downsizeImageToggle = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => DownsizeImageToggle);
                 OnDownsizeChanged();
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private string windowTitle = "FIV";
 =======
         private string _windowTitle = "FIV";
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private string windowTitle = "FIV";
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public string WindowTitle
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return windowTitle;
             }
@@ -226,32 +173,20 @@ namespace FIVStandard.ViewModels
             {
                 _windowTitle = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return windowTitle;
-            }
-            set
-            {
-                windowTitle = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => WindowTitle);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private double zoomSensitivity = 0.2;
 =======
         private double _zoomSensitivity = 0.2;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private double zoomSensitivity = 0.2;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public double ZoomSensitivity
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return zoomSensitivity;
             }
@@ -265,13 +200,6 @@ namespace FIVStandard.ViewModels
             {
                 _zoomSensitivity = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return zoomSensitivity;
-            }
-            set
-            {
-                zoomSensitivity = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => ZoomSensitivity);
                 NotifyOfPropertyChange(() => ZoomSensitivityString);
                 OnZoomSensitivityChanged();
@@ -287,20 +215,15 @@ namespace FIVStandard.ViewModels
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private Uri mediaSource = null;
 =======
         private Uri _mediaSource = null;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private Uri mediaSource = null;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public Uri MediaSource
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return mediaSource;
             }
@@ -314,32 +237,20 @@ namespace FIVStandard.ViewModels
             {
                 _mediaSource = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return mediaSource;
-            }
-            set
-            {
-                mediaSource = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => MediaSource);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private BitmapImage imageSource = null;
 =======
         private BitmapImage _imageSource = null;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private BitmapImage imageSource = null;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public BitmapImage ImageSource
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return imageSource;
             }
@@ -353,32 +264,20 @@ namespace FIVStandard.ViewModels
             {
                 _imageSource = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return imageSource;
-            }
-            set
-            {
-                imageSource = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => ImageSource);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private Visibility borderImgVisibility = Visibility.Visible;
 =======
         private Visibility _borderImgVisibility = Visibility.Visible;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private Visibility borderImgVisibility = Visibility.Visible;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public Visibility BorderImgVisible
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return borderImgVisibility;
             }
@@ -392,32 +291,20 @@ namespace FIVStandard.ViewModels
             {
                 _borderImgVisibility = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return borderImgVisibility;
-            }
-            set
-            {
-                borderImgVisibility = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => BorderImgVisible);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private Visibility borderMediaVisible = Visibility.Hidden;
 =======
         private Visibility _borderMediaVisible = Visibility.Hidden;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private Visibility borderMediaVisible = Visibility.Hidden;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public Visibility BorderMediaVisible
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return borderMediaVisible;
             }
@@ -431,32 +318,20 @@ namespace FIVStandard.ViewModels
             {
                 _borderMediaVisible = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return borderMediaVisible;
-            }
-            set
-            {
-                borderMediaVisible = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => BorderMediaVisible);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private double borderImageWidth;
 =======
         private double _borderImageWidth;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private double borderImageWidth;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public double BorderImageWidth
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return borderImageWidth;
             }
@@ -470,32 +345,20 @@ namespace FIVStandard.ViewModels
             {
                 _borderImageWidth = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return borderImageWidth;
-            }
-            set
-            {
-                borderImageWidth = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => BorderImageWidth);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private double borderImageHeight;
 =======
         private double _borderImageHeight;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private double borderImageHeight;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public double BorderImageHeight
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return borderImageHeight;
             }
@@ -509,32 +372,20 @@ namespace FIVStandard.ViewModels
             {
                 _borderImageHeight = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return borderImageHeight;
-            }
-            set
-            {
-                borderImageHeight = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => BorderImageHeight);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private string imageInfo;
 =======
         private string _imageInfo;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private string imageInfo;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public string ImageInfo
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return imageInfo;
             }
@@ -548,32 +399,20 @@ namespace FIVStandard.ViewModels
             {
                 _imageInfo = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return imageInfo;
-            }
-            set
-            {
-                imageInfo = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => ImageInfo);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private bool settingsFlyout = false;
 =======
         private bool _settingsFlyout = false;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private bool settingsFlyout = false;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public bool SettingsFlyout
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return settingsFlyout;
             }
@@ -587,32 +426,20 @@ namespace FIVStandard.ViewModels
             {
                 _settingsFlyout = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return settingsFlyout;
-            }
-            set
-            {
-                settingsFlyout = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => SettingsFlyout);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private bool helpFlyout = false;
 =======
         private bool _helpFlyout = false;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private bool helpFlyout = false;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public bool HelpFlyout
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return helpFlyout;
             }
@@ -626,32 +453,20 @@ namespace FIVStandard.ViewModels
             {
                 _helpFlyout = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return helpFlyout;
-            }
-            set
-            {
-                helpFlyout = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => HelpFlyout);
             }
         }
 
 <<<<<<< HEAD
-<<<<<<< HEAD
         private StretchDirection imageViewStretchDir = StretchDirection.DownOnly;
 =======
         private StretchDirection _imageViewStretchDir = StretchDirection.DownOnly;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-        private StretchDirection imageViewStretchDir = StretchDirection.DownOnly;
->>>>>>> parent of 59af935... Last MVVM before removal
 
         public StretchDirection ImageViewStretchDir
         {
             get
             {
-<<<<<<< HEAD
 <<<<<<< HEAD
                 return imageViewStretchDir;
             }
@@ -665,13 +480,6 @@ namespace FIVStandard.ViewModels
             {
                 _imageViewStretchDir = value;
 >>>>>>> parent of f19e50d... failed attempt to remove mvvm
-=======
-                return imageViewStretchDir;
-            }
-            set
-            {
-                imageViewStretchDir = value;
->>>>>>> parent of 59af935... Last MVVM before removal
                 NotifyOfPropertyChange(() => ImageViewStretchDir);
             }
         }
