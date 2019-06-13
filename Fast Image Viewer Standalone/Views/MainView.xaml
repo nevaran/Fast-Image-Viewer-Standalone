@@ -1,4 +1,4 @@
-﻿<Controls:MetroWindow x:Name="MainFIV" x:Class="FIVStandard.MainView"
+﻿<Controls:MetroWindow x:Name="MainFIV" x:Class="FIVStandard.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,6 +7,7 @@
         xmlns:utils="clr-namespace:FIVStandard.Utils"
         xmlns:backend="clr-namespace:FIVStandard.Backend"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
                       Title="{Binding Path=WindowTitle, Mode=TwoWay}" 
                       Width="800" Height="600" 
@@ -16,9 +17,7 @@
                       Icon="/Fast Image Viewer;component/Resources/FIVIcon.ico" 
                       WindowState="Maximized"
                       IsTabStop="False"  
-                      KeyDown="OnKeyDown"
-                      MouseDown="OnMouseDown"
-                      Loaded="OnAppLoaded"
+                      cal:Message.Attach="[Event KeyDown] = [Action OnKeyDown($source, $eventArgs)]; [Event MouseDown] = [Action OnMouseDown($source, $eventArgs)]; [Event Loaded] = [Action OnAppLoaded($source, $eventArgs)]"
                       >
 
     <Controls:MetroWindow.RightWindowCommands>
@@ -231,7 +230,7 @@
     </Controls:MetroWindow.Flyouts>
 
     <Grid Margin="0,0,0,0"
-          MouseDown="OnCloseFlyoutsClick"
+          cal:Message.Attach="[Event MouseDown] = [Action OnCloseFlyoutsClick($source, $eventArgs)]"
           >
         <Grid.ContextMenu>
             <ContextMenu>
@@ -310,8 +309,7 @@
                           LoadedBehavior="Manual" UnloadedBehavior="Manual" 
                           ScrubbingEnabled="True" 
                           ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                          MediaOpened="OnClipOpened"
-                          MediaEnded="OnClipEnded"
+                          cal:Message.Attach="[Event MediaEnded] = [Action OnClipEnded($source, $eventArgs)]; [Event MediaOpened] = [Action OnClipOpened($source, $eventArgs)]"
                           />
         </utils:ZoomBorder>
         <utils:ZoomBorder x:Name="ImageBorder"
@@ -325,7 +323,7 @@
                    Source="{Binding Path=ImageSource, Mode=TwoWay}"
                    StretchDirection="{Binding Path=ImageViewStretchDir, Mode=TwoWay}" 
                    ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                   Loaded="OnClipOpened"
+                   cal:Message.Attach="[Event Loaded] = [Action OnClipOpened($source, $eventArgs)]"
                    />
         </utils:ZoomBorder>
     </Grid>
