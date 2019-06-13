@@ -104,11 +104,15 @@ namespace FIVStandard.Backend
 
                 that.OnClipOpened(null, null);
 
+<<<<<<< HEAD:Fast Image Viewer Standalone/Models/FileLoader.cs
 <<<<<<< HEAD:Fast Image Viewer Standalone/Models/FileLoaderModel.cs
                 MainVM.ImageSource = LoadImage(uri, MainVM.DownsizeImageToggle);
 =======
                 that.PictureView.Source = LoadImage(uri);
 >>>>>>> parent of 1af23f8... mvvm stuff:Fast Image Viewer Standalone/Models/FileLoader.cs
+=======
+                MainVM.ImageSource = LoadImage(uri);
+>>>>>>> parent of 2cbf28d... semi-working mvvm, downsize broken:Fast Image Viewer Standalone/Models/FileLoaderModel.cs
             }
 
             that.ImageChanged();
@@ -116,18 +120,19 @@ namespace FIVStandard.Backend
             //GC.Collect();
         }
 
-        public BitmapImage LoadImage(Uri uri, bool downsizedImage)
+        public BitmapImage LoadImage(Uri uri)
         {
             BitmapImage imgTemp = new BitmapImage();
             imgTemp.BeginInit();
             imgTemp.CacheOption = BitmapCacheOption.OnLoad;
             imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
             imgTemp.UriSource = uri;
-            if (downsizedImage)
+            if (Properties.Settings.Default.DownsizeImage)
             {
 <<<<<<< HEAD:Fast Image Viewer Standalone/Models/FileLoaderModel.cs
                 if (MainVM.ImgWidth > MainVM.BorderImageWidth)
                     imgTemp.DecodePixelWidth = (int)MainVM.BorderImageWidth;
+<<<<<<< HEAD:Fast Image Viewer Standalone/Models/FileLoader.cs
                 else if (MainVM.ImgHeight > MainVM.BorderImageHeight)
                     imgTemp.DecodePixelHeight = (int)MainVM.BorderImageHeight;
 =======
@@ -136,6 +141,10 @@ namespace FIVStandard.Backend
                 else if (that.ImgHeight > that.borderImg.ActualHeight)
                     imgTemp.DecodePixelHeight = (int)that.borderImg.ActualHeight;
 >>>>>>> parent of 1af23f8... mvvm stuff:Fast Image Viewer Standalone/Models/FileLoader.cs
+=======
+                else if (MainVM.ImgHeight > MainVM.BorderImageWidth)
+                    imgTemp.DecodePixelHeight = (int)MainVM.BorderImageWidth;
+>>>>>>> parent of 2cbf28d... semi-working mvvm, downsize broken:Fast Image Viewer Standalone/Models/FileLoaderModel.cs
             }
             imgTemp.EndInit();
             imgTemp.Freeze();
