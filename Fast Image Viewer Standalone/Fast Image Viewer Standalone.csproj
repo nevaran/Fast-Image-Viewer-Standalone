@@ -119,13 +119,10 @@
 <<<<<<< HEAD
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Models\FileLoaderModel.cs" />
-<<<<<<< HEAD
     <Compile Include="Models\RelayCommand.cs" />
 =======
     <Compile Include="Models\FileLoader.cs" />
 >>>>>>> parent of 1af23f8... mvvm stuff
-=======
->>>>>>> parent of 2cbf28d... semi-working mvvm, downsize broken
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
