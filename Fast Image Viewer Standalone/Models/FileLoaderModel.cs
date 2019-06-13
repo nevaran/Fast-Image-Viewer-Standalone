@@ -6,13 +6,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using FIVStandard.ViewModels;
 
 namespace FIVStandard.Backend
 {
     public class FileLoaderModel
     {
-        private readonly MainViewModel MainVM;
+        private readonly MainView MainVM;
 
         public bool IsAnimated { get; private set; } = false;
 
@@ -21,9 +20,9 @@ namespace FIVStandard.Backend
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
         public OpenFileDialog DoOpenFileDialog { get; set; }  = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
-        public FileLoaderModel(MainViewModel _mainVM)
+        public FileLoaderModel(MainView _mainView)
         {
-            MainVM = _mainVM;
+            MainVM = _mainView;
         }
 
         public void OpenNewFile(string path)
