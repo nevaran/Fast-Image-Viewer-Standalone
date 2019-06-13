@@ -14,12 +14,14 @@ namespace FIVStandard.Utils
 
         private TranslateTransform GetTranslateTransform(UIElement element)
         {
-            return (TranslateTransform)((TransformGroup)element.RenderTransform).Children.First(tr => tr is TranslateTransform);
+            return (TranslateTransform)((TransformGroup)element.RenderTransform)
+              .Children.First(tr => tr is TranslateTransform);
         }
 
         private ScaleTransform GetScaleTransform(UIElement element)
         {
-            return (ScaleTransform)((TransformGroup)element.RenderTransform).Children.First(tr => tr is ScaleTransform);
+            return (ScaleTransform)((TransformGroup)element.RenderTransform)
+              .Children.First(tr => tr is ScaleTransform);
         }
 
         public override UIElement Child
@@ -77,7 +79,7 @@ namespace FIVStandard.Utils
                 var st = GetScaleTransform(child);
                 var tt = GetTranslateTransform(child);
 
-                double zoom = e.Delta > 0 ? Properties.Settings.Default.ZoomSensitivity : -Properties.Settings.Default.ZoomSensitivity;
+                double zoom = e.Delta > 0 ? FIVStandard.MainWindow.ZoomSensitivity : -FIVStandard.MainWindow.ZoomSensitivity;
                 if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
                     return;
 
