@@ -6,13 +6,13 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using FIVStandard.Views;
+using FIVStandard.ViewModels;
 
 namespace FIVStandard.Backend
 {
     public class FileLoaderModel
     {
-        private readonly MainView MainV;
+        private readonly MainViewModel MainVM;
 
         public bool IsAnimated { get; private set; } = false;
 
@@ -21,14 +21,14 @@ namespace FIVStandard.Backend
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
         public OpenFileDialog DoOpenFileDialog { get; set; }  = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
-        public FileLoaderModel(MainView _mainV)
+        public FileLoaderModel(MainViewModel _mainVM)
         {
-            MainV = _mainV;
+            MainVM = _mainVM;
         }
 
         public void OpenNewFile(string path)
         {
-            if (MainV.IsDeletingFile) return;
+            if (MainVM.IsDeletingFile) return;
 
             GetDirectoryFiles(Path.GetDirectoryName(path));
 
@@ -67,7 +67,7 @@ namespace FIVStandard.Backend
             {
                 if (openedPathFile == ImagesFound[i])
                 {
-                    MainV.ImageIndex = i;
+                    MainVM.ImageIndex = i;
                     //MessageBox.Show(imagesFound.Count + " | " + imageIndex);//DEBUG
                     break;
                 }
@@ -85,28 +85,28 @@ namespace FIVStandard.Backend
             Uri uri = new Uri(path, UriKind.Absolute);
 
             //MainVM.MediaSource?.Close();
-            MainV.MediaSource = null;
+            MainVM.MediaSource = null;
 
-            MainV.ImageSource = null;
+            MainVM.ImageSource = null;
 
             if (IsAnimated)
             {
-                MainV.BorderImgVisible = Visibility.Hidden;
-                MainV.BorderMediaVisible = Visibility.Visible;
+                MainVM.BorderImgVisible = Visibility.Hidden;
+                MainVM.BorderMediaVisible = Visibility.Visible;
 
-                MainV.MediaSource = uri;
+                MainVM.MediaSource = uri;
             }
             else
             {
-                MainV.BorderImgVisible = Visibility.Visible;
-                MainV.BorderMediaVisible = Visibility.Hidden;
+                MainVM.BorderImgVisible = Visibility.Visible;
+                MainVM.BorderMediaVisible = Visibility.Hidden;
 
-                MainV.OnClipOpened(null, null);
+                MainVM.OnClipOpened(null, null);
 
-                MainV.ImageSource = LoadImage(uri, MainV.DownsizeImageToggle);
+                MainVM.ImageSource = LoadImage(uri, MainVM.DownsizeImageToggle);
             }
 
-            MainV.ImageChanged();
+            MainVM.ImageChanged();
 
             //GC.Collect();
         }
@@ -120,10 +120,10 @@ namespace FIVStandard.Backend
             imgTemp.UriSource = uri;
             if (downsizedImage)
             {
-                if (MainV.ImgWidth > MainV.BorderImageWidth)
-                    imgTemp.DecodePixelWidth = (int)MainV.BorderImageWidth;
-                else if (MainV.ImgHeight > MainV.BorderImageHeight)
-                    imgTemp.DecodePixelHeight = (int)MainV.BorderImageHeight;
+                if (MainVM.ImgWidth > MainVM.BorderImageWidth)
+                    imgTemp.DecodePixelWidth = (int)MainVM.BorderImageWidth;
+                else if (MainVM.ImgHeight > MainVM.BorderImageHeight)
+                    imgTemp.DecodePixelHeight = (int)MainVM.BorderImageHeight;
             }
             imgTemp.EndInit();
             imgTemp.Freeze();

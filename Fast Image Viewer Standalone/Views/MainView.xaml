@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FIVStandard.Views"
+        xmlns:local="clr-namespace:FIVStandard"
         xmlns:utils="clr-namespace:FIVStandard.Utils"
+        xmlns:viewmodel="clr-namespace:FIVStandard.ViewModels"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
                       Title="{Binding Path=WindowTitle, Mode=TwoWay}" 
                       Width="800" Height="600" 
@@ -15,24 +17,22 @@
                       Icon="/Fast Image Viewer;component/Resources/FIVIcon.ico" 
                       WindowState="Maximized"
                       IsTabStop="False" 
-                      KeyDown="OnKeyDown"
-                      MouseDown="OnMouseDown"
-                      Loaded="OnAppLoaded"
+                      cal:Message.Attach="[Event KeyDown] = [Action OnKeyDown($source, $eventArgs)]; [Event MouseDown] = [Action OnMouseDown($source, $eventArgs)]; [Event Loaded] = [Action OnAppLoaded($source, $eventArgs)]"
                       >
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands IsTabStop="False" Focusable="False">
             <Button Content="settings" 
                     IsTabStop="False" Focusable="False" 
-                    Click="OnSettingsClick" 
+                    Command="{Binding SettingsCommand}"
                     />
             <Button Content="donate"
                     IsTabStop="False" Focusable="False" 
-                    Click="OnDonateClick"
+                    Command="{Binding DonateCommand}"
                     />
             <Button Content="help"
                     IsTabStop="False" Focusable="False" 
-                    Click="OnHelpClick"
+                    Command="{Binding HelpCommand}"
                     />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
@@ -230,7 +230,7 @@
     </Controls:MetroWindow.Flyouts>
 
     <Grid Margin="0,0,0,0"
-          MouseDown="OnCloseFlyoutsClick"
+          cal:Message.Attach="[Event MouseDown] = [Action OnCloseFlyoutsClick($source, $eventArgs)]"
           >
         <Grid.ContextMenu>
             <ContextMenu>
@@ -261,8 +261,7 @@
                        />
         </Border>
 
-        <Button x:Name="Click_Next" 
-                Click="OnClick_Next"
+        <Button x:Name="OnClick_Next" 
                 Width="60" 
                 Height="40" 
                 Margin="0,2,80,0" 
@@ -275,8 +274,7 @@
                 Content="🡄" 
                 />
 
-        <Button x:Name="Click_Prev" 
-                Click="OnClick_Prev"
+        <Button x:Name="OnClick_Prev" 
                 Width="60" Height="40" 
                 Margin="80,2,0,0" 
                 Padding="0" 
@@ -288,8 +286,7 @@
                 Content="🡆" 
                 />
 
-        <Button x:Name="OpenBrowseImage"
-                Click="OnOpenBrowseImage"
+        <Button x:Name="OnOpenBrowseImage"
                 Width="75" 
                 Margin="0,10,10,0" 
                 Padding="0" 
@@ -312,8 +309,7 @@
                           LoadedBehavior="Manual" UnloadedBehavior="Manual" 
                           ScrubbingEnabled="True" 
                           ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                          MediaOpened="OnClipOpened" 
-                          MediaEnded="OnClipEnded" 
+                          cal:Message.Attach="[Event MediaEnded] = [Action OnClipEnded($source, $eventArgs)]; [Event MediaOpened] = [Action OnClipOpened($source, $eventArgs)]"
                           />
         </utils:ZoomBorder>
         <utils:ZoomBorder x:Name="ImageBorder"
@@ -327,7 +323,7 @@
                    Source="{Binding Path=ImageSource, Mode=TwoWay}"
                    StretchDirection="{Binding Path=ImageViewStretchDir, Mode=TwoWay}" 
                    ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                   Loaded="OnClipOpened"
+                   cal:Message.Attach="[Event Loaded] = [Action OnClipOpened($source, $eventArgs)]"
                    />
         </utils:ZoomBorder>
     </Grid>
