@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FIVStandard"
         xmlns:utils="clr-namespace:FIVStandard.Utils"
-        xmlns:viewmodel="clr-namespace:FIVStandard.ViewModels"
+        xmlns:backend="clr-namespace:FIVStandard.Backend"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
@@ -16,7 +16,7 @@
                       WindowStartupLocation="CenterScreen" 
                       Icon="/Fast Image Viewer;component/Resources/FIVIcon.ico" 
                       WindowState="Maximized"
-                      IsTabStop="False" 
+                      IsTabStop="False"  
                       cal:Message.Attach="[Event KeyDown] = [Action OnKeyDown($source, $eventArgs)]; [Event MouseDown] = [Action OnMouseDown($source, $eventArgs)]; [Event Loaded] = [Action OnAppLoaded($source, $eventArgs)]"
                       >
 
