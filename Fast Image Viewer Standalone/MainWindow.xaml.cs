@@ -13,12 +13,12 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow
     {
-        public int imageIndex { get; set; } = 0;
+        public int imageIndex = 0;
 
         private bool isPaused = false;
 
-        public int imgWidth { get; set; } = 0;
-        public int imgHeight { get; set; } = 0;
+        public int imgWidth = 0;
+        public int imgHeight = 0;
 
         //private string startupPath;//program startup path
 
