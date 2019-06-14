@@ -174,7 +174,7 @@
                         
                         <!-- Zoom Sensitivity -->
                         <Grid>
-                            <TextBlock x:Name="ZoomSensitivity"
+                            <TextBlock x:Name="ZoomSensitivityText"
                                        Width="140" 
                                        Margin="10,50,0,0"
                                        TextAlignment="Center"

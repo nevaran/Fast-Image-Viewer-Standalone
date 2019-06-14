@@ -28,22 +28,7 @@ namespace FIVStandard
 
         public static bool IsDeletingFile { get; private set; } = false;
 
-        //public static double zoomSensitivity = 0.2;
-
-        private double zoomSensitivity = 0.2;
-
-        public double ZoomSensitivity
-        {
-            get
-            {
-                return zoomSensitivity;
-            }
-            set
-            {
-                zoomSensitivity = value;
-            }
-        }
-
+        public static double zoomSensitivity = 0.2;
 
         private readonly FileLoader fileLoader;
 
@@ -495,7 +480,7 @@ namespace FIVStandard
         private void ChangeZoomSensitivity()
         {
             zoomSensitivity = Properties.Settings.Default.ZoomSensitivity;
-            //ZoomSensitivity.Text = zoomSensitivity.ToString();
+            ZoomSensitivityText.Text = zoomSensitivity.ToString();
 
             Properties.Settings.Default.Save();
         }
