@@ -13,12 +13,12 @@ namespace FIVStandard.Backend
     {
         private readonly MainWindow that;
 
-        public bool IsAnimated { get; private set; } = false;
+        public bool isAnimated { get; private set; } = false;
 
-        public List<string> ImagesFound { get; set; } = new List<string>();
+        public List<string> imagesFound { get; set; } = new List<string>();
 
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
-        public OpenFileDialog DoOpenFileDialog { get; set; }  = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
+        public OpenFileDialog openFileDialog { get; set; }  = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
         public FileLoader(MainWindow mainWindow)
         {
@@ -27,7 +27,7 @@ namespace FIVStandard.Backend
 
         public void OpenNewFile(string path)
         {
-            if (MainWindow.IsDeletingFile) return;
+            if (MainWindow.isDeletingFile) return;
 
             GetDirectoryFiles(Path.GetDirectoryName(path));
 
@@ -38,7 +38,7 @@ namespace FIVStandard.Backend
 
         private void GetDirectoryFiles(string searchFolder)
         {
-            ImagesFound.Clear();
+            imagesFound.Clear();
             List<string> filesFound = new List<string>();//all files found in the directory
 
             //filesFound.AddRange(Directory.GetFiles(searchFolder, "*.*", SearchOption.TopDirectoryOnly));
@@ -52,21 +52,21 @@ namespace FIVStandard.Backend
             {
                 if (filters.Any(Path.GetExtension(filesFound[i]).Contains))//add files only with set file type in filters
                 {
-                    ImagesFound.Add(filesFound[i]);
+                    imagesFound.Add(filesFound[i]);
                 }
             }
 
-            ImagesFound.Sort(new NameComparer());
+            imagesFound.Sort(new NameComparer());
         }
 
         private void FindIndexInFiles(string openedPathFile)
         {
-            int L = ImagesFound.Count;
+            int L = imagesFound.Count;
             for (int i = 0; i < L; i++)
             {
-                if (openedPathFile == ImagesFound[i])
+                if (openedPathFile == imagesFound[i])
                 {
-                    that.ImageIndex = i;
+                    that.imageIndex = i;
                     //MessageBox.Show(imagesFound.Count + " | " + imageIndex);//DEBUG
                     break;
                 }
@@ -78,10 +78,10 @@ namespace FIVStandard.Backend
             string pathext = Path.GetExtension(path);
             if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
             {
-                IsAnimated = true;
+                isAnimated = true;
             }
             else
-                IsAnimated = false;
+                isAnimated = false;
 
             Uri uri = new Uri(path, UriKind.Absolute);
 
@@ -90,7 +90,7 @@ namespace FIVStandard.Backend
 
             that.PictureView.Source = null;
 
-            if (IsAnimated)
+            if (isAnimated)
             {
                 that.borderImg.Visibility = Visibility.Hidden;
                 that.border.Visibility = Visibility.Visible;
@@ -121,9 +121,9 @@ namespace FIVStandard.Backend
             imgTemp.UriSource = uri;
             if (Properties.Settings.Default.DownsizeImage)
             {
-                if (that.ImgWidth > that.borderImg.ActualWidth)
+                if (that.imgWidth > that.borderImg.ActualWidth)
                     imgTemp.DecodePixelWidth = (int)that.borderImg.ActualWidth;
-                else if (that.ImgHeight > that.borderImg.ActualHeight)
+                else if (that.imgHeight > that.borderImg.ActualHeight)
                     imgTemp.DecodePixelHeight = (int)that.borderImg.ActualHeight;
             }
             imgTemp.EndInit();

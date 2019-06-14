@@ -195,8 +195,9 @@
                                     Maximum="10" 
                                     Value="0.2" 
                                     TickFrequency="0.1" 
-                                    IsSnapToTickEnabled="True" 
-                                    />
+                                    IsSnapToTickEnabled="True"
+                                    ValueChanged="OnZoomSensitivitySlider" 
+                                                   />
 
                             <StackPanel Orientation="Horizontal" Margin="150,0,0,0" Height="60" VerticalAlignment="Bottom">
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />

@@ -13,12 +13,12 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow
     {
-        public int ImageIndex { get; set; } = 0;
+        public int imageIndex { get; set; } = 0;
 
         private bool isPaused = false;
 
-        public int ImgWidth { get; set; } = 0;
-        public int ImgHeight { get; set; } = 0;
+        public int imgWidth { get; set; } = 0;
+        public int imgHeight { get; set; } = 0;
 
         //private string startupPath;//program startup path
 
@@ -26,7 +26,7 @@ namespace FIVStandard
 
         private readonly string[] themeAccents = new string[] { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
 
-        public static bool IsDeletingFile { get; private set; } = false;
+        public static bool isDeletingFile { get; private set; } = false;
 
         public static double zoomSensitivity = 0.2;
 
@@ -67,7 +67,7 @@ namespace FIVStandard
 
         public void SetTitleInformation()
         {
-            this.Title = $"[{ImageIndex + 1}/{fileLoader.ImagesFound.Count}] {Path.GetFileName(fileLoader.ImagesFound[ImageIndex])}";
+            this.Title = $"[{imageIndex + 1}/{fileLoader.imagesFound.Count}] {Path.GetFileName(fileLoader.imagesFound[imageIndex])}";
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace FIVStandard
         /// </summary>
         private void ClearAllMedia()
         {
-            fileLoader.ImagesFound.Clear();
+            fileLoader.imagesFound.Clear();
             MediaView.Source = null;
             PictureView.Source = null;
             ImageInfoText.Text = string.Empty;
@@ -86,15 +86,15 @@ namespace FIVStandard
 
         public void OnClipOpened(object sender, RoutedEventArgs e)
         {
-            if (fileLoader.ImagesFound.Count == 0) return;
+            if (fileLoader.imagesFound.Count == 0) return;
 
-            using (var imageStream = File.OpenRead(fileLoader.ImagesFound[ImageIndex]))
+            using (var imageStream = File.OpenRead(fileLoader.imagesFound[imageIndex]))
             {
                 var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                ImgWidth = decoder.Frames[0].PixelWidth;
-                ImgHeight = decoder.Frames[0].PixelHeight;
+                imgWidth = decoder.Frames[0].PixelWidth;
+                imgHeight = decoder.Frames[0].PixelHeight;
 
-                ImageInfoText.Text = $"{ImgWidth}x{ImgHeight}";
+                ImageInfoText.Text = $"{imgWidth}x{imgHeight}";
             }
 
             /*if (MediaView.NaturalDuration.HasTimeSpan)//used for videos (avi mp4 etc.)
@@ -125,26 +125,26 @@ namespace FIVStandard
 
         private void ChangeImage(int jump)
         {
-            if (fileLoader.ImagesFound.Count == 0)//no more images in the folder - go back to default null
+            if (fileLoader.imagesFound.Count == 0)//no more images in the folder - go back to default null
             {
                 ClearAllMedia();
                 return;
             }
 
-            ImageIndex += jump;
-            if (ImageIndex < 0) ImageIndex = fileLoader.ImagesFound.Count - 1;
-            if (ImageIndex >= fileLoader.ImagesFound.Count) ImageIndex = 0;
+            imageIndex += jump;
+            if (imageIndex < 0) imageIndex = fileLoader.imagesFound.Count - 1;
+            if (imageIndex >= fileLoader.imagesFound.Count) imageIndex = 0;
 
-            if (!FileSystem.FileExists(fileLoader.ImagesFound[ImageIndex]))//keep moving onward until we find an existing file
+            if (!FileSystem.FileExists(fileLoader.imagesFound[imageIndex]))//keep moving onward until we find an existing file
             {
                 //refresh the file lists in the directory
                 //GetDirectoryFiles(Path.GetDirectoryName(imagesFound[imageIndex]));
                 //FindIndexInFiles(imagesFound[imageIndex]);
 
                 //remove nonexistent file from list - if there are more than 1
-                if (fileLoader.ImagesFound.Count > 1)
+                if (fileLoader.imagesFound.Count > 1)
                 {
-                    fileLoader.ImagesFound.RemoveAt(ImageIndex);
+                    fileLoader.imagesFound.RemoveAt(imageIndex);
                     SetTitleInformation();
                 }
 
@@ -153,7 +153,7 @@ namespace FIVStandard
                 return;
             }
 
-            fileLoader.NewUri(fileLoader.ImagesFound[ImageIndex]);
+            fileLoader.NewUri(fileLoader.imagesFound[imageIndex]);
 
             SetTitleInformation();
         }
@@ -169,7 +169,7 @@ namespace FIVStandard
             else
                 controller.Pause();*/
 
-            if (fileLoader.IsAnimated)
+            if (fileLoader.isAnimated)
             {
                 if (isPaused)
                 {
@@ -186,7 +186,7 @@ namespace FIVStandard
 
         public void ImageChanged()
         {
-            if (fileLoader.IsAnimated)
+            if (fileLoader.isAnimated)
             {
                 isPaused = false;
 
@@ -203,7 +203,7 @@ namespace FIVStandard
 
         private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (isDeletingFile) return;
 
             if(e.Key == System.Windows.Input.Key.Right)
             {
@@ -219,9 +219,9 @@ namespace FIVStandard
                 TogglePause();
             }
 
-            if (e.Key == System.Windows.Input.Key.Delete && fileLoader.ImagesFound.Count > 0)
+            if (e.Key == System.Windows.Input.Key.Delete && fileLoader.imagesFound.Count > 0)
             {
-                DeleteToRecycle(fileLoader.ImagesFound[ImageIndex]);
+                DeleteToRecycle(fileLoader.imagesFound[imageIndex]);
             }
 
             if (e.Key == System.Windows.Input.Key.F)
@@ -237,21 +237,21 @@ namespace FIVStandard
 
         private void OnClick_Next(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (isDeletingFile) return;
 
             ChangeImage(1);//go forward
         }
 
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (isDeletingFile) return;
 
             ChangeImage(-1);//go back
         }
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (isDeletingFile) return;
 
             if(e.ChangedButton == System.Windows.Input.MouseButton.XButton1)
             {
@@ -265,12 +265,12 @@ namespace FIVStandard
 
         private void OnOpenBrowseImage(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (isDeletingFile) return;
 
-            Nullable<bool> result = fileLoader.DoOpenFileDialog.ShowDialog();
+            Nullable<bool> result = fileLoader.openFileDialog.ShowDialog();
             if (result == true)
             {
-                fileLoader.OpenNewFile(fileLoader.DoOpenFileDialog.FileName);
+                fileLoader.OpenNewFile(fileLoader.openFileDialog.FileName);
             }
             else
             {
@@ -280,6 +280,7 @@ namespace FIVStandard
             //GC.Collect();
         }
 
+        #region FlyoutCommands
         private void OnSettingsClick(object sender, RoutedEventArgs e)
         {
             HelpFlyout.IsOpen = false;
@@ -303,25 +304,25 @@ namespace FIVStandard
             ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
             Process.Start(sInfo);
         }
+#endregion
 
         private void LoadAllSettings()
         {
             //Theme
             DarkModeToggle.IsChecked = Properties.Settings.Default.DarkTheme;
-            ChangeTheme(Properties.Settings.Default.ThemeAccent);
             //Accent
             ThemeAccentDrop.ItemsSource = themeAccents;//init for theme list
             ThemeAccentDrop.SelectedIndex = Properties.Settings.Default.ThemeAccent;
             //Image Stretch
             StretchImageToggle.IsChecked = Properties.Settings.Default.ImageStretched;
-            ChangeStretch();
             //Downsize Images
             DownsizeImageToggle.IsChecked = Properties.Settings.Default.DownsizeImage;
             //Zoom Sensitivity
             ZoomSensitivitySlider.Value = Properties.Settings.Default.ZoomSensitivity;
-            ChangeZoomSensitivity();
-            ZoomSensitivitySlider.ValueChanged += OnZoomSensitivitySlider;
 
+            ChangeStretch();
+
+            ChangeTheme(Properties.Settings.Default.ThemeAccent);
             //ChangeAccent();//not needed since we calling ChangeTheme in there
         }
 
@@ -399,10 +400,10 @@ namespace FIVStandard
         {
             try
             {
-                if (File.Exists(fileLoader.ImagesFound[ImageIndex]))
+                if (File.Exists(fileLoader.imagesFound[imageIndex]))
                 {
                     //Clean up file path so it can be navigated OK
-                    Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(fileLoader.ImagesFound[ImageIndex])));
+                    Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(fileLoader.imagesFound[imageIndex])));
                 }
             }
             catch (Exception e)
@@ -413,9 +414,9 @@ namespace FIVStandard
 
         private void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (isDeletingFile) return;
 
-            DeleteToRecycle(fileLoader.ImagesFound[ImageIndex]);
+            DeleteToRecycle(fileLoader.imagesFound[imageIndex]);
         }
 
         private async void DeleteToRecycle(string path)
@@ -424,7 +425,7 @@ namespace FIVStandard
             {
                 try
                 {
-                    IsDeletingFile = true;
+                    isDeletingFile = true;
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -438,7 +439,7 @@ namespace FIVStandard
 
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            fileLoader.ImagesFound.RemoveAt(ImageIndex);
+                            fileLoader.imagesFound.RemoveAt(imageIndex);
                             ChangeImage(-1);//go back to a previous file after deletion
                             //SetTitleInformation();
                         });
@@ -448,11 +449,11 @@ namespace FIVStandard
                         MessageBox.Show("File not found: " + path);
                     }
 
-                    IsDeletingFile = false;
+                    isDeletingFile = false;
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message + "\nIndex: " + ImageIndex);
+                    MessageBox.Show(e.Message + "\nIndex: " + imageIndex);
                 }
             }
             );
@@ -466,7 +467,7 @@ namespace FIVStandard
 
         private void ChangeDownsize()
         {
-            PictureView.Source = fileLoader.LoadImage(new Uri(fileLoader.ImagesFound[ImageIndex], UriKind.Absolute));
+            PictureView.Source = fileLoader.LoadImage(new Uri(fileLoader.imagesFound[imageIndex], UriKind.Absolute));
 
             Properties.Settings.Default.Save();
         }

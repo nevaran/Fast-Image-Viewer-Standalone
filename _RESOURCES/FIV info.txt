@@ -6,22 +6,16 @@ Open in explorer context menu/shortcut***
 Dark/White theme***
 Image stretched***
 Downsize Image***
-Zoom sensitivity***
 
 Include Subfolders
 Change Border Background Color
+Zoom sensitivity
 OPTIONAL: drag and drop image
 OPTIONAL: Rotate image
 
 -----------------
 
 -----------------UPGRADES
-
-change to MVVM
-
-add updating of the list when an image/file is added in the directory
-
-switch to json saving of settings
 
 separate file path: one string for folder path, and list of files with only names + extension
 
