@@ -52,9 +52,9 @@ namespace FIVStandard
                 //startupPath = Path.GetDirectoryName(args[0]);
 
 #if DEBUG
-                string path = "D:\\Google Drive\\temp\\qmrns28.gif";
+                //string path = "D:\\Google Drive\\temp\\qmrns28.gif";
 
-                fileLoader.OpenNewFile(path);
+                //OpenNewFile(path);
 #endif
             }
 
