@@ -38,8 +38,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\Fast Image Viewer.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\def.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\anim.ico"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\def.ico"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\anim.ico"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

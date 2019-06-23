@@ -51,7 +51,7 @@ namespace FIVStandard.Utils
                 this.MouseLeftButtonDown += Child_MouseLeftButtonDown;
                 this.MouseLeftButtonUp += Child_MouseLeftButtonUp;
                 this.MouseMove += Child_MouseMove;
-                this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(Child_PreviewMouseRightButtonDown);
+                //this.PreviewMouseRightButtonDown += Child_PreviewMouseRightButtonDown;
             }
         }
 
@@ -79,7 +79,7 @@ namespace FIVStandard.Utils
                 var st = GetScaleTransform(child);
                 var tt = GetTranslateTransform(child);
 
-                double zoom = e.Delta > 0 ? FIVStandard.MainWindow.zoomSensitivity : -FIVStandard.MainWindow.zoomSensitivity;
+                double zoom = e.Delta > 0 ? Properties.Settings.Default.ZoomSensitivity : -Properties.Settings.Default.ZoomSensitivity;
                 if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
                     return;
 
@@ -116,8 +116,8 @@ namespace FIVStandard.Utils
                     tt.X = abosuluteX - relative.X * st.ScaleX;
                     tt.Y = abosuluteY - relative.Y * st.ScaleY;
 
-                    var windowBorder = new Rect(child.RenderSize);
-                    ClampPan(ref tt, ref windowBorder);
+                    //var windowBorder = new Rect(child.RenderSize);
+                    //ClampPan(ref tt, ref windowBorder);
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace FIVStandard.Utils
             }
         }
 
-        void Child_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        void Child_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Reset();
         }
@@ -168,29 +168,20 @@ namespace FIVStandard.Utils
                         tt.X = origin.X - v.X;
                         tt.Y = origin.Y - v.Y;
 
-                        var windowBorder = new Rect(child.RenderSize);
+                        //var windowBorder = new Rect(child.RenderSize);
 
-                        /*if ((tt.X) > windowBorder.Right / 2)
-                            tt.X = windowBorder.Right / 2;
-                        if (tt.X < -windowBorder.Right / 2)
-                            tt.X = -windowBorder.Right / 2;
-
-                        if ((tt.Y) > windowBorder.Bottom / 2)
-                            tt.Y = windowBorder.Bottom / 2;
-                        if (tt.Y < -windowBorder.Bottom / 2)
-                            tt.Y = -windowBorder.Bottom / 2;*/
-
-                        ClampPan(ref tt, ref windowBorder);
+                        //ClampPan(ref tt, ref windowBorder);
 
                         //MainWindow.AppWindow.Title = $"{tt.Y.ToString("F0")} --- {windowBorder.Top.ToString("F0")} | {windowBorder.Bottom.ToString("F0")}";//DEBUG
                     }
                 }
             }
         }
+        #endregion
 
         private void ClampPan(ref TranslateTransform tt, ref Rect r)//TODO: get proper coords
         {
-            /*if ((tt.X) > r.Right / 2)//left
+            if ((tt.X) > r.Right / 2)//left
                 tt.X = r.Right / 2;
             if (tt.X < -r.Right)//right
                 tt.X = -r.Right;
@@ -198,9 +189,7 @@ namespace FIVStandard.Utils
             if ((tt.Y) > r.Bottom / 2)//top
                 tt.Y = r.Bottom / 2;
             if (tt.Y < -r.Bottom)//bottom
-                tt.Y = -r.Bottom;*/
+                tt.Y = -r.Bottom;
         }
-
-        #endregion
     }
 }

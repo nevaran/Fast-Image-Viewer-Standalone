@@ -4,41 +4,219 @@ using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace FIVStandard
 {
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
-        private int imageIndex = 0;
-        private List<string> imagesFound = new List<string>();
+        private int ImageIndex = 0;
+        private List<string> ImagesFound { get; set; } = new List<string>();
 
-        private bool isAnimated = false;
-        private bool isPaused = false;
+        private bool IsAnimated = false;
+        private bool IsPaused = false;
+
+        //private int ImgWidth = 0;
+        //private int ImgHeight = 0;
+
+        private Uri mediaSource = null;
+
+        public Uri MediaSource
+        {
+            get
+            {
+                return mediaSource;
+            }
+            set
+            {
+                mediaSource = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BitmapImage imageSource = null;
+
+        public BitmapImage ImageSource
+        {
+            get
+            {
+                return imageSource;
+            }
+            set
+            {
+                imageSource = value;
+                OnPropertyChanged();
+            }
+        }
 
         private int imgWidth = 0;
-        private int imgHeight = 0;
+        public int ImgWidth
+        {
+            get
+            {
+                return imgWidth;
+            }
+            set
+            {
+                imgWidth = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ImgResolution");
+            }
+        }
 
-        //private string startupPath;//program startup path
+        private int imgHeight = 0;
+        public int ImgHeight
+        {
+            get
+            {
+                return imgHeight;
+            }
+            set
+            {
+                imgHeight = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ImgResolution");
+            }
+        }
+
+        public string ImgResolution
+        {
+            get
+            {
+                return $"{imgWidth}x{imgHeight}";
+            }
+        }
+
+        #region Settings Properties
+        private bool _darkModeToggle = true;
+
+        public bool DarkModeToggle
+        {
+            get
+            {
+                return _darkModeToggle;
+            }
+            set
+            {
+                _darkModeToggle = value;
+                OnPropertyChanged();
+
+                OnThemeSwitch();
+            }
+        }
+
+        public List<string> ThemeAccents
+        {
+            get
+            {
+                return new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
+            }
+            set
+            {
+                ThemeAccents = value;
+            }
+        }
+
+        private int _themeAccentDropIndex = 0;
+
+        public int ThemeAccentDropIndex
+        {
+            get
+            {
+                return _themeAccentDropIndex;
+            }
+            set
+            {
+                _themeAccentDropIndex = value;
+                OnPropertyChanged();
+
+                OnAccentChanged();
+            }
+        }
+
+        private bool _stretchImageToggle = true;
+
+        public bool StretchImageToggle
+        {
+            get
+            {
+                return _stretchImageToggle;
+            }
+            set
+            {
+                _stretchImageToggle = value;
+                OnPropertyChanged();
+
+                OnStretchSwitch();
+            }
+        }
+
+        private bool downsizeImageToggle = false;
+
+        public bool DownsizeImageToggle
+        {
+            get
+            {
+                return downsizeImageToggle;
+            }
+            set
+            {
+                downsizeImageToggle = value;
+                OnPropertyChanged();
+
+                OnDownsizeSwitch();
+            }
+        }
+
+        private double zoomSensitivity = 0.2;
+
+        public double ZoomSensitivity
+        {
+            get
+            {
+                return zoomSensitivity;
+            }
+            set
+            {
+                zoomSensitivity = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ZoomSensitivityString");
+
+                OnZoomSensitivitySlider();
+            }
+        }
+
+        public string ZoomSensitivityString
+        {
+            get
+            {
+                return ZoomSensitivity.ToString("0.##");
+            }
+        }
+        #endregion
+
+        //private string StartupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private readonly string[] themeAccents = new string[] { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
-        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */};//TODO: doesnt work: tiff svg
-        private OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
+        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */, ".JPG", ".JPEG", ".GIF", ".BMP", ".ICO", ".PNG"};//TODO: doesnt work: tiff svg
+        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
-        private static bool isDeletingFile = false;
-
-        public static double zoomSensitivity = 0.2;
+        private bool IsDeletingFile = false;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = this;
 
             LoadAllSettings();
 
@@ -51,7 +229,7 @@ namespace FIVStandard
 
             if (args.Length > 0)//get startup path
             {
-                //startupPath = Path.GetDirectoryName(args[0]);
+                //StartupPath = Path.GetDirectoryName(args[0]);
 
 #if DEBUG
                 //string path = "D:\\Google Drive\\temp\\qmrns28.gif";
@@ -68,7 +246,7 @@ namespace FIVStandard
 
         public void OpenNewFile(string path)
         {
-            if (isDeletingFile) return;
+            if (IsDeletingFile) return;
 
             GetDirectoryFiles(Path.GetDirectoryName(path));
 
@@ -80,31 +258,34 @@ namespace FIVStandard
 
         private void GetDirectoryFiles(string searchFolder)
         {
-            imagesFound.Clear();
+            ImagesFound.Clear();
             List<string> filesFound = new List<string>();
 
             //filesFound.AddRange(Directory.GetFiles(searchFolder, "*.*", SearchOption.TopDirectoryOnly));
-            filesFound.AddRange(Directory.EnumerateFiles(searchFolder).OrderBy(filename => filename));
+            //filesFound.AddRange(Directory.EnumerateFiles(searchFolder).OrderBy(filename => filename));
             //filesFound.OrderBy(p => p.Substring(0)).ToList();//probably doesnt work
+            filesFound.AddRange(Directory.EnumerateFiles(searchFolder));
 
             int c = filesFound.Count;
             for (int i = 0; i < c; i++)
             {
                 if (filters.Any(Path.GetExtension(filesFound[i]).Contains))
                 {
-                    imagesFound.Add(filesFound[i]);
+                    ImagesFound.Add(filesFound[i]);
                 }
             }
+
+            ImagesFound.Sort(new NameComparer());
         }
 
         private void FindIndexInFiles(string openedPathFile)
         {
-            int L = imagesFound.Count;
+            int L = ImagesFound.Count;
             for (int i = 0; i < L; i++)
             {
-                if(openedPathFile == imagesFound[i])
+                if(openedPathFile == ImagesFound[i])
                 {
-                    imageIndex = i;
+                    ImageIndex = i;
                     //MessageBox.Show(imagesFound.Count + " | " + imageIndex);//DEBUG
                     break;
                 }
@@ -113,7 +294,7 @@ namespace FIVStandard
 
         private void SetTitleInformation()
         {
-            this.Title = $"[{imageIndex + 1}/{imagesFound.Count}] {Path.GetFileName(imagesFound[imageIndex])}";
+            this.Title = $"[{ImageIndex + 1}/{ImagesFound.Count}] {Path.GetFileName(ImagesFound[ImageIndex])}";
         }
 
         /// <summary>
@@ -121,10 +302,10 @@ namespace FIVStandard
         /// </summary>
         private void ClearAllMedia()
         {
-            imagesFound.Clear();
-            MediaView.Source = null;
-            PictureView.Source = null;
-            ImageInfoText.Text = string.Empty;
+            ImagesFound.Clear();
+            MediaSource = null;
+            ImageSource = null;
+            //ImageInfoText.Text = string.Empty;
             this.Title = "FIV";
 
             //GC.Collect();
@@ -132,15 +313,15 @@ namespace FIVStandard
 
         private void OnClipOpened(object sender, RoutedEventArgs e)
         {
-            if (imagesFound.Count == 0) return;
+            if (ImagesFound.Count == 0) return;
 
-            using (var imageStream = File.OpenRead(imagesFound[imageIndex]))
+            using (var imageStream = File.OpenRead(ImagesFound[ImageIndex]))
             {
                 var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                imgWidth = decoder.Frames[0].PixelWidth;
-                imgHeight = decoder.Frames[0].PixelHeight;
+                ImgWidth = decoder.Frames[0].PixelWidth;
+                ImgHeight = decoder.Frames[0].PixelHeight;
 
-                ImageInfoText.Text = $"{imgWidth}x{imgHeight}";
+                //ImageInfoText.Text = $"{ImgWidth}x{ImgHeight}";
             }
 
             /*if (MediaView.NaturalDuration.HasTimeSpan)//used for videos (avi mp4 etc.)
@@ -171,26 +352,26 @@ namespace FIVStandard
 
         private void ChangeImage(int jump)
         {
-            if (imagesFound.Count == 0)//no more images in the folder - go back to default null
+            if (ImagesFound.Count == 0)//no more images in the folder - go back to default null
             {
                 ClearAllMedia();
                 return;
             }
 
-            imageIndex += jump;
-            if (imageIndex < 0) imageIndex = imagesFound.Count - 1;
-            if (imageIndex >= imagesFound.Count) imageIndex = 0;
+            ImageIndex += jump;
+            if (ImageIndex < 0) ImageIndex = ImagesFound.Count - 1;
+            if (ImageIndex >= ImagesFound.Count) ImageIndex = 0;
 
-            if (!FileSystem.FileExists(imagesFound[imageIndex]))//keep moving onward until we find an existing file
+            if (!FileSystem.FileExists(ImagesFound[ImageIndex]))//keep moving onward until we find an existing file
             {
                 //refresh the file lists in the directory
                 //GetDirectoryFiles(Path.GetDirectoryName(imagesFound[imageIndex]));
                 //FindIndexInFiles(imagesFound[imageIndex]);
 
                 //remove nonexistent file from list - if there are more than 1
-                if (imagesFound.Count > 1)
+                if (ImagesFound.Count > 1)
                 {
-                    imagesFound.RemoveAt(imageIndex);
+                    ImagesFound.RemoveAt(ImageIndex);
                     SetTitleInformation();
                 }
 
@@ -199,7 +380,7 @@ namespace FIVStandard
                 return;
             }
 
-            NewUri(imagesFound[imageIndex]);
+            NewUri(ImagesFound[ImageIndex]);
 
             SetTitleInformation();
         }
@@ -215,26 +396,26 @@ namespace FIVStandard
             else
                 controller.Pause();*/
 
-            if (isAnimated)
+            if (IsAnimated)
             {
-                if (isPaused)
+                if (IsPaused)
                 {
                     MediaView.Play();
-                    isPaused = false;
+                    IsPaused = false;
                 }
                 else
                 {
                     MediaView.Pause();
-                    isPaused = true;
+                    IsPaused = true;
                 }
             }
         }
 
         private void ImageChanged()
         {
-            if (isAnimated)
+            if (IsAnimated)
             {
-                isPaused = false;
+                IsPaused = false;
 
                 MediaView.Play();
                 border.Reset();
@@ -252,24 +433,20 @@ namespace FIVStandard
             string pathext = Path.GetExtension(path);
             if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
             {
-                isAnimated = true;
+                IsAnimated = true;
             }
             else
-                isAnimated = false;
+                IsAnimated = false;
 
             Uri uri = new Uri(path, UriKind.Absolute);
 
-            MediaView?.Close();
-            MediaView.Source = null;
-
-            PictureView.Source = null;
-
-            if (isAnimated)
+            if (IsAnimated)
             {
                 borderImg.Visibility = Visibility.Hidden;
                 border.Visibility = Visibility.Visible;
 
-                MediaView.Source = uri;
+                ImageSource = null;
+                MediaSource = uri;
             }
             else
             {
@@ -278,7 +455,9 @@ namespace FIVStandard
 
                 OnClipOpened(null, null);
 
-                PictureView.Source = LoadImage(uri);
+                //MediaView?.Close();
+                MediaSource = null;
+                ImageSource = LoadImage(uri);
             }
             
             ImageChanged();
@@ -295,9 +474,9 @@ namespace FIVStandard
             imgTemp.UriSource = uri;
             if (Properties.Settings.Default.DownsizeImage)
             {
-                if(imgWidth > borderImg.ActualWidth)
+                if(ImgWidth > borderImg.ActualWidth)
                     imgTemp.DecodePixelWidth = (int)borderImg.ActualWidth;
-                else if(imgHeight > borderImg.ActualHeight)
+                else if(ImgHeight > borderImg.ActualHeight)
                     imgTemp.DecodePixelHeight = (int)borderImg.ActualHeight;
             }
             imgTemp.EndInit();
@@ -308,7 +487,7 @@ namespace FIVStandard
 
         private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (isDeletingFile) return;
+            if (IsDeletingFile) return;
 
             if(e.Key == System.Windows.Input.Key.Right)
             {
@@ -324,14 +503,14 @@ namespace FIVStandard
                 TogglePause();
             }
 
-            if (e.Key == System.Windows.Input.Key.Delete && imagesFound.Count > 0)
+            if (e.Key == System.Windows.Input.Key.Delete && ImagesFound.Count > 0)
             {
-                DeleteToRecycle(imagesFound[imageIndex]);
+                DeleteToRecycleAsync(ImagesFound[ImageIndex]);
             }
 
             if (e.Key == System.Windows.Input.Key.F)
             {
-                StretchImageToggle.IsChecked = !StretchImageToggle.IsChecked;
+                StretchImageToggle = !StretchImageToggle;
             }
 
             if (e.Key == System.Windows.Input.Key.E)
@@ -342,21 +521,21 @@ namespace FIVStandard
 
         private void OnClick_Next(object sender, RoutedEventArgs e)
         {
-            if (isDeletingFile) return;
+            if (IsDeletingFile) return;
 
             ChangeImage(1);//go forward
         }
 
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
-            if (isDeletingFile) return;
+            if (IsDeletingFile) return;
 
             ChangeImage(-1);//go back
         }
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (isDeletingFile) return;
+            if (IsDeletingFile) return;
 
             if(e.ChangedButton == System.Windows.Input.MouseButton.XButton1)
             {
@@ -370,7 +549,7 @@ namespace FIVStandard
 
         private void OnOpenBrowseImage(object sender, RoutedEventArgs e)
         {
-            if (isDeletingFile) return;
+            if (IsDeletingFile) return;
 
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
@@ -414,75 +593,62 @@ namespace FIVStandard
         private void LoadAllSettings()
         {
             //Theme
-            DarkModeToggle.IsChecked = Properties.Settings.Default.DarkTheme;
+            DarkModeToggle = Properties.Settings.Default.DarkTheme;
             //Accent
-            ThemeAccentDrop.ItemsSource = themeAccents;//init for theme list
-            ThemeAccentDrop.SelectedIndex = Properties.Settings.Default.ThemeAccent;
+            //ThemeAccentDrop.ItemsSource = ThemeAccents;//init for theme list
+            ThemeAccentDropIndex = Properties.Settings.Default.ThemeAccent;
             //Image Stretch
-            StretchImageToggle.IsChecked = Properties.Settings.Default.ImageStretched;
+            StretchImageToggle = Properties.Settings.Default.ImageStretched;
             //Downsize Images
-            DownsizeImageToggle.IsChecked = Properties.Settings.Default.DownsizeImage;
+            DownsizeImageToggle = Properties.Settings.Default.DownsizeImage;
             //Zoom Sensitivity
-            ZoomSensitivitySlider.Value = Properties.Settings.Default.ZoomSensitivity;
-
-            ChangeStretch();
+            ZoomSensitivity = Properties.Settings.Default.ZoomSensitivity;
 
             ChangeTheme(Properties.Settings.Default.ThemeAccent);
             //ChangeAccent();//not needed since we calling ChangeTheme in there
         }
 
-        private void OnThemeSwitch(object sender, RoutedEventArgs e)
+        private void OnThemeSwitch()
         {
-            Properties.Settings.Default.DarkTheme = !Properties.Settings.Default.DarkTheme;
+            Properties.Settings.Default.DarkTheme = _darkModeToggle;
             ChangeTheme(Properties.Settings.Default.ThemeAccent);
         }
 
         private void ChangeTheme(int themeIndex)
         {
-            if (Properties.Settings.Default.DarkTheme)
+            if (_darkModeToggle)
             {
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(themeAccents[themeIndex]), ThemeManager.GetAppTheme("BaseDark"));
+                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[themeIndex]), ThemeManager.GetAppTheme("BaseDark"));
             }
             else
             {
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(themeAccents[themeIndex]), ThemeManager.GetAppTheme("BaseLight"));
+                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[themeIndex]), ThemeManager.GetAppTheme("BaseLight"));
             }
 
             Properties.Settings.Default.Save();
         }
 
-        private void OnAccentChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void OnAccentChanged()
         {
-            Properties.Settings.Default.ThemeAccent = ThemeAccentDrop.SelectedIndex;
-            ChangeAccent();
-        }
-
-        private void ChangeAccent()
-        {
+            Properties.Settings.Default.ThemeAccent = _themeAccentDropIndex;
             ChangeTheme(Properties.Settings.Default.ThemeAccent);//since theme also is rooted with accent
         }
 
         private void OnAccentClick(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.ThemeAccent++;
+            if (_themeAccentDropIndex >= ThemeAccents.Count - 1)
+                ThemeAccentDropIndex = 0;
+            else
+                ThemeAccentDropIndex++;
 
-            if (Properties.Settings.Default.ThemeAccent > themeAccents.Length - 1)
-                Properties.Settings.Default.ThemeAccent = 0;
-
-            ThemeAccentDrop.SelectedIndex = Properties.Settings.Default.ThemeAccent;
+            ThemeAccentDrop.SelectedIndex = ThemeAccentDropIndex;
 
             //ChangeAccent();//called in OnAccentChanged
         }
 
-        private void OnStretchSwitch(object sender, RoutedEventArgs e)
+        private void OnStretchSwitch()
         {
-            Properties.Settings.Default.ImageStretched = !Properties.Settings.Default.ImageStretched;
-            ChangeStretch();
-        }
-
-        private void ChangeStretch()
-        {
-            if (Properties.Settings.Default.ImageStretched)
+            if (_stretchImageToggle)
             {
                 MediaView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
                 PictureView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
@@ -493,6 +659,7 @@ namespace FIVStandard
                 PictureView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
             }
 
+            Properties.Settings.Default.ImageStretched = _stretchImageToggle;
             Properties.Settings.Default.Save();
         }
 
@@ -505,10 +672,10 @@ namespace FIVStandard
         {
             try
             {
-                if (File.Exists(imagesFound[imageIndex]))
+                if (File.Exists(ImagesFound[ImageIndex]))
                 {
                     //Clean up file path so it can be navigated OK
-                    Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(imagesFound[imageIndex])));
+                    Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(ImagesFound[ImageIndex])));
                 }
             }
             catch (Exception e)
@@ -519,18 +686,18 @@ namespace FIVStandard
 
         private void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (isDeletingFile) return;
+            if (IsDeletingFile) return;
 
-            DeleteToRecycle(imagesFound[imageIndex]);
+            DeleteToRecycleAsync(ImagesFound[ImageIndex]);
         }
 
-        private async void DeleteToRecycle(string path)
+        private Task DeleteToRecycleAsync(string path)
         {
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 try
                 {
-                    isDeletingFile = true;
+                    IsDeletingFile = true;
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -544,7 +711,7 @@ namespace FIVStandard
 
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            imagesFound.RemoveAt(imageIndex);
+                            ImagesFound.RemoveAt(ImageIndex);
                             ChangeImage(-1);//go back to a previous file after deletion
                             //SetTitleInformation();
                         });
@@ -554,41 +721,50 @@ namespace FIVStandard
                         MessageBox.Show("File not found: " + path);
                     }
 
-                    isDeletingFile = false;
+                    IsDeletingFile = false;
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message + "\nIndex: " + imageIndex);
+                    MessageBox.Show(e.Message + "\nIndex: " + ImageIndex);
                 }
+            });
+        }
+
+        private void OnDownsizeSwitch()
+        {
+            Properties.Settings.Default.DownsizeImage = downsizeImageToggle;
+
+            if (ImagesFound.Count > 0)
+                ImageSource = LoadImage(new Uri(ImagesFound[ImageIndex], UriKind.Absolute));
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void OnZoomSensitivitySlider()
+        {
+            Properties.Settings.Default.ZoomSensitivity = zoomSensitivity;
+
+            Properties.Settings.Default.Save();
+        }
+
+        public class NameComparer : IComparer<string>
+        {
+            [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+            static extern int StrCmpLogicalW(string x, string y);
+
+            public int Compare(string x, string y)
+            {
+                return StrCmpLogicalW(x, y);
             }
-            );
         }
 
-        private void OnDownsizeSwitch(object sender, RoutedEventArgs e)
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            Properties.Settings.Default.DownsizeImage = !Properties.Settings.Default.DownsizeImage;
-            ChangeDownsize();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
-        private void ChangeDownsize()
-        {
-            PictureView.Source = LoadImage(new Uri(imagesFound[imageIndex], UriKind.Absolute));
-
-            Properties.Settings.Default.Save();
-        }
-
-        private void OnZoomSensitivitySlider(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Properties.Settings.Default.ZoomSensitivity = ZoomSensitivitySlider.Value;
-            ChangeZoomSensitivity();
-        }
-
-        private void ChangeZoomSensitivity()
-        {
-            zoomSensitivity = Properties.Settings.Default.ZoomSensitivity;
-            ZoomSensitivityText.Text = zoomSensitivity.ToString();
-
-            Properties.Settings.Default.Save();
-        }
+        #endregion
     }
 }
