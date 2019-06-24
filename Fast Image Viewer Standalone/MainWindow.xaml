@@ -61,6 +61,7 @@
                 Position="Right"
                 Theme="Adapt"
                 >
+
                 <!--  Your custom content here  -->
                 <ScrollViewer>
                     <Grid>
@@ -81,7 +82,7 @@
 
                         <Separator Grid.ColumnSpan="3" />
 
-                        <Canvas Background="Red" />
+                        <!--<Canvas Background="Red" />
                         <Canvas
                             Grid.Row="0"
                             Grid.Column="1"
@@ -122,7 +123,7 @@
                             Grid.Row="6"
                             Grid.Column="2"
                             Background="Yellow"
-                            />
+                            />-->
 
                         <!--  Dark Mode Toggle  -->
                         <Controls:ToggleSwitch
@@ -295,7 +296,7 @@
                             Maximum="2"
                             Minimum="0.1"
                             TickFrequency="0.05"
-                            Value="0.2"
+                            Value="{Binding Path=ZoomSensitivity, Mode=TwoWay}"
                             />
 
                         <StackPanel
@@ -315,7 +316,7 @@
                             Height="60"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
-                            Text="Change the zoom in and out sensitivity of the image. (Default is 0.2)"
+                            Text="Change the zoom in and out sensitivity of the image. (Default is 1.00)"
                             TextWrapping="Wrap"
                             />
 

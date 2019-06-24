@@ -179,7 +179,7 @@ namespace FIVStandard.Utils
         }
         #endregion
 
-        private void ClampPan(ref TranslateTransform tt, ref Rect r)//TODO: get proper coords
+        /*private void ClampPan(ref TranslateTransform tt, ref Rect r)//TODO: get proper coords
         {
             if ((tt.X) > r.Right / 2)//left
                 tt.X = r.Right / 2;
@@ -190,6 +190,6 @@ namespace FIVStandard.Utils
                 tt.Y = r.Bottom / 2;
             if (tt.Y < -r.Bottom)//bottom
                 tt.Y = -r.Bottom;
-        }
+        }*/
     }
 }
