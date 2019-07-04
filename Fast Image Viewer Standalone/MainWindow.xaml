@@ -156,7 +156,7 @@
                             Height="60"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
-                            Text="Switch between Light and Dark mode."
+                            Text="Switch between Light and Dark theme."
                             TextWrapping="Wrap"
                             />
 
@@ -460,7 +460,6 @@
             >
             <Image
                 Name="PictureView"
-                Loaded="OnClipOpened"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 Source="{Binding Path=ImageSource, Mode=TwoWay}"
                 StretchDirection="DownOnly"

@@ -49,7 +49,7 @@ namespace FIVStandard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public double ZoomSensitivity {
             get {
                 return ((double)(this["ZoomSensitivity"]));
@@ -68,18 +68,6 @@ namespace FIVStandard.Properties {
             }
             set {
                 this["ImageStretched"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ImageInfo {
-            get {
-                return ((bool)(this["ImageInfo"]));
-            }
-            set {
-                this["ImageInfo"] = value;
             }
         }
         

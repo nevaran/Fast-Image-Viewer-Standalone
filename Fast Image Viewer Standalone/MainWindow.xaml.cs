@@ -17,6 +17,7 @@ using ToastNotifications;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Position;
 using ToastNotifications.Messages;
+using System.Drawing;
 
 namespace FIVStandard
 {
@@ -28,6 +29,7 @@ namespace FIVStandard
         private bool IsAnimated { get; set; } = false;
         private bool IsPaused { get; set; } = false;
 
+        #region Image Properties
         private Uri _mediaSource = null;
 
         public Uri MediaSource
@@ -98,6 +100,9 @@ namespace FIVStandard
                     return $"{_imgWidth}x{_imgHeight}";
             }
         }
+
+        public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
+        #endregion
 
         #region Settings Properties
         private bool _darkModeToggle = true;
@@ -220,11 +225,13 @@ namespace FIVStandard
         private string ActiveFolder { get; set; } = "";
         private string ActivePath { get; set; } = "";//directory + file + extension
 
-        private readonly FileSystemWatcher fsw;
+        private readonly FileSystemWatcher fsw = new FileSystemWatcher()
+        {
+            NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite
+            , IncludeSubdirectories = false
+        };
 
-        private readonly NotifyFilters fswFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite;
-
-        Notifier notifier = new Notifier(cfg =>
+        readonly Notifier notifier = new Notifier(cfg =>
         {
             cfg.PositionProvider = new WindowPositionProvider(
                 parentWindow: Application.Current.MainWindow,
@@ -233,8 +240,8 @@ namespace FIVStandard
                 offsetY: 10);
 
             cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                notificationLifetime: TimeSpan.FromSeconds(3),
-                maximumNotificationCount: MaximumNotificationCount.FromCount(3));
+                notificationLifetime: TimeSpan.FromSeconds(5),
+                maximumNotificationCount: MaximumNotificationCount.FromCount(4));
 
             cfg.Dispatcher = Application.Current.Dispatcher;
         });
@@ -243,12 +250,7 @@ namespace FIVStandard
         {
             InitializeComponent();
 
-            //create new watcher for used directory
-            fsw = new FileSystemWatcher()
-            {
-                NotifyFilter = fswFilter
-                ,IncludeSubdirectories = false
-            };
+            //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
             fsw.Deleted += Fsw_Updated;
             fsw.Created += Fsw_Updated;
@@ -291,6 +293,11 @@ namespace FIVStandard
         {
             if (IsDeletingFile) return;
 
+#if DEBUG
+            Stopwatch stopwatch = new Stopwatch();//DEBUG
+            stopwatch.Start();//DEBUG
+#endif
+
             ActiveFile = Path.GetFileName(path);
             ActiveFolder = Path.GetDirectoryName(path);
             ActivePath = path;
@@ -304,6 +311,11 @@ namespace FIVStandard
             SetTitleInformation();
 
             NewUri(path);
+
+#if DEBUG
+            stopwatch.Stop();//DEBUG
+            notifier.ShowError($"OpenNewFile time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
+#endif
         }
 
         private void Fsw_Updated(object sender, FileSystemEventArgs e)//TODO: create more sophisticated updating where it doesnt load the whole directory again
@@ -315,7 +327,8 @@ namespace FIVStandard
                 FindIndexInFiles(ActiveFile);
                 SetTitleInformation();
 
-                TODO add updating of new image index when file is added or deleted or renamed or whatnot
+                ChangeImage(0);
+
                 //MessageBox.Show("Updated: " + e.ChangeType.ToString() + " " + e.Name);
                 notifier.ShowInformation($"{e.ChangeType.ToString()} \"{e.Name}\"");
             });
@@ -329,7 +342,7 @@ namespace FIVStandard
             //filesFound.AddRange(Directory.GetFiles(searchFolder, "*.*", SearchOption.TopDirectoryOnly));
             //filesFound.AddRange(Directory.EnumerateFiles(searchFolder).OrderBy(filename => filename));
             //filesFound.OrderBy(p => p.Substring(0)).ToList();//probably doesnt work
-            filesFound.AddRange(Directory.EnumerateFiles(searchFolder));
+            filesFound.AddRange(System.IO.Directory.EnumerateFiles(searchFolder));
 
             int c = filesFound.Count;
             for (int i = 0; i < c; i++)
@@ -362,7 +375,7 @@ namespace FIVStandard
 
         private void SetTitleInformation()
         {
-            this.Title = $"[{ImageIndex + 1}/{ImagesFound.Count}] {ImagesFound[ImageIndex]}";
+            Title = $"[{ImageIndex + 1}/{ImagesFound.Count}] {ImagesFound[ImageIndex]}";
         }
 
         /// <summary>
@@ -373,8 +386,9 @@ namespace FIVStandard
             ImagesFound.Clear();
             MediaSource = null;
             ImageSource = null;
-            //ImageInfoText.Text = string.Empty;
-            this.Title = "FIV";
+            ImgWidth = 0;
+            ImgHeight = 0;
+            Title = "FIV";
 
             //GC.Collect();
         }
@@ -418,7 +432,7 @@ namespace FIVStandard
             ActiveFile = ImagesFound[ImageIndex];
             ActivePath = Path.Combine(ActiveFolder, ActiveFile);
 
-            NewUri(Path.Combine(ActiveFolder, ImagesFound[ImageIndex]));
+            NewUri(ActivePath);
 
             SetTitleInformation();
         }
@@ -449,23 +463,6 @@ namespace FIVStandard
             }
         }
 
-        private void ImageChanged()
-        {
-            if (IsAnimated)
-            {
-                IsPaused = false;
-
-                MediaView.Play();
-                border.Reset();
-            }
-            else
-            {
-                borderImg.Reset();
-            }
-
-            //MainImage.Source = bm;
-        }
-
         private void NewUri(string path)
         {
             string pathext = Path.GetExtension(path);
@@ -485,6 +482,11 @@ namespace FIVStandard
 
                 ImageSource = null;
                 MediaSource = uri;
+
+                IsPaused = false;
+
+                MediaView.Play();
+                border.Reset();
             }
             else
             {
@@ -496,9 +498,9 @@ namespace FIVStandard
                 //MediaView?.Close();
                 MediaSource = null;
                 ImageSource = LoadImage(uri);
-            }
 
-            ImageChanged();
+                borderImg.Reset();
+            }
 
             //GC.Collect();
         }
@@ -507,16 +509,20 @@ namespace FIVStandard
         {
             BitmapImage imgTemp = new BitmapImage();
             imgTemp.BeginInit();
-            imgTemp.CacheOption = BitmapCacheOption.OnLoad;
-            imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting file from file lockup
+            //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
             imgTemp.UriSource = uri;
-            if (Properties.Settings.Default.DownsizeImage)
+
+            if (_downsizeImageToggle)
             {
                 if(ImgWidth > borderImg.ActualWidth)
                     imgTemp.DecodePixelWidth = (int)borderImg.ActualWidth;
                 else if(ImgHeight > borderImg.ActualHeight)
                     imgTemp.DecodePixelHeight = (int)borderImg.ActualHeight;
             }
+            if(ImageRotation != Rotation.Rotate0)
+                imgTemp.Rotation = ImageRotation;
+
             imgTemp.EndInit();
             imgTemp.Freeze();
 
@@ -563,25 +569,25 @@ namespace FIVStandard
             //Zoom Sensitivity
             ZoomSensitivity = Properties.Settings.Default.ZoomSensitivity;
 
-            ChangeTheme(Properties.Settings.Default.ThemeAccent);
+            //ChangeTheme(Properties.Settings.Default.ThemeAccent);
             //ChangeAccent();//not needed since we calling ChangeTheme in there
         }
 
         private void OnThemeSwitch()
         {
             Properties.Settings.Default.DarkTheme = _darkModeToggle;
-            ChangeTheme(Properties.Settings.Default.ThemeAccent);
+            ChangeTheme();
         }
 
-        private void ChangeTheme(int themeIndex)
+        private void ChangeTheme()
         {
             if (_darkModeToggle)
             {
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[themeIndex]), ThemeManager.GetAppTheme("BaseDark"));
+                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[_themeAccentDropIndex]), ThemeManager.GetAppTheme("BaseDark"));
             }
             else
             {
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[themeIndex]), ThemeManager.GetAppTheme("BaseLight"));
+                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[_themeAccentDropIndex]), ThemeManager.GetAppTheme("BaseLight"));
             }
 
             Properties.Settings.Default.Save();
@@ -590,7 +596,7 @@ namespace FIVStandard
         private void OnAccentChanged()
         {
             Properties.Settings.Default.ThemeAccent = _themeAccentDropIndex;
-            ChangeTheme(Properties.Settings.Default.ThemeAccent);//since theme also is rooted with accent
+            ChangeTheme();//since theme also is rooted with accent
         }
 
         private void OnStretchSwitch()
@@ -645,17 +651,17 @@ namespace FIVStandard
                         FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
 
                         //remove deleted item from list
-                        Application.Current.Dispatcher.Invoke(() =>
+                        /*Application.Current.Dispatcher.Invoke(() =>
                         {
                             ImagesFound.RemoveAt(ImageIndex);
                             ChangeImage(-1);//go back to a previous file after deletion
                             //SetTitleInformation();
-                        });
+                        });*/
                     }
                     else
                     {
                         //MessageBox.Show("File not found: " + path);
-                        notifier.ShowInformation($"File not found: {path}");
+                        notifier.ShowWarning($"File not found: {path}");
                     }
 
                     IsDeletingFile = false;
@@ -663,7 +669,7 @@ namespace FIVStandard
                 catch (Exception e)
                 {
                     //MessageBox.Show(e.Message + "\nIndex: " + ImageIndex);
-                    notifier.ShowInformation(e.Message + "\nIndex: " + ImageIndex);
+                    notifier.ShowError(e.Message + "\nIndex: " + ImageIndex);
                 }
             });
         }
@@ -673,7 +679,7 @@ namespace FIVStandard
             Properties.Settings.Default.DownsizeImage = _downsizeImageToggle;
 
             if (ImagesFound.Count > 0)
-                ImageSource = LoadImage(new Uri(ImagesFound[ImageIndex], UriKind.Absolute));
+                ImageSource = LoadImage(new Uri(ActivePath, UriKind.Absolute));
 
             Properties.Settings.Default.Save();
         }
@@ -685,19 +691,48 @@ namespace FIVStandard
             Properties.Settings.Default.Save();
         }
 
-        #region Events
+        #region In-Window Events
+        /// <summary>
+        /// Gets the gif image dimensions
+        /// </summary>
         private void OnClipOpened(object sender, RoutedEventArgs e)
         {
             if (ImagesFound.Count == 0) return;
 
-            using (var imageStream = File.OpenRead(Path.Combine(ActiveFolder, ImagesFound[ImageIndex])))
+#if DEBUG
+            Stopwatch stopwatch = new Stopwatch();//DEBUG
+            stopwatch.Start();//DEBUG
+#endif
+            using (var imageStream = File.OpenRead(ActivePath))
             {
-                var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
+                /*var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
                 ImgWidth = decoder.Frames[0].PixelWidth;
-                ImgHeight = decoder.Frames[0].PixelHeight;
+                ImgHeight = decoder.Frames[0].PixelHeight;*/
 
-                //ImageInfoText.Text = $"{ImgWidth}x{ImgHeight}";
+                Image img = Image.FromStream(imageStream);
+                ImgWidth = img.Width;
+                ImgHeight = img.Height;
+                try
+                {
+                    ExifOrientations eo = ImageOrientation(img);
+                    ImageRotation = OrientationDictionary[(int)eo];//eo angle from index
+                    //PictureView.RenderTransform.Value.Rotate(OrientationDictionary[eoi]);
+
+#if DEBUG
+                    notifier.ShowInformation($"Image Orientation: [angle: {ImageRotation}] {eo}");
+#endif
+                }
+                catch
+                {
+                    notifier.ShowError($"Could not get image orientation");
+                }
+                img.Dispose();
             }
+            
+#if DEBUG
+            stopwatch.Stop();//DEBUG
+            notifier.ShowError($"OnClipOpened time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
+#endif
 
             /*if (MediaView.NaturalDuration.HasTimeSpan)//used for videos (avi mp4 etc.)
             {
@@ -822,6 +857,54 @@ namespace FIVStandard
             //GC.Collect();
         }
         #endregion
+
+        /*private int ParseStringToOnlyInt(string input)
+        {
+            return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
+        }*/
+
+        // Orientations.
+        public const int OrientationId = 0x0112;
+        public enum ExifOrientations
+        {
+            Unknown = 0,//0
+            TopLeft = 1,//0
+            TopRight = 2,//90
+            BottomRight = 3,//180
+            BottomLeft = 4,//270
+            LeftTop = 5,//0
+            RightTop = 6,//90
+            RightBottom = 7,//180
+            LeftBottom = 8,//270
+        }
+
+        readonly Dictionary<int, Rotation> OrientationDictionary = new Dictionary<int, Rotation>()
+        {
+            {0, Rotation.Rotate0},
+            {1, Rotation.Rotate0},
+            {2, Rotation.Rotate90},
+            {3, Rotation.Rotate180},
+            {4, Rotation.Rotate270},
+            {5, Rotation.Rotate0},
+            {6, Rotation.Rotate90},
+            {7, Rotation.Rotate180},
+            {8, Rotation.Rotate270}
+        };
+
+        // Return the image's orientation.
+        public static ExifOrientations ImageOrientation(Image img)
+        {
+            // Get the index of the orientation property.
+            int orientation_index =
+                Array.IndexOf(img.PropertyIdList, OrientationId);
+
+            // If there is no such property, return Unknown.
+            if (orientation_index < 0) return ExifOrientations.Unknown;
+
+            // Return the orientation value.
+            return (ExifOrientations)
+                img.GetPropertyItem(OrientationId).Value[0];
+        }
 
         public class NameComparer : IComparer<string>
         {
