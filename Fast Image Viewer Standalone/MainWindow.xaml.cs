@@ -493,7 +493,7 @@ namespace FIVStandard
                 borderImg.Visibility = Visibility.Visible;
                 border.Visibility = Visibility.Hidden;
 
-                OnClipOpened(null, null);
+                GetImageInformation();
 
                 //MediaView?.Close();
                 MediaSource = null;
@@ -693,9 +693,14 @@ namespace FIVStandard
 
         #region In-Window Events
         /// <summary>
-        /// Gets the gif image dimensions
+        /// Gets the gif image information (width, height, orientation)
         /// </summary>
         private void OnClipOpened(object sender, RoutedEventArgs e)
+        {
+            GetImageInformation();
+        }
+
+        private void GetImageInformation()
         {
             if (ImagesFound.Count == 0) return;
 
@@ -728,10 +733,10 @@ namespace FIVStandard
                 }
                 img.Dispose();
             }
-            
+
 #if DEBUG
             stopwatch.Stop();//DEBUG
-            notifier.ShowError($"OnClipOpened time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
+            notifier.ShowError($"GetImageInformation time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
 #endif
 
             /*if (MediaView.NaturalDuration.HasTimeSpan)//used for videos (avi mp4 etc.)
