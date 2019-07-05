@@ -529,31 +529,11 @@ namespace FIVStandard
             return imgTemp;
         }
 
-#region Flyout Events
-        private void OnSettingsClick(object sender, RoutedEventArgs e)
-        {
-            HelpFlyout.IsOpen = false;
-            SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
-        }
-
-        private void OnHelpClick(object sender, RoutedEventArgs e)
-        {
-            SettingsFlyout.IsOpen = false;
-            HelpFlyout.IsOpen = !HelpFlyout.IsOpen;
-        }
-
-        private void OnCloseFlyoutsClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            SettingsFlyout.IsOpen = false;
-            HelpFlyout.IsOpen = false;
-        }
-
         private void OnDonateClick(object sender, RoutedEventArgs e)
         {
             ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
             Process.Start(sInfo);
         }
-#endregion
 
         private void LoadAllSettings()
         {

@@ -26,4 +26,6 @@ switch to json saving of settings
 
 FileSystemWatcher to update only changed files instead of updating whole list
 
+localization/globalization
+
 -----------------
