@@ -18,6 +18,8 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Position;
 using ToastNotifications.Messages;
 using System.Drawing;
+using NGettext;
+using System.Globalization;
 
 namespace FIVStandard
 {
@@ -249,6 +251,9 @@ namespace FIVStandard
         public MainWindow()
         {
             InitializeComponent();
+
+            ICatalog catalog = new Catalog("Example", "./locale", new CultureInfo("bg-BG"));
+            Console.WriteLine(catalog.GetString("Hello, World!")); // will translate "Hello, World!" using loaded translations
 
             //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
@@ -701,7 +706,6 @@ namespace FIVStandard
                 {
                     ExifOrientations eo = ImageOrientation(img);
                     ImageRotation = OrientationDictionary[(int)eo];//eo angle from index
-                    //PictureView.RenderTransform.Value.Rotate(OrientationDictionary[eoi]);
 
 #if DEBUG
                     notifier.ShowInformation($"Image Orientation: [angle: {ImageRotation}] {eo}");
