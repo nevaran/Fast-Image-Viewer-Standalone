@@ -70,6 +70,60 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dark Mode.
+        /// </summary>
+        public static string DarkMode {
+            get {
+                return ResourceManager.GetString("DarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch between Light and Dark theme..
+        /// </summary>
+        public static string DarkModeInfo {
+            get {
+                return ResourceManager.GetString("DarkModeInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donate.
+        /// </summary>
+        public static string Donate {
+            get {
+                return ResourceManager.GetString("Donate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downsize Image.
+        /// </summary>
+        public static string DownsizeImage {
+            get {
+                return ResourceManager.GetString("DownsizeImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reduce image size to current window&apos;s. This reduces memory usage for images larger than screen&apos;s..
+        /// </summary>
+        public static string DownsizeImageInfo {
+            get {
+                return ResourceManager.GetString("DownsizeImageInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         public static System.Drawing.Icon FIVIcon {
@@ -98,11 +152,92 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string Off {
+            get {
+                return ResourceManager.GetString("Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        public static string On {
+            get {
+                return ResourceManager.GetString("On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open File Location.
+        /// </summary>
+        public static string OpenFileLocation {
+            get {
+                return ResourceManager.GetString("OpenFileLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change the displayed language..
+        /// </summary>
+        public static string ShownLanguageInfo {
+            get {
+                return ResourceManager.GetString("ShownLanguageInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stretch Image.
+        /// </summary>
+        public static string StretchImage {
+            get {
+                return ResourceManager.GetString("StretchImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Always stretch images to fit the window..
+        /// </summary>
+        public static string StretchImageInfo {
+            get {
+                return ResourceManager.GetString("StretchImageInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change the accent colors..
+        /// </summary>
+        public static string ThemeAccentInfo {
+            get {
+                return ResourceManager.GetString("ThemeAccentInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change the zoom in and out sensitivity of the image. (Default is 1.00).
+        /// </summary>
+        public static string ZoomSensitivityInfo {
+            get {
+                return ResourceManager.GetString("ZoomSensitivityInfo", resourceCulture);
             }
         }
     }

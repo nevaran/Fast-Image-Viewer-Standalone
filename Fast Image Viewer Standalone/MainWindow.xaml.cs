@@ -18,6 +18,8 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Position;
 using ToastNotifications.Messages;
 using System.Drawing;
+using System.Globalization;
+using Gu.Localization;
 
 namespace FIVStandard
 {
@@ -107,8 +109,10 @@ namespace FIVStandard
         #region Settings Properties
         private readonly List<(string tag, string lang)> ShownLanguage = new List<(string tag, string lang)>()
         {
-            ("en", "English (EN)"),
-            ("bg-BG", "Bulgarian (BG)")
+            ("en", "English (en)"),
+            ("bg-BG", "Български (bg-BG)"),
+            ("nl-NL", "Dutch (nl-NL)"),
+            ("se-SE", "Sami (Northern) (se-SE)"),
         };
 
         private int _shownLanguageDropIndex = 0;
@@ -612,6 +616,8 @@ namespace FIVStandard
         {
             Properties.Settings.Default.ShownLanguage = _shownLanguageDropIndex;
             Properties.Settings.Default.Save();
+
+            Translator.Culture = CultureInfo.GetCultureInfo(ShownLanguage[_shownLanguageDropIndex].tag);
         }
 
         private void OnStretchSwitch()

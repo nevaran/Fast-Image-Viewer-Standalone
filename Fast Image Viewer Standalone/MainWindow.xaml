@@ -28,10 +28,13 @@
 
     <!--  Window Bar Buttons  -->
     <Controls:MetroWindow.RightWindowCommands>
-        <Controls:WindowCommands Focusable="False" IsTabStop="False">
+        <Controls:WindowCommands
+            Focusable="False"
+            IsTabStop="False"
+            >
             <Button
                 Click="OnDonateClick"
-                Content="donate"
+                Content="{localized:Static properties:Resources.Donate}"
                 Focusable="False"
                 IsTabStop="False"
                 />
@@ -43,14 +46,23 @@
             IsTabStop="False"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
-            <TabItem Controls:ControlsHelper.HeaderFontSize="16" Header="{localized:Static properties:Resources.General}">
+            <TabItem
+                Controls:ControlsHelper.HeaderFontSize="16"
+                Header="{localized:Static properties:Resources.General}"
+                >
                 <Grid>
                     <!--  Context Menu | Window  -->
                     <Grid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Click="OnOpenFileLocation" Header="Open File Location" />
+                            <MenuItem
+                                Click="OnOpenFileLocation"
+                                Header="{localized:Static properties:Resources.OpenFileLocation}"
+                                />
                             <Separator />
-                            <MenuItem Click="OnDeleteClick" Header="Delete" />
+                            <MenuItem
+                                Click="OnDeleteClick"
+                                Header="{localized:Static properties:Resources.Delete}"
+                                />
                         </ContextMenu>
                     </Grid.ContextMenu>
 
@@ -110,7 +122,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="OnOpenBrowseImage"
-                        Content="Open"
+                        Content="{localized:Static properties:Resources.Open}"
                         Focusable="False"
                         IsTabStop="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -154,11 +166,14 @@
                     </utils:ZoomBorder>
                 </Grid>
             </TabItem>
-            <TabItem Controls:ControlsHelper.HeaderFontSize="16" Header="Settings">
-                <!--  Your custom content here  -->
+            <TabItem
+                Controls:ControlsHelper.HeaderFontSize="16"
+                Header="{localized:Static properties:Resources.Settings}"
+                >
+                <!--  Custom content here  -->
                 <ScrollViewer Focusable="False">
                     <WrapPanel Orientation="Horizontal">
-                        <Grid Width="585">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -173,12 +188,16 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <Separator Grid.Row="0" Grid.ColumnSpan="3" />
+                            <Separator
+                                Grid.Row="0"
+                                Grid.ColumnSpan="3"
+                                />
 
                             <StackPanel
                                 Grid.Row="0"
                                 Grid.RowSpan="5"
                                 Grid.Column="4"
+                                Margin="0,0,40,0"
                                 Orientation="Horizontal"
                                 >
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -237,10 +256,8 @@
                             <Controls:SplitButton
                                 x:Name="ShownLanguageDrop"
                                 Grid.Row="1"
-                                Width="120"
                                 Height="60"
                                 Margin="20,40,0,0"
-                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Click="OnLanguageClick"
                                 Focusable="False"
@@ -266,7 +283,7 @@
                                 Height="60"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="Change the displayed language."
+                                Text="{localized:Static properties:Resources.ShownLanguageInfo}"
                                 TextWrapping="Wrap"
                                 />
 
@@ -279,9 +296,11 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
-                                Header="Dark Mode"
+                                Header="{localized:Static properties:Resources.DarkMode}"
                                 IsChecked="{Binding Path=DarkModeToggle, Mode=TwoWay}"
                                 IsTabStop="False"
+                                OffLabel="{localized:Static properties:Resources.Off}"
+                                OnLabel="{localized:Static properties:Resources.On}"
                                 />
 
                             <StackPanel
@@ -300,7 +319,7 @@
                                 Height="60"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="Switch between Light and Dark theme."
+                                Text="{localized:Static properties:Resources.DarkModeInfo}"
                                 TextWrapping="Wrap"
                                 />
 
@@ -308,10 +327,8 @@
                             <Controls:SplitButton
                                 x:Name="ThemeAccentDrop"
                                 Grid.Row="3"
-                                Width="120"
                                 Height="60"
                                 Margin="20,40,0,0"
-                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Click="OnAccentClick"
                                 Focusable="False"
@@ -337,15 +354,18 @@
                                 Height="60"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="Change the accent colors."
+                                Text="{localized:Static properties:Resources.ThemeAccentInfo}"
                                 TextWrapping="Wrap"
                                 />
 
                             <!--  End View  -->
-                            <Separator Grid.Row="7" Grid.ColumnSpan="3" />
+                            <Separator
+                                Grid.Row="7"
+                                Grid.ColumnSpan="3"
+                                />
 
                         </Grid>
-                        <Grid Width="585">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -360,7 +380,10 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <Separator Grid.Row="0" Grid.ColumnSpan="3" />
+                            <Separator
+                                Grid.Row="0"
+                                Grid.ColumnSpan="3"
+                                />
 
                             <StackPanel
                                 Grid.Row="0"
@@ -374,15 +397,16 @@
                             <!--  Stretch Image Toggle  -->
                             <Controls:ToggleSwitch
                                 Grid.Row="1"
-                                Width="140"
                                 Height="100"
                                 Padding="20,40,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
-                                Header="Stretch Image"
+                                Header="{localized:Static properties:Resources.StretchImage}"
                                 IsChecked="{Binding Path=StretchImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
+                                OffLabel="{localized:Static properties:Resources.Off}"
+                                OnLabel="{localized:Static properties:Resources.On}"
                                 />
 
                             <StackPanel
@@ -402,22 +426,23 @@
                                 Padding="0,0,20,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="Always stretch images to fit the window. Toggle shortcut: ''F''"
+                                Text="{localized:Static properties:Resources.StretchImageInfo}"
                                 TextWrapping="Wrap"
                                 />
 
                             <!--  Downsize Image  -->
                             <Controls:ToggleSwitch
                                 Grid.Row="2"
-                                Width="140"
                                 Height="100"
                                 Padding="20,40,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
-                                Header="Downsize Image"
+                                Header="{localized:Static properties:Resources.DownsizeImage}"
                                 IsChecked="{Binding Path=DownsizeImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
+                                OffLabel="{localized:Static properties:Resources.Off}"
+                                OnLabel="{localized:Static properties:Resources.On}"
                                 />
 
                             <StackPanel
@@ -437,26 +462,24 @@
                                 Padding="0,0,20,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="Reduce image size to current window's. This reduces memory usage for images larger than screen's."
+                                Text="{localized:Static properties:Resources.DownsizeImageInfo}"
                                 TextWrapping="Wrap"
                                 />
 
                             <!--  Zoom Sensitivity  -->
                             <TextBlock
                                 Grid.Row="3"
-                                Width="140"
                                 Margin="10,50,0,0"
-                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Text="{Binding Path=ZoomSensitivityString, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
                                 Grid.Row="3"
-                                Width="140"
+                                Width="120"
                                 Height="100"
                                 Margin="5,0,0,0"
-                                HorizontalAlignment="Left"
+                                HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 IsSnapToTickEnabled="True"
@@ -484,34 +507,43 @@
                                 Height="60"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="Change the zoom in and out sensitivity of the image. (Default is 1.00)"
+                                Text="{localized:Static properties:Resources.ZoomSensitivityInfo}"
                                 TextWrapping="Wrap"
                                 />
 
                             <!--  End View  -->
-                            <Separator Grid.Row="7" Grid.ColumnSpan="3" />
+                            <Separator
+                                Grid.Row="7"
+                                Grid.ColumnSpan="3"
+                                />
 
                         </Grid>
                     </WrapPanel>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Controls:ControlsHelper.HeaderFontSize="16" Header="Help">
+            <TabItem
+                Controls:ControlsHelper.HeaderFontSize="16"
+                Header="{localized:Static properties:Resources.Help}"
+                >
                 <Grid>
                     <Image Source="Resources/kblayoutkeys.png" />
                 </Grid>
             </TabItem>
-            <TabItem Controls:ControlsHelper.HeaderFontSize="16" Header="About">
+            <TabItem
+                Controls:ControlsHelper.HeaderFontSize="16"
+                Header="{localized:Static properties:Resources.About}"
+                >
                 <Grid Margin="5">
                     <FlowDocumentScrollViewer>
                         <FlowDocument>
                             <Paragraph>
                                 <Image
-                                    Width="90"
-                                    Height="90"
+                                    Width="50"
+                                    Height="50"
                                     Margin="0,0,30,0"
                                     Source="Resources/FIVIcon.ico"
                                     />
-                                <Run FontSize="120">FIV</Run>
+                                <Run FontSize="60">FIV</Run>
                             </Paragraph>
 
                             <Paragraph>
@@ -542,6 +574,33 @@
                                     <Paragraph>
                                         <Bold>Gu.Localization</Bold>
                                         by Johan Larsson</Paragraph>
+                                </ListItem>
+                            </List>
+
+                            <Paragraph>
+                                Translators:
+                            </Paragraph>
+
+                            <List>
+                                <ListItem>
+                                    <Paragraph>
+                                        English -<Bold>Nevaran</Bold>
+                                    </Paragraph>
+                                </ListItem>
+                                <ListItem>
+                                    <Paragraph>
+                                        Bulgarian -<Bold>Nevaran</Bold>
+                                    </Paragraph>
+                                </ListItem>
+                                <ListItem>
+                                    <Paragraph>
+                                        Dutch -<Bold>Martijn</Bold>
+                                    </Paragraph>
+                                </ListItem>
+                                <ListItem>
+                                    <Paragraph>
+                                        Sami (Northern) -<Bold>Daniel Pedersen</Bold>
+                                    </Paragraph>
                                 </ListItem>
                             </List>
 

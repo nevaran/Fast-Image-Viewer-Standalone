@@ -10,7 +10,7 @@
 ChangesAssociations = yes
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{195D0CEB-0D22-4FCD-A03B-51A4F920F938}
+AppId={{8C9E9ECE-F29A-4A71-B728-B21C0F85366E}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -19,11 +19,11 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; The [Icons] "quicklaunchicon" entry uses {userappdata} but its [Tasks] entry has a proper IsAdminInstallMode Check.
 UsedUserAreasWarning=no
-; Remove the following line to run in administrative install mode (install for all users.)
+; Uncomment the following line to run in non administrative install mode (install for current user only.)
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=D:\CS\Fast Image Viewer Standalone\_Setup
-OutputBaseFilename=FIVSetup
+OutputBaseFilename=FIV Setup
 SetupIconFile=D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\def.ico
 Compression=lzma
 SolidCompression=yes
@@ -37,9 +37,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 6.1; Check: not IsAdminInstallMode
 
 [Files]
+;Source: "C:\Program Files (x86)\Inno Setup 6\Examples\MyProg.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\Fast Image Viewer.exe"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\def.ico"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\anim.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\bg-BG\*"; DestDir: "{app}\bg-BG"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\nl-NL\*"; DestDir: "{app}\nl-NL"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\se-SE\*"; DestDir: "{app}\se-SE"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
