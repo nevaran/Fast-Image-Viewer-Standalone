@@ -5,7 +5,9 @@
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:FIVStandard"
+    xmlns:localized="http://gu.se/Localization"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:FIVStandard.Properties"
     xmlns:utils="clr-namespace:FIVStandard.Utils"
     x:Name="MainFIV"
     Title="FIV"
@@ -36,19 +38,12 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <Controls:HamburgerMenu
-            x:Name="HamburgerMenuControl"
-            DisplayMode="Overlay"
-            Foreground="White"
-            IsPaneOpen="False"
-            PaneBackground="#FF444444"
-            />
         <Controls:MetroTabControl
             Focusable="False"
             IsTabStop="False"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
-            <TabItem Controls:ControlsHelper.HeaderFontSize="16" Header="General">
+            <TabItem Controls:ControlsHelper.HeaderFontSize="16" Header="{localized:Static properties:Resources.General}">
                 <Grid>
                     <!--  Context Menu | Window  -->
                     <Grid.ContextMenu>
@@ -161,266 +156,343 @@
             </TabItem>
             <TabItem Controls:ControlsHelper.HeaderFontSize="16" Header="Settings">
                 <!--  Your custom content here  -->
-                <ScrollViewer>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                <ScrollViewer Focusable="False">
+                    <WrapPanel Orientation="Horizontal">
+                        <Grid Width="585">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <Separator Grid.ColumnSpan="3" />
+                            <Separator Grid.Row="0" Grid.ColumnSpan="3" />
 
-                        <!--<Canvas Background="Red" />
-                        <Canvas
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Background="Green"
-                            />
-                        <Canvas Grid.Row="1" Background="Red" />
-                        <Canvas
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Background="Green"
-                            />
-                        <Canvas Grid.Row="2" Background="Red" />
-                        <Canvas
-                            Grid.Row="2"
-                            Grid.Column="2"
-                            Background="Green"
-                            />
-                        <Canvas Grid.Row="3" Background="Red" />
-                        <Canvas
-                            Grid.Row="3"
-                            Grid.Column="2"
-                            Background="Green"
-                            />
-                        <Canvas Grid.Row="4" Background="Red" />
-                        <Canvas
-                            Grid.Row="4"
-                            Grid.Column="2"
-                            Background="Green"
-                            />
-                        <Canvas Grid.Row="5" Background="Red" />
-                        <Canvas
-                            Grid.Row="5"
-                            Grid.Column="2"
-                            Background="Green"
-                            />
-                        <Canvas Grid.Row="6" Background="Azure" />
-                        <Canvas
-                            Grid.Row="6"
-                            Grid.Column="2"
-                            Background="Yellow"
-                            />-->
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.RowSpan="5"
+                                Grid.Column="4"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
 
-                        <!--  Dark Mode Toggle  -->
-                        <Controls:ToggleSwitch
-                            Grid.Row="1"
-                            Width="140"
-                            Height="100"
-                            Padding="20,40,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Focusable="False"
-                            Header="Dark Mode"
-                            IsChecked="{Binding Path=DarkModeToggle, Mode=TwoWay}"
-                            IsTabStop="False"
-                            />
+                            <!--<Canvas Background="Red" />
+                            <Canvas
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Background="Green"
+                                />
+                            <Canvas Grid.Row="1" Background="Red" />
+                            <Canvas
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Background="Green"
+                                />
+                            <Canvas Grid.Row="2" Background="Red" />
+                            <Canvas
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Background="Green"
+                                />
+                            <Canvas Grid.Row="3" Background="Red" />
+                            <Canvas
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                Background="Green"
+                                />
+                            <Canvas Grid.Row="4" Background="Red" />
+                            <Canvas
+                                Grid.Row="4"
+                                Grid.Column="2"
+                                Background="Green"
+                                />
+                            <Canvas Grid.Row="5" Background="Red" />
+                            <Canvas
+                                Grid.Row="5"
+                                Grid.Column="2"
+                                Background="Green"
+                                />
+                            <Canvas Grid.Row="6" Background="Red" />
+                            <Canvas
+                                Grid.Row="6"
+                                Grid.Column="2"
+                                Background="Green"
+                                />
+                            <Canvas Grid.Row="7" Background="Azure" />
+                            <Canvas
+                                Grid.Row="7"
+                                Grid.Column="2"
+                                Background="Yellow"
+                                />-->
 
-                        <StackPanel
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Height="60"
-                            VerticalAlignment="Bottom"
-                            Orientation="Horizontal"
-                            >
-                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        </StackPanel>
+                            <!--  Language Dropdown  -->
+                            <Controls:SplitButton
+                                x:Name="ShownLanguageDrop"
+                                Grid.Row="1"
+                                Width="120"
+                                Height="60"
+                                Margin="20,40,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Click="OnLanguageClick"
+                                Focusable="False"
+                                IsTabStop="False"
+                                ItemsSource="{Binding Path=GetLanguageString, Mode=OneTime}"
+                                Orientation="Vertical"
+                                SelectedIndex="{Binding Path=ShownLanguageDropIndex, Mode=TwoWay}"
+                                />
 
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Width="330"
-                            Height="60"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Text="Switch between Light and Dark theme."
-                            TextWrapping="Wrap"
-                            />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
 
-                        <!--  Theme Accent Dropdown  -->
-                        <Controls:SplitButton
-                            x:Name="ThemeAccentDrop"
-                            Grid.Row="2"
-                            Width="120"
-                            Height="60"
-                            Margin="20,40,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Click="OnAccentClick"
-                            Focusable="False"
-                            IsTabStop="False"
-                            ItemsSource="{Binding Path=ThemeAccents, Mode=TwoWay}"
-                            Orientation="Vertical"
-                            SelectedIndex="{Binding Path=ThemeAccentDropIndex, Mode=TwoWay}"
-                            />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Height="60"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="Change the displayed language."
+                                TextWrapping="Wrap"
+                                />
 
-                        <StackPanel
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Height="60"
-                            VerticalAlignment="Bottom"
-                            Orientation="Horizontal"
-                            >
-                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        </StackPanel>
+                            <!--  Dark Mode Toggle  -->
+                            <Controls:ToggleSwitch
+                                Grid.Row="2"
+                                Width="140"
+                                Height="100"
+                                Padding="20,40,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Focusable="False"
+                                Header="Dark Mode"
+                                IsChecked="{Binding Path=DarkModeToggle, Mode=TwoWay}"
+                                IsTabStop="False"
+                                />
 
-                        <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="2"
-                            Width="330"
-                            Height="60"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Text="Change the accent colors."
-                            TextWrapping="Wrap"
-                            />
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
 
-                        <!--  Stretch Image Toggle  -->
-                        <Controls:ToggleSwitch
-                            Grid.Row="3"
-                            Width="140"
-                            Height="100"
-                            Padding="20,40,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Focusable="False"
-                            Header="Stretch Image"
-                            IsChecked="{Binding Path=StretchImageToggle, Mode=TwoWay}"
-                            IsTabStop="False"
-                            />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Height="60"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="Switch between Light and Dark theme."
+                                TextWrapping="Wrap"
+                                />
 
-                        <StackPanel
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Height="60"
-                            VerticalAlignment="Bottom"
-                            Orientation="Horizontal"
-                            >
-                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        </StackPanel>
+                            <!--  Theme Accent Dropdown  -->
+                            <Controls:SplitButton
+                                x:Name="ThemeAccentDrop"
+                                Grid.Row="3"
+                                Width="120"
+                                Height="60"
+                                Margin="20,40,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Click="OnAccentClick"
+                                Focusable="False"
+                                IsTabStop="False"
+                                ItemsSource="{Binding Path=ThemeAccents, Mode=OneTime}"
+                                Orientation="Vertical"
+                                SelectedIndex="{Binding Path=ThemeAccentDropIndex, Mode=TwoWay}"
+                                />
 
-                        <TextBlock
-                            Grid.Row="3"
-                            Grid.Column="2"
-                            Width="330"
-                            Height="60"
-                            Margin="0"
-                            Padding="0,0,20,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Text="Always stretch images to fit the window. Toggle shortcut: ''F''"
-                            TextWrapping="Wrap"
-                            />
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
 
-                        <!--  Downsize Image  -->
-                        <Controls:ToggleSwitch
-                            Grid.Row="4"
-                            Width="140"
-                            Height="100"
-                            Padding="20,40,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Focusable="False"
-                            Header="Downsize Image"
-                            IsChecked="{Binding Path=DownsizeImageToggle, Mode=TwoWay}"
-                            IsTabStop="False"
-                            />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                Height="60"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="Change the accent colors."
+                                TextWrapping="Wrap"
+                                />
 
-                        <StackPanel
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            Height="60"
-                            VerticalAlignment="Bottom"
-                            Orientation="Horizontal"
-                            >
-                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        </StackPanel>
+                            <!--  End View  -->
+                            <Separator Grid.Row="7" Grid.ColumnSpan="3" />
 
-                        <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="2"
-                            Width="330"
-                            Height="60"
-                            Margin="0"
-                            Padding="0,0,20,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Text="Reduce image size to current window's. This reduces memory usage for images larger than screen's."
-                            TextWrapping="Wrap"
-                            />
+                        </Grid>
+                        <Grid Width="585">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <!--  Zoom Sensitivity  -->
-                        <TextBlock
-                            Grid.Row="5"
-                            Width="140"
-                            Margin="10,50,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Text="{Binding Path=ZoomSensitivityString, Mode=OneWay}"
-                            TextAlignment="Center"
-                            />
-                        <Slider
-                            Grid.Row="5"
-                            Width="140"
-                            Height="100"
-                            Margin="5,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Focusable="False"
-                            IsSnapToTickEnabled="True"
-                            IsTabStop="False"
-                            LargeChange="0.05"
-                            Maximum="2"
-                            Minimum="0.1"
-                            TickFrequency="0.05"
-                            Value="{Binding Path=ZoomSensitivity, Mode=TwoWay}"
-                            />
+                            <Separator Grid.Row="0" Grid.ColumnSpan="3" />
 
-                        <StackPanel
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Height="60"
-                            VerticalAlignment="Bottom"
-                            Orientation="Horizontal"
-                            >
-                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        </StackPanel>
+                            <StackPanel
+                                Grid.Row="0"
+                                Grid.RowSpan="5"
+                                Grid.Column="4"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
 
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="2"
-                            Width="330"
-                            Height="60"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Text="Change the zoom in and out sensitivity of the image. (Default is 1.00)"
-                            TextWrapping="Wrap"
-                            />
+                            <!--  Stretch Image Toggle  -->
+                            <Controls:ToggleSwitch
+                                Grid.Row="1"
+                                Width="140"
+                                Height="100"
+                                Padding="20,40,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Focusable="False"
+                                Header="Stretch Image"
+                                IsChecked="{Binding Path=StretchImageToggle, Mode=TwoWay}"
+                                IsTabStop="False"
+                                />
 
-                        <Separator Grid.Row="6" Grid.ColumnSpan="3" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
 
-                    </Grid>
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Height="60"
+                                Padding="0,0,20,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="Always stretch images to fit the window. Toggle shortcut: ''F''"
+                                TextWrapping="Wrap"
+                                />
+
+                            <!--  Downsize Image  -->
+                            <Controls:ToggleSwitch
+                                Grid.Row="2"
+                                Width="140"
+                                Height="100"
+                                Padding="20,40,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Focusable="False"
+                                Header="Downsize Image"
+                                IsChecked="{Binding Path=DownsizeImageToggle, Mode=TwoWay}"
+                                IsTabStop="False"
+                                />
+
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Height="60"
+                                Padding="0,0,20,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="Reduce image size to current window's. This reduces memory usage for images larger than screen's."
+                                TextWrapping="Wrap"
+                                />
+
+                            <!--  Zoom Sensitivity  -->
+                            <TextBlock
+                                Grid.Row="3"
+                                Width="140"
+                                Margin="10,50,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{Binding Path=ZoomSensitivityString, Mode=OneWay}"
+                                TextAlignment="Center"
+                                />
+                            <Slider
+                                Grid.Row="3"
+                                Width="140"
+                                Height="100"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Focusable="False"
+                                IsSnapToTickEnabled="True"
+                                IsTabStop="False"
+                                LargeChange="0.05"
+                                Maximum="2"
+                                Minimum="0.1"
+                                TickFrequency="0.05"
+                                Value="{Binding Path=ZoomSensitivity, Mode=TwoWay}"
+                                />
+
+                            <StackPanel
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                Height="60"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="Change the zoom in and out sensitivity of the image. (Default is 1.00)"
+                                TextWrapping="Wrap"
+                                />
+
+                            <!--  End View  -->
+                            <Separator Grid.Row="7" Grid.ColumnSpan="3" />
+
+                        </Grid>
+                    </WrapPanel>
                 </ScrollViewer>
             </TabItem>
             <TabItem Controls:ControlsHelper.HeaderFontSize="16" Header="Help">
@@ -465,6 +537,11 @@
                                     <Paragraph>
                                         <Bold>Fody</Bold>
                                         by Fody</Paragraph>
+                                </ListItem>
+                                <ListItem>
+                                    <Paragraph>
+                                        <Bold>Gu.Localization</Bold>
+                                        by Johan Larsson</Paragraph>
                                 </ListItem>
                             </List>
 

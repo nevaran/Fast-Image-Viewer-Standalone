@@ -18,8 +18,6 @@ using ToastNotifications.Lifetime;
 using ToastNotifications.Position;
 using ToastNotifications.Messages;
 using System.Drawing;
-using NGettext;
-using System.Globalization;
 
 namespace FIVStandard
 {
@@ -107,6 +105,37 @@ namespace FIVStandard
         #endregion
 
         #region Settings Properties
+        private readonly List<(string tag, string lang)> ShownLanguage = new List<(string tag, string lang)>()
+        {
+            ("en", "English (EN)"),
+            ("bg-BG", "Bulgarian (BG)")
+        };
+
+        private int _shownLanguageDropIndex = 0;
+
+        public int ShownLanguageDropIndex
+        {
+            get
+            {
+                return _shownLanguageDropIndex;
+            }
+            set
+            {
+                _shownLanguageDropIndex = value;
+                OnPropertyChanged();
+
+                OnLanguageChanged();
+            }
+        }
+
+        public string[] GetLanguageString
+        {
+            get
+            {
+                return ShownLanguage.Select(x => x.lang).ToArray();
+            }
+        }
+
         private bool _darkModeToggle = true;
 
         public bool DarkModeToggle
@@ -129,10 +158,6 @@ namespace FIVStandard
             get
             {
                 return new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
-            }
-            set
-            {
-                ThemeAccents = value;
             }
         }
 
@@ -223,9 +248,9 @@ namespace FIVStandard
 
         private bool IsDeletingFile { get; set; } = false;
 
-        private string ActiveFile { get; set; } = "";
-        private string ActiveFolder { get; set; } = "";
-        private string ActivePath { get; set; } = "";//directory + file + extension
+        private string ActiveFile { get; set; } = "";//file name + extension
+        private string ActiveFolder { get; set; } = "";//directory
+        private string ActivePath { get; set; } = "";//directory + file name + extension
 
         private readonly FileSystemWatcher fsw = new FileSystemWatcher()
         {
@@ -251,9 +276,6 @@ namespace FIVStandard
         public MainWindow()
         {
             InitializeComponent();
-
-            ICatalog catalog = new Catalog("Example", "./locale", new CultureInfo("bg-BG"));
-            Console.WriteLine(catalog.GetString("Hello, World!")); // will translate "Hello, World!" using loaded translations
 
             //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
@@ -542,6 +564,8 @@ namespace FIVStandard
 
         private void LoadAllSettings()
         {
+            //Language
+            ShownLanguageDropIndex = Properties.Settings.Default.ShownLanguage;
             //Theme
             DarkModeToggle = Properties.Settings.Default.DarkTheme;
             //Accent
@@ -582,6 +606,12 @@ namespace FIVStandard
         {
             Properties.Settings.Default.ThemeAccent = _themeAccentDropIndex;
             ChangeTheme();//since theme also is rooted with accent
+        }
+
+        private void OnLanguageChanged()
+        {
+            Properties.Settings.Default.ShownLanguage = _shownLanguageDropIndex;
+            Properties.Settings.Default.Save();
         }
 
         private void OnStretchSwitch()
@@ -743,6 +773,18 @@ namespace FIVStandard
             }*/
         }
 
+        private void OnLanguageClick(object sender, RoutedEventArgs e)
+        {
+            if (_shownLanguageDropIndex >= ShownLanguage.Count - 1)
+                ShownLanguageDropIndex = 0;
+            else
+                ShownLanguageDropIndex++;
+
+            ShownLanguageDrop.SelectedIndex = _shownLanguageDropIndex;
+
+            //ChangeAccent();//called in OnAccentChanged
+        }
+
         private void OnAccentClick(object sender, RoutedEventArgs e)
         {
             if (_themeAccentDropIndex >= ThemeAccents.Count - 1)
@@ -750,7 +792,7 @@ namespace FIVStandard
             else
                 ThemeAccentDropIndex++;
 
-            ThemeAccentDrop.SelectedIndex = ThemeAccentDropIndex;
+            ThemeAccentDrop.SelectedIndex = _themeAccentDropIndex;
 
             //ChangeAccent();//called in OnAccentChanged
         }
