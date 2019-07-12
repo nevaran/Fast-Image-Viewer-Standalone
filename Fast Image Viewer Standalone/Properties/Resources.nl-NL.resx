@@ -164,10 +164,10 @@
     <value>Veranderen van de zoomgevoeligheid van de afbeelding. (Standaard is 1.00)</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>Aanschakelen</value>
+    <value>Aan</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Uitschakelen</value>
+    <value>Uit</value>
   </data>
   <data name="StretchImageInfo" xml:space="preserve">
     <value>Afbeeldingen altijd aanpassen aan venstergrootte.</value>

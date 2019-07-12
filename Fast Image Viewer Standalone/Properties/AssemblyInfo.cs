@@ -7,7 +7,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Fast Image Viewer")]
-[assembly: AssemblyDescription("Simple image viewer for fast and easy viewing and a minimalistic design.")]
+[assembly: AssemblyDescription("Simple image viewer for fast and easy viewing and a modern and minimalistic design.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nevaran")]
 [assembly: AssemblyProduct("Fast Image Viewer")]

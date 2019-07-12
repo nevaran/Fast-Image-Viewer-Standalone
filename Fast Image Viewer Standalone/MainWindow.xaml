@@ -533,7 +533,7 @@
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static properties:Resources.About}"
                 >
-                <Grid Margin="5">
+                <ScrollViewer Margin="5">
                     <FlowDocumentScrollViewer>
                         <FlowDocument>
                             <Paragraph>
@@ -547,7 +547,13 @@
                             </Paragraph>
 
                             <Paragraph>
-                                Created by Nevaran
+                                Created by Antoniy &quot;Nevaran&quot; Sapundzhiev
+                                <Image
+                                    Width="30"
+                                    Height="30"
+                                    Margin="0,0,10,0"
+                                    Source="https://cdn.discordapp.com/avatars/146321583319941120/0981be056d7a5750ced39afff3aa65c6.png?size=256"
+                                    />
                             </Paragraph>
 
                             <Paragraph>
@@ -594,7 +600,12 @@
                                 </ListItem>
                                 <ListItem>
                                     <Paragraph>
-                                        Dutch -<Bold>Martijn</Bold>
+                                        Dutch (Belgium) -<Bold>SomeGuy</Bold>
+                                    </Paragraph>
+                                </ListItem>
+                                <ListItem>
+                                    <Paragraph>
+                                        Dutch (Netherlands) -<Bold>Martijn</Bold>
                                     </Paragraph>
                                 </ListItem>
                                 <ListItem>
@@ -647,7 +658,7 @@
                         <Paragraph FontStyle="Italic" Foreground="Silver">A table of made up WinForms/WPF numbers</Paragraph>-->
                         </FlowDocument>
                     </FlowDocumentScrollViewer>
-                </Grid>
+                </ScrollViewer>
             </TabItem>
         </Controls:MetroTabControl>
     </Grid>

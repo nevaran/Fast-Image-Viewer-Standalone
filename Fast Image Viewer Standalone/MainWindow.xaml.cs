@@ -111,8 +111,9 @@ namespace FIVStandard
         {
             ("en", "English (en)"),
             ("bg-BG", "Български (bg-BG)"),
+            ("nl-BE", "Dutch (nl-BE)"),
             ("nl-NL", "Dutch (nl-NL)"),
-            ("se-SE", "Sami (Northern) (se-SE)"),
+            ("se-SE", "Swedish (se-SE)"),
         };
 
         private int _shownLanguageDropIndex = 0;

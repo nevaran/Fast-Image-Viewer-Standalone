@@ -8,7 +8,9 @@
 ***Downsize Image
 ***Zoom sensitivity
 
-OPTIONAL: drag and drop image
+drag and drop image
+
+rotate image buttons
 
 ListBox + Button with UniformGrid set as its ItemsPanel Gallery on the left side (MAYBE ItemsControl). bind an ObservableCollection to the ListBox.ItemsSource property
 example: https://www.wpftutorial.net/ListBoxItemsArrange.html
