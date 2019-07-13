@@ -123,7 +123,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Settings.cs" />
+    <Compile Include="Model\SettingsManager.cs" />
     <Compile Include="Properties\Resources.nl-BE.Designer.cs">
       <DependentUpon>Resources.nl-BE.resx</DependentUpon>
       <AutoGen>True</AutoGen>

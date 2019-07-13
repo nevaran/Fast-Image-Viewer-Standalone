@@ -20,6 +20,7 @@ using ToastNotifications.Messages;
 using System.Drawing;
 using System.Globalization;
 using Gu.Localization;
+using FIVStandard.Model;
 
 namespace FIVStandard
 {
@@ -248,6 +249,8 @@ namespace FIVStandard
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
+        private SettingsManager SettingsMng { get; set; }
+
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */, ".JPG", ".JPEG", ".GIF", ".BMP", ".ICO", ".PNG" };//TODO: doesnt work: tiff svg
         private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
@@ -281,6 +284,9 @@ namespace FIVStandard
         public MainWindow()
         {
             InitializeComponent();
+
+            SettingsMng = new SettingsManager();
+            SettingsMng.Load();
 
             //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
@@ -529,7 +535,7 @@ namespace FIVStandard
 
                 //MediaView?.Close();
                 MediaSource = null;
-                ImageSource = LoadImage(uri);
+                ImageSource = LoadImage(path);
 
                 borderImg.Reset();
             }
@@ -537,13 +543,14 @@ namespace FIVStandard
             //GC.Collect();
         }
 
-        private BitmapImage LoadImage(Uri uri)
+        private BitmapImage LoadImage(string path)
         {
             BitmapImage imgTemp = new BitmapImage();
+            FileStream stream = File.OpenRead(path);
             imgTemp.BeginInit();
             imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting file from file lockup
             //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
-            imgTemp.UriSource = uri;
+            imgTemp.StreamSource = stream;
 
             if (_downsizeImageToggle)
             {
@@ -557,6 +564,8 @@ namespace FIVStandard
 
             imgTemp.EndInit();
             imgTemp.Freeze();
+            stream.Close();
+            stream.Dispose();
 
             return imgTemp;
         }
@@ -701,7 +710,7 @@ namespace FIVStandard
             Properties.Settings.Default.DownsizeImage = _downsizeImageToggle;
 
             if (ImagesFound.Count > 0)
-                ImageSource = LoadImage(new Uri(ActivePath, UriKind.Absolute));
+                ImageSource = LoadImage(ActivePath);
 
             Properties.Settings.Default.Save();
         }
@@ -737,6 +746,7 @@ namespace FIVStandard
                 ImgHeight = decoder.Frames[0].PixelHeight;*/
 
                 Image img = Image.FromStream(imageStream);
+                
                 ImgWidth = img.Width;
                 ImgHeight = img.Height;
                 try
