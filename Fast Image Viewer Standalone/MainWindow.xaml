@@ -143,7 +143,7 @@
                             MediaOpened="OnClipOpened"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             ScrubbingEnabled="True"
-                            Source="{Binding Path=MediaSource, Mode=TwoWay}"
+                            Source="{Binding Path=MediaSource, Mode=OneWay, IsAsync=True}"
                             StretchDirection="DownOnly"
                             UnloadedBehavior="Manual"
                             />
@@ -160,7 +160,7 @@
                         <Image
                             Name="PictureView"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            Source="{Binding Path=ImageSource, Mode=TwoWay}"
+                            Source="{Binding Path=ImageSource, Mode=OneWay}"
                             StretchDirection="DownOnly"
                             />
                     </utils:ZoomBorder>
@@ -185,23 +185,12 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
                             <Separator
                                 Grid.Row="0"
                                 Grid.ColumnSpan="3"
                                 />
-
-                            <StackPanel
-                                Grid.Row="0"
-                                Grid.RowSpan="5"
-                                Grid.Column="4"
-                                Margin="0,0,40,0"
-                                Orientation="Horizontal"
-                                >
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
 
                             <!--<Canvas Background="Red" />
                             <Canvas
@@ -333,7 +322,7 @@
                                 Click="OnAccentClick"
                                 Focusable="False"
                                 IsTabStop="False"
-                                ItemsSource="{Binding Path=ThemeAccents, Mode=OneTime}"
+                                ItemsSource="{Binding Path=ThemeAccents, Mode=OneWay}"
                                 Orientation="Vertical"
                                 SelectedIndex="{Binding Path=ThemeAccentDropIndex, Mode=TwoWay}"
                                 />
@@ -358,12 +347,6 @@
                                 TextWrapping="Wrap"
                                 />
 
-                            <!--  End View  -->
-                            <Separator
-                                Grid.Row="7"
-                                Grid.ColumnSpan="3"
-                                />
-
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -384,15 +367,6 @@
                                 Grid.Row="0"
                                 Grid.ColumnSpan="3"
                                 />
-
-                            <StackPanel
-                                Grid.Row="0"
-                                Grid.RowSpan="5"
-                                Grid.Column="4"
-                                Orientation="Horizontal"
-                                >
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
 
                             <!--  Stretch Image Toggle  -->
                             <Controls:ToggleSwitch

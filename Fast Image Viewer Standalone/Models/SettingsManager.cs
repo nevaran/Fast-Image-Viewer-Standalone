@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FIVStandard.Model
+namespace FIVStandard.Models
 {
     public class SettingsManager : IDisposable
     {

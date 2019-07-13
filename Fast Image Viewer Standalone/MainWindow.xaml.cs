@@ -20,7 +20,6 @@ using ToastNotifications.Messages;
 using System.Drawing;
 using System.Globalization;
 using Gu.Localization;
-using FIVStandard.Model;
 
 namespace FIVStandard
 {
@@ -249,8 +248,6 @@ namespace FIVStandard
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private SettingsManager SettingsMng { get; set; }
-
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */, ".JPG", ".JPEG", ".GIF", ".BMP", ".ICO", ".PNG" };//TODO: doesnt work: tiff svg
         private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
@@ -285,8 +282,6 @@ namespace FIVStandard
         {
             InitializeComponent();
 
-            SettingsMng = new SettingsManager();
-            SettingsMng.Load();
 
             //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
@@ -331,11 +326,6 @@ namespace FIVStandard
         {
             if (IsDeletingFile) return;
 
-#if DEBUG
-            Stopwatch stopwatch = new Stopwatch();//DEBUG
-            stopwatch.Start();//DEBUG
-#endif
-
             ActiveFile = Path.GetFileName(path);
             ActiveFolder = Path.GetDirectoryName(path);
             ActivePath = path;
@@ -349,11 +339,6 @@ namespace FIVStandard
             SetTitleInformation();
 
             NewUri(path);
-
-#if DEBUG
-            stopwatch.Stop();//DEBUG
-            notifier.ShowError($"OpenNewFile time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
-#endif
         }
 
         private void Fsw_Updated(object sender, FileSystemEventArgs e)//TODO: create more sophisticated updating where it doesnt load the whole directory again
@@ -503,6 +488,10 @@ namespace FIVStandard
 
         private void NewUri(string path)
         {
+#if DEBUG
+            Stopwatch stopwatch = new Stopwatch();//DEBUG
+            stopwatch.Start();//DEBUG
+#endif
             string pathext = Path.GetExtension(path);
             if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
             {
@@ -531,7 +520,7 @@ namespace FIVStandard
                 borderImg.Visibility = Visibility.Visible;
                 border.Visibility = Visibility.Hidden;
 
-                GetImageInformation();
+                GetImageInformation(ActivePath);
 
                 //MediaView?.Close();
                 MediaSource = null;
@@ -539,6 +528,10 @@ namespace FIVStandard
 
                 borderImg.Reset();
             }
+#if DEBUG
+            stopwatch.Stop();//DEBUG
+            notifier.ShowError($"NewUri time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
+#endif
 
             //GC.Collect();
         }
@@ -554,12 +547,15 @@ namespace FIVStandard
 
             if (_downsizeImageToggle)
             {
-                if(ImgWidth > borderImg.ActualWidth)
-                    imgTemp.DecodePixelWidth = (int)borderImg.ActualWidth;
-                else if(ImgHeight > borderImg.ActualHeight)
-                    imgTemp.DecodePixelHeight = (int)borderImg.ActualHeight;
+                Rect r = WpfScreen.GetScreenFrom(this).ScreenBounds;
+                /*if (ImgWidth > borderImg.ActualWidth)
+                    imgTemp.DecodePixelWidth = (int)r.Width;
+                else if (ImgHeight > borderImg.ActualHeight)
+                    imgTemp.DecodePixelHeight = (int)r.Height;*/
+
+                imgTemp.DecodePixelWidth = (int)(ImgWidth * ScaleToBox(ImgWidth, (int)r.Width, ImgHeight, (int)r.Height));
             }
-            if(ImageRotation != Rotation.Rotate0)
+            if (ImageRotation != Rotation.Rotate0)
                 imgTemp.Rotation = ImageRotation;
 
             imgTemp.EndInit();
@@ -568,6 +564,16 @@ namespace FIVStandard
             stream.Dispose();
 
             return imgTemp;
+        }
+
+        private double ScaleToBox(double w, double sw, double h, double sh)
+        {
+            double scaleWidth = sw / w;
+            double scaleHeight = sh / h;
+
+            double scale = Math.Min(scaleWidth, scaleHeight);
+
+            return scale;
         }
 
         private void OnDonateClick(object sender, RoutedEventArgs e)
@@ -722,16 +728,15 @@ namespace FIVStandard
             Properties.Settings.Default.Save();
         }
 
-        #region In-Window Events
+        private void OnClipOpened(object sender, RoutedEventArgs e)
+        {
+            GetImageInformation(ActivePath);
+        }
+
         /// <summary>
         /// Gets the gif image information (width, height, orientation)
         /// </summary>
-        private void OnClipOpened(object sender, RoutedEventArgs e)
-        {
-            GetImageInformation();
-        }
-
-        private void GetImageInformation()
+        private void GetImageInformation(string path)
         {
             if (ImagesFound.Count == 0) return;
 
@@ -739,11 +744,12 @@ namespace FIVStandard
             Stopwatch stopwatch = new Stopwatch();//DEBUG
             stopwatch.Start();//DEBUG
 #endif
-            using (var imageStream = File.OpenRead(ActivePath))
+
+            using (var imageStream = File.OpenRead(path))
             {
-                /*var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                ImgWidth = decoder.Frames[0].PixelWidth;
-                ImgHeight = decoder.Frames[0].PixelHeight;*/
+                //var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
+                //ImgWidth = decoder.Frames[0].PixelWidth;
+                //ImgHeight = decoder.Frames[0].PixelHeight;
 
                 Image img = Image.FromStream(imageStream);
                 
@@ -755,7 +761,7 @@ namespace FIVStandard
                     ImageRotation = OrientationDictionary[(int)eo];//eo angle from index
 
 #if DEBUG
-                    notifier.ShowInformation($"Image Orientation: [angle: {ImageRotation}] {eo}");
+                    //notifier.ShowInformation($"Image Orientation: [angle: {ImageRotation}] {eo}");
 #endif
                 }
                 catch
@@ -854,6 +860,11 @@ namespace FIVStandard
                 StretchImageToggle = !StretchImageToggle;
             }
 
+            if (e.Key == System.Windows.Input.Key.D)
+            {
+                DownsizeImageToggle = !DownsizeImageToggle;
+            }
+
             if (e.Key == System.Windows.Input.Key.E)
             {
                 ExploreFile();
@@ -904,15 +915,14 @@ namespace FIVStandard
 
             //GC.Collect();
         }
-        #endregion
 
         /*private int ParseStringToOnlyInt(string input)
         {
             return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
         }*/
 
-        // Orientations.
-        public const int OrientationId = 0x0112;
+        // Orientations
+        public const int OrientationId = 0x0112;// 274 / 0x0112
         public enum ExifOrientations
         {
             Unknown = 0,//0
@@ -939,17 +949,16 @@ namespace FIVStandard
             {8, Rotation.Rotate270}
         };
 
-        // Return the image's orientation.
+        // Return the image's orientation
         public static ExifOrientations ImageOrientation(Image img)
         {
-            // Get the index of the orientation property.
-            int orientation_index =
-                Array.IndexOf(img.PropertyIdList, OrientationId);
+            // Get the index of the orientation property
+            int orientation_index = Array.IndexOf(img.PropertyIdList, OrientationId);
 
-            // If there is no such property, return Unknown.
+            // If there is no such property, return Unknown
             if (orientation_index < 0) return ExifOrientations.Unknown;
 
-            // Return the orientation value.
+            // Return the orientation value
             return (ExifOrientations)
                 img.GetPropertyItem(OrientationId).Value[0];
         }
