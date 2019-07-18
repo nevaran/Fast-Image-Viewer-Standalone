@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:FIVStandard"
     xmlns:localized="http://gu.se/Localization"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:FIVStandard.Properties"
+    xmlns:p="clr-namespace:FIVStandard.Properties"
     xmlns:utils="clr-namespace:FIVStandard.Utils"
     x:Name="MainFIV"
     Title="FIV"
@@ -26,6 +26,11 @@
     mc:Ignorable="d"
     >
 
+    <Window.Resources>
+        <local:TextToColorConverter x:Key="TextToColorConverter" />
+        <local:KeyToStringConverter x:Key="KeyToStringConverter" />
+    </Window.Resources>
+
     <!--  Window Bar Buttons  -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands
@@ -34,7 +39,7 @@
             >
             <Button
                 Click="OnDonateClick"
-                Content="{localized:Static properties:Resources.Donate}"
+                Content="{localized:Static p:Resources.Donate}"
                 Focusable="False"
                 IsTabStop="False"
                 />
@@ -48,7 +53,7 @@
             >
             <TabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
-                Header="{localized:Static properties:Resources.General}"
+                Header="{localized:Static p:Resources.General}"
                 >
                 <Grid>
                     <!--  Context Menu | Window  -->
@@ -56,12 +61,12 @@
                         <ContextMenu>
                             <MenuItem
                                 Click="OnOpenFileLocation"
-                                Header="{localized:Static properties:Resources.OpenFileLocation}"
+                                Header="{localized:Static p:Resources.OpenFileLocation}"
                                 />
                             <Separator />
                             <MenuItem
                                 Click="OnDeleteClick"
-                                Header="{localized:Static properties:Resources.Delete}"
+                                Header="{localized:Static p:Resources.Delete}"
                                 />
                         </ContextMenu>
                     </Grid.ContextMenu>
@@ -122,7 +127,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="OnOpenBrowseImage"
-                        Content="{localized:Static properties:Resources.Open}"
+                        Content="{localized:Static p:Resources.Open}"
                         Focusable="False"
                         IsTabStop="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -168,7 +173,7 @@
             </TabItem>
             <TabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
-                Header="{localized:Static properties:Resources.Settings}"
+                Header="{localized:Static p:Resources.Settings}"
                 >
                 <!--  Custom content here  -->
                 <ScrollViewer Focusable="False">
@@ -272,7 +277,7 @@
                                 Height="60"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="{localized:Static properties:Resources.ShownLanguageInfo}"
+                                Text="{localized:Static p:Resources.ShownLanguageInfo}"
                                 TextWrapping="Wrap"
                                 />
 
@@ -285,11 +290,11 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
-                                Header="{localized:Static properties:Resources.DarkMode}"
+                                Header="{localized:Static p:Resources.DarkMode}"
                                 IsChecked="{Binding Path=DarkModeToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static properties:Resources.Off}"
-                                OnLabel="{localized:Static properties:Resources.On}"
+                                OffLabel="{localized:Static p:Resources.Off}"
+                                OnLabel="{localized:Static p:Resources.On}"
                                 />
 
                             <StackPanel
@@ -308,7 +313,7 @@
                                 Height="60"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="{localized:Static properties:Resources.DarkModeInfo}"
+                                Text="{localized:Static p:Resources.DarkModeInfo}"
                                 TextWrapping="Wrap"
                                 />
 
@@ -325,7 +330,14 @@
                                 ItemsSource="{Binding Path=ThemeAccents, Mode=OneWay}"
                                 Orientation="Vertical"
                                 SelectedIndex="{Binding Path=ThemeAccentDropIndex, Mode=TwoWay}"
-                                />
+                                >
+                                <Controls:SplitButton.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="BorderBrush" Value="{Binding Converter={StaticResource TextToColorConverter}}" />
+                                        <Setter Property="BorderThickness" Value="20,0,0,0" />
+                                    </Style>
+                                </Controls:SplitButton.ItemContainerStyle>
+                            </Controls:SplitButton>
 
                             <StackPanel
                                 Grid.Row="3"
@@ -343,7 +355,7 @@
                                 Height="60"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="{localized:Static properties:Resources.ThemeAccentInfo}"
+                                Text="{localized:Static p:Resources.ThemeAccentInfo}"
                                 TextWrapping="Wrap"
                                 />
 
@@ -376,11 +388,11 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
-                                Header="{localized:Static properties:Resources.StretchImage}"
+                                Header="{localized:Static p:Resources.StretchImage}"
                                 IsChecked="{Binding Path=StretchImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static properties:Resources.Off}"
-                                OnLabel="{localized:Static properties:Resources.On}"
+                                OffLabel="{localized:Static p:Resources.Off}"
+                                OnLabel="{localized:Static p:Resources.On}"
                                 />
 
                             <StackPanel
@@ -400,7 +412,7 @@
                                 Padding="0,0,20,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="{localized:Static properties:Resources.StretchImageInfo}"
+                                Text="{localized:Static p:Resources.StretchImageInfo}"
                                 TextWrapping="Wrap"
                                 />
 
@@ -412,11 +424,11 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
-                                Header="{localized:Static properties:Resources.DownsizeImage}"
+                                Header="{localized:Static p:Resources.DownsizeImage}"
                                 IsChecked="{Binding Path=DownsizeImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static properties:Resources.Off}"
-                                OnLabel="{localized:Static properties:Resources.On}"
+                                OffLabel="{localized:Static p:Resources.Off}"
+                                OnLabel="{localized:Static p:Resources.On}"
                                 />
 
                             <StackPanel
@@ -436,7 +448,7 @@
                                 Padding="0,0,20,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="{localized:Static properties:Resources.DownsizeImageInfo}"
+                                Text="{localized:Static p:Resources.DownsizeImageInfo}"
                                 TextWrapping="Wrap"
                                 />
 
@@ -481,7 +493,7 @@
                                 Height="60"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Text="{localized:Static properties:Resources.ZoomSensitivityInfo}"
+                                Text="{localized:Static p:Resources.ZoomSensitivityInfo}"
                                 TextWrapping="Wrap"
                                 />
 
@@ -497,15 +509,148 @@
             </TabItem>
             <TabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
-                Header="{localized:Static properties:Resources.Help}"
+                Header="{localized:Static p:Resources.Help}"
                 >
-                <Grid>
-                    <Image Source="Resources/kblayoutkeys.png" />
-                </Grid>
+                <ScrollViewer>
+                    <StackPanel Margin="10">
+                        <TextBlock
+                            FontSize="30"
+                            Text="Shortcuts"
+                            />
+
+                        <StackPanel
+                            Margin="40,10,0,0"
+                            Orientation="Horizontal"
+                            >
+                            <TextBlock
+                                MinWidth="180"
+                                Text="Prev Image: "
+                                />
+                            <Button
+                                MinWidth="50"
+                                Click="OnShortcutClick"
+                                Content="{Binding GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                />
+                        </StackPanel>
+
+                        <StackPanel
+                            Margin="40,10,0,0"
+                            Orientation="Horizontal"
+                            >
+                            <TextBlock
+                                MinWidth="180"
+                                Text="Next Image: "
+                                />
+                            <Button
+                                MinWidth="50"
+                                Click="OnShortcutClick"
+                                Content="{Binding GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                />
+                        </StackPanel>
+
+                        <StackPanel
+                            Margin="40,10,0,0"
+                            Orientation="Horizontal"
+                            >
+                            <TextBlock
+                                MinWidth="180"
+                                Text="Pause: "
+                                />
+                            <Button
+                                MinWidth="50"
+                                Click="OnShortcutClick"
+                                Content="{Binding PauseKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                />
+                        </StackPanel>
+
+                        <StackPanel
+                            Margin="40,10,0,0"
+                            Orientation="Horizontal"
+                            >
+                            <TextBlock
+                                MinWidth="180"
+                                Text="Delete Image: "
+                                />
+                            <Button
+                                MinWidth="50"
+                                Click="OnShortcutClick"
+                                Content="{Binding DeleteKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                />
+                        </StackPanel>
+
+                        <StackPanel
+                            Margin="40,10,0,0"
+                            Orientation="Horizontal"
+                            >
+                            <TextBlock
+                                MinWidth="180"
+                                Text="Stretch Image: "
+                                />
+                            <Button
+                                MinWidth="50"
+                                Click="OnShortcutClick"
+                                Content="{Binding StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                />
+                        </StackPanel>
+
+                        <StackPanel
+                            Margin="40,10,0,0"
+                            Orientation="Horizontal"
+                            >
+                            <TextBlock
+                                MinWidth="180"
+                                Text="Downsize Image: "
+                                />
+                            <Button
+                                MinWidth="50"
+                                Click="OnShortcutClick"
+                                Content="{Binding DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                />
+                        </StackPanel>
+
+                        <StackPanel
+                            Margin="40,10,0,0"
+                            Orientation="Horizontal"
+                            >
+                            <TextBlock
+                                MinWidth="180"
+                                Text="Explore Image Location: "
+                                />
+                            <Button
+                                MinWidth="50"
+                                Click="OnShortcutClick"
+                                Content="{Binding ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                />
+                        </StackPanel>
+
+                        <!--<Image Source="Resources/kblayoutkeys.png" />-->
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
             <TabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
-                Header="{localized:Static properties:Resources.About}"
+                Header="{localized:Static p:Resources.About}"
                 >
                 <ScrollViewer Margin="5">
                     <FlowDocumentScrollViewer>

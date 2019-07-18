@@ -42,6 +42,7 @@ Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Rel
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\bg-BG\*"; DestDir: "{app}\bg-BG"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\nl-BE\*"; DestDir: "{app}\nl-BE"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\nl-NL\*"; DestDir: "{app}\nl-NL"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\pt-BR\*"; DestDir: "{app}\pt-BR"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\se-SE\*"; DestDir: "{app}\se-SE"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

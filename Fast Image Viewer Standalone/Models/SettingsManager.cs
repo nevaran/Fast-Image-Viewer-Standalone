@@ -2,7 +2,7 @@
 
 namespace FIVStandard.Models
 {
-    public class SettingsManager : IDisposable
+    public class SettingsManager
     {
         public struct Settings
         {
@@ -13,7 +13,7 @@ namespace FIVStandard.Models
             public bool DownsizeImage;
             public int ShownLanguage;
         }
-        public Settings setting = new Settings();
+        public Settings settings = new Settings();
 
         public SettingsManager()
         {
@@ -22,12 +22,12 @@ namespace FIVStandard.Models
 
         public void Load()
         {
-            setting.DarkTheme = Properties.Settings.Default.DarkTheme;
-            setting.ThemeAccent = Properties.Settings.Default.ThemeAccent;
-            setting.ZoomSensitivity = Properties.Settings.Default.ZoomSensitivity;
-            setting.ImageStretched = Properties.Settings.Default.ImageStretched;
-            setting.DownsizeImage = Properties.Settings.Default.DownsizeImage;
-            setting.ShownLanguage = Properties.Settings.Default.ShownLanguage;
+            settings.DarkTheme = Properties.Settings.Default.DarkTheme;
+            settings.ThemeAccent = Properties.Settings.Default.ThemeAccent;
+            settings.ZoomSensitivity = Properties.Settings.Default.ZoomSensitivity;
+            settings.ImageStretched = Properties.Settings.Default.ImageStretched;
+            settings.DownsizeImage = Properties.Settings.Default.DownsizeImage;
+            settings.ShownLanguage = Properties.Settings.Default.ShownLanguage;
         }
 
         public void Save()
@@ -40,7 +40,7 @@ namespace FIVStandard.Models
             Save();
         }
 
-        public void Dispose()
+        public void Unload()
         {
             Properties.Settings.Default.SettingChanging -= Default_SettingChanging;
         }

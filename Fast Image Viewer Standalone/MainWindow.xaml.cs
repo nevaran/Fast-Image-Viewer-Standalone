@@ -20,6 +20,9 @@ using ToastNotifications.Messages;
 using System.Drawing;
 using System.Globalization;
 using Gu.Localization;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Input;
 
 namespace FIVStandard
 {
@@ -113,6 +116,7 @@ namespace FIVStandard
             ("bg-BG", "Български (bg-BG)"),
             ("nl-BE", "Dutch (nl-BE)"),
             ("nl-NL", "Dutch (nl-NL)"),
+            ("pt-BR", "Portuguese (pt-BR)"),
             ("se-SE", "Swedish (se-SE)"),
         };
 
@@ -158,13 +162,8 @@ namespace FIVStandard
             }
         }
 
-        public List<string> ThemeAccents
-        {
-            get
-            {
-                return new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
-            }
-        }
+        //public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
+        public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
 
         private int _themeAccentDropIndex = 0;
 
@@ -244,6 +243,131 @@ namespace FIVStandard
         }
         #endregion
 
+        #region Keys Properties
+        private bool _shortcutButtonsOn = false;
+
+        public bool ShortcutButtonsOn
+        {
+            get
+            {
+                return _shortcutButtonsOn;
+            }
+            set
+            {
+                _shortcutButtonsOn = value;
+            }
+        }
+
+        private Key _goForwardKey = Key.Right;
+
+        public Key GoForwardKey
+        {
+            get
+            {
+                return _goForwardKey;
+            }
+            set
+            {
+                _goForwardKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Key _goBackwardKey = Key.Left;
+
+        public Key GoBackwardKey
+        {
+            get
+            {
+                return _goBackwardKey;
+            }
+            set
+            {
+                _goBackwardKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Key _pauseKey = Key.Space;
+
+        public Key PauseKey
+        {
+            get
+            {
+                return _pauseKey;
+            }
+            set
+            {
+                _pauseKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Key _deleteKey = Key.Delete;
+
+        public Key DeleteKey
+        {
+            get
+            {
+                return _deleteKey;
+            }
+            set
+            {
+                _deleteKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Key _stretchImageKey = Key.F;
+
+        public Key StretchImageKey
+        {
+            get
+            {
+                return _stretchImageKey;
+            }
+            set
+            {
+                _stretchImageKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Key _downsizeImageKey = Key.D;
+
+        public Key DownsizeImageKey
+        {
+            get
+            {
+                return _downsizeImageKey;
+            }
+            set
+            {
+                _downsizeImageKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Key _exploreFileKey = Key.E;
+
+        public Key ExploreFileKey
+        {
+            get
+            {
+                return _exploreFileKey;
+            }
+            set
+            {
+                if(value == Key.Escape)
+                    _exploreFileKey = Key.None;
+                else
+                    _exploreFileKey = value;
+
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
         //private string StartupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
@@ -281,7 +405,6 @@ namespace FIVStandard
         public MainWindow()
         {
             InitializeComponent();
-
 
             //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
@@ -345,15 +468,20 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                notifier.ShowInformation($"{e.ChangeType.ToString()} \"{e.Name}\"");
+
                 GetDirectoryFiles(ActiveFolder);
+
+                if (ImagesFound.Count < 1)
+                {
+                    ClearAllMedia();
+                    return;
+                }
 
                 FindIndexInFiles(ActiveFile);
                 SetTitleInformation();
 
                 ChangeImage(0);
-
-                //MessageBox.Show("Updated: " + e.ChangeType.ToString() + " " + e.Name);
-                notifier.ShowInformation($"{e.ChangeType.ToString()} \"{e.Name}\"");
             });
         }
 
@@ -398,7 +526,7 @@ namespace FIVStandard
 
         private void SetTitleInformation()
         {
-            Title = $"[{ImageIndex + 1}/{ImagesFound.Count}] {ImagesFound[ImageIndex]}";
+            Title = $"[{ImageIndex + 1}/{ImagesFound.Count}] {ImagesFound[ImageIndex]}";//TODO: fix crash when directory of active path is deleted
         }
 
         /// <summary>
@@ -832,40 +960,40 @@ namespace FIVStandard
             ExploreFile();
         }
 
-        private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (IsDeletingFile) return;
 
-            if (e.Key == System.Windows.Input.Key.Right)
+            if (e.Key == _goForwardKey)
             {
                 ChangeImage(1);//go forward
             }
-            if (e.Key == System.Windows.Input.Key.Left)
+            if (e.Key == _goBackwardKey)
             {
                 ChangeImage(-1);//go back
             }
 
-            if (e.Key == System.Windows.Input.Key.Space)
+            if (e.Key == _pauseKey)
             {
                 TogglePause();
             }
 
-            if (e.Key == System.Windows.Input.Key.Delete && ImagesFound.Count > 0)
+            if (e.Key == _deleteKey && ImagesFound.Count > 0)
             {
                 DeleteToRecycleAsync(ActivePath);
             }
 
-            if (e.Key == System.Windows.Input.Key.F)
+            if (e.Key == _stretchImageKey)
             {
                 StretchImageToggle = !StretchImageToggle;
             }
 
-            if (e.Key == System.Windows.Input.Key.D)
+            if (e.Key == _downsizeImageKey)
             {
                 DownsizeImageToggle = !DownsizeImageToggle;
             }
 
-            if (e.Key == System.Windows.Input.Key.E)
+            if (e.Key == _exploreFileKey)
             {
                 ExploreFile();
             }
@@ -889,11 +1017,11 @@ namespace FIVStandard
         {
             if (IsDeletingFile) return;
 
-            if (e.ChangedButton == System.Windows.Input.MouseButton.XButton1)
+            if (e.ChangedButton == MouseButton.XButton1)
             {
                 ChangeImage(-1);//go back
             }
-            if (e.ChangedButton == System.Windows.Input.MouseButton.XButton2)
+            if (e.ChangedButton == MouseButton.XButton2)
             {
                 ChangeImage(1);//go forward
             }
@@ -982,5 +1110,102 @@ namespace FIVStandard
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         #endregion
+
+        private void OnShortcutClick(object sender, RoutedEventArgs e)
+        {
+            //TODO get propetty via control
+            System.Windows.Controls.Button b = (System.Windows.Controls.Button)sender;
+
+            Binding myBinding = BindingOperations.GetBinding(b, System.Windows.Controls.Button.ContentProperty);
+            string p = myBinding.Path.Path;
+        }
+    }
+
+    public class TextToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var color = (string)value;
+            var c = new System.Windows.Media.Color
+            {
+                A = 255
+            };
+            if (color == "Emerald")
+            {
+                c.R = 7;
+                c.G = 117;
+                c.B = 7;
+                SolidColorBrush brush = new SolidColorBrush(c);
+
+                return brush;
+            }
+            else if (color == "Cobalt")
+            {
+                c.R = 7;
+                c.G = 71;
+                c.B = 198;
+                SolidColorBrush brush = new SolidColorBrush(c);
+
+                return brush;
+            }
+            else if (color == "Amber")
+            {
+                c.R = 199;
+                c.G = 137;
+                c.B = 15;
+                SolidColorBrush brush = new SolidColorBrush(c);
+
+                return brush;
+            }
+            else if (color == "Steel")
+            {
+                c.R = 87;
+                c.G = 101;
+                c.B = 115;
+                SolidColorBrush brush = new SolidColorBrush(c);
+
+                return brush;
+            }
+            else if (color == "Mauve")
+            {
+                c.R = 101;
+                c.G = 84;
+                c.B = 117;
+                SolidColorBrush brush = new SolidColorBrush(c);
+
+                return brush;
+            }
+            else if (color == "Taupe")
+            {
+                c.R = 115;
+                c.G = 104;
+                c.B = 69;
+                SolidColorBrush brush = new SolidColorBrush(c);
+
+                return brush;
+            }
+            else
+            {
+                return (SolidColorBrush)new BrushConverter().ConvertFromString(color);
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class KeyToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((Key)value).ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
