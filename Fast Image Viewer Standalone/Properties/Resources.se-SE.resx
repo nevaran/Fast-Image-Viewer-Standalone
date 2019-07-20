@@ -178,4 +178,10 @@
   <data name="Off" xml:space="preserve">
     <value>Av</value>
   </data>
+  <data name="DownsizeImageShortcut" xml:space="preserve">
+    <value>Sträck bild </value>
+  </data>
+  <data name="StretchImageShortcut" xml:space="preserve">
+    <value>Sträck bild </value>
+  </data>
 </root>

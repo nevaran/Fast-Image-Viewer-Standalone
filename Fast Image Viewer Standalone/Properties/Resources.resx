@@ -178,4 +178,37 @@
   <data name="Off" xml:space="preserve">
     <value>Off</value>
   </data>
+  <data name="PreviousImageShortcut" xml:space="preserve">
+    <value>Previous image </value>
+  </data>
+  <data name="NextImageShortcut" xml:space="preserve">
+    <value>Next image </value>
+  </data>
+  <data name="DeleteImageShortcut" xml:space="preserve">
+    <value>Delete image </value>
+  </data>
+  <data name="DownsizeImageShortcut" xml:space="preserve">
+    <value>Downsize image </value>
+  </data>
+  <data name="PauseAnimationShortcut" xml:space="preserve">
+    <value>Pause animation </value>
+  </data>
+  <data name="StretchImageShortcut" xml:space="preserve">
+    <value>Stretch image </value>
+  </data>
+  <data name="ExploreImageLocationShortcut" xml:space="preserve">
+    <value>Explore image location </value>
+  </data>
+  <data name="Shortcuts" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="FileNotFoundMsg" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="ImgOrientationFailedMsg" xml:space="preserve">
+    <value>Could not get image orientation</value>
+  </data>
 </root>

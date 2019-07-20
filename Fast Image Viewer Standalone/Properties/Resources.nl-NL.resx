@@ -143,10 +143,10 @@
     <value>Bestandslocatie openen</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Bestand Verwijderen</value>
+    <value>Bestand verwijderen</value>
   </data>
   <data name="ShownLanguageInfo" xml:space="preserve">
-    <value>Weergegeven taal weizigen.</value>
+    <value>Weergegeven taal wijzigen.</value>
   </data>
   <data name="DarkMode" xml:space="preserve">
     <value>Donkere modus</value>
@@ -177,5 +177,11 @@
   </data>
   <data name="DownsizeImageInfo" xml:space="preserve">
     <value>Afbeeldingsgrootte aanpassen aan huidig venster. Dit verlaagt geheugengebruik voor afbeeldingen die groter zijn dan het scherm.</value>
+  </data>
+  <data name="StretchImageShortcut" xml:space="preserve">
+    <value>Afbeelding uitvergroten </value>
+  </data>
+  <data name="DownsizeImageShortcut" xml:space="preserve">
+    <value>Afbeelding krimpen </value>
   </data>
 </root>

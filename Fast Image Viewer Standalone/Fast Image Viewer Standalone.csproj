@@ -125,14 +125,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\SettingsManager.cs" />
+    <Compile Include="Models\UpdateCheck.cs" />
     <Compile Include="Models\WpfScreen.cs" />
     <Compile Include="Properties\Resources.pt-BR.Designer.cs">
       <DependentUpon>Resources.pt-BR.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Resources.nl-BE.Designer.cs">
-      <DependentUpon>Resources.nl-BE.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -182,10 +178,6 @@
     <EmbeddedResource Include="Properties\Resources.pt-BR.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.pt-BR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.nl-BE.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.nl-BE.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.se-SE.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

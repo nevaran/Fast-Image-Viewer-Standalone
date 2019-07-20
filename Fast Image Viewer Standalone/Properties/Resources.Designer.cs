@@ -70,6 +70,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string CheckForUpdates {
+            get {
+                return ResourceManager.GetString("CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dark Mode.
         /// </summary>
         public static string DarkMode {
@@ -93,6 +102,15 @@ namespace FIVStandard.Properties {
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete image .
+        /// </summary>
+        public static string DeleteImageShortcut {
+            get {
+                return ResourceManager.GetString("DeleteImageShortcut", resourceCulture);
             }
         }
         
@@ -124,6 +142,33 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downsize image .
+        /// </summary>
+        public static string DownsizeImageShortcut {
+            get {
+                return ResourceManager.GetString("DownsizeImageShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explore image location .
+        /// </summary>
+        public static string ExploreImageLocationShortcut {
+            get {
+                return ResourceManager.GetString("ExploreImageLocationShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File not found.
+        /// </summary>
+        public static string FileNotFoundMsg {
+            get {
+                return ResourceManager.GetString("FileNotFoundMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         public static System.Drawing.Icon FIVIcon {
@@ -148,6 +193,24 @@ namespace FIVStandard.Properties {
         public static string Help {
             get {
                 return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not get image orientation.
+        /// </summary>
+        public static string ImgOrientationFailedMsg {
+            get {
+                return ResourceManager.GetString("ImgOrientationFailedMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next image .
+        /// </summary>
+        public static string NextImageShortcut {
+            get {
+                return ResourceManager.GetString("NextImageShortcut", resourceCulture);
             }
         }
         
@@ -188,11 +251,38 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause animation .
+        /// </summary>
+        public static string PauseAnimationShortcut {
+            get {
+                return ResourceManager.GetString("PauseAnimationShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous image .
+        /// </summary>
+        public static string PreviousImageShortcut {
+            get {
+                return ResourceManager.GetString("PreviousImageShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortcuts.
+        /// </summary>
+        public static string Shortcuts {
+            get {
+                return ResourceManager.GetString("Shortcuts", resourceCulture);
             }
         }
         
@@ -220,6 +310,15 @@ namespace FIVStandard.Properties {
         public static string StretchImageInfo {
             get {
                 return ResourceManager.GetString("StretchImageInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stretch image .
+        /// </summary>
+        public static string StretchImageShortcut {
+            get {
+                return ResourceManager.GetString("StretchImageShortcut", resourceCulture);
             }
         }
         

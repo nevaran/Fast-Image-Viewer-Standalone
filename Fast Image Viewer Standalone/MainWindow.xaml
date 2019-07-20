@@ -361,12 +361,6 @@
 
                         </Grid>
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -374,6 +368,12 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
                             <Separator
                                 Grid.Row="0"
@@ -511,141 +511,171 @@
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.Help}"
                 >
-                <ScrollViewer>
-                    <StackPanel Margin="10">
-                        <TextBlock
-                            FontSize="30"
-                            Text="Shortcuts"
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            Click="OnCheckUpdateClick"
+                            Content="Check for Updates"
+                            Focusable="False"
+                            IsTabStop="False"
                             />
 
-                        <StackPanel
-                            Margin="40,10,0,0"
-                            Orientation="Horizontal"
-                            >
-                            <TextBlock
-                                MinWidth="180"
-                                Text="Prev Image: "
-                                />
-                            <Button
-                                MinWidth="50"
-                                Click="OnShortcutClick"
-                                Content="{Binding GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                                IsTabStop="False"
-                                />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="0,0,0,10"
+                            FontSize="30"
+                            Text="{localized:Static p:Resources.Shortcuts}"
+                            />
 
-                        <StackPanel
-                            Margin="40,10,0,0"
-                            Orientation="Horizontal"
-                            >
-                            <TextBlock
-                                MinWidth="180"
-                                Text="Next Image: "
-                                />
-                            <Button
-                                MinWidth="50"
-                                Click="OnShortcutClick"
-                                Content="{Binding GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                                IsTabStop="False"
-                                />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Margin="30,0,0,0"
+                            Text="{localized:Static p:Resources.PreviousImageShortcut}"
+                            />
+                        <Button
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            MinWidth="50"
+                            HorizontalAlignment="Left"
+                            Click="OnShortcutClick"
+                            Content="{Binding GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
+                            Focusable="False"
+                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                            IsTabStop="False"
+                            />
 
-                        <StackPanel
-                            Margin="40,10,0,0"
-                            Orientation="Horizontal"
-                            >
-                            <TextBlock
-                                MinWidth="180"
-                                Text="Pause: "
-                                />
-                            <Button
-                                MinWidth="50"
-                                Click="OnShortcutClick"
-                                Content="{Binding PauseKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                                IsTabStop="False"
-                                />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="30,0,0,0"
+                            Text="{localized:Static p:Resources.NextImageShortcut}"
+                            />
+                        <Button
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            MinWidth="50"
+                            HorizontalAlignment="Left"
+                            Click="OnShortcutClick"
+                            Content="{Binding GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
+                            Focusable="False"
+                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                            IsTabStop="False"
+                            />
 
-                        <StackPanel
-                            Margin="40,10,0,0"
-                            Orientation="Horizontal"
-                            >
-                            <TextBlock
-                                MinWidth="180"
-                                Text="Delete Image: "
-                                />
-                            <Button
-                                MinWidth="50"
-                                Click="OnShortcutClick"
-                                Content="{Binding DeleteKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                                IsTabStop="False"
-                                />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Margin="30,0,0,0"
+                            Text="{localized:Static p:Resources.PauseAnimationShortcut}"
+                            />
+                        <Button
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            MinWidth="50"
+                            HorizontalAlignment="Left"
+                            Click="OnShortcutClick"
+                            Content="{Binding PauseKey, Converter={StaticResource KeyToStringConverter}}"
+                            Focusable="False"
+                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                            IsTabStop="False"
+                            />
 
-                        <StackPanel
-                            Margin="40,10,0,0"
-                            Orientation="Horizontal"
-                            >
-                            <TextBlock
-                                MinWidth="180"
-                                Text="Stretch Image: "
-                                />
-                            <Button
-                                MinWidth="50"
-                                Click="OnShortcutClick"
-                                Content="{Binding StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                                IsTabStop="False"
-                                />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Margin="30,0,0,0"
+                            Text="{localized:Static p:Resources.DeleteImageShortcut}"
+                            />
+                        <Button
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            MinWidth="50"
+                            HorizontalAlignment="Left"
+                            Click="OnShortcutClick"
+                            Content="{Binding DeleteKey, Converter={StaticResource KeyToStringConverter}}"
+                            Focusable="False"
+                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                            IsTabStop="False"
+                            />
 
-                        <StackPanel
-                            Margin="40,10,0,0"
-                            Orientation="Horizontal"
-                            >
-                            <TextBlock
-                                MinWidth="180"
-                                Text="Downsize Image: "
-                                />
-                            <Button
-                                MinWidth="50"
-                                Click="OnShortcutClick"
-                                Content="{Binding DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                                IsTabStop="False"
-                                />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Margin="30,0,0,0"
+                            Text="{localized:Static p:Resources.StretchImageShortcut}"
+                            />
+                        <Button
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            MinWidth="50"
+                            HorizontalAlignment="Left"
+                            Click="OnShortcutClick"
+                            Content="{Binding StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
+                            Focusable="False"
+                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                            IsTabStop="False"
+                            />
 
-                        <StackPanel
-                            Margin="40,10,0,0"
-                            Orientation="Horizontal"
-                            >
-                            <TextBlock
-                                MinWidth="180"
-                                Text="Explore Image Location: "
-                                />
-                            <Button
-                                MinWidth="50"
-                                Click="OnShortcutClick"
-                                Content="{Binding ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                                IsTabStop="False"
-                                />
-                        </StackPanel>
+                        <TextBlock
+                            Grid.Row="7"
+                            Grid.Column="0"
+                            Margin="30,0,0,0"
+                            Text="{localized:Static p:Resources.DownsizeImageShortcut}"
+                            />
+                        <Button
+                            Grid.Row="7"
+                            Grid.Column="1"
+                            MinWidth="50"
+                            HorizontalAlignment="Left"
+                            Click="OnShortcutClick"
+                            Content="{Binding DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
+                            Focusable="False"
+                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                            IsTabStop="False"
+                            />
+
+                        <TextBlock
+                            Grid.Row="8"
+                            Grid.Column="0"
+                            Margin="30,0,0,0"
+                            Text="{localized:Static p:Resources.ExploreImageLocationShortcut}"
+                            />
+                        <Button
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            MinWidth="50"
+                            HorizontalAlignment="Left"
+                            Click="OnShortcutClick"
+                            Content="{Binding ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
+                            Focusable="False"
+                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                            IsTabStop="False"
+                            />
 
                         <!--<Image Source="Resources/kblayoutkeys.png" />-->
-                    </StackPanel>
+                    </Grid>
                 </ScrollViewer>
             </TabItem>
             <TabItem
@@ -713,12 +743,7 @@
                                 </ListItem>
                                 <ListItem>
                                     <Paragraph>
-                                        Dutch (Belgium) -<Bold>SomeGuy</Bold>
-                                    </Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        Dutch (Netherlands) -<Bold>Martijn</Bold>
+                                        Dutch -<Bold>Martijn</Bold>
                                     </Paragraph>
                                 </ListItem>
                                 <ListItem>

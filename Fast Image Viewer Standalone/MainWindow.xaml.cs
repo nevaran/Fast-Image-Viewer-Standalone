@@ -23,6 +23,7 @@ using Gu.Localization;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Input;
+using FIVStandard.Models;
 
 namespace FIVStandard
 {
@@ -114,8 +115,7 @@ namespace FIVStandard
         {
             ("en", "English (en)"),
             ("bg-BG", "Български (bg-BG)"),
-            ("nl-BE", "Dutch (nl-BE)"),
-            ("nl-NL", "Dutch (nl-NL)"),
+            ("nl-NL", "Dutch (nl-BE/nl-NL)"),
             ("pt-BR", "Portuguese (pt-BR)"),
             ("se-SE", "Swedish (se-SE)"),
         };
@@ -244,7 +244,7 @@ namespace FIVStandard
         #endregion
 
         #region Keys Properties
-        private bool _shortcutButtonsOn = false;
+        private bool _shortcutButtonsOn = true;
 
         public bool ShortcutButtonsOn
         {
@@ -368,6 +368,30 @@ namespace FIVStandard
         }
         #endregion
 
+        public UpdateCheck _appUpdater;//NOTE: do not use anywhere
+
+        public UpdateCheck AppUpdater
+        {
+            get
+            {
+                if (_appUpdater == null)
+                {
+                    _appUpdater = new UpdateCheck(this);
+                }
+
+                return _appUpdater;
+            }
+            set
+            {
+                if (_appUpdater == null)
+                {
+                    _appUpdater = new UpdateCheck(this);
+                }
+
+                _appUpdater = value;
+            }
+        }
+
         //private string StartupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
@@ -387,7 +411,7 @@ namespace FIVStandard
             , IncludeSubdirectories = false
         };
 
-        readonly Notifier notifier = new Notifier(cfg =>
+        public readonly Notifier notifier = new Notifier(cfg =>
         {
             cfg.PositionProvider = new WindowPositionProvider(
                 parentWindow: Application.Current.MainWindow,
@@ -493,7 +517,7 @@ namespace FIVStandard
             //filesFound.AddRange(Directory.GetFiles(searchFolder, "*.*", SearchOption.TopDirectoryOnly));
             //filesFound.AddRange(Directory.EnumerateFiles(searchFolder).OrderBy(filename => filename));
             //filesFound.OrderBy(p => p.Substring(0)).ToList();//probably doesnt work
-            filesFound.AddRange(System.IO.Directory.EnumerateFiles(searchFolder));
+            filesFound.AddRange(Directory.EnumerateFiles(searchFolder));
 
             int c = filesFound.Count;
             for (int i = 0; i < c; i++)
@@ -826,7 +850,8 @@ namespace FIVStandard
                     else
                     {
                         //MessageBox.Show("File not found: " + path);
-                        notifier.ShowWarning($"File not found: {path}");
+                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.FileNotFoundMsg));
+                        notifier.ShowWarning($"{cultureTranslated}: {path}");
                     }
 
                     IsDeletingFile = false;
@@ -894,7 +919,8 @@ namespace FIVStandard
                 }
                 catch
                 {
-                    notifier.ShowError($"Could not get image orientation");
+                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ImgOrientationFailedMsg));
+                    notifier.ShowError(cultureTranslated);
                 }
                 img.Dispose();
             }
@@ -922,6 +948,11 @@ namespace FIVStandard
                         ImageInfoText.Text += $"{ts.Seconds}s";
                 }
             }*/
+        }
+
+        private void OnCheckUpdateClick(object sender, RoutedEventArgs e)
+        {
+            AppUpdater.CheckForUpdates();
         }
 
         private void OnLanguageClick(object sender, RoutedEventArgs e)
@@ -1114,10 +1145,10 @@ namespace FIVStandard
         private void OnShortcutClick(object sender, RoutedEventArgs e)
         {
             //TODO get propetty via control
-            System.Windows.Controls.Button b = (System.Windows.Controls.Button)sender;
+            //System.Windows.Controls.Button b = (System.Windows.Controls.Button)sender;
 
-            Binding myBinding = BindingOperations.GetBinding(b, System.Windows.Controls.Button.ContentProperty);
-            string p = myBinding.Path.Path;
+            //Binding myBinding = BindingOperations.GetBinding(b, System.Windows.Controls.Button.ContentProperty);
+            //string p = myBinding.Path.Path;
         }
     }
 

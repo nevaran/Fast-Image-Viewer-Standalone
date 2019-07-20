@@ -178,4 +178,37 @@
   <data name="Off" xml:space="preserve">
     <value>pt-BR</value>
   </data>
+  <data name="PreviousImageShortcut" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="NextImageShortcut" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="DeleteImageShortcut" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="DownsizeImageShortcut" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="PauseAnimationShortcut" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="StretchImageShortcut" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="ExploreImageLocationShortcut" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="Shortcuts" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="FileNotFoundMsg" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
+  <data name="ImgOrientationFailedMsg" xml:space="preserve">
+    <value>pt-BR</value>
+  </data>
 </root>
