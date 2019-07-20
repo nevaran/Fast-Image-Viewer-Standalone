@@ -39,6 +39,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 ;Source: "C:\Program Files (x86)\Inno Setup 6\Examples\MyProg.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\Fast Image Viewer.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\bg-BG\*"; DestDir: "{app}\bg-BG"; Flags: ignoreversion recursesubdirs createallsubdirs
 ;Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\nl-BE\*"; DestDir: "{app}\nl-BE"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\CS\Fast Image Viewer Standalone\Fast Image Viewer Standalone\bin\Release\nl-NL\*"; DestDir: "{app}\nl-NL"; Flags: ignoreversion recursesubdirs createallsubdirs
