@@ -179,9 +179,52 @@
     <value>Av</value>
   </data>
   <data name="DownsizeImageShortcut" xml:space="preserve">
-    <value>Sträck bild </value>
+    <value>Skala ner bild </value>
   </data>
   <data name="StretchImageShortcut" xml:space="preserve">
     <value>Sträck bild </value>
+  </data>
+  <data name="PreviousImageShortcut" xml:space="preserve">
+    <value>Föregående bild </value>
+  </data>
+  <data name="NextImageShortcut" xml:space="preserve">
+    <value>Nästa bild </value>
+  </data>
+  <data name="DeleteImageShortcut" xml:space="preserve">
+    <value>Radera bild </value>
+  </data>
+  <data name="PauseAnimationShortcut" xml:space="preserve">
+    <value>Pausa animation </value>
+  </data>
+  <data name="ExploreImageLocationShortcut" xml:space="preserve">
+    <value>Utforska bildplats </value>
+  </data>
+  <data name="Shortcuts" xml:space="preserve">
+    <value>Genvägar</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Kolla efter uppdateringar</value>
+  </data>
+  <data name="FileNotFoundMsg" xml:space="preserve">
+    <value>Filen hittades inte</value>
+  </data>
+  <data name="ImgOrientationFailedMsg" xml:space="preserve">
+    <value>Kunde inte hämta bildorientering</value>
+  </data>
+  <data name="ChangedWatcher" xml:space="preserve">
+    <value>Ändrad</value>
+  </data>
+  <data name="CreatedWatcher" xml:space="preserve">
+    <value>Skapad</value>
+  </data>
+  <data name="DeletedWatcher" xml:space="preserve">
+    <value>Borttagen</value>
+  </data>
+  <data name="RenamedWatcher" xml:space="preserve">
+    <value>Omdöpt</value>
+  </data>
+  <data name="AllWatcher" xml:space="preserve">
+    <value>Alla ändringar
+</value>
   </data>
 </root>

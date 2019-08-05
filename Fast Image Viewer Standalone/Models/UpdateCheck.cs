@@ -11,17 +11,22 @@ namespace FIVStandard.Models
     {
         private readonly MainWindow mainWindow;
 
+        public Version currentVersion;
+        public Version downloadVersion;
+
         private Task _task;
         private readonly object _lock = new object();
 
         public UpdateCheck(MainWindow mw)
         {
             mainWindow = mw;
+
+            currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         public Task CheckForUpdates()
         {
-            lock (_lock)
+            lock (_lock)//prevent more than one checks being started in new threads
             {
                 if (_task == null)
                 {
@@ -41,15 +46,24 @@ namespace FIVStandard.Models
                             using (var content = response.GetResponseStream())
                             using (var reader = new StreamReader(content))
                             {
-                                var strContent = reader.ReadToEnd();
+                                downloadVersion = new Version(reader.ReadLine());
+                                reader.ReadLine();
+
+                                if (HasLaterVersion())
+                                {
+
+                                }
+                                else
+                                {
+                                    DownloadNewAppVersion();
+                                }
+
                                 Application.Current.Dispatcher.Invoke(() =>
                                 {
                                     //UI thread stuff
-                                    mainWindow.notifier.ShowInformation(strContent);
+                                    mainWindow.notifier.ShowInformation(downloadVersion.ToString());
                                 });
                             }
-
-                            //_isRunning.Value = false;
                         }
                         catch (Exception e)
                         {
@@ -69,6 +83,16 @@ namespace FIVStandard.Models
 
                 return _task;
             }
+        }
+
+        private void DownloadNewAppVersion()
+        {
+
+        }
+
+        public bool HasLaterVersion()
+        {
+            return currentVersion >= downloadVersion;
         }
     }
 }

@@ -48,10 +48,11 @@
     <Grid>
         <Controls:MetroTabControl
             Focusable="False"
+            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
             IsTabStop="False"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
-            <TabItem
+            <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.General}"
                 >
@@ -170,32 +171,31 @@
                             />
                     </utils:ZoomBorder>
                 </Grid>
-            </TabItem>
-            <TabItem
+            </Controls:MetroTabItem>
+            <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.Settings}"
                 >
                 <!--  Custom content here  -->
                 <ScrollViewer Focusable="False">
-                    <WrapPanel Orientation="Horizontal">
+                    <WrapPanel
+                        Grid.IsSharedSizeScope="True"
+                        Orientation="Horizontal"
+                        >
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-
-                            <Separator
-                                Grid.Row="0"
-                                Grid.ColumnSpan="3"
-                                />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="Auto"
+                                    SharedSizeGroup="A"
+                                    />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
                             <!--<Canvas Background="Red" />
                             <Canvas
@@ -249,9 +249,9 @@
                             <!--  Language Dropdown  -->
                             <Controls:SplitButton
                                 x:Name="ShownLanguageDrop"
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Height="60"
-                                Margin="20,40,0,0"
+                                Margin="20,40,5,0"
                                 VerticalAlignment="Center"
                                 Click="OnLanguageClick"
                                 Focusable="False"
@@ -262,7 +262,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -272,7 +272,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="2"
                                 Height="60"
                                 HorizontalAlignment="Left"
@@ -283,11 +283,10 @@
 
                             <!--  Dark Mode Toggle  -->
                             <Controls:ToggleSwitch
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 Width="140"
                                 Height="100"
                                 Padding="20,40,0,0"
-                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.DarkMode}"
@@ -298,7 +297,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -308,7 +307,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 Grid.Column="2"
                                 Height="60"
                                 HorizontalAlignment="Left"
@@ -320,9 +319,9 @@
                             <!--  Theme Accent Dropdown  -->
                             <Controls:SplitButton
                                 x:Name="ThemeAccentDrop"
-                                Grid.Row="3"
+                                Grid.Row="2"
                                 Height="60"
-                                Margin="20,40,0,0"
+                                Margin="20,40,5,0"
                                 VerticalAlignment="Center"
                                 Click="OnAccentClick"
                                 Focusable="False"
@@ -340,7 +339,7 @@
                             </Controls:SplitButton>
 
                             <StackPanel
-                                Grid.Row="3"
+                                Grid.Row="2"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -350,7 +349,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="3"
+                                Grid.Row="2"
                                 Grid.Column="2"
                                 Height="60"
                                 HorizontalAlignment="Left"
@@ -358,34 +357,28 @@
                                 Text="{localized:Static p:Resources.ThemeAccentInfo}"
                                 TextWrapping="Wrap"
                                 />
-
                         </Grid>
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition
+                                    Width="Auto"
+                                    SharedSizeGroup="A"
+                                    />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-
-                            <Separator
-                                Grid.Row="0"
-                                Grid.ColumnSpan="3"
-                                />
 
                             <!--  Stretch Image Toggle  -->
                             <Controls:ToggleSwitch
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Height="100"
                                 Padding="20,40,0,0"
-                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.StretchImage}"
@@ -396,7 +389,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -406,7 +399,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="2"
                                 Height="60"
                                 Padding="0,0,20,0"
@@ -418,10 +411,9 @@
 
                             <!--  Downsize Image  -->
                             <Controls:ToggleSwitch
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 Height="100"
                                 Padding="20,40,0,0"
-                                HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.DownsizeImage}"
@@ -432,7 +424,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -442,7 +434,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 Grid.Column="2"
                                 Height="60"
                                 Padding="0,0,20,0"
@@ -454,18 +446,16 @@
 
                             <!--  Zoom Sensitivity  -->
                             <TextBlock
-                                Grid.Row="3"
+                                Grid.Row="2"
                                 Margin="10,50,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Path=ZoomSensitivityString, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
-                                Grid.Row="3"
-                                Width="120"
+                                Grid.Row="2"
                                 Height="100"
-                                Margin="5,0,0,0"
-                                HorizontalAlignment="Center"
+                                Margin="20,0,5,0"
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 IsSnapToTickEnabled="True"
@@ -478,7 +468,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="3"
+                                Grid.Row="2"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -488,7 +478,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="3"
+                                Grid.Row="2"
                                 Grid.Column="2"
                                 Height="60"
                                 HorizontalAlignment="Left"
@@ -497,23 +487,27 @@
                                 TextWrapping="Wrap"
                                 />
 
-                            <!--  End View  -->
-                            <Separator
-                                Grid.Row="7"
-                                Grid.ColumnSpan="3"
-                                />
-
+                            <!--  End Grid  -->
                         </Grid>
+
                     </WrapPanel>
                 </ScrollViewer>
-            </TabItem>
-            <TabItem
+            </Controls:MetroTabItem>
+            <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.Help}"
                 >
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid Margin="10">
+                <ScrollViewer
+                    Focusable="False"
+                    IsTabStop="False"
+                    VerticalScrollBarVisibility="Auto"
+                    >
+                    <Grid
+                        Margin="10"
+                        Focusable="False"
+                        >
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -530,20 +524,11 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Button
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            HorizontalAlignment="Right"
-                            Click="OnCheckUpdateClick"
-                            Content="Check for Updates"
-                            Focusable="False"
-                            IsTabStop="False"
-                            />
-
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
                             Margin="0,0,0,10"
+                            Focusable="False"
                             FontSize="30"
                             Text="{localized:Static p:Resources.Shortcuts}"
                             />
@@ -552,208 +537,262 @@
                             Grid.Row="2"
                             Grid.Column="0"
                             Margin="30,0,0,0"
+                            Focusable="False"
                             Text="{localized:Static p:Resources.PreviousImageShortcut}"
                             />
                         <Button
                             Grid.Row="2"
                             Grid.Column="1"
-                            MinWidth="50"
+                            MinWidth="80"
+                            Margin="0,0,0,5"
                             HorizontalAlignment="Left"
                             Click="OnShortcutClick"
                             Content="{Binding GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
                             Focusable="False"
                             IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
                             IsTabStop="False"
+                            Tag="{Binding GoBackwardKey, Mode=TwoWay}"
                             />
 
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="0"
                             Margin="30,0,0,0"
+                            Focusable="False"
                             Text="{localized:Static p:Resources.NextImageShortcut}"
                             />
                         <Button
                             Grid.Row="3"
                             Grid.Column="1"
-                            MinWidth="50"
+                            MinWidth="80"
+                            Margin="0,0,0,5"
                             HorizontalAlignment="Left"
                             Click="OnShortcutClick"
                             Content="{Binding GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
                             Focusable="False"
                             IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
                             IsTabStop="False"
+                            Tag="{Binding GoForwardKey, Mode=TwoWay}"
                             />
 
                         <TextBlock
                             Grid.Row="4"
                             Grid.Column="0"
                             Margin="30,0,0,0"
+                            Focusable="False"
                             Text="{localized:Static p:Resources.PauseAnimationShortcut}"
                             />
                         <Button
                             Grid.Row="4"
                             Grid.Column="1"
-                            MinWidth="50"
+                            MinWidth="80"
+                            Margin="0,0,0,5"
                             HorizontalAlignment="Left"
                             Click="OnShortcutClick"
                             Content="{Binding PauseKey, Converter={StaticResource KeyToStringConverter}}"
                             Focusable="False"
                             IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
                             IsTabStop="False"
+                            Tag="{Binding PauseKey, Mode=TwoWay}"
                             />
 
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="0"
                             Margin="30,0,0,0"
+                            Focusable="False"
                             Text="{localized:Static p:Resources.DeleteImageShortcut}"
                             />
                         <Button
                             Grid.Row="5"
                             Grid.Column="1"
-                            MinWidth="50"
+                            MinWidth="80"
+                            Margin="0,0,0,5"
                             HorizontalAlignment="Left"
                             Click="OnShortcutClick"
                             Content="{Binding DeleteKey, Converter={StaticResource KeyToStringConverter}}"
                             Focusable="False"
                             IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
                             IsTabStop="False"
+                            Tag="{Binding DeleteKey, Mode=TwoWay}"
                             />
 
                         <TextBlock
                             Grid.Row="6"
                             Grid.Column="0"
                             Margin="30,0,0,0"
+                            Focusable="False"
                             Text="{localized:Static p:Resources.StretchImageShortcut}"
                             />
                         <Button
                             Grid.Row="6"
                             Grid.Column="1"
-                            MinWidth="50"
+                            MinWidth="80"
+                            Margin="0,0,0,5"
                             HorizontalAlignment="Left"
                             Click="OnShortcutClick"
                             Content="{Binding StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
                             Focusable="False"
                             IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
                             IsTabStop="False"
+                            Tag="{Binding StretchImageKey, Mode=TwoWay}"
                             />
 
                         <TextBlock
                             Grid.Row="7"
                             Grid.Column="0"
                             Margin="30,0,0,0"
+                            Focusable="False"
                             Text="{localized:Static p:Resources.DownsizeImageShortcut}"
                             />
                         <Button
                             Grid.Row="7"
                             Grid.Column="1"
-                            MinWidth="50"
+                            MinWidth="80"
+                            Margin="0,0,0,5"
                             HorizontalAlignment="Left"
                             Click="OnShortcutClick"
                             Content="{Binding DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
                             Focusable="False"
                             IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
                             IsTabStop="False"
+                            Tag="{Binding DownsizeImageKey, Mode=TwoWay}"
                             />
 
                         <TextBlock
                             Grid.Row="8"
                             Grid.Column="0"
                             Margin="30,0,0,0"
+                            Focusable="False"
                             Text="{localized:Static p:Resources.ExploreImageLocationShortcut}"
                             />
                         <Button
                             Grid.Row="8"
                             Grid.Column="1"
-                            MinWidth="50"
+                            MinWidth="80"
+                            Margin="0,0,0,5"
                             HorizontalAlignment="Left"
                             Click="OnShortcutClick"
                             Content="{Binding ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
                             Focusable="False"
                             IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
                             IsTabStop="False"
+                            Tag="{Binding ExploreFileKey, Mode=TwoWay}"
                             />
 
                         <!--<Image Source="Resources/kblayoutkeys.png" />-->
                     </Grid>
                 </ScrollViewer>
-            </TabItem>
-            <TabItem
+            </Controls:MetroTabItem>
+            <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.About}"
                 >
-                <ScrollViewer Margin="5">
-                    <FlowDocumentScrollViewer>
-                        <FlowDocument>
-                            <Paragraph>
-                                <Image
-                                    Width="50"
-                                    Height="50"
-                                    Margin="0,0,30,0"
-                                    Source="Resources/FIVIcon.ico"
-                                    />
-                                <Run FontSize="60">FIV</Run>
-                            </Paragraph>
+                <ScrollViewer
+                    Margin="5"
+                    VerticalScrollBarVisibility="Auto"
+                    >
+                    <Grid
+                        Margin="10"
+                        Focusable="False"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                            <Paragraph>
-                                Created by Antoniy &quot;Nevaran&quot; Sapundzhiev
-                            </Paragraph>
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            Click="OnCheckUpdateClick"
+                            Content="Check for Updates"
+                            Focusable="False"
+                            IsTabStop="False"
+                            />
 
-                            <Paragraph>
-                                Used libraries:
-                            </Paragraph>
+                        <FlowDocumentScrollViewer
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Focusable="False"
+                            IsTabStop="False"
+                            VerticalScrollBarVisibility="Disabled"
+                            >
+                            <FlowDocument Focusable="False">
+                                <Paragraph>
+                                    <Image
+                                        Width="50"
+                                        Height="50"
+                                        Margin="0,0,30,0"
+                                        Source="Resources/FIVIcon.ico"
+                                        />
+                                    <Run FontSize="60">FIV</Run>
+                                </Paragraph>
 
-                            <List>
-                                <ListItem>
-                                    <Paragraph>
-                                        <Bold>MahApps.Metro</Bold>
-                                        by Jan Karger, Dennis Daume, Brendan Forster, Paul Jenkins, Jake Ginnivan, Alex Mitchell</Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        <Bold>ToastNotifications</Bold>
-                                        by DevCrew.pl Rafał Łopatka</Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        <Bold>Fody</Bold>
-                                        by Fody</Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        <Bold>Gu.Localization</Bold>
-                                        by Johan Larsson</Paragraph>
-                                </ListItem>
-                            </List>
+                                <Paragraph>
+                                    Created by Antoniy &quot;Nevaran&quot; Sapundzhiev
+                                </Paragraph>
 
-                            <Paragraph>
-                                Translators:
-                            </Paragraph>
+                                <Paragraph>
+                                    Used libraries:
+                                </Paragraph>
 
-                            <List>
-                                <ListItem>
-                                    <Paragraph>
-                                        English -<Bold>Nevaran</Bold>
-                                    </Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        Bulgarian -<Bold>Nevaran</Bold>
-                                    </Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        Dutch -<Bold>Martijn</Bold>
-                                    </Paragraph>
-                                </ListItem>
-                                <ListItem>
-                                    <Paragraph>
-                                        Sami (Northern) -<Bold>Daniel Pedersen</Bold>
-                                    </Paragraph>
-                                </ListItem>
-                            </List>
+                                <List>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>MahApps.Metro</Bold>
+                                            by Jan Karger, Dennis Daume, Brendan Forster, Paul Jenkins, Jake Ginnivan, Alex Mitchell</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>ToastNotifications</Bold>
+                                            by DevCrew.pl Rafał Łopatka</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>Fody</Bold>
+                                            by Fody</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>Gu.Localization</Bold>
+                                            by Johan Larsson</Paragraph>
+                                    </ListItem>
+                                </List>
 
-                            <!--<Table CellSpacing="0">
+                                <Paragraph>
+                                    Translators:
+                                </Paragraph>
+
+                                <List>
+                                    <ListItem>
+                                        <Paragraph>
+                                            English -<Bold>Antoniy Sapundzhiev</Bold>
+                                        </Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            Bulgarian -<Bold>Antoniy Sapundzhiev</Bold>
+                                        </Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            Dutch -<Bold>Martijn</Bold>
+                                        </Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            Swedish -<Bold>Daniel Pedersen</Bold>
+                                        </Paragraph>
+                                    </ListItem>
+                                </List>
+
+                                <!--<Table CellSpacing="0">
                             <TableRowGroup>
                                 <TableRow FontWeight="Bold">
                                     <TableCell />
@@ -794,10 +833,11 @@
                             </TableRowGroup>
                         </Table>
                         <Paragraph FontStyle="Italic" Foreground="Silver">A table of made up WinForms/WPF numbers</Paragraph>-->
-                        </FlowDocument>
-                    </FlowDocumentScrollViewer>
+                            </FlowDocument>
+                        </FlowDocumentScrollViewer>
+                    </Grid>
                 </ScrollViewer>
-            </TabItem>
+            </Controls:MetroTabItem>
         </Controls:MetroTabControl>
     </Grid>
 </Controls:MetroWindow>

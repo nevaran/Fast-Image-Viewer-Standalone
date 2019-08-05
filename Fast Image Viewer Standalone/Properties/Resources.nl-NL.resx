@@ -178,37 +178,52 @@
   <data name="DownsizeImageInfo" xml:space="preserve">
     <value>Afbeeldingsgrootte aanpassen aan huidig venster. Dit verlaagt geheugengebruik voor afbeeldingen die groter zijn dan het scherm.</value>
   </data>
+  <data name="PreviousImageShortcut" xml:space="preserve">
+    <value>Vorige afbeelding </value>
+  </data>
+  <data name="NextImageShortcut" xml:space="preserve">
+    <value>Volgende afbeelding </value>
+  </data>
+  <data name="DeleteImageShortcut" xml:space="preserve">
+    <value>Afbeelding verwijderen </value>
+  </data>
+  <data name="PauseAnimationShortcut" xml:space="preserve">
+    <value>Animatie pauzeren </value>
+  </data>
+  <data name="ExploreImageLocationShortcut" xml:space="preserve">
+    <value>Locatie van afbeelding zoeken </value>
+  </data>
+  <data name="Shortcuts" xml:space="preserve">
+    <value>Sneltoetsen</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Controleer op updates</value>
+  </data>
+  <data name="FileNotFoundMsg" xml:space="preserve">
+    <value>Bestand niet gevonden</value>
+  </data>
+  <data name="ImgOrientationFailedMsg" xml:space="preserve">
+    <value>Kon de richting van de afbeelding niet vinden</value>
+  </data>
   <data name="StretchImageShortcut" xml:space="preserve">
     <value>Afbeelding uitvergroten </value>
   </data>
   <data name="DownsizeImageShortcut" xml:space="preserve">
     <value>Afbeelding krimpen </value>
   </data>
-  <data name="PreviousImageShortcut" xml:space="preserve">
-    <value>Vorige afbeelding</value>
+  <data name="ChangedWatcher" xml:space="preserve">
+    <value>Gewijzigd</value>
   </data>
-  <data name="NextImageShortcut" xml:space="preserve">
-    <value>Volgende afbeelding</value>
+  <data name="CreatedWatcher" xml:space="preserve">
+    <value>Gemaakt</value>
   </data>
-  <data name="DeleteImageShortcut" xml:space="preserve">
-    <value>Installatiekopie verwijderen</value>
+  <data name="DeletedWatcher" xml:space="preserve">
+    <value>Verwijderd</value>
   </data>
-  <data name="PauseAnimationShortcut" xml:space="preserve">
-    <value>Pauzeer animatie!</value>
+  <data name="RenamedWatcher" xml:space="preserve">
+    <value>Naam is gewijzigd</value>
   </data>
-  <data name="ExploreImageLocationShortcut" xml:space="preserve">
-    <value>Ontdek de afbeeldingslocatie!</value>
-  </data>
-  <data name="Shortcuts" xml:space="preserve">
-    <value>Snelkoppelingen</value>
-  </data>
-  <data name="CheckForUpdates" xml:space="preserve">
-    <value>Controleren op updates</value>
-  </data>
-  <data name="FileNotFoundMsg" xml:space="preserve">
-    <value>Het bestand | kan niet worden gevonden</value>
-  </data>
-  <data name="ImgOrientationFailedMsg" xml:space="preserve">
-    <value>Kon de afbeeldingsoriëntatie niet krijgen!</value>
+  <data name="AllWatcher" xml:space="preserve">
+    <value>Alle wijzigingen</value>
   </data>
 </root>

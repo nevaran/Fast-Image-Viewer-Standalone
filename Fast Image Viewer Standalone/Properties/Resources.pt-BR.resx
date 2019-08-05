@@ -211,4 +211,19 @@
   <data name="ImgOrientationFailedMsg" xml:space="preserve">
     <value>Não foi possível obter a orientação da imagem</value>
   </data>
+  <data name="AllWatcher" xml:space="preserve">
+    <value>Todas as Alterações</value>
+  </data>
+  <data name="RenamedWatcher" xml:space="preserve">
+    <value>Renomeado</value>
+  </data>
+  <data name="DeletedWatcher" xml:space="preserve">
+    <value>Excluído</value>
+  </data>
+  <data name="CreatedWatcher" xml:space="preserve">
+    <value>Criado</value>
+  </data>
+  <data name="ChangedWatcher" xml:space="preserve">
+    <value>Alterado</value>
+  </data>
 </root>

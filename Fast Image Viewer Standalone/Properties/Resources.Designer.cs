@@ -70,11 +70,38 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Changes.
+        /// </summary>
+        public static string AllWatcher {
+            get {
+                return ResourceManager.GetString("AllWatcher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changed.
+        /// </summary>
+        public static string ChangedWatcher {
+            get {
+                return ResourceManager.GetString("ChangedWatcher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check for Updates.
         /// </summary>
         public static string CheckForUpdates {
             get {
                 return ResourceManager.GetString("CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created.
+        /// </summary>
+        public static string CreatedWatcher {
+            get {
+                return ResourceManager.GetString("CreatedWatcher", resourceCulture);
             }
         }
         
@@ -102,6 +129,15 @@ namespace FIVStandard.Properties {
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted.
+        /// </summary>
+        public static string DeletedWatcher {
+            get {
+                return ResourceManager.GetString("DeletedWatcher", resourceCulture);
             }
         }
         
@@ -265,6 +301,15 @@ namespace FIVStandard.Properties {
         public static string PreviousImageShortcut {
             get {
                 return ResourceManager.GetString("PreviousImageShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Renamed.
+        /// </summary>
+        public static string RenamedWatcher {
+            get {
+                return ResourceManager.GetString("RenamedWatcher", resourceCulture);
             }
         }
         

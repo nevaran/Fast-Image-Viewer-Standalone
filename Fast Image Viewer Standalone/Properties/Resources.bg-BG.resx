@@ -211,4 +211,19 @@
   <data name="ImgOrientationFailedMsg" xml:space="preserve">
     <value>Ориентацията на изображението не можа да се вземе</value>
   </data>
+  <data name="ChangedWatcher" xml:space="preserve">
+    <value>Променен</value>
+  </data>
+  <data name="CreatedWatcher" xml:space="preserve">
+    <value>Създаден</value>
+  </data>
+  <data name="DeletedWatcher" xml:space="preserve">
+    <value>Изтрит</value>
+  </data>
+  <data name="RenamedWatcher" xml:space="preserve">
+    <value>Преименуван</value>
+  </data>
+  <data name="AllWatcher" xml:space="preserve">
+    <value>Всички промени</value>
+  </data>
 </root>

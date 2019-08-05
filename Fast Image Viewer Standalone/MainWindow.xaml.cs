@@ -255,6 +255,7 @@ namespace FIVStandard
             set
             {
                 _shortcutButtonsOn = value;
+                OnPropertyChanged();
             }
         }
 
@@ -358,11 +359,7 @@ namespace FIVStandard
             }
             set
             {
-                if(value == Key.Escape)
-                    _exploreFileKey = Key.None;
-                else
-                    _exploreFileKey = value;
-
+                 _exploreFileKey = value;
                 OnPropertyChanged();
             }
         }
@@ -398,6 +395,8 @@ namespace FIVStandard
 
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */, ".JPG", ".JPEG", ".GIF", ".BMP", ".ICO", ".PNG" };//TODO: doesnt work: tiff svg
         private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
+
+        private System.Windows.Controls.Button editingButton = null;
 
         private bool IsDeletingFile { get; set; } = false;
 
@@ -471,7 +470,7 @@ namespace FIVStandard
 
         public void OpenNewFile(string path)
         {
-            if (IsDeletingFile) return;
+            if (IsDeletingFile || _shortcutButtonsOn == false) return;
 
             ActiveFile = Path.GetFileName(path);
             ActiveFolder = Path.GetDirectoryName(path);
@@ -492,7 +491,26 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                notifier.ShowInformation($"{e.ChangeType.ToString()} \"{e.Name}\"");
+                string cultureChangeType;
+                switch (e.ChangeType)
+                {
+                    case WatcherChangeTypes.Changed:
+                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ChangedWatcher));
+                        break;
+                    case WatcherChangeTypes.Created:
+                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CreatedWatcher));
+                        break;
+                    case WatcherChangeTypes.Deleted:
+                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DeletedWatcher));
+                        break;
+                    case WatcherChangeTypes.Renamed:
+                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.RenamedWatcher));
+                        break;
+                    default:
+                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AllWatcher));
+                        break;
+                }
+                notifier.ShowInformation($"{cultureChangeType} \"{e.Name}\"");
 
                 GetDirectoryFiles(ActiveFolder);
 
@@ -981,7 +999,7 @@ namespace FIVStandard
 
         private void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (IsDeletingFile || _shortcutButtonsOn == false) return;
 
             DeleteToRecycleAsync(ActivePath);
         }
@@ -993,6 +1011,21 @@ namespace FIVStandard
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            if (_shortcutButtonsOn == false)
+            {
+                if (e.Key == Key.System || e.Key == Key.LWin || e.Key == Key.RWin) return;//blacklisted keys
+
+                if(e.Key != Key.Escape)
+                {
+                    editingButton.Tag = e.Key;
+                    //MessageBox.Show(((int)e.Key).ToString());
+                }
+
+                ShortcutButtonsOn = true;
+
+                return;
+            }
+
             if (IsDeletingFile) return;
 
             if (e.Key == _goForwardKey)
@@ -1032,21 +1065,21 @@ namespace FIVStandard
 
         private void OnClick_Next(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (IsDeletingFile || _shortcutButtonsOn == false) return;
 
             ChangeImage(1);//go forward
         }
 
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (IsDeletingFile || _shortcutButtonsOn == false) return;
 
             ChangeImage(-1);//go back
         }
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (IsDeletingFile || _shortcutButtonsOn == false) return;
 
             if (e.ChangedButton == MouseButton.XButton1)
             {
@@ -1060,7 +1093,7 @@ namespace FIVStandard
 
         private void OnOpenBrowseImage(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile) return;
+            if (IsDeletingFile || _shortcutButtonsOn == false) return;
 
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
@@ -1144,8 +1177,11 @@ namespace FIVStandard
 
         private void OnShortcutClick(object sender, RoutedEventArgs e)
         {
-            //TODO get propetty via control
-            //System.Windows.Controls.Button b = (System.Windows.Controls.Button)sender;
+            editingButton = (System.Windows.Controls.Button)sender;
+
+            ShortcutButtonsOn = false;//disable the buttons until done editing
+
+            //TODO: put text when editing for user to know; save changed buttons; add reset button for key resets
 
             //Binding myBinding = BindingOperations.GetBinding(b, System.Windows.Controls.Button.ContentProperty);
             //string p = myBinding.Path.Path;
