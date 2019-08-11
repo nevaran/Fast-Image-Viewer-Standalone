@@ -124,6 +124,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CopyFileToClipboard.cs" />
     <Compile Include="Models\SettingsManager.cs" />
     <Compile Include="Models\UpdateCheck.cs" />
     <Compile Include="Models\WpfScreen.cs" />

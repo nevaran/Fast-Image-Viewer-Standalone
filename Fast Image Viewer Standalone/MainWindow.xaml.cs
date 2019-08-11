@@ -24,6 +24,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Input;
 using FIVStandard.Models;
+using System.Collections.Specialized;
 
 namespace FIVStandard
 {
@@ -363,6 +364,21 @@ namespace FIVStandard
                 OnPropertyChanged();
             }
         }
+
+        private Key _copyToClipboardKey = Key.C;
+
+        public Key CopyToClipboardKey
+        {
+            get
+            {
+                return _copyToClipboardKey;
+            }
+            set
+            {
+                _copyToClipboardKey = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         public UpdateCheck _appUpdater;//NOTE: do not use anywhere
@@ -388,6 +404,8 @@ namespace FIVStandard
                 _appUpdater = value;
             }
         }
+
+        public CopyFileToClipboard ToClipboard;
 
         //private string StartupPath;//program startup path
 
@@ -428,6 +446,8 @@ namespace FIVStandard
         public MainWindow()
         {
             InitializeComponent();
+
+            ToClipboard = new CopyFileToClipboard();
 
             //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
@@ -521,7 +541,7 @@ namespace FIVStandard
                 }
 
                 FindIndexInFiles(ActiveFile);
-                SetTitleInformation();
+                //SetTitleInformation();
 
                 ChangeImage(0);
             });
@@ -842,6 +862,8 @@ namespace FIVStandard
 
         private Task DeleteToRecycleAsync(string path)
         {
+            if (!File.Exists(path)) return Task.CompletedTask;
+
             return Task.Run(() =>
             {
                 try
@@ -869,15 +891,21 @@ namespace FIVStandard
                     {
                         //MessageBox.Show("File not found: " + path);
                         string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.FileNotFoundMsg));
-                        notifier.ShowWarning($"{cultureTranslated}: {path}");
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            notifier.ShowWarning($"{cultureTranslated}: {path}");
+                        });
                     }
 
                     IsDeletingFile = false;
                 }
                 catch (Exception e)
                 {
-                    //MessageBox.Show(e.Message + "\nIndex: " + ImageIndex);
-                    notifier.ShowError(e.Message + "\nIndex: " + ImageIndex);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        //MessageBox.Show(e.Message + "\nIndex: " + ImageIndex);
+                        notifier.ShowError(e.Message + "\nIndex: " + ImageIndex);
+                    });
                 }
             });
         }
@@ -966,6 +994,20 @@ namespace FIVStandard
                         ImageInfoText.Text += $"{ts.Seconds}s";
                 }
             }*/
+        }
+
+        private void OnImageToClipboardCall()
+        {
+            //ToClipboard.CopyToClipboard(ActivePath);
+            if (IsAnimated)
+                ToClipboard.ImageToClipboard(new BitmapImage(MediaSource));
+            else
+                ToClipboard.ImageToClipboard(ImageSource);
+        }
+
+        private void OnCopyToClipboard(object sender, RoutedEventArgs e)
+        {
+            OnImageToClipboardCall();
         }
 
         private void OnCheckUpdateClick(object sender, RoutedEventArgs e)
@@ -1061,6 +1103,11 @@ namespace FIVStandard
             {
                 ExploreFile();
             }
+
+            if(e.Key == _copyToClipboardKey)
+            {
+                OnImageToClipboardCall();
+            }
         }
 
         private void OnClick_Next(object sender, RoutedEventArgs e)
@@ -1106,6 +1153,18 @@ namespace FIVStandard
             }*/
 
             //GC.Collect();
+        }
+
+        private void OnShortcutClick(object sender, RoutedEventArgs e)
+        {
+            editingButton = (System.Windows.Controls.Button)sender;
+
+            ShortcutButtonsOn = false;//disable the buttons until done editing
+
+            //TODO: put text when editing for user to know; save changed buttons; add reset button for key resets
+
+            //Binding myBinding = BindingOperations.GetBinding(b, System.Windows.Controls.Button.ContentProperty);
+            //string p = myBinding.Path.Path;
         }
 
         /*private int ParseStringToOnlyInt(string input)
@@ -1174,18 +1233,6 @@ namespace FIVStandard
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         #endregion
-
-        private void OnShortcutClick(object sender, RoutedEventArgs e)
-        {
-            editingButton = (System.Windows.Controls.Button)sender;
-
-            ShortcutButtonsOn = false;//disable the buttons until done editing
-
-            //TODO: put text when editing for user to know; save changed buttons; add reset button for key resets
-
-            //Binding myBinding = BindingOperations.GetBinding(b, System.Windows.Controls.Button.ContentProperty);
-            //string p = myBinding.Path.Path;
-        }
     }
 
     public class TextToColorConverter : IValueConverter

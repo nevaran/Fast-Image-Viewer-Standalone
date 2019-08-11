@@ -226,4 +226,7 @@
   <data name="AllWatcher" xml:space="preserve">
     <value>All Changes</value>
   </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
 </root>

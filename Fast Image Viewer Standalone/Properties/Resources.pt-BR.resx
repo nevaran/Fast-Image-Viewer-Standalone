@@ -122,7 +122,7 @@
     <value>..\Resources\FIVIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ExploreImageLocationShortcut" xml:space="preserve">
-    <value>Explore a localização da imagem </value>
+    <value>Explorar localização da imagem </value>
   </data>
   <data name="About" xml:space="preserve">
     <value>Sobre</value>
@@ -140,85 +140,85 @@
     <value>Abrir</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Doações</value>
+    <value>Doar</value>
   </data>
   <data name="OpenFileLocation" xml:space="preserve">
-    <value>Abrir localização do arquivo</value>
+    <value>Abrir Local do Arquivo</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Excluir</value>
+    <value>Deletar</value>
   </data>
   <data name="ShownLanguageInfo" xml:space="preserve">
-    <value>Altere o idioma exibido.</value>
+    <value>Mudar Idioma de Visualização</value>
   </data>
   <data name="DarkMode" xml:space="preserve">
-    <value>Modo escuro</value>
+    <value>Modo Dark</value>
   </data>
   <data name="DarkModeInfo" xml:space="preserve">
-    <value>Alterne entre o tema claro e escuro.</value>
+    <value>Alternar entre modo Light e Dark.</value>
   </data>
   <data name="ThemeAccentInfo" xml:space="preserve">
-    <value>Altere as cores de destaque.</value>
+    <value>Trocar a cor dos acentos.</value>
   </data>
   <data name="StretchImage" xml:space="preserve">
-    <value>Imagem alongada</value>
+    <value>Esticar Imagem</value>
   </data>
   <data name="StretchImageInfo" xml:space="preserve">
-    <value>Sempre estique as imagens para caber na janela.</value>
+    <value>Sempre Esticar Imagem para preencher a tela.</value>
   </data>
   <data name="DownsizeImage" xml:space="preserve">
-    <value>Reduza a imagem</value>
+    <value>Diminuir Imagem</value>
   </data>
   <data name="DownsizeImageInfo" xml:space="preserve">
-    <value>Reduza o tamanho da imagem para a janela atual. Isso reduz o uso de memória para imagens maiores que as da tela.</value>
+    <value>Reduzir tamanho da imagem para a janela.</value>
   </data>
   <data name="ZoomSensitivityInfo" xml:space="preserve">
-    <value>Altere a sensibilidade de ampliação e redução da imagem. (O padrão é 1,00)!</value>
+    <value>Mudar a sensibilidade do Zoom. (Padrão é 1.00)</value>
   </data>
   <data name="On" xml:space="preserve">
-    <value>Ativado</value>
+    <value>Ligado</value>
   </data>
   <data name="Off" xml:space="preserve">
-    <value>Desativado</value>
+    <value>Desligado</value>
   </data>
   <data name="PreviousImageShortcut" xml:space="preserve">
-    <value>Imagem Anterior</value>
+    <value>Imagem anterior </value>
   </data>
   <data name="NextImageShortcut" xml:space="preserve">
-    <value>Próxima Imagem </value>
+    <value>Próxima imagem </value>
   </data>
   <data name="DeleteImageShortcut" xml:space="preserve">
-    <value>Excluir Imagem </value>
+    <value>Apagar imagem </value>
   </data>
   <data name="DownsizeImageShortcut" xml:space="preserve">
-    <value>Reduza a imagem </value>
+    <value>Diminuir Imagem </value>
   </data>
   <data name="PauseAnimationShortcut" xml:space="preserve">
     <value>Pausar animação </value>
   </data>
   <data name="StretchImageShortcut" xml:space="preserve">
-    <value>Imagem alongada </value>
+    <value>Esticar imagem </value>
   </data>
   <data name="Shortcuts" xml:space="preserve">
     <value>Atalhos</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Verificar se há atualizações</value>
+    <value>Checar Atualização</value>
   </data>
   <data name="FileNotFoundMsg" xml:space="preserve">
     <value>Arquivo não encontrado</value>
   </data>
   <data name="ImgOrientationFailedMsg" xml:space="preserve">
-    <value>Não foi possível obter a orientação da imagem</value>
+    <value>Não foi possível obter orientação da imagem</value>
   </data>
   <data name="AllWatcher" xml:space="preserve">
-    <value>Todas as Alterações</value>
+    <value>Todas as Mudanças</value>
   </data>
   <data name="RenamedWatcher" xml:space="preserve">
     <value>Renomeado</value>
   </data>
   <data name="DeletedWatcher" xml:space="preserve">
-    <value>Excluído</value>
+    <value>Deletado</value>
   </data>
   <data name="CreatedWatcher" xml:space="preserve">
     <value>Criado</value>

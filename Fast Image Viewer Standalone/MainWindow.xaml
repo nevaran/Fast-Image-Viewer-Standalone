@@ -43,15 +43,22 @@
                 Focusable="False"
                 IsTabStop="False"
                 />
+            <Button
+                Click="OnCheckUpdateClick"
+                Content="{localized:Static p:Resources.CheckForUpdates}"
+                Focusable="False"
+                IsTabStop="False"
+                />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    <Grid>
+    <Grid Focusable="False">
         <Controls:MetroTabControl
             Focusable="False"
             IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
             IsTabStop="False"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
+
             <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.General}"
@@ -63,6 +70,10 @@
                             <MenuItem
                                 Click="OnOpenFileLocation"
                                 Header="{localized:Static p:Resources.OpenFileLocation}"
+                                />
+                            <MenuItem
+                                Click="OnCopyToClipboard"
+                                Header="{localized:Static p:Resources.CopyToClipboard}"
                                 />
                             <Separator />
                             <MenuItem
@@ -177,13 +188,24 @@
                 Header="{localized:Static p:Resources.Settings}"
                 >
                 <!--  Custom content here  -->
-                <ScrollViewer Focusable="False">
-                    <WrapPanel
-                        Grid.IsSharedSizeScope="True"
-                        Orientation="Horizontal"
+                <ScrollViewer
+                    Focusable="False"
+                    VerticalScrollBarVisibility="Auto"
+                    >
+                    <StackPanel
+                        Focusable="False"
+                        Orientation="Vertical"
                         >
-                        <Grid>
+
+                        <Grid
+                            Focusable="False"
+                            Grid.IsSharedSizeScope="True"
+                            >
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -249,7 +271,7 @@
                             <!--  Language Dropdown  -->
                             <Controls:SplitButton
                                 x:Name="ShownLanguageDrop"
-                                Grid.Row="0"
+                                Grid.Row="1"
                                 Height="60"
                                 Margin="20,40,5,0"
                                 VerticalAlignment="Center"
@@ -262,7 +284,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="0"
+                                Grid.Row="1"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -272,7 +294,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="0"
+                                Grid.Row="1"
                                 Grid.Column="2"
                                 Height="60"
                                 HorizontalAlignment="Left"
@@ -283,7 +305,7 @@
 
                             <!--  Dark Mode Toggle  -->
                             <Controls:ToggleSwitch
-                                Grid.Row="1"
+                                Grid.Row="2"
                                 Width="140"
                                 Height="100"
                                 Padding="20,40,0,0"
@@ -297,7 +319,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="1"
+                                Grid.Row="2"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -307,7 +329,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="1"
+                                Grid.Row="2"
                                 Grid.Column="2"
                                 Height="60"
                                 HorizontalAlignment="Left"
@@ -319,7 +341,7 @@
                             <!--  Theme Accent Dropdown  -->
                             <Controls:SplitButton
                                 x:Name="ThemeAccentDrop"
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Height="60"
                                 Margin="20,40,5,0"
                                 VerticalAlignment="Center"
@@ -339,7 +361,7 @@
                             </Controls:SplitButton>
 
                             <StackPanel
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -349,7 +371,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="2"
                                 Height="60"
                                 HorizontalAlignment="Left"
@@ -357,26 +379,10 @@
                                 Text="{localized:Static p:Resources.ThemeAccentInfo}"
                                 TextWrapping="Wrap"
                                 />
-                        </Grid>
-
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="Auto"
-                                    SharedSizeGroup="A"
-                                    />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
 
                             <!--  Stretch Image Toggle  -->
                             <Controls:ToggleSwitch
-                                Grid.Row="0"
+                                Grid.Row="4"
                                 Height="100"
                                 Padding="20,40,0,0"
                                 VerticalAlignment="Center"
@@ -389,7 +395,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="0"
+                                Grid.Row="4"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -399,7 +405,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="0"
+                                Grid.Row="4"
                                 Grid.Column="2"
                                 Height="60"
                                 Padding="0,0,20,0"
@@ -411,7 +417,7 @@
 
                             <!--  Downsize Image  -->
                             <Controls:ToggleSwitch
-                                Grid.Row="1"
+                                Grid.Row="5"
                                 Height="100"
                                 Padding="20,40,0,0"
                                 VerticalAlignment="Center"
@@ -424,7 +430,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="1"
+                                Grid.Row="5"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -434,7 +440,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="1"
+                                Grid.Row="5"
                                 Grid.Column="2"
                                 Height="60"
                                 Padding="0,0,20,0"
@@ -446,14 +452,14 @@
 
                             <!--  Zoom Sensitivity  -->
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="6"
                                 Margin="10,50,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Path=ZoomSensitivityString, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
-                                Grid.Row="2"
+                                Grid.Row="6"
                                 Height="100"
                                 Margin="20,0,5,0"
                                 VerticalAlignment="Center"
@@ -468,7 +474,7 @@
                                 />
 
                             <StackPanel
-                                Grid.Row="2"
+                                Grid.Row="6"
                                 Grid.Column="1"
                                 Height="60"
                                 VerticalAlignment="Bottom"
@@ -478,7 +484,7 @@
                             </StackPanel>
 
                             <TextBlock
-                                Grid.Row="2"
+                                Grid.Row="6"
                                 Grid.Column="2"
                                 Height="60"
                                 HorizontalAlignment="Left"
@@ -487,202 +493,230 @@
                                 TextWrapping="Wrap"
                                 />
 
-                            <!--  End Grid  -->
+
+
+                            <!--  End Settings Grid  -->
                         </Grid>
 
-                    </WrapPanel>
+                        <!--  Shortcuts  -->
+                        <Grid
+                            Margin="10"
+                            Focusable="False"
+                            >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,0,0,10"
+                                Focusable="False"
+                                FontSize="30"
+                                Text="{localized:Static p:Resources.Shortcuts}"
+                                />
+
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.PreviousImageShortcut}"
+                                />
+                            <Button
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                Tag="{Binding GoBackwardKey, Mode=TwoWay}"
+                                />
+
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.NextImageShortcut}"
+                                />
+                            <Button
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                Tag="{Binding GoForwardKey, Mode=TwoWay}"
+                                />
+
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.PauseAnimationShortcut}"
+                                />
+                            <Button
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding PauseKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                Tag="{Binding PauseKey, Mode=TwoWay}"
+                                />
+
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.DeleteImageShortcut}"
+                                />
+                            <Button
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding DeleteKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                Tag="{Binding DeleteKey, Mode=TwoWay}"
+                                />
+
+                            <TextBlock
+                                Grid.Row="6"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.StretchImageShortcut}"
+                                />
+                            <Button
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                Tag="{Binding StretchImageKey, Mode=TwoWay}"
+                                />
+
+                            <TextBlock
+                                Grid.Row="7"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.DownsizeImageShortcut}"
+                                />
+                            <Button
+                                Grid.Row="7"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                Tag="{Binding DownsizeImageKey, Mode=TwoWay}"
+                                />
+
+                            <TextBlock
+                                Grid.Row="8"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.ExploreImageLocationShortcut}"
+                                />
+                            <Button
+                                Grid.Row="8"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                Tag="{Binding ExploreFileKey, Mode=TwoWay}"
+                                />
+
+                            <TextBlock
+                                Grid.Row="9"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.CopyToClipboard}"
+                                />
+                            <Button
+                                Grid.Row="9"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding CopyToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsTabStop="False"
+                                Tag="{Binding CopyToClipboardKey, Mode=TwoWay}"
+                                />
+
+                            <!--<Image Source="Resources/kblayoutkeys.png" />-->
+                        </Grid>
+                    </StackPanel>
+
                 </ScrollViewer>
             </Controls:MetroTabItem>
+            <!--  UNUSED TAB ITEM  -->
             <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.Help}"
+                IsEnabled="False"
+                Visibility="Collapsed"
                 >
                 <ScrollViewer
                     Focusable="False"
                     IsTabStop="False"
                     VerticalScrollBarVisibility="Auto"
-                    >
-                    <Grid
-                        Margin="10"
-                        Focusable="False"
-                        >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="0,0,0,10"
-                            Focusable="False"
-                            FontSize="30"
-                            Text="{localized:Static p:Resources.Shortcuts}"
-                            />
-
-                        <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Margin="30,0,0,0"
-                            Focusable="False"
-                            Text="{localized:Static p:Resources.PreviousImageShortcut}"
-                            />
-                        <Button
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            MinWidth="80"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Left"
-                            Click="OnShortcutClick"
-                            Content="{Binding GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
-                            Focusable="False"
-                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                            IsTabStop="False"
-                            Tag="{Binding GoBackwardKey, Mode=TwoWay}"
-                            />
-
-                        <TextBlock
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Margin="30,0,0,0"
-                            Focusable="False"
-                            Text="{localized:Static p:Resources.NextImageShortcut}"
-                            />
-                        <Button
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            MinWidth="80"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Left"
-                            Click="OnShortcutClick"
-                            Content="{Binding GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
-                            Focusable="False"
-                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                            IsTabStop="False"
-                            Tag="{Binding GoForwardKey, Mode=TwoWay}"
-                            />
-
-                        <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            Margin="30,0,0,0"
-                            Focusable="False"
-                            Text="{localized:Static p:Resources.PauseAnimationShortcut}"
-                            />
-                        <Button
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            MinWidth="80"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Left"
-                            Click="OnShortcutClick"
-                            Content="{Binding PauseKey, Converter={StaticResource KeyToStringConverter}}"
-                            Focusable="False"
-                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                            IsTabStop="False"
-                            Tag="{Binding PauseKey, Mode=TwoWay}"
-                            />
-
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Margin="30,0,0,0"
-                            Focusable="False"
-                            Text="{localized:Static p:Resources.DeleteImageShortcut}"
-                            />
-                        <Button
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            MinWidth="80"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Left"
-                            Click="OnShortcutClick"
-                            Content="{Binding DeleteKey, Converter={StaticResource KeyToStringConverter}}"
-                            Focusable="False"
-                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                            IsTabStop="False"
-                            Tag="{Binding DeleteKey, Mode=TwoWay}"
-                            />
-
-                        <TextBlock
-                            Grid.Row="6"
-                            Grid.Column="0"
-                            Margin="30,0,0,0"
-                            Focusable="False"
-                            Text="{localized:Static p:Resources.StretchImageShortcut}"
-                            />
-                        <Button
-                            Grid.Row="6"
-                            Grid.Column="1"
-                            MinWidth="80"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Left"
-                            Click="OnShortcutClick"
-                            Content="{Binding StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
-                            Focusable="False"
-                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                            IsTabStop="False"
-                            Tag="{Binding StretchImageKey, Mode=TwoWay}"
-                            />
-
-                        <TextBlock
-                            Grid.Row="7"
-                            Grid.Column="0"
-                            Margin="30,0,0,0"
-                            Focusable="False"
-                            Text="{localized:Static p:Resources.DownsizeImageShortcut}"
-                            />
-                        <Button
-                            Grid.Row="7"
-                            Grid.Column="1"
-                            MinWidth="80"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Left"
-                            Click="OnShortcutClick"
-                            Content="{Binding DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
-                            Focusable="False"
-                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                            IsTabStop="False"
-                            Tag="{Binding DownsizeImageKey, Mode=TwoWay}"
-                            />
-
-                        <TextBlock
-                            Grid.Row="8"
-                            Grid.Column="0"
-                            Margin="30,0,0,0"
-                            Focusable="False"
-                            Text="{localized:Static p:Resources.ExploreImageLocationShortcut}"
-                            />
-                        <Button
-                            Grid.Row="8"
-                            Grid.Column="1"
-                            MinWidth="80"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Left"
-                            Click="OnShortcutClick"
-                            Content="{Binding ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
-                            Focusable="False"
-                            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
-                            IsTabStop="False"
-                            Tag="{Binding ExploreFileKey, Mode=TwoWay}"
-                            />
-
-                        <!--<Image Source="Resources/kblayoutkeys.png" />-->
-                    </Grid>
-                </ScrollViewer>
+                    />
             </Controls:MetroTabItem>
             <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
@@ -705,16 +739,6 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
-                        <Button
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            HorizontalAlignment="Right"
-                            Click="OnCheckUpdateClick"
-                            Content="Check for Updates"
-                            Focusable="False"
-                            IsTabStop="False"
-                            />
 
                         <FlowDocumentScrollViewer
                             Grid.Row="1"
