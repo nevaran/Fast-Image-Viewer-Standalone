@@ -94,5 +94,101 @@ namespace FIVStandard.Properties {
                 this["ShownLanguage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        public int GoForwardKey {
+            get {
+                return ((int)(this["GoForwardKey"]));
+            }
+            set {
+                this["GoForwardKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("23")]
+        public int GoBackWardKey {
+            get {
+                return ((int)(this["GoBackWardKey"]));
+            }
+            set {
+                this["GoBackWardKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("18")]
+        public int PauseKey {
+            get {
+                return ((int)(this["PauseKey"]));
+            }
+            set {
+                this["PauseKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("32")]
+        public int DeleteKey {
+            get {
+                return ((int)(this["DeleteKey"]));
+            }
+            set {
+                this["DeleteKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("49")]
+        public int StretchImageKey {
+            get {
+                return ((int)(this["StretchImageKey"]));
+            }
+            set {
+                this["StretchImageKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("47")]
+        public int DownsizeImageKey {
+            get {
+                return ((int)(this["DownsizeImageKey"]));
+            }
+            set {
+                this["DownsizeImageKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("48")]
+        public int ExploreFileKey {
+            get {
+                return ((int)(this["ExploreFileKey"]));
+            }
+            set {
+                this["ExploreFileKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("46")]
+        public int CopyToClipboardKey {
+            get {
+                return ((int)(this["CopyToClipboardKey"]));
+            }
+            set {
+                this["CopyToClipboardKey"] = value;
+            }
+        }
     }
 }

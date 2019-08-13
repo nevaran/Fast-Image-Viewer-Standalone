@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:converter="clr-namespace:FIVStandard.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:FIVStandard"
     xmlns:localized="http://gu.se/Localization"
@@ -27,8 +28,8 @@
     >
 
     <Window.Resources>
-        <local:TextToColorConverter x:Key="TextToColorConverter" />
-        <local:KeyToStringConverter x:Key="KeyToStringConverter" />
+        <converter:TextToColorConverter x:Key="TextToColorConverter" />
+        <converter:KeyToStringConverter x:Key="KeyToStringConverter" />
     </Window.Resources>
 
     <!--  Window Bar Buttons  -->
@@ -545,11 +546,11 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
-                                Tag="{Binding GoBackwardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
                                 />
 
                             <TextBlock
@@ -566,11 +567,11 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
-                                Tag="{Binding GoForwardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
                                 />
 
                             <TextBlock
@@ -587,11 +588,11 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding PauseKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
-                                Tag="{Binding PauseKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
                                 />
 
                             <TextBlock
@@ -608,11 +609,11 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding DeleteKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
-                                Tag="{Binding DeleteKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
                                 />
 
                             <TextBlock
@@ -629,11 +630,11 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
-                                Tag="{Binding StretchImageKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
                                 />
 
                             <TextBlock
@@ -650,11 +651,11 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
-                                Tag="{Binding DownsizeImageKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
                                 />
 
                             <TextBlock
@@ -671,11 +672,11 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
-                                Tag="{Binding ExploreFileKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
                                 />
 
                             <TextBlock
@@ -692,11 +693,11 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding CopyToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.CopyToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
-                                Tag="{Binding CopyToClipboardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.CopyToClipboardKey, Mode=TwoWay}"
                                 />
 
                             <!--<Image Source="Resources/kblayoutkeys.png" />-->

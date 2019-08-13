@@ -9,7 +9,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -20,11 +19,10 @@ using ToastNotifications.Messages;
 using System.Drawing;
 using System.Globalization;
 using Gu.Localization;
-using System.Windows.Data;
-using System.Windows.Media;
 using System.Windows.Input;
 using FIVStandard.Models;
-using System.Collections.Specialized;
+using FIVStandard.Converters;
+using FIVStandard.Comparers;
 
 namespace FIVStandard
 {
@@ -244,146 +242,9 @@ namespace FIVStandard
         }
         #endregion
 
-        #region Keys Properties
-        private bool _shortcutButtonsOn = true;
+        private UpdateCheck _appUpdater;//NOTE: do not use anywhere
 
-        public bool ShortcutButtonsOn
-        {
-            get
-            {
-                return _shortcutButtonsOn;
-            }
-            set
-            {
-                _shortcutButtonsOn = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Key _goForwardKey = Key.Right;
-
-        public Key GoForwardKey
-        {
-            get
-            {
-                return _goForwardKey;
-            }
-            set
-            {
-                _goForwardKey = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Key _goBackwardKey = Key.Left;
-
-        public Key GoBackwardKey
-        {
-            get
-            {
-                return _goBackwardKey;
-            }
-            set
-            {
-                _goBackwardKey = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Key _pauseKey = Key.Space;
-
-        public Key PauseKey
-        {
-            get
-            {
-                return _pauseKey;
-            }
-            set
-            {
-                _pauseKey = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Key _deleteKey = Key.Delete;
-
-        public Key DeleteKey
-        {
-            get
-            {
-                return _deleteKey;
-            }
-            set
-            {
-                _deleteKey = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Key _stretchImageKey = Key.F;
-
-        public Key StretchImageKey
-        {
-            get
-            {
-                return _stretchImageKey;
-            }
-            set
-            {
-                _stretchImageKey = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Key _downsizeImageKey = Key.D;
-
-        public Key DownsizeImageKey
-        {
-            get
-            {
-                return _downsizeImageKey;
-            }
-            set
-            {
-                _downsizeImageKey = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Key _exploreFileKey = Key.E;
-
-        public Key ExploreFileKey
-        {
-            get
-            {
-                return _exploreFileKey;
-            }
-            set
-            {
-                 _exploreFileKey = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Key _copyToClipboardKey = Key.C;
-
-        public Key CopyToClipboardKey
-        {
-            get
-            {
-                return _copyToClipboardKey;
-            }
-            set
-            {
-                _copyToClipboardKey = value;
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        public UpdateCheck _appUpdater;//NOTE: do not use anywhere
-
-        public UpdateCheck AppUpdater
+        private UpdateCheck AppUpdater
         {
             get
             {
@@ -405,7 +266,11 @@ namespace FIVStandard
             }
         }
 
-        public CopyFileToClipboard ToClipboard;
+        public SettingsManager Settings { get; set; } = new SettingsManager();
+
+        public CopyFileToClipboard ToClipboard { get; set; } = new CopyFileToClipboard();
+
+        public TextToColorConverter TextToColor = new TextToColorConverter();
 
         //private string StartupPath;//program startup path
 
@@ -447,8 +312,6 @@ namespace FIVStandard
         {
             InitializeComponent();
 
-            ToClipboard = new CopyFileToClipboard();
-
             //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
             fsw.Deleted += Fsw_Updated;
@@ -457,6 +320,7 @@ namespace FIVStandard
 
             DataContext = this;
 
+            Settings.Load();
             LoadAllSettings();
 
             //AppWindow = this;//used for debugging ZoomBorder
@@ -490,7 +354,7 @@ namespace FIVStandard
 
         public void OpenNewFile(string path)
         {
-            if (IsDeletingFile || _shortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             ActiveFile = Path.GetFileName(path);
             ActiveFolder = Path.GetDirectoryName(path);
@@ -775,18 +639,27 @@ namespace FIVStandard
         private void LoadAllSettings()
         {
             //Language
-            ShownLanguageDropIndex = Properties.Settings.Default.ShownLanguage;
+            ShownLanguageDropIndex = Settings.settings.ShownLanguage;
             //Theme
-            DarkModeToggle = Properties.Settings.Default.DarkTheme;
+            DarkModeToggle = Settings.settings.DarkTheme;
             //Accent
             //ThemeAccentDrop.ItemsSource = ThemeAccents;//init for theme list
-            ThemeAccentDropIndex = Properties.Settings.Default.ThemeAccent;
+            ThemeAccentDropIndex = Settings.settings.ThemeAccent;
             //Image Stretch
-            StretchImageToggle = Properties.Settings.Default.ImageStretched;
+            StretchImageToggle = Settings.settings.StretchedImage;
             //Downsize Images
-            DownsizeImageToggle = Properties.Settings.Default.DownsizeImage;
+            DownsizeImageToggle = Settings.settings.DownsizeImage;
             //Zoom Sensitivity
-            ZoomSensitivity = Properties.Settings.Default.ZoomSensitivity;
+            ZoomSensitivity = Settings.settings.ZoomSensitivity;
+
+            Settings.GoForwardKey = (Key)Settings.settings.goForwardKey;
+            Settings.GoBackwardKey = (Key)Settings.settings.goBackwardKey;
+            Settings.PauseKey = (Key)Settings.settings.pauseKey;
+            Settings.DeleteKey = (Key)Settings.settings.deleteKey;
+            Settings.StretchImageKey = (Key)Settings.settings.stretchImageKey;
+            Settings.DownsizeImageKey = (Key)Settings.settings.downsizeImageKey;
+            Settings.ExploreFileKey = (Key)Settings.settings.exploreFileKey;
+            Settings.CopyToClipboardKey = (Key)Settings.settings.copyToCLipboardKey;
 
             //ChangeTheme(Properties.Settings.Default.ThemeAccent);
             //ChangeAccent();//not needed since we calling ChangeTheme in there
@@ -1041,7 +914,7 @@ namespace FIVStandard
 
         private void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || _shortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             DeleteToRecycleAsync(ActivePath);
         }
@@ -1053,7 +926,7 @@ namespace FIVStandard
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (_shortcutButtonsOn == false)
+            if (Settings.ShortcutButtonsOn == false)
             {
                 if (e.Key == Key.System || e.Key == Key.LWin || e.Key == Key.RWin) return;//blacklisted keys
 
@@ -1063,48 +936,48 @@ namespace FIVStandard
                     //MessageBox.Show(((int)e.Key).ToString());
                 }
 
-                ShortcutButtonsOn = true;
+                Settings.ShortcutButtonsOn = true;
 
                 return;
             }
 
             if (IsDeletingFile) return;
 
-            if (e.Key == _goForwardKey)
+            if (e.Key == Settings.GoForwardKey)
             {
                 ChangeImage(1);//go forward
             }
-            if (e.Key == _goBackwardKey)
+            if (e.Key == Settings.GoBackwardKey)
             {
                 ChangeImage(-1);//go back
             }
 
-            if (e.Key == _pauseKey)
+            if (e.Key == Settings.PauseKey)
             {
                 TogglePause();
             }
 
-            if (e.Key == _deleteKey && ImagesFound.Count > 0)
+            if (e.Key == Settings.DeleteKey && ImagesFound.Count > 0)
             {
                 DeleteToRecycleAsync(ActivePath);
             }
 
-            if (e.Key == _stretchImageKey)
+            if (e.Key == Settings.StretchImageKey)
             {
                 StretchImageToggle = !StretchImageToggle;
             }
 
-            if (e.Key == _downsizeImageKey)
+            if (e.Key == Settings.DownsizeImageKey)
             {
                 DownsizeImageToggle = !DownsizeImageToggle;
             }
 
-            if (e.Key == _exploreFileKey)
+            if (e.Key == Settings.ExploreFileKey)
             {
                 ExploreFile();
             }
 
-            if(e.Key == _copyToClipboardKey)
+            if(e.Key == Settings.CopyToClipboardKey)
             {
                 OnImageToClipboardCall();
             }
@@ -1112,21 +985,21 @@ namespace FIVStandard
 
         private void OnClick_Next(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || _shortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             ChangeImage(1);//go forward
         }
 
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || _shortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             ChangeImage(-1);//go back
         }
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (IsDeletingFile || _shortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             if (e.ChangedButton == MouseButton.XButton1)
             {
@@ -1140,7 +1013,7 @@ namespace FIVStandard
 
         private void OnOpenBrowseImage(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || _shortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
@@ -1159,7 +1032,7 @@ namespace FIVStandard
         {
             editingButton = (System.Windows.Controls.Button)sender;
 
-            ShortcutButtonsOn = false;//disable the buttons until done editing
+            Settings.ShortcutButtonsOn = false;//disable the buttons until done editing
 
             //TODO: put text when editing for user to know; save changed buttons; add reset button for key resets
 
@@ -1214,17 +1087,6 @@ namespace FIVStandard
                 img.GetPropertyItem(OrientationId).Value[0];
         }
 
-        public class NameComparer : IComparer<string>
-        {
-            [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-            static extern int StrCmpLogicalW(string x, string y);
-
-            public int Compare(string x, string y)
-            {
-                return StrCmpLogicalW(x, y);
-            }
-        }
-
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -1233,93 +1095,5 @@ namespace FIVStandard
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         #endregion
-    }
-
-    public class TextToColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var color = (string)value;
-            var c = new System.Windows.Media.Color
-            {
-                A = 255
-            };
-            if (color == "Emerald")
-            {
-                c.R = 7;
-                c.G = 117;
-                c.B = 7;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Cobalt")
-            {
-                c.R = 7;
-                c.G = 71;
-                c.B = 198;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Amber")
-            {
-                c.R = 199;
-                c.G = 137;
-                c.B = 15;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Steel")
-            {
-                c.R = 87;
-                c.G = 101;
-                c.B = 115;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Mauve")
-            {
-                c.R = 101;
-                c.G = 84;
-                c.B = 117;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Taupe")
-            {
-                c.R = 115;
-                c.G = 104;
-                c.B = 69;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else
-            {
-                return (SolidColorBrush)new BrushConverter().ConvertFromString(color);
-            }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class KeyToStringConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return ((Key)value).ToString();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
