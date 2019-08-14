@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace FIVStandard.Models
+namespace FIVStandard.Modules
 {
     public class CopyFileToClipboard
     {

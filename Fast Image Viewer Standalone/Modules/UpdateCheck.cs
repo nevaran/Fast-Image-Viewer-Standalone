@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ToastNotifications.Messages;
 
-namespace FIVStandard.Models
+namespace FIVStandard.Modules
 {
     public class UpdateCheck
     {

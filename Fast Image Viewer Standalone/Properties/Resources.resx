@@ -229,4 +229,7 @@
   <data name="CopyToClipboard" xml:space="preserve">
     <value>Copy to Clipboard</value>
   </data>
+  <data name="ResetSettingsButton" xml:space="preserve">
+    <value>Reset</value>
+  </data>
 </root>

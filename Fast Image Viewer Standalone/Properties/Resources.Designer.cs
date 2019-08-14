@@ -323,6 +323,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string ResetSettingsButton {
+            get {
+                return ResourceManager.GetString("ResetSettingsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {

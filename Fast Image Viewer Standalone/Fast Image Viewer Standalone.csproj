@@ -127,10 +127,10 @@
     <Compile Include="Comparers\NameComparer.cs" />
     <Compile Include="Converters\KeyToStringConverter.cs" />
     <Compile Include="Converters\TextToColorConverter.cs" />
-    <Compile Include="Models\CopyFileToClipboard.cs" />
-    <Compile Include="Models\SettingsManager.cs" />
-    <Compile Include="Models\UpdateCheck.cs" />
-    <Compile Include="Models\WpfScreen.cs" />
+    <Compile Include="Modules\CopyFileToClipboard.cs" />
+    <Compile Include="Modules\SettingsManager.cs" />
+    <Compile Include="Modules\UpdateCheck.cs" />
+    <Compile Include="Modules\WpfScreen.cs" />
     <Compile Include="Properties\Resources.pt-BR.Designer.cs">
       <DependentUpon>Resources.pt-BR.resx</DependentUpon>
       <AutoGen>True</AutoGen>

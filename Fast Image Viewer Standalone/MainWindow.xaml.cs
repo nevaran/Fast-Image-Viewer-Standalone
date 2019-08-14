@@ -1,4 +1,6 @@
-﻿using MahApps.Metro;
+﻿using FIVStandard.Comparers;
+using FIVStandard.Modules;
+using Gu.Localization;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
@@ -6,32 +8,29 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using ToastNotifications;
 using ToastNotifications.Lifetime;
-using ToastNotifications.Position;
 using ToastNotifications.Messages;
-using System.Drawing;
-using System.Globalization;
-using Gu.Localization;
-using System.Windows.Input;
-using FIVStandard.Models;
-using FIVStandard.Converters;
-using FIVStandard.Comparers;
+using ToastNotifications.Position;
 
 namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         private int ImageIndex { get; set; } = 0;
-        private List<string> ImagesFound { get; set; } = new List<string>();
+
+        public List<string> ImagesFound { get; set; } = new List<string>();
 
         private bool IsAnimated { get; set; } = false;
+
         private bool IsPaused { get; set; } = false;
 
         #region Image Properties
@@ -109,139 +108,6 @@ namespace FIVStandard
         public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
         #endregion
 
-        #region Settings Properties
-        private readonly List<(string tag, string lang)> ShownLanguage = new List<(string tag, string lang)>()
-        {
-            ("en", "English (en)"),
-            ("bg-BG", "Български (bg-BG)"),
-            ("nl-NL", "Dutch (nl-BE/nl-NL)"),
-            ("pt-BR", "Portuguese (pt-BR)"),
-            ("se-SE", "Swedish (se-SE)"),
-        };
-
-        private int _shownLanguageDropIndex = 0;
-
-        public int ShownLanguageDropIndex
-        {
-            get
-            {
-                return _shownLanguageDropIndex;
-            }
-            set
-            {
-                _shownLanguageDropIndex = value;
-                OnPropertyChanged();
-
-                OnLanguageChanged();
-            }
-        }
-
-        public string[] GetLanguageString
-        {
-            get
-            {
-                return ShownLanguage.Select(x => x.lang).ToArray();
-            }
-        }
-
-        private bool _darkModeToggle = true;
-
-        public bool DarkModeToggle
-        {
-            get
-            {
-                return _darkModeToggle;
-            }
-            set
-            {
-                _darkModeToggle = value;
-                OnPropertyChanged();
-
-                OnThemeSwitch();
-            }
-        }
-
-        //public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
-        public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
-
-        private int _themeAccentDropIndex = 0;
-
-        public int ThemeAccentDropIndex
-        {
-            get
-            {
-                return _themeAccentDropIndex;
-            }
-            set
-            {
-                _themeAccentDropIndex = value;
-                OnPropertyChanged();
-
-                OnAccentChanged();
-            }
-        }
-
-        private bool _stretchImageToggle = true;
-
-        public bool StretchImageToggle
-        {
-            get
-            {
-                return _stretchImageToggle;
-            }
-            set
-            {
-                _stretchImageToggle = value;
-                OnPropertyChanged();
-
-                OnStretchSwitch();
-            }
-        }
-
-        private bool _downsizeImageToggle = false;
-
-        public bool DownsizeImageToggle
-        {
-            get
-            {
-                return _downsizeImageToggle;
-            }
-            set
-            {
-                _downsizeImageToggle = value;
-                OnPropertyChanged();
-
-                OnDownsizeSwitch();
-            }
-        }
-
-        private double _zoomSensitivity = 1.0;
-
-        public double ZoomSensitivity
-        {
-            get
-            {
-                return _zoomSensitivity;
-            }
-            set
-            {
-                _zoomSensitivity = value;
-                OnPropertyChanged();
-                OnPropertyChanged("ZoomSensitivityString");
-
-                OnZoomSensitivitySlider();
-            }
-        }
-
-        public string ZoomSensitivityString
-        {
-            get
-            {
-                return ZoomSensitivity.ToString("F2");
-            }
-        }
-        #endregion
-
         private UpdateCheck _appUpdater;//NOTE: do not use anywhere
 
         private UpdateCheck AppUpdater
@@ -266,11 +132,9 @@ namespace FIVStandard
             }
         }
 
-        public SettingsManager Settings { get; set; } = new SettingsManager();
+        public SettingsManager Settings { get; set; }
 
-        public CopyFileToClipboard ToClipboard { get; set; } = new CopyFileToClipboard();
-
-        public TextToColorConverter TextToColor = new TextToColorConverter();
+        public CopyFileToClipboard ToClipboard { get; set; }
 
         //private string StartupPath;//program startup path
 
@@ -285,7 +149,7 @@ namespace FIVStandard
 
         private string ActiveFile { get; set; } = "";//file name + extension
         private string ActiveFolder { get; set; } = "";//directory
-        private string ActivePath { get; set; } = "";//directory + file name + extension
+        public string ActivePath { get; set; } = "";//directory + file name + extension
 
         private readonly FileSystemWatcher fsw = new FileSystemWatcher()
         {
@@ -312,6 +176,9 @@ namespace FIVStandard
         {
             InitializeComponent();
 
+            Settings = new SettingsManager(this);
+            ToClipboard = new CopyFileToClipboard();
+
             //create new watcher events for used directory
             fsw.Changed += Fsw_Updated;
             fsw.Deleted += Fsw_Updated;
@@ -321,7 +188,6 @@ namespace FIVStandard
             DataContext = this;
 
             Settings.Load();
-            LoadAllSettings();
 
             //AppWindow = this;//used for debugging ZoomBorder
         }
@@ -590,7 +456,7 @@ namespace FIVStandard
             //GC.Collect();
         }
 
-        private BitmapImage LoadImage(string path)
+        public BitmapImage LoadImage(string path)
         {
             BitmapImage imgTemp = new BitmapImage();
             FileStream stream = File.OpenRead(path);
@@ -599,7 +465,7 @@ namespace FIVStandard
             //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
             imgTemp.StreamSource = stream;
 
-            if (_downsizeImageToggle)
+            if (Settings.DownsizeImageToggle)
             {
                 Rect r = WpfScreen.GetScreenFrom(this).ScreenBounds;
                 /*if (ImgWidth > borderImg.ActualWidth)
@@ -628,92 +494,6 @@ namespace FIVStandard
             double scale = Math.Min(scaleWidth, scaleHeight);
 
             return scale;
-        }
-
-        private void OnDonateClick(object sender, RoutedEventArgs e)
-        {
-            ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
-            Process.Start(sInfo);
-        }
-
-        private void LoadAllSettings()
-        {
-            //Language
-            ShownLanguageDropIndex = Settings.settings.ShownLanguage;
-            //Theme
-            DarkModeToggle = Settings.settings.DarkTheme;
-            //Accent
-            //ThemeAccentDrop.ItemsSource = ThemeAccents;//init for theme list
-            ThemeAccentDropIndex = Settings.settings.ThemeAccent;
-            //Image Stretch
-            StretchImageToggle = Settings.settings.StretchedImage;
-            //Downsize Images
-            DownsizeImageToggle = Settings.settings.DownsizeImage;
-            //Zoom Sensitivity
-            ZoomSensitivity = Settings.settings.ZoomSensitivity;
-
-            Settings.GoForwardKey = (Key)Settings.settings.goForwardKey;
-            Settings.GoBackwardKey = (Key)Settings.settings.goBackwardKey;
-            Settings.PauseKey = (Key)Settings.settings.pauseKey;
-            Settings.DeleteKey = (Key)Settings.settings.deleteKey;
-            Settings.StretchImageKey = (Key)Settings.settings.stretchImageKey;
-            Settings.DownsizeImageKey = (Key)Settings.settings.downsizeImageKey;
-            Settings.ExploreFileKey = (Key)Settings.settings.exploreFileKey;
-            Settings.CopyToClipboardKey = (Key)Settings.settings.copyToCLipboardKey;
-
-            //ChangeTheme(Properties.Settings.Default.ThemeAccent);
-            //ChangeAccent();//not needed since we calling ChangeTheme in there
-        }
-
-        private void OnThemeSwitch()
-        {
-            Properties.Settings.Default.DarkTheme = _darkModeToggle;
-            ChangeTheme();
-        }
-
-        private void ChangeTheme()
-        {
-            if (_darkModeToggle)
-            {
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[_themeAccentDropIndex]), ThemeManager.GetAppTheme("BaseDark"));
-            }
-            else
-            {
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[_themeAccentDropIndex]), ThemeManager.GetAppTheme("BaseLight"));
-            }
-
-            Properties.Settings.Default.Save();
-        }
-
-        private void OnAccentChanged()
-        {
-            Properties.Settings.Default.ThemeAccent = _themeAccentDropIndex;
-            ChangeTheme();//since theme also is rooted with accent
-        }
-
-        private void OnLanguageChanged()
-        {
-            Properties.Settings.Default.ShownLanguage = _shownLanguageDropIndex;
-            Properties.Settings.Default.Save();
-
-            Translator.Culture = CultureInfo.GetCultureInfo(ShownLanguage[_shownLanguageDropIndex].tag);
-        }
-
-        private void OnStretchSwitch()
-        {
-            if (_stretchImageToggle)
-            {
-                MediaView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
-                PictureView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
-            }
-            else
-            {
-                MediaView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
-                PictureView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
-            }
-
-            Properties.Settings.Default.ImageStretched = _stretchImageToggle;
-            Properties.Settings.Default.Save();
         }
 
         public void ExploreFile()
@@ -783,39 +563,12 @@ namespace FIVStandard
             });
         }
 
-        private void OnDownsizeSwitch()
-        {
-            Properties.Settings.Default.DownsizeImage = _downsizeImageToggle;
-
-            if (ImagesFound.Count > 0)
-                ImageSource = LoadImage(ActivePath);
-
-            Properties.Settings.Default.Save();
-        }
-
-        private void OnZoomSensitivitySlider()
-        {
-            Properties.Settings.Default.ZoomSensitivity = _zoomSensitivity;
-
-            Properties.Settings.Default.Save();
-        }
-
-        private void OnClipOpened(object sender, RoutedEventArgs e)
-        {
-            GetImageInformation(ActivePath);
-        }
-
         /// <summary>
         /// Gets the gif image information (width, height, orientation)
         /// </summary>
         private void GetImageInformation(string path)
         {
             if (ImagesFound.Count == 0) return;
-
-#if DEBUG
-            Stopwatch stopwatch = new Stopwatch();//DEBUG
-            stopwatch.Start();//DEBUG
-#endif
 
             using (var imageStream = File.OpenRead(path))
             {
@@ -829,7 +582,7 @@ namespace FIVStandard
                 ImgHeight = img.Height;
                 try
                 {
-                    ExifOrientations eo = ImageOrientation(img);
+                    ExifOrientations eo = GetImageOreintation(img);
                     ImageRotation = OrientationDictionary[(int)eo];//eo angle from index
 
 #if DEBUG
@@ -843,11 +596,6 @@ namespace FIVStandard
                 }
                 img.Dispose();
             }
-
-#if DEBUG
-            stopwatch.Stop();//DEBUG
-            notifier.ShowError($"GetImageInformation time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
-#endif
 
             /*if (MediaView.NaturalDuration.HasTimeSpan)//used for videos (avi mp4 etc.)
             {
@@ -869,7 +617,7 @@ namespace FIVStandard
             }*/
         }
 
-        private void OnImageToClipboardCall()
+        private void ImageToClipboardCall()
         {
             //ToClipboard.CopyToClipboard(ActivePath);
             if (IsAnimated)
@@ -878,9 +626,25 @@ namespace FIVStandard
                 ToClipboard.ImageToClipboard(ImageSource);
         }
 
+        private void FileeToClipboardCall()
+        {
+            ToClipboard.FileToClipboard(ActivePath);
+        }
+
+        private void OnDonateClick(object sender, RoutedEventArgs e)
+        {
+            ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
+            Process.Start(sInfo);
+        }
+
+        private void OnClipOpened(object sender, RoutedEventArgs e)
+        {
+            GetImageInformation(ActivePath);
+        }
+
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)
         {
-            OnImageToClipboardCall();
+            ImageToClipboardCall();
         }
 
         private void OnCheckUpdateClick(object sender, RoutedEventArgs e)
@@ -890,24 +654,24 @@ namespace FIVStandard
 
         private void OnLanguageClick(object sender, RoutedEventArgs e)
         {
-            if (_shownLanguageDropIndex >= ShownLanguage.Count - 1)
-                ShownLanguageDropIndex = 0;
+            if (Settings.ShownLanguageDropIndex >= Settings.ShownLanguage.Count - 1)
+                Settings.ShownLanguageDropIndex = 0;
             else
-                ShownLanguageDropIndex++;
+                Settings.ShownLanguageDropIndex++;
 
-            ShownLanguageDrop.SelectedIndex = _shownLanguageDropIndex;
+            ShownLanguageDrop.SelectedIndex = Settings.ShownLanguageDropIndex;
 
             //ChangeAccent();//called in OnAccentChanged
         }
 
         private void OnAccentClick(object sender, RoutedEventArgs e)
         {
-            if (_themeAccentDropIndex >= ThemeAccents.Count - 1)
-                ThemeAccentDropIndex = 0;
+            if (Settings.ThemeAccentDropIndex >= Settings.ThemeAccents.Count - 1)
+                Settings.ThemeAccentDropIndex = 0;
             else
-                ThemeAccentDropIndex++;
+                Settings.ThemeAccentDropIndex++;
 
-            ThemeAccentDrop.SelectedIndex = _themeAccentDropIndex;
+            ThemeAccentDrop.SelectedIndex = Settings.ThemeAccentDropIndex;
 
             //ChangeAccent();//called in OnAccentChanged
         }
@@ -934,6 +698,8 @@ namespace FIVStandard
                 {
                     editingButton.Tag = e.Key;
                     //MessageBox.Show(((int)e.Key).ToString());
+
+                    Settings.UpdateAllKeysProperties();
                 }
 
                 Settings.ShortcutButtonsOn = true;
@@ -964,12 +730,12 @@ namespace FIVStandard
 
             if (e.Key == Settings.StretchImageKey)
             {
-                StretchImageToggle = !StretchImageToggle;
+                Settings.StretchImageToggle = !Settings.StretchImageToggle;
             }
 
             if (e.Key == Settings.DownsizeImageKey)
             {
-                DownsizeImageToggle = !DownsizeImageToggle;
+                Settings.DownsizeImageToggle = !Settings.DownsizeImageToggle;
             }
 
             if (e.Key == Settings.ExploreFileKey)
@@ -979,7 +745,7 @@ namespace FIVStandard
 
             if(e.Key == Settings.CopyToClipboardKey)
             {
-                OnImageToClipboardCall();
+                ImageToClipboardCall();
             }
         }
 
@@ -1040,6 +806,11 @@ namespace FIVStandard
             //string p = myBinding.Path.Path;
         }
 
+        private void OnResetSettingsClick(object sender, RoutedEventArgs e)
+        {
+            Settings.ResetToDefault();
+        }
+
         /*private int ParseStringToOnlyInt(string input)
         {
             return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
@@ -1074,7 +845,7 @@ namespace FIVStandard
         };
 
         // Return the image's orientation
-        public static ExifOrientations ImageOrientation(Image img)
+        public static ExifOrientations GetImageOreintation(Image img)
         {
             // Get the index of the orientation property
             int orientation_index = Array.IndexOf(img.PropertyIdList, OrientationId);

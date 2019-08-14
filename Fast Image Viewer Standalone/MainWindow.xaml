@@ -55,7 +55,7 @@
     <Grid Focusable="False">
         <Controls:MetroTabControl
             Focusable="False"
-            IsEnabled="{Binding ShortcutButtonsOn, Mode=OneWay}"
+            IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
             IsTabStop="False"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
@@ -98,7 +98,7 @@
                             VerticalAlignment="Center"
                             Focusable="False"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            Text="{Binding Path=ImgResolution, Mode=OneWay}"
+                            Text="{Binding ImgResolution, Mode=OneWay}"
                             TextWrapping="Wrap"
                             />
                     </Border>
@@ -161,7 +161,7 @@
                             MediaOpened="OnClipOpened"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             ScrubbingEnabled="True"
-                            Source="{Binding Path=MediaSource, Mode=OneWay, IsAsync=True}"
+                            Source="{Binding MediaSource, Mode=OneWay, IsAsync=True}"
                             StretchDirection="DownOnly"
                             UnloadedBehavior="Manual"
                             />
@@ -178,7 +178,7 @@
                         <Image
                             Name="PictureView"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            Source="{Binding Path=ImageSource, Mode=OneWay}"
+                            Source="{Binding ImageSource, Mode=OneWay}"
                             StretchDirection="DownOnly"
                             />
                     </utils:ZoomBorder>
@@ -279,9 +279,9 @@
                                 Click="OnLanguageClick"
                                 Focusable="False"
                                 IsTabStop="False"
-                                ItemsSource="{Binding Path=GetLanguageString, Mode=OneTime}"
+                                ItemsSource="{Binding Settings.GetLanguageString, Mode=OneTime}"
                                 Orientation="Vertical"
-                                SelectedIndex="{Binding Path=ShownLanguageDropIndex, Mode=TwoWay}"
+                                SelectedIndex="{Binding Settings.ShownLanguageDropIndex, Mode=TwoWay}"
                                 />
 
                             <StackPanel
@@ -313,7 +313,7 @@
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.DarkMode}"
-                                IsChecked="{Binding Path=DarkModeToggle, Mode=TwoWay}"
+                                IsChecked="{Binding Settings.DarkModeToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
@@ -349,9 +349,9 @@
                                 Click="OnAccentClick"
                                 Focusable="False"
                                 IsTabStop="False"
-                                ItemsSource="{Binding Path=ThemeAccents, Mode=OneWay}"
+                                ItemsSource="{Binding Settings.ThemeAccents, Mode=OneWay}"
                                 Orientation="Vertical"
-                                SelectedIndex="{Binding Path=ThemeAccentDropIndex, Mode=TwoWay}"
+                                SelectedIndex="{Binding Settings.ThemeAccentDropIndex, Mode=TwoWay}"
                                 >
                                 <Controls:SplitButton.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
@@ -389,7 +389,7 @@
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.StretchImage}"
-                                IsChecked="{Binding Path=StretchImageToggle, Mode=TwoWay}"
+                                IsChecked="{Binding Settings.StretchImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
@@ -424,7 +424,7 @@
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.DownsizeImage}"
-                                IsChecked="{Binding Path=DownsizeImageToggle, Mode=TwoWay}"
+                                IsChecked="{Binding Settings.DownsizeImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
@@ -456,7 +456,7 @@
                                 Grid.Row="6"
                                 Margin="10,50,0,0"
                                 VerticalAlignment="Center"
-                                Text="{Binding Path=ZoomSensitivityString, Mode=OneWay}"
+                                Text="{Binding Settings.ZoomSensitivityString, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
@@ -471,7 +471,7 @@
                                 Maximum="2"
                                 Minimum="0.1"
                                 TickFrequency="0.05"
-                                Value="{Binding Path=ZoomSensitivity, Mode=TwoWay}"
+                                Value="{Binding Settings.ZoomSensitivity, Mode=TwoWay}"
                                 />
 
                             <StackPanel
@@ -493,8 +493,6 @@
                                 Text="{localized:Static p:Resources.ZoomSensitivityInfo}"
                                 TextWrapping="Wrap"
                                 />
-
-
 
                             <!--  End Settings Grid  -->
                         </Grid>
@@ -548,7 +546,6 @@
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
                                 />
@@ -569,7 +566,6 @@
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
                                 />
@@ -590,7 +586,6 @@
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
                                 />
@@ -611,7 +606,6 @@
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
                                 />
@@ -632,7 +626,6 @@
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
                                 />
@@ -653,7 +646,6 @@
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
                                 />
@@ -674,7 +666,6 @@
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
                                 />
@@ -695,9 +686,21 @@
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.CopyToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.CopyToClipboardKey, Mode=TwoWay}"
+                                />
+
+                            <!--  Reset Settings Button  -->
+                            <Button
+                                Grid.Row="10"
+                                Grid.Column="0"
+                                MinWidth="80"
+                                Margin="0,25,0,0"
+                                HorizontalAlignment="Left"
+                                Click="OnResetSettingsClick"
+                                Content="{localized:Static p:Resources.ResetSettingsButton}"
+                                Focusable="False"
+                                IsTabStop="False"
                                 />
 
                             <!--<Image Source="Resources/kblayoutkeys.png" />-->
