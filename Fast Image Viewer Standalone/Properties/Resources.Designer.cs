@@ -97,11 +97,11 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy to Clipboard.
+        ///   Looks up a localized string similar to Copy Image to Clipboard.
         /// </summary>
-        public static string CopyToClipboard {
+        public static string CopyImageToClipboard {
             get {
-                return ResourceManager.GetString("CopyToClipboard", resourceCulture);
+                return ResourceManager.GetString("CopyImageToClipboard", resourceCulture);
             }
         }
         
@@ -111,6 +111,15 @@ namespace FIVStandard.Properties {
         public static string CreatedWatcher {
             get {
                 return ResourceManager.GetString("CreatedWatcher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut File to Clipboard.
+        /// </summary>
+        public static string CutFileToClipboard {
+            get {
+                return ResourceManager.GetString("CutFileToClipboard", resourceCulture);
             }
         }
         
@@ -314,6 +323,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove shortcut.
+        /// </summary>
+        public static string RemoveShortcut {
+            get {
+                return ResourceManager.GetString("RemoveShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Renamed.
         /// </summary>
         public static string RenamedWatcher {
@@ -323,7 +341,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset.
+        ///   Looks up a localized string similar to Reset All.
         /// </summary>
         public static string ResetSettingsButton {
             get {

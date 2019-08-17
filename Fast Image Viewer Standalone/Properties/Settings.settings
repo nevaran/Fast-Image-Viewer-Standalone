@@ -44,5 +44,8 @@
     <Setting Name="CopyToClipboardKey" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">46</Value>
     </Setting>
+    <Setting Name="CutToClipboardKey" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">67</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

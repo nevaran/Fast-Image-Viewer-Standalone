@@ -74,7 +74,11 @@
                                 />
                             <MenuItem
                                 Click="OnCopyToClipboard"
-                                Header="{localized:Static p:Resources.CopyToClipboard}"
+                                Header="{localized:Static p:Resources.CopyImageToClipboard}"
+                                />
+                            <MenuItem
+                                Click="OnCutToClipboard"
+                                Header="{localized:Static p:Resources.CutFileToClipboard}"
                                 />
                             <Separator />
                             <MenuItem
@@ -210,6 +214,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition
@@ -269,12 +274,31 @@
                                 Background="Yellow"
                                 />-->
 
+                            <Separator
+                                Grid.ColumnSpan="3"
+                                VerticalAlignment="Top"
+                                />
+
+                            <!--  Reset Settings Button  -->
+                            <Button
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                MinWidth="100"
+                                Margin="0,10,10,7"
+                                HorizontalAlignment="Right"
+                                Click="OnResetSettingsClick"
+                                Content="{localized:Static p:Resources.ResetSettingsButton}"
+                                Focusable="False"
+                                FontSize="14"
+                                IsTabStop="False"
+                                />
+
                             <!--  Language Dropdown  -->
                             <Controls:SplitButton
                                 x:Name="ShownLanguageDrop"
                                 Grid.Row="1"
                                 Height="60"
-                                Margin="20,40,5,0"
+                                Margin="20,0,5,0"
                                 VerticalAlignment="Center"
                                 Click="OnLanguageClick"
                                 Focusable="False"
@@ -549,6 +573,21 @@
                                 IsTabStop="False"
                                 Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
                                 />
+                            <Button
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
+                                />
 
                             <TextBlock
                                 Grid.Row="3"
@@ -568,6 +607,21 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
+                                />
+                            <Button
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
 
                             <TextBlock
@@ -589,6 +643,21 @@
                                 IsTabStop="False"
                                 Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
                                 />
+                            <Button
+                                Grid.Row="4"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
+                                />
 
                             <TextBlock
                                 Grid.Row="5"
@@ -608,6 +677,21 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
+                                />
+                            <Button
+                                Grid.Row="5"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
 
                             <TextBlock
@@ -629,6 +713,21 @@
                                 IsTabStop="False"
                                 Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
                                 />
+                            <Button
+                                Grid.Row="6"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
+                                />
 
                             <TextBlock
                                 Grid.Row="7"
@@ -648,6 +747,21 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
+                                />
+                            <Button
+                                Grid.Row="7"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
 
                             <TextBlock
@@ -669,13 +783,28 @@
                                 IsTabStop="False"
                                 Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
                                 />
+                            <Button
+                                Grid.Row="8"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
+                                />
 
                             <TextBlock
                                 Grid.Row="9"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
-                                Text="{localized:Static p:Resources.CopyToClipboard}"
+                                Text="{localized:Static p:Resources.CopyImageToClipboard}"
                                 />
                             <Button
                                 Grid.Row="9"
@@ -684,23 +813,60 @@
                                 Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.CopyToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.CopyImageToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
-                                Tag="{Binding Settings.CopyToClipboardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.CopyImageToClipboardKey, Mode=TwoWay}"
+                                />
+                            <Button
+                                Grid.Row="9"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.CopyImageToClipboardKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
 
-                            <!--  Reset Settings Button  -->
-                            <Button
+                            <TextBlock
                                 Grid.Row="10"
                                 Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.CutFileToClipboard}"
+                                />
+                            <Button
+                                Grid.Row="10"
+                                Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,25,0,0"
+                                Margin="0,0,0,5"
                                 HorizontalAlignment="Left"
-                                Click="OnResetSettingsClick"
-                                Content="{localized:Static p:Resources.ResetSettingsButton}"
+                                Click="OnShortcutClick"
+                                Content="{Binding Settings.CutFileToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
+                                />
+                            <Button
+                                Grid.Row="10"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
 
                             <!--<Image Source="Resources/kblayoutkeys.png" />-->

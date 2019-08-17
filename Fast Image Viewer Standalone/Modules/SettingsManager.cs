@@ -135,17 +135,32 @@ namespace FIVStandard.Modules
             }
         }
 
-        private Key _copyToClipboardKey = Key.C;
+        private Key _copyImageToClipboardKey = Key.C;
 
-        public Key CopyToClipboardKey
+        public Key CopyImageToClipboardKey
         {
             get
             {
-                return _copyToClipboardKey;
+                return _copyImageToClipboardKey;
             }
             set
             {
-                _copyToClipboardKey = value;
+                _copyImageToClipboardKey = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Key _cutFileToClipboardKey = Key.X;
+
+        public Key CutFileToClipboardKey
+        {
+            get
+            {
+                return _cutFileToClipboardKey;
+            }
+            set
+            {
+                _cutFileToClipboardKey = value;
                 OnPropertyChanged();
             }
         }
@@ -309,7 +324,8 @@ namespace FIVStandard.Modules
             StretchImageKey = (Key)savs.StretchImageKey;
             DownsizeImageKey = (Key)savs.DownsizeImageKey;
             ExploreFileKey = (Key)savs.ExploreFileKey;
-            CopyToClipboardKey = (Key)savs.CopyToClipboardKey;
+            CopyImageToClipboardKey = (Key)savs.CopyToClipboardKey;
+            CutFileToClipboardKey = (Key)savs.CutToClipboardKey;
         }
 
         public void Save()
@@ -328,7 +344,8 @@ namespace FIVStandard.Modules
             savs.StretchImageKey = (int)StretchImageKey;
             savs.DownsizeImageKey = (int)DownsizeImageKey;
             savs.ExploreFileKey = (int)ExploreFileKey;
-            savs.CopyToClipboardKey = (int)CopyToClipboardKey;
+            savs.CopyToClipboardKey = (int)CopyImageToClipboardKey;
+            savs.CutToClipboardKey = (int)CutFileToClipboardKey;
         }
 
         public void ResetToDefault()

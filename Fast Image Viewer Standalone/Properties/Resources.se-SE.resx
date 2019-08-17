@@ -226,4 +226,16 @@
   <data name="AllWatcher" xml:space="preserve">
     <value>Alla ändringar</value>
   </data>
+  <data name="CopyImageToClipboard" xml:space="preserve">
+    <value>Kopiera bild till urklipp</value>
+  </data>
+  <data name="ResetSettingsButton" xml:space="preserve">
+    <value>Återställ allt</value>
+  </data>
+  <data name="CutFileToClipboard" xml:space="preserve">
+    <value>Klipp bild till urklipp</value>
+  </data>
+  <data name="RemoveShortcut" xml:space="preserve">
+    <value>Ta bort genväg</value>
+  </data>
 </root>

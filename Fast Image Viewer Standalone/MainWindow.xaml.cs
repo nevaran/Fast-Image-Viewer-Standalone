@@ -617,18 +617,23 @@ namespace FIVStandard
             }*/
         }
 
-        private void ImageToClipboardCall()
+        private void ImageCopyToClipboardCall()
         {
             //ToClipboard.CopyToClipboard(ActivePath);
             if (IsAnimated)
-                ToClipboard.ImageToClipboard(new BitmapImage(MediaSource));
+                ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaSource));
             else
-                ToClipboard.ImageToClipboard(ImageSource);
+                ToClipboard.ImageCopyToClipboard(ImageSource);
         }
 
-        private void FileeToClipboardCall()
+        private void FileCopyToClipboardCall()
         {
-            ToClipboard.FileToClipboard(ActivePath);
+            ToClipboard.FileCopyToClipboard(ActivePath);
+        }
+
+        private void FileCutToClipboardCall()
+        {
+            ToClipboard.FileCutToClipBoard(ActivePath);
         }
 
         private void OnDonateClick(object sender, RoutedEventArgs e)
@@ -644,7 +649,12 @@ namespace FIVStandard
 
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)
         {
-            ImageToClipboardCall();
+            ImageCopyToClipboardCall();
+        }
+
+        private void OnCutToClipboard(object sender, RoutedEventArgs e)
+        {
+            FileCutToClipboardCall();
         }
 
         private void OnCheckUpdateClick(object sender, RoutedEventArgs e)
@@ -743,9 +753,14 @@ namespace FIVStandard
                 ExploreFile();
             }
 
-            if(e.Key == Settings.CopyToClipboardKey)
+            if(e.Key == Settings.CopyImageToClipboardKey)
             {
-                ImageToClipboardCall();
+                ImageCopyToClipboardCall();
+            }
+
+            if(e.Key == Settings.CutFileToClipboardKey)
+            {
+                FileCutToClipboardCall();
             }
         }
 
@@ -804,6 +819,15 @@ namespace FIVStandard
 
             //Binding myBinding = BindingOperations.GetBinding(b, System.Windows.Controls.Button.ContentProperty);
             //string p = myBinding.Path.Path;
+        }
+
+        private void OnRemoveShortcutClick(object sender, RoutedEventArgs e)
+        {
+            editingButton = (System.Windows.Controls.Button)sender;
+
+            editingButton.Tag = Key.None;
+
+            Settings.UpdateAllKeysProperties();
         }
 
         private void OnResetSettingsClick(object sender, RoutedEventArgs e)

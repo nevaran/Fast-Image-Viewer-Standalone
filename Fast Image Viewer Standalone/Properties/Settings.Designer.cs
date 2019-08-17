@@ -190,5 +190,17 @@ namespace FIVStandard.Properties {
                 this["CopyToClipboardKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("67")]
+        public int CutToClipboardKey {
+            get {
+                return ((int)(this["CutToClipboardKey"]));
+            }
+            set {
+                this["CutToClipboardKey"] = value;
+            }
+        }
     }
 }
