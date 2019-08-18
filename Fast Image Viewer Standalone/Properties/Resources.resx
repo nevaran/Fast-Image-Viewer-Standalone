@@ -238,4 +238,13 @@
   <data name="RemoveShortcut" xml:space="preserve">
     <value>Remove shortcut</value>
   </data>
+  <data name="DarkModeOnTooltip" xml:space="preserve">
+    <value>Dark Mode On</value>
+  </data>
+  <data name="StretchOnTooltip" xml:space="preserve">
+    <value>Stretch On</value>
+  </data>
+  <data name="DownsizeOnTooltip" xml:space="preserve">
+    <value>Downsize On</value>
+  </data>
 </root>

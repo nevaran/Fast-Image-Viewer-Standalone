@@ -142,6 +142,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dark Mode On.
+        /// </summary>
+        public static string DarkModeOnTooltip {
+            get {
+                return ResourceManager.GetString("DarkModeOnTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
@@ -201,6 +210,15 @@ namespace FIVStandard.Properties {
         public static string DownsizeImageShortcut {
             get {
                 return ResourceManager.GetString("DownsizeImageShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downsize On.
+        /// </summary>
+        public static string DownsizeOnTooltip {
+            get {
+                return ResourceManager.GetString("DownsizeOnTooltip", resourceCulture);
             }
         }
         
@@ -400,6 +418,15 @@ namespace FIVStandard.Properties {
         public static string StretchImageShortcut {
             get {
                 return ResourceManager.GetString("StretchImageShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stretch On.
+        /// </summary>
+        public static string StretchOnTooltip {
+            get {
+                return ResourceManager.GetString("StretchOnTooltip", resourceCulture);
             }
         }
         

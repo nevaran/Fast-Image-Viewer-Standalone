@@ -125,6 +125,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Comparers\NameComparer.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\KeyToStringConverter.cs" />
     <Compile Include="Converters\TextToColorConverter.cs" />
     <Compile Include="Modules\CopyFileToClipboard.cs" />

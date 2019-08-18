@@ -30,6 +30,7 @@
     <Window.Resources>
         <converter:TextToColorConverter x:Key="TextToColorConverter" />
         <converter:KeyToStringConverter x:Key="KeyToStringConverter" />
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
 
     <!--  Window Bar Buttons  -->
@@ -53,6 +54,59 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid Focusable="False">
+        <StackPanel
+            Height="25"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Horizontal"
+            >
+
+            <Border
+                Width="15"
+                Height="15"
+                Margin="0,0,5,0"
+                VerticalAlignment="Center"
+                Background="#00000000"
+                ToolTip="{localized:Static p:Resources.DarkModeOnTooltip}"
+                Visibility="{Binding Settings.DarkModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                >
+                <Path
+                    Data="M0 128v768h768V128H0zM64 832V192h640L64 832z"
+                    Fill="{DynamicResource AccentColorBrush}"
+                    Stretch="Uniform"
+                    />
+            </Border>
+            <Border
+                Width="15"
+                Height="15"
+                Margin="0,0,5,0"
+                VerticalAlignment="Center"
+                Background="#00000000"
+                ToolTip="{localized:Static p:Resources.StretchOnTooltip}"
+                Visibility="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                >
+                <Path
+                    Data="M20,2H4C2.89,2 2,2.89 2,4V20C2,21.11 2.89,22 4,22H20C21.11,22 22,21.11 22,20V4C22,2.89 21.11,2 20,2M9,19H5V15L6.29,16.29L7.83,14.75L9.25,16.17L7.71,17.71M7.83,9.25L6.29,7.71L5,9V5H9L7.71,6.29L9.25,7.83M19,19H15L16.29,17.71L14.75,16.17L16.17,14.75L17.71,16.29L19,15M19,9L17.71,7.71L16.17,9.25L14.75,7.83L16.29,6.29L15,5H19"
+                    Fill="{DynamicResource AccentColorBrush}"
+                    Stretch="Uniform"
+                    />
+            </Border>
+            <Border
+                Width="15"
+                Height="15"
+                Margin="0,0,5,0"
+                VerticalAlignment="Center"
+                Background="#00000000"
+                ToolTip="{localized:Static p:Resources.DownsizeOnTooltip}"
+                Visibility="{Binding Settings.DownsizeImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                >
+                <Path
+                    Data="M21,15H23V17H21V15M21,11H23V13H21V11M23,19H21V21C22,21 23,20 23,19M13,3H15V5H13V3M21,7H23V9H21V7M21,3V5H23C23,4 22,3 21,3M1,7H3V9H1V7M17,3H19V5H17V3M17,19H19V21H17V19M3,3C2,3 1,4 1,5H3V3M9,3H11V5H9V3M5,3H7V5H5V3M1,11V19A2,2 0 0,0 3,21H15V11H1M3,19L5.5,15.79L7.29,17.94L9.79,14.72L13,19H3Z"
+                    Fill="{DynamicResource AccentColorBrush}"
+                    Stretch="Uniform"
+                    />
+            </Border>
+        </StackPanel>
         <Controls:MetroTabControl
             Focusable="False"
             IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
@@ -88,6 +142,8 @@
                         </ContextMenu>
                     </Grid.ContextMenu>
 
+                    <Separator VerticalAlignment="Top" />
+
                     <!--  Image Information  -->
                     <Border
                         Width="200"
@@ -111,13 +167,13 @@
                         x:Name="Btn_Prev"
                         Width="60"
                         Height="40"
-                        Margin="0,2,80,0"
+                        Margin="0,3,80,0"
                         Padding="0"
                         VerticalAlignment="Top"
                         Click="OnClick_Prev"
                         Content="🡄"
                         Focusable="False"
-                        FontSize="30"
+                        FontSize="25"
                         IsTabStop="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         />
@@ -126,13 +182,13 @@
                         x:Name="Btn_Next"
                         Width="60"
                         Height="40"
-                        Margin="80,2,0,0"
+                        Margin="80,3,0,0"
                         Padding="0"
                         VerticalAlignment="Top"
                         Click="OnClick_Next"
                         Content="🡆"
                         Focusable="False"
-                        FontSize="30"
+                        FontSize="25"
                         IsTabStop="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         />
@@ -982,6 +1038,11 @@
                                     <ListItem>
                                         <Paragraph>
                                             Swedish -<Bold>Daniel Pedersen</Bold>
+                                        </Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            Portuguese -<Bold>Adriano Bini</Bold>
                                         </Paragraph>
                                     </ListItem>
                                 </List>
