@@ -79,6 +79,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Program already on latest version.
+        /// </summary>
+        public static string AlreadyOnLatestVerInfo {
+            get {
+                return ResourceManager.GetString("AlreadyOnLatestVerInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changed.
         /// </summary>
         public static string ChangedWatcher {
@@ -93,6 +102,15 @@ namespace FIVStandard.Properties {
         public static string CheckForUpdates {
             get {
                 return ResourceManager.GetString("CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking for updates....
+        /// </summary>
+        public static string CheckingForUpdatesInfo {
+            get {
+                return ResourceManager.GetString("CheckingForUpdatesInfo", resourceCulture);
             }
         }
         
@@ -187,6 +205,42 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download Finished.
+        /// </summary>
+        public static string DownloadFinsihedInfo {
+            get {
+                return ResourceManager.GetString("DownloadFinsihedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading.
+        /// </summary>
+        public static string DownloadingInfo {
+            get {
+                return ResourceManager.GetString("DownloadingInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Latest.
+        /// </summary>
+        public static string DownloadLatest {
+            get {
+                return ResourceManager.GetString("DownloadLatest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download the latest setup for the program.
+        /// </summary>
+        public static string DownloadLatestTooltip {
+            get {
+                return ResourceManager.GetString("DownloadLatestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downsize Image.
         /// </summary>
         public static string DownsizeImage {
@@ -269,11 +323,29 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New version available.
+        /// </summary>
+        public static string NewVerAvailableInfo {
+            get {
+                return ResourceManager.GetString("NewVerAvailableInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next image.
         /// </summary>
         public static string NextImageShortcut {
             get {
                 return ResourceManager.GetString("NextImageShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Internet Connection.
+        /// </summary>
+        public static string NoInternetInfo {
+            get {
+                return ResourceManager.GetString("NoInternetInfo", resourceCulture);
             }
         }
         
@@ -427,6 +499,15 @@ namespace FIVStandard.Properties {
         public static string ThemeAccentInfo {
             get {
                 return ResourceManager.GetString("ThemeAccentInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating....
+        /// </summary>
+        public static string UpdatingInfo {
+            get {
+                return ResourceManager.GetString("UpdatingInfo", resourceCulture);
             }
         }
         

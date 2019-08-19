@@ -247,4 +247,31 @@
   <data name="DownsizeOnTooltip" xml:space="preserve">
     <value>Downsize On</value>
   </data>
+  <data name="DownloadLatest" xml:space="preserve">
+    <value>Download Latest</value>
+  </data>
+  <data name="DownloadLatestTooltip" xml:space="preserve">
+    <value>Download the latest setup for the program</value>
+  </data>
+  <data name="NewVerAvailableInfo" xml:space="preserve">
+    <value>New version available</value>
+  </data>
+  <data name="UpdatingInfo" xml:space="preserve">
+    <value>Updating...</value>
+  </data>
+  <data name="AlreadyOnLatestVerInfo" xml:space="preserve">
+    <value>Program already on latest version</value>
+  </data>
+  <data name="CheckingForUpdatesInfo" xml:space="preserve">
+    <value>Checking for updates...</value>
+  </data>
+  <data name="NoInternetInfo" xml:space="preserve">
+    <value>No Internet Connection</value>
+  </data>
+  <data name="DownloadingInfo" xml:space="preserve">
+    <value>Downloading</value>
+  </data>
+  <data name="DownloadFinsihedInfo" xml:space="preserve">
+    <value>Download Finished</value>
+  </data>
 </root>

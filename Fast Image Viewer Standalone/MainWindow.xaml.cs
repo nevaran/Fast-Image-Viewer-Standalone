@@ -818,7 +818,7 @@ namespace FIVStandard
 
         private void OnForceDownloadSetupClick(object sender, RoutedEventArgs e)
         {
-            AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdate);
+            AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdateForced);
         }
 
         /*private int ParseStringToOnlyInt(string input)

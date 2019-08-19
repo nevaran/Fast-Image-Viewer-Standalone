@@ -1134,10 +1134,11 @@
                                 MinWidth="100"
                                 HorizontalAlignment="Right"
                                 Click="OnForceDownloadSetupClick"
-                                Content="Force Download"
+                                Content="{localized:Static p:Resources.DownloadLatest}"
                                 Focusable="False"
                                 IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
                                 IsTabStop="False"
+                                ToolTip="{localized:Static p:Resources.DownloadLatestTooltip}"
                                 />
 
                             <TextBlock

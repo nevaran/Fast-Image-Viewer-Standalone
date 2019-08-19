@@ -8,6 +8,8 @@
 ***Downsize Image
 ***Zoom sensitivity
 
+update mode (silent, very silent, full)
+
 drag and drop image
 
 rotate image buttons
@@ -22,12 +24,12 @@ example: https://www.wpftutorial.net/ListBoxItemsArrange.html
 ***separate file path: one string for folder path, and list of files with only names + extension
 ***Update when file changed in active directory
 ***Rotate image based on file orientation property
+***localization/globalization
+
 -----------------
 
 switch to json saving of settings
 
 FileSystemWatcher to update only changed files instead of updating whole list
-
-localization/globalization
 
 -----------------

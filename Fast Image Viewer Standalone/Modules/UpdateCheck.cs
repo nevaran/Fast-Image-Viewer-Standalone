@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gu.Localization;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -17,10 +18,11 @@ namespace FIVStandard.Modules
         /// Notifies if up to date and new version available; downloads and installs
         /// </summary>
         FullUpdate,
+        FullUpdateForced,
         /// <summary>
         /// Notifies only if new version is available
         /// </summary>
-        SilentVersionCheck
+        SilentVersionCheck,
     }
 
     public class UpdateCheck : INotifyPropertyChanged
@@ -128,6 +130,9 @@ namespace FIVStandard.Modules
                                 case UpdateCheckType.FullUpdate:
                                     Download_Full();
                                     break;
+                                case UpdateCheckType.FullUpdateForced:
+                                    Download_FullForced();
+                                    break;
                                 case UpdateCheckType.SilentVersionCheck:
                                     Download_VersionInfo();
                                     break;
@@ -158,7 +163,8 @@ namespace FIVStandard.Modules
             Application.Current.Dispatcher.Invoke(() =>
             {
                 //UI thread stuff
-                mainWindow.notifier.ShowInformation("Checking for updates...");
+                string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CheckingForUpdatesInfo));
+                mainWindow.notifier.ShowInformation(cultureTranslated);
             });
 
             //txt file containing version and update notes
@@ -177,7 +183,8 @@ namespace FIVStandard.Modules
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         //UI thread stuff
-                        mainWindow.notifier.ShowInformation($"Program already on latest version ({DownloadVersion.ToString()})");
+                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo));
+                        mainWindow.notifier.ShowInformation($"{cultureTranslated}({DownloadVersion.ToString()})");
                     });
 
                     UpdaterMessage = "";
@@ -188,11 +195,44 @@ namespace FIVStandard.Modules
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         //UI thread stuff
-                        mainWindow.notifier.ShowInformation($"New version available, downloading... ({DownloadVersion.ToString()})");
+                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo));
+                        string cultureTranslated2 = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo));
+                        mainWindow.notifier.ShowInformation($"{cultureTranslated}. {cultureTranslated2} ({DownloadVersion.ToString()})");
                     });
 
                     DownloadNewAppVersion();
                 }
+            }
+        }
+
+        private void Download_FullForced()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                //UI thread stuff
+                string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CheckingForUpdatesInfo));
+                mainWindow.notifier.ShowInformation(cultureTranslated);
+            });
+
+            //txt file containing version and update notes
+            var webRequest = WebRequest.Create(changelogURL);
+
+            using (var response = webRequest.GetResponse())
+            using (var content = response.GetResponseStream())
+            using (var reader = new StreamReader(content))
+            {
+                DownloadVersion = new Version(reader.ReadLine());
+                reader.ReadLine();//empty line between version and notes
+                DownloadedChangelog = reader.ReadToEnd();
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    //UI thread stuff
+                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo));
+                    mainWindow.notifier.ShowInformation($"{cultureTranslated} ({DownloadVersion.ToString()})");
+                });
+
+                DownloadNewAppVersion();
             }
         }
 
@@ -220,7 +260,8 @@ namespace FIVStandard.Modules
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         //UI thread stuff
-                        mainWindow.notifier.ShowInformation($"New version available: {DownloadVersion.ToString()}");
+                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo));
+                        mainWindow.notifier.ShowInformation($"{cultureTranslated}: {DownloadVersion.ToString()}");
                     });
 
                     NotUpdating = true;
@@ -232,7 +273,8 @@ namespace FIVStandard.Modules
         {
             if (CheckForInternetConnection())
             {
-                UpdaterMessage = "Updating...";
+                string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo));
+                UpdaterMessage = cultureTranslated;
 
                 using (WebClient fileClient = new WebClient())
                 {
@@ -243,14 +285,16 @@ namespace FIVStandard.Modules
             }
             else
             {
-                UpdaterMessage = "No Internet Connection!";
+                string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NoInternetInfo));
+                UpdaterMessage = $"{cultureTranslated}!";
             }
         }
 
         private void Exe_ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             //UpdaterMessage = $"Downloading: {(e.BytesReceived / 1024)}/{(e.TotalBytesToReceive / 1024)}kB ({e.ProgressPercentage}%)";
-            UpdaterMessage = $"Downloading: {(e.BytesReceived / 1024)}kB";
+            string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DownloadingInfo));
+            UpdaterMessage = $"{cultureTranslated}: {(e.BytesReceived / 1024)}kB";
             /*if (e.BytesReceived == e.TotalBytesToReceive)
             {
                 UpdaterMessage = $"Download Complete: {(e.TotalBytesToReceive / 1024)}kB (100%)";
@@ -259,12 +303,13 @@ namespace FIVStandard.Modules
 
         private void Exe_DownloadCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            UpdaterMessage = "Download Finished!";
+            string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DownloadFinsihedInfo));
+            UpdaterMessage = $"{cultureTranslated}!";
             //Thread.Sleep(500);
 
             if (File.Exists(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe")))
             {
-                Process.Start(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"));
+                Process.Start(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"), "/VERYSILENT");
 
                 /*var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
                 foreach (Process proc in processes)
