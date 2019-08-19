@@ -127,8 +127,8 @@
   <data name="General" xml:space="preserve">
     <value>Основен</value>
   </data>
-  <data name="Help" xml:space="preserve">
-    <value>Помощ</value>
+  <data name="WhatsNew" xml:space="preserve">
+    <value>Какво е Ново</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Настройки</value>
@@ -179,25 +179,25 @@
     <value>Изкл.</value>
   </data>
   <data name="PreviousImageShortcut" xml:space="preserve">
-    <value>Предишно изображение </value>
+    <value>Предишно изображение</value>
   </data>
   <data name="NextImageShortcut" xml:space="preserve">
-    <value>Следващо изображение </value>
+    <value>Следващо изображение</value>
   </data>
   <data name="DownsizeImageShortcut" xml:space="preserve">
-    <value>Намаляване на изображението </value>
+    <value>Намаляване на изображението</value>
   </data>
   <data name="StretchImageShortcut" xml:space="preserve">
-    <value>Разтягане на изображението </value>
+    <value>Разтягане на изображението</value>
   </data>
   <data name="PauseAnimationShortcut" xml:space="preserve">
-    <value>Пауза анимация </value>
+    <value>Пауза анимация</value>
   </data>
   <data name="ExploreImageLocationShortcut" xml:space="preserve">
-    <value>Отвори местоположението на файла </value>
+    <value>Отвори местоположението на файла</value>
   </data>
   <data name="DeleteImageShortcut" xml:space="preserve">
-    <value>Изтрий изображение </value>
+    <value>Изтрий изображение</value>
   </data>
   <data name="Shortcuts" xml:space="preserve">
     <value>Преки пътища</value>

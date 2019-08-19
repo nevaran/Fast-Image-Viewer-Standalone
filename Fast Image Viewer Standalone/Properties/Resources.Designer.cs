@@ -169,7 +169,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete image .
+        ///   Looks up a localized string similar to Delete image.
         /// </summary>
         public static string DeleteImageShortcut {
             get {
@@ -205,7 +205,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downsize image .
+        ///   Looks up a localized string similar to Downsize image.
         /// </summary>
         public static string DownsizeImageShortcut {
             get {
@@ -223,7 +223,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explore image location .
+        ///   Looks up a localized string similar to Explore image location.
         /// </summary>
         public static string ExploreImageLocationShortcut {
             get {
@@ -260,15 +260,6 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help.
-        /// </summary>
-        public static string Help {
-            get {
-                return ResourceManager.GetString("Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not get image orientation.
         /// </summary>
         public static string ImgOrientationFailedMsg {
@@ -278,7 +269,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next image .
+        ///   Looks up a localized string similar to Next image.
         /// </summary>
         public static string NextImageShortcut {
             get {
@@ -323,7 +314,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pause animation .
+        ///   Looks up a localized string similar to Pause animation.
         /// </summary>
         public static string PauseAnimationShortcut {
             get {
@@ -332,7 +323,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Previous image .
+        ///   Looks up a localized string similar to Previous image.
         /// </summary>
         public static string PreviousImageShortcut {
             get {
@@ -413,7 +404,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stretch image .
+        ///   Looks up a localized string similar to Stretch image.
         /// </summary>
         public static string StretchImageShortcut {
             get {
@@ -436,6 +427,15 @@ namespace FIVStandard.Properties {
         public static string ThemeAccentInfo {
             get {
                 return ResourceManager.GetString("ThemeAccentInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What&apos;s New.
+        /// </summary>
+        public static string WhatsNew {
+            get {
+                return ResourceManager.GetString("WhatsNew", resourceCulture);
             }
         }
         

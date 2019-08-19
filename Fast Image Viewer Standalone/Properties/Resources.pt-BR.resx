@@ -122,16 +122,13 @@
     <value>..\Resources\FIVIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ExploreImageLocationShortcut" xml:space="preserve">
-    <value>Explorar localização da imagem </value>
+    <value>Explorar localização da imagem</value>
   </data>
   <data name="About" xml:space="preserve">
     <value>Sobre</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>Geral</value>
-  </data>
-  <data name="Help" xml:space="preserve">
-    <value>Ajuda</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Configurações</value>
@@ -182,22 +179,22 @@
     <value>Desligado</value>
   </data>
   <data name="PreviousImageShortcut" xml:space="preserve">
-    <value>Imagem anterior </value>
+    <value>Imagem anterior</value>
   </data>
   <data name="NextImageShortcut" xml:space="preserve">
-    <value>Próxima imagem </value>
+    <value>Próxima imagem</value>
   </data>
   <data name="DeleteImageShortcut" xml:space="preserve">
-    <value>Apagar imagem </value>
+    <value>Apagar imagem</value>
   </data>
   <data name="DownsizeImageShortcut" xml:space="preserve">
-    <value>Diminuir Imagem </value>
+    <value>Diminuir Imagem</value>
   </data>
   <data name="PauseAnimationShortcut" xml:space="preserve">
-    <value>Pausar animação </value>
+    <value>Pausar animação</value>
   </data>
   <data name="StretchImageShortcut" xml:space="preserve">
-    <value>Esticar imagem </value>
+    <value>Esticar imagem</value>
   </data>
   <data name="Shortcuts" xml:space="preserve">
     <value>Atalhos</value>

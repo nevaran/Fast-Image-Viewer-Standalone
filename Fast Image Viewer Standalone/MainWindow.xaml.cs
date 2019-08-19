@@ -108,35 +108,13 @@ namespace FIVStandard
         public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
         #endregion
 
-        private UpdateCheck _appUpdater;//NOTE: do not use anywhere
-
-        private UpdateCheck AppUpdater
-        {
-            get
-            {
-                if (_appUpdater == null)
-                {
-                    _appUpdater = new UpdateCheck(this);
-                }
-
-                return _appUpdater;
-            }
-            set
-            {
-                if (_appUpdater == null)
-                {
-                    _appUpdater = new UpdateCheck(this);
-                }
-
-                _appUpdater = value;
-            }
-        }
+        public UpdateCheck AppUpdater { get; set; }
 
         public SettingsManager Settings { get; set; }
 
         public CopyFileToClipboard ToClipboard { get; set; }
 
-        //private string StartupPath;//program startup path
+        public string StartupPath;//program startup path
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
@@ -176,6 +154,7 @@ namespace FIVStandard
         {
             InitializeComponent();
 
+            AppUpdater = new UpdateCheck(this);
             Settings = new SettingsManager(this);
             ToClipboard = new CopyFileToClipboard();
 
@@ -194,14 +173,16 @@ namespace FIVStandard
 
         private void OnAppLoaded(object sender, RoutedEventArgs e)
         {
+            AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+
             string[] args = Environment.GetCommandLineArgs();
 
             if (args.Length > 0)//get startup path
             {
-                //StartupPath = Path.GetDirectoryName(args[0]);
+                StartupPath = Path.GetDirectoryName(args[0]);
 
 #if DEBUG
-                string path = @"D:\Google Drive\temp\alltypes\4.gif";
+                string path = @"D:\Google Drive\temp\alltypes\3.png";
 
                 OpenNewFile(path);
 #endif
@@ -657,11 +638,6 @@ namespace FIVStandard
             FileCutToClipboardCall();
         }
 
-        private void OnCheckUpdateClick(object sender, RoutedEventArgs e)
-        {
-            AppUpdater.CheckForUpdates();
-        }
-
         private void OnLanguageClick(object sender, RoutedEventArgs e)
         {
             if (Settings.ShownLanguageDropIndex >= Settings.ShownLanguage.Count - 1)
@@ -833,6 +809,16 @@ namespace FIVStandard
         private void OnResetSettingsClick(object sender, RoutedEventArgs e)
         {
             Settings.ResetToDefault();
+        }
+
+        private void OnCheckUpdateClick(object sender, RoutedEventArgs e)
+        {
+            AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+        }
+
+        private void OnForceDownloadSetupClick(object sender, RoutedEventArgs e)
+        {
+            AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdate);
         }
 
         /*private int ParseStringToOnlyInt(string input)

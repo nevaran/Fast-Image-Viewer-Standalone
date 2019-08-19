@@ -49,11 +49,15 @@
                 Click="OnCheckUpdateClick"
                 Content="{localized:Static p:Resources.CheckForUpdates}"
                 Focusable="False"
+                IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
                 IsTabStop="False"
                 />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    <Grid Focusable="False">
+    <Grid
+        Focusable="False"
+        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        >
         <StackPanel
             Height="25"
             HorizontalAlignment="Right"
@@ -118,7 +122,10 @@
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.General}"
                 >
-                <Grid>
+                <Grid
+                    Focusable="False"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                    >
                     <!--  Context Menu | Window  -->
                     <Grid.ContextMenu>
                         <ContextMenu>
@@ -261,6 +268,7 @@
                         <Grid
                             Focusable="False"
                             Grid.IsSharedSizeScope="True"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -581,6 +589,7 @@
                         <Grid
                             Margin="10"
                             Focusable="False"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -621,7 +630,7 @@
                                 Grid.Row="2"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
@@ -656,7 +665,7 @@
                                 Grid.Row="3"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
@@ -691,7 +700,7 @@
                                 Grid.Row="4"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
@@ -726,7 +735,7 @@
                                 Grid.Row="5"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
@@ -761,7 +770,7 @@
                                 Grid.Row="6"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
@@ -796,7 +805,7 @@
                                 Grid.Row="7"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
@@ -831,7 +840,7 @@
                                 Grid.Row="8"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
@@ -866,7 +875,7 @@
                                 Grid.Row="9"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.CopyImageToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
@@ -901,7 +910,7 @@
                                 Grid.Row="10"
                                 Grid.Column="1"
                                 MinWidth="80"
-                                Margin="0,0,0,5"
+                                Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
                                 Content="{Binding Settings.CutFileToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
@@ -930,19 +939,6 @@
                     </StackPanel>
 
                 </ScrollViewer>
-            </Controls:MetroTabItem>
-            <!--  UNUSED TAB ITEM  -->
-            <Controls:MetroTabItem
-                Controls:ControlsHelper.HeaderFontSize="16"
-                Header="{localized:Static p:Resources.Help}"
-                IsEnabled="False"
-                Visibility="Collapsed"
-                >
-                <ScrollViewer
-                    Focusable="False"
-                    IsTabStop="False"
-                    VerticalScrollBarVisibility="Auto"
-                    />
             </Controls:MetroTabItem>
             <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
@@ -981,7 +977,11 @@
                                         Margin="0,0,30,0"
                                         Source="Resources/FIVIcon.ico"
                                         />
-                                    <Run FontSize="60">FIV</Run>
+                                    <Run
+                                        FontSize="60"
+                                        Text="FIV"
+                                        />
+                                    <Run Text="{Binding AppUpdater.CurrentVersion, Mode=OneWay}" />
                                 </Paragraph>
 
                                 <Paragraph>
@@ -1091,6 +1091,76 @@
                             </FlowDocument>
                         </FlowDocumentScrollViewer>
                     </Grid>
+                </ScrollViewer>
+            </Controls:MetroTabItem>
+            <Controls:MetroTabItem
+                Controls:ControlsHelper.HeaderFontSize="16"
+                Header="{localized:Static p:Resources.WhatsNew}"
+                >
+                <ScrollViewer
+                    Margin="5,5,5,5"
+                    Focusable="False"
+                    VerticalScrollBarVisibility="Auto"
+                    >
+                    <StackPanel
+                        Focusable="False"
+                        Orientation="Vertical"
+                        >
+
+                        <TextBlock
+                            Padding="10,0"
+                            Text="{Binding AppUpdater.UpdaterMessage, Mode=OneWay}"
+                            TextAlignment="Center"
+                            />
+
+                        <Grid
+                            Focusable="False"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Force Download Setup Button  -->
+                            <Button
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                MinWidth="100"
+                                HorizontalAlignment="Right"
+                                Click="OnForceDownloadSetupClick"
+                                Content="Force Download"
+                                Focusable="False"
+                                IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
+                                IsTabStop="False"
+                                />
+
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                >
+                                <TextBlock.Inlines>
+                                    <Run
+                                        FontSize="20"
+                                        Text="{localized:Static p:Resources.WhatsNew}"
+                                        />
+                                    <Run Text="{Binding AppUpdater.DownloadVersionString, Mode=OneWay}" />
+                                </TextBlock.Inlines>
+                            </TextBlock>
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Padding="20,0,0,0"
+                                Text="{Binding AppUpdater.DownloadedChangelog, Mode=OneWay}"
+                                />
+
+                        </Grid>
+                    </StackPanel>
                 </ScrollViewer>
             </Controls:MetroTabItem>
         </Controls:MetroTabControl>

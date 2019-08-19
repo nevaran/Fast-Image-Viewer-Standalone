@@ -127,9 +127,6 @@
   <data name="General" xml:space="preserve">
     <value>Algemeen</value>
   </data>
-  <data name="Help" xml:space="preserve">
-    <value>Help</value>
-  </data>
   <data name="Settings" xml:space="preserve">
     <value>Instellingen</value>
   </data>
@@ -179,19 +176,19 @@
     <value>Afbeeldingsgrootte aanpassen aan huidig venster. Dit verlaagt geheugengebruik voor afbeeldingen die groter zijn dan het scherm.</value>
   </data>
   <data name="PreviousImageShortcut" xml:space="preserve">
-    <value>Vorige afbeelding </value>
+    <value>Vorige afbeelding</value>
   </data>
   <data name="NextImageShortcut" xml:space="preserve">
-    <value>Volgende afbeelding </value>
+    <value>Volgende afbeelding</value>
   </data>
   <data name="DeleteImageShortcut" xml:space="preserve">
-    <value>Afbeelding verwijderen </value>
+    <value>Afbeelding verwijderen</value>
   </data>
   <data name="PauseAnimationShortcut" xml:space="preserve">
-    <value>Animatie pauzeren </value>
+    <value>Animatie pauzeren</value>
   </data>
   <data name="ExploreImageLocationShortcut" xml:space="preserve">
-    <value>Locatie van afbeelding zoeken </value>
+    <value>Locatie van afbeelding zoeken</value>
   </data>
   <data name="Shortcuts" xml:space="preserve">
     <value>Sneltoetsen</value>
@@ -206,10 +203,10 @@
     <value>Kon de richting van de afbeelding niet vinden</value>
   </data>
   <data name="StretchImageShortcut" xml:space="preserve">
-    <value>Afbeelding uitvergroten </value>
+    <value>Afbeelding uitvergroten</value>
   </data>
   <data name="DownsizeImageShortcut" xml:space="preserve">
-    <value>Afbeelding krimpen </value>
+    <value>Afbeelding krimpen</value>
   </data>
   <data name="ChangedWatcher" xml:space="preserve">
     <value>Gewijzigd</value>

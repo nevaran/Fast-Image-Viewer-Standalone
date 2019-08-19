@@ -127,9 +127,6 @@
   <data name="General" xml:space="preserve">
     <value>Generellt</value>
   </data>
-  <data name="Help" xml:space="preserve">
-    <value>Hjälp</value>
-  </data>
   <data name="Settings" xml:space="preserve">
     <value>Inställningar</value>
   </data>
@@ -179,25 +176,25 @@
     <value>Av</value>
   </data>
   <data name="DownsizeImageShortcut" xml:space="preserve">
-    <value>Skala ner bild </value>
+    <value>Skala ner bild</value>
   </data>
   <data name="StretchImageShortcut" xml:space="preserve">
-    <value>Sträck bild </value>
+    <value>Sträck bild</value>
   </data>
   <data name="PreviousImageShortcut" xml:space="preserve">
-    <value>Föregående bild </value>
+    <value>Föregående bild</value>
   </data>
   <data name="NextImageShortcut" xml:space="preserve">
-    <value>Nästa bild </value>
+    <value>Nästa bild</value>
   </data>
   <data name="DeleteImageShortcut" xml:space="preserve">
-    <value>Radera bild </value>
+    <value>Radera bild</value>
   </data>
   <data name="PauseAnimationShortcut" xml:space="preserve">
-    <value>Pausa animation </value>
+    <value>Pausa animation</value>
   </data>
   <data name="ExploreImageLocationShortcut" xml:space="preserve">
-    <value>Utforska bildplats </value>
+    <value>Utforska bildplats</value>
   </data>
   <data name="Shortcuts" xml:space="preserve">
     <value>Genvägar</value>
@@ -237,5 +234,14 @@
   </data>
   <data name="RemoveShortcut" xml:space="preserve">
     <value>Ta bort genväg</value>
+  </data>
+  <data name="DarkModeOnTooltip" xml:space="preserve">
+    <value>Mörkt läge På</value>
+  </data>
+  <data name="StretchOnTooltip" xml:space="preserve">
+    <value>Sträck På</value>
+  </data>
+  <data name="DownsizeOnTooltip" xml:space="preserve">
+    <value>Skala ner bild På</value>
   </data>
 </root>
