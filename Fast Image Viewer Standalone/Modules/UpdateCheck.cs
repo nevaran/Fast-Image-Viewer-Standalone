@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using ToastNotifications.Messages;
@@ -27,12 +26,28 @@ namespace FIVStandard.Modules
 
     public class UpdateCheck : INotifyPropertyChanged
     {
+        /*[DllImport("kernel32.dll", SetLastError = true)]
+        static extern int RegisterApplicationRestart([MarshalAs(UnmanagedType.LPWStr)] string commandLineArgs, int Flags);*/
+
         private readonly MainWindow mainWindow;
 
+        private bool _notUpdating = true;
+
+        public bool NotUpdating
+        {
+            get
+            {
+                return _notUpdating;
+            }
+            set
+            {
+                _notUpdating = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Version _currentVersion = new Version("0.0.0.0");
-
-        public bool NotUpdating { get; set; } = true;
-
+        
         public Version CurrentVersion
         {
             get
@@ -309,7 +324,11 @@ namespace FIVStandard.Modules
 
             if (File.Exists(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe")))
             {
-                Process.Start(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"), "/VERYSILENT");
+                //TODO: add valid argument of opened file/image
+                //RegisterApplicationRestart("", 2);
+
+                //TODO check if it installs where the already installed one is
+                Process.Start(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"), "/LOG /SILENT /CLOSEAPPLICATIONS");//TODO add working /RESTARTAPPLICATIONS
 
                 /*var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
                 foreach (Process proc in processes)
@@ -321,14 +340,13 @@ namespace FIVStandard.Modules
                     proc.Kill();
                 }*/
 
-                Application.Current.Dispatcher.Invoke(() =>
+                /*Application.Current.Dispatcher.Invoke(() =>
                 {
                     Application.Current.Shutdown();
-                });
+                });*/
             }
 
             NotUpdating = true;
-
         }
 
         public static bool CheckForInternetConnection()

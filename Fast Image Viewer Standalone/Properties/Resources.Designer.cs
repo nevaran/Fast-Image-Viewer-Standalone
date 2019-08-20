@@ -79,7 +79,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Program already on latest version.
+        ///   Looks up a localized string similar to Latest version already installed.
         /// </summary>
         public static string AlreadyOnLatestVerInfo {
             get {

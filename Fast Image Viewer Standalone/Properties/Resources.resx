@@ -260,7 +260,7 @@
     <value>Updating...</value>
   </data>
   <data name="AlreadyOnLatestVerInfo" xml:space="preserve">
-    <value>Program already on latest version</value>
+    <value>Latest version already installed</value>
   </data>
   <data name="CheckingForUpdatesInfo" xml:space="preserve">
     <value>Checking for updates...</value>

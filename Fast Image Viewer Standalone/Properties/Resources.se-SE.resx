@@ -244,4 +244,34 @@
   <data name="DownsizeOnTooltip" xml:space="preserve">
     <value>Skala ner bild På</value>
   </data>
+  <data name="DownloadLatest" xml:space="preserve">
+    <value>Ladda ner senaste</value>
+  </data>
+  <data name="DownloadLatestTooltip" xml:space="preserve">
+    <value>Ladda ner den senaste installationen för programmet</value>
+  </data>
+  <data name="NewVerAvailableInfo" xml:space="preserve">
+    <value>Ny version tillgänglig</value>
+  </data>
+  <data name="UpdatingInfo" xml:space="preserve">
+    <value>Uppdaterar...</value>
+  </data>
+  <data name="AlreadyOnLatestVerInfo" xml:space="preserve">
+    <value>Senaste versionen är redan installerad</value>
+  </data>
+  <data name="CheckingForUpdatesInfo" xml:space="preserve">
+    <value>Söker efter uppdateringar...</value>
+  </data>
+  <data name="NoInternetInfo" xml:space="preserve">
+    <value>Ingen internet anslutning</value>
+  </data>
+  <data name="DownloadingInfo" xml:space="preserve">
+    <value>Laddar ner</value>
+  </data>
+  <data name="DownloadFinsihedInfo" xml:space="preserve">
+    <value>Nedladdning klar</value>
+  </data>
+  <data name="WhatsNew" xml:space="preserve">
+    <value>Nyheter</value>
+  </data>
 </root>
