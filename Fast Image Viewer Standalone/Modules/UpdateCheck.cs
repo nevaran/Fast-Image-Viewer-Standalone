@@ -153,13 +153,13 @@ namespace FIVStandard.Modules
                                     break;
                             }
                         }
-                        catch (Exception e)
+                        catch// (Exception e)
                         {
-                            Application.Current.Dispatcher.Invoke(() =>
+                            /*Application.Current.Dispatcher.Invoke(() => disabled: gives unwanted message when theres no internet connection
                             {
                                 //UI thread stuff
                                 mainWindow.notifier.ShowError(e.Message);
-                            });
+                            });*/
                         }
 
                         lock (_lock)
@@ -263,7 +263,6 @@ namespace FIVStandard.Modules
                 DownloadVersion = new Version(reader.ReadLine());
                 reader.ReadLine();//empty line between version and notes
                 DownloadedChangelog = reader.ReadToEnd();
-
 
                 if (HasLaterVersion())
                 {

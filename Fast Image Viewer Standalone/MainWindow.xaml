@@ -279,6 +279,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition
@@ -579,6 +580,41 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Text="{localized:Static p:Resources.ZoomSensitivityInfo}"
+                                TextWrapping="Wrap"
+                                />
+
+                            <!--  Check for Updates at Startup  -->
+                            <Controls:ToggleSwitch
+                                Grid.Row="7"
+                                Height="100"
+                                Padding="20,40,0,0"
+                                VerticalAlignment="Center"
+                                Focusable="False"
+                                Header="{localized:Static p:Resources.CheckForUpdatesStartToggle}"
+                                IsChecked="{Binding Settings.CheckForUpdatesStartToggle, Mode=TwoWay}"
+                                IsTabStop="False"
+                                OffLabel="{localized:Static p:Resources.Off}"
+                                OnLabel="{localized:Static p:Resources.On}"
+                                />
+
+                            <StackPanel
+                                Grid.Row="7"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal"
+                                >
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Grid.Row="7"
+                                Grid.Column="2"
+                                Height="60"
+                                Padding="0,0,20,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="{localized:Static p:Resources.CheckForUpdatesStartToggleInfo}"
                                 TextWrapping="Wrap"
                                 />
 

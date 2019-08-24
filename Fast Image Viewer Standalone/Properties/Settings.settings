@@ -47,5 +47,8 @@
     <Setting Name="CutToClipboardKey" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">67</Value>
     </Setting>
+    <Setting Name="CheckUpdateAtStart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

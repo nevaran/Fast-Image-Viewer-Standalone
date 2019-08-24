@@ -106,6 +106,24 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string CheckForUpdatesStartToggle {
+            get {
+                return ResourceManager.GetString("CheckForUpdatesStartToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check if there are new updates when the program first starts up..
+        /// </summary>
+        public static string CheckForUpdatesStartToggleInfo {
+            get {
+                return ResourceManager.GetString("CheckForUpdatesStartToggleInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checking for updates....
         /// </summary>
         public static string CheckingForUpdatesInfo {
@@ -192,6 +210,15 @@ namespace FIVStandard.Properties {
         public static string DeleteImageShortcut {
             get {
                 return ResourceManager.GetString("DeleteImageShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting.
+        /// </summary>
+        public static string Deleting {
+            get {
+                return ResourceManager.GetString("Deleting", resourceCulture);
             }
         }
         

@@ -297,6 +297,23 @@ namespace FIVStandard.Modules
                 return ZoomSensitivity.ToString("F2");
             }
         }
+
+        private bool _checkForUpdatesStartToggle = true;
+
+        public bool CheckForUpdatesStartToggle
+        {
+            get
+            {
+                return _checkForUpdatesStartToggle;
+            }
+            set
+            {
+                _checkForUpdatesStartToggle = value;
+                OnPropertyChanged();
+
+                OnCheckForUpdatesStartToggle();
+            }
+        }
         #endregion
 
         public SettingsManager(MainWindow mw)
@@ -316,6 +333,7 @@ namespace FIVStandard.Modules
             StretchImageToggle = savs.ImageStretched;
             DownsizeImageToggle = savs.DownsizeImage;
             ZoomSensitivity = savs.ZoomSensitivity;
+            CheckForUpdatesStartToggle = savs.CheckUpdateAtStart;
 
             GoForwardKey = (Key)savs.GoForwardKey;
             GoBackwardKey = (Key)savs.GoBackWardKey;
@@ -388,13 +406,13 @@ namespace FIVStandard.Modules
                 ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[ThemeAccentDropIndex]), ThemeManager.GetAppTheme("BaseLight"));
             }
 
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.Save();
         }
 
         private void OnLanguageChanged()
         {
             Properties.Settings.Default.ShownLanguage = ShownLanguageDropIndex;
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.Save();
 
             Translator.Culture = CultureInfo.GetCultureInfo(ShownLanguage[ShownLanguageDropIndex].tag);
         }
@@ -413,7 +431,7 @@ namespace FIVStandard.Modules
             }
 
             Properties.Settings.Default.ImageStretched = StretchImageToggle;
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.Save();
         }
 
         private void OnDownsizeSwitch()
@@ -423,14 +441,19 @@ namespace FIVStandard.Modules
             if (mainWindow.ImagesFound.Count > 0)
                 mainWindow.ImageSource = mainWindow.LoadImage(mainWindow.ActivePath);
 
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.Save();
         }
 
         private void OnZoomSensitivitySlider()
         {
             Properties.Settings.Default.ZoomSensitivity = ZoomSensitivity;
 
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.Save();
+        }
+
+        private void OnCheckForUpdatesStartToggle()
+        {
+            Properties.Settings.Default.CheckUpdateAtStart = CheckForUpdatesStartToggle;
         }
 
         #region INotifyPropertyChanged

@@ -202,5 +202,17 @@ namespace FIVStandard.Properties {
                 this["CutToClipboardKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckUpdateAtStart {
+            get {
+                return ((bool)(this["CheckUpdateAtStart"]));
+            }
+            set {
+                this["CheckUpdateAtStart"] = value;
+            }
+        }
     }
 }

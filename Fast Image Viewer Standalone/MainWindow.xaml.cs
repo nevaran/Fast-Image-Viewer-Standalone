@@ -173,7 +173,8 @@ namespace FIVStandard
 
         private void OnAppLoaded(object sender, RoutedEventArgs e)
         {
-            AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+            if(Settings.CheckForUpdatesStartToggle)
+                AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
 
             string[] args = Environment.GetCommandLineArgs();
 
@@ -197,25 +198,6 @@ namespace FIVStandard
             notifier.ShowSuccess("");
             notifier.ShowWarning("");
             notifier.ShowError("");*/
-        }
-
-        public void OpenNewFile(string path)
-        {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
-
-            ActiveFile = Path.GetFileName(path);
-            ActiveFolder = Path.GetDirectoryName(path);
-            ActivePath = path;
-
-            fsw.Path = ActiveFolder;
-            fsw.EnableRaisingEvents = true;//File Watcher is enabled/disabled
-
-            GetDirectoryFiles(ActiveFolder);
-
-            FindIndexInFiles(ActiveFile);
-            SetTitleInformation();
-
-            NewUri(path);
         }
 
         private void Fsw_Updated(object sender, FileSystemEventArgs e)//TODO: create more sophisticated updating where it doesnt load the whole directory again
@@ -256,6 +238,25 @@ namespace FIVStandard
 
                 ChangeImage(0);
             });
+        }
+
+        public void OpenNewFile(string path)
+        {
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+
+            ActiveFile = Path.GetFileName(path);
+            ActiveFolder = Path.GetDirectoryName(path);
+            ActivePath = path;
+
+            fsw.Path = ActiveFolder;
+            fsw.EnableRaisingEvents = true;//File Watcher is enabled/disabled
+
+            GetDirectoryFiles(ActiveFolder);
+
+            FindIndexInFiles(ActiveFile);
+            SetTitleInformation();
+
+            NewUri(path);
         }
 
         private void GetDirectoryFiles(string searchFolder)
@@ -315,12 +316,6 @@ namespace FIVStandard
             Title = "FIV";
 
             //GC.Collect();
-        }
-
-        private void OnClipEnded(object sender, RoutedEventArgs e)
-        {
-            MediaView.Position = new TimeSpan(0, 0, 1);
-            MediaView.Play();
         }
 
         private void ChangeImage(int jump)
@@ -506,7 +501,8 @@ namespace FIVStandard
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Title = "Deleting " + ActiveFile + "...";
+                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.Deleting));
+                        Title = $"{cultureTranslated} {ActiveFile}...";
                     });
 
                     if (FileSystem.FileExists(path))
@@ -514,7 +510,7 @@ namespace FIVStandard
                         FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
 
                         //remove deleted item from list
-                        /*Application.Current.Dispatcher.Invoke(() =>
+                        /*Application.Current.Dispatcher.Invoke(() => this is done in the file watcher now
                         {
                             ImagesFound.RemoveAt(ImageIndex);
                             ChangeImage(-1);//go back to a previous file after deletion
@@ -617,6 +613,13 @@ namespace FIVStandard
             ToClipboard.FileCutToClipBoard(ActivePath);
         }
 
+        #region XAML events
+        private void OnClipEnded(object sender, RoutedEventArgs e)
+        {
+            MediaView.Position = new TimeSpan(0, 0, 1);
+            MediaView.Play();
+        }
+
         private void OnDonateClick(object sender, RoutedEventArgs e)
         {
             ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
@@ -693,7 +696,7 @@ namespace FIVStandard
                 return;
             }
 
-            if (IsDeletingFile) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             if (e.Key == Settings.GoForwardKey)
             {
@@ -820,6 +823,7 @@ namespace FIVStandard
         {
             AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdateForced);
         }
+        #endregion
 
         /*private int ParseStringToOnlyInt(string input)
         {
@@ -828,6 +832,7 @@ namespace FIVStandard
 
         // Orientations
         public const int OrientationId = 0x0112;// 274 / 0x0112
+
         public enum ExifOrientations
         {
             Unknown = 0,//0
