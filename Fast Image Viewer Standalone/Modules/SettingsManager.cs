@@ -320,7 +320,9 @@ namespace FIVStandard.Modules
         {
             mainWindow = mw;
 
-            Properties.Settings.Default.PropertyChanged += Default_PropertyChanged; ;
+            Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
+
+            //ThemeManager.AddAccent("HackerTheme", new Uri("pack://application:,,,/MahAppsMetroThemesSample;component/CustomAccents/HackerTheme.xaml"));
         }
 
         public void Load()
