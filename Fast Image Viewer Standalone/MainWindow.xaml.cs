@@ -126,9 +126,9 @@ namespace FIVStandard
         public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
         #endregion
 
-        private ObservableCollection<ThumbnailTemplate> thumbnailImages = new ObservableCollection<ThumbnailTemplate>();
+        private ObservableCollection<ThumbnailItemData> thumbnailImages = new ObservableCollection<ThumbnailItemData>();
 
-        public ObservableCollection<ThumbnailTemplate> ThumbnailImages
+        public ObservableCollection<ThumbnailItemData> ThumbnailImages
         {
             get
             {
@@ -318,7 +318,7 @@ namespace FIVStandard
             c = ImagesFound.Count;
             for (int i = 0; i < c; i++)
             {
-                ThumbnailTemplate tt = new ThumbnailTemplate
+                ThumbnailItemData tt = new ThumbnailItemData
                 {
                     ThumbnailName = ImagesFound[i],
                     ThumbnailImage = LoadThumbnail(Path.Combine(ActiveFolder, ImagesFound[i]))
@@ -379,15 +379,15 @@ namespace FIVStandard
             if (moveToIndex)
             {
                 if (jump == -1) return;
+
                 ImageIndex = jump;
             }
             else
-            {
                 ImageIndex += jump;
 
-                if (imageIndex < 0) ImageIndex = ImagesFound.Count - 1;
-                if (imageIndex >= ImagesFound.Count) ImageIndex = 0;
-            }
+            //wrap around a limit between 0 and how many images there are (minus 1)
+            if (imageIndex < 0) ImageIndex = ImagesFound.Count - 1;
+            if (imageIndex >= ImagesFound.Count) ImageIndex = 0;
 
             if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ImagesFound[ImageIndex])))//keep moving onward until we find an existing file
             {
@@ -843,18 +843,18 @@ namespace FIVStandard
             }
         }
 
-        private void OnClick_Next(object sender, RoutedEventArgs e)
-        {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
-
-            ChangeImage(1, false);//go forward
-        }
-
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             ChangeImage(-1, false);//go back
+        }
+
+        private void OnClick_Next(object sender, RoutedEventArgs e)
+        {
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+
+            ChangeImage(1, false);//go forward
         }
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

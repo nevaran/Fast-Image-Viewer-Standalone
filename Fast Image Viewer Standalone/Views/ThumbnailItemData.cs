@@ -2,7 +2,7 @@
 
 namespace FIVStandard.Views
 {
-    public partial class ThumbnailTemplate
+    public partial class ThumbnailItemData
     {
         private string thumbnailName;
 
@@ -30,11 +30,6 @@ namespace FIVStandard.Views
             {
                 thumbnailImage = value;
             }
-        }
-
-        public ThumbnailTemplate()
-        {
-            InitializeComponent();
         }
     }
 }

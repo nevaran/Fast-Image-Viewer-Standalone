@@ -31,6 +31,14 @@
         <converter:TextToColorConverter x:Key="TextToColorConverter" />
         <converter:KeyToStringConverter x:Key="KeyToStringConverter" />
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+        <Style
+            x:Key="ListBoxItemStyle"
+            BasedOn="{StaticResource {x:Type ListBoxItem}}"
+            TargetType="ListBoxItem"
+            >
+            <Setter Property="Padding" Value="5" />
+        </Style>
     </Window.Resources>
 
     <!--  Window Bar Buttons  -->
@@ -227,6 +235,7 @@
                         <ListBox
                             x:Name="thumbnailList"
                             Margin="0,44,0,0"
+                            ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                             ItemsSource="{Binding ThumbnailImages, Mode=OneWay}"
                             SelectedIndex="{Binding ImageIndex, Mode=TwoWay}"
                             >
@@ -243,26 +252,32 @@
                             </ListBox.ItemsPanel>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel
-                                        Width="80"
-                                        Height="93"
+                                    <Border
+                                        BorderBrush="{DynamicResource AccentColorBrush}"
+                                        BorderThickness="2"
                                         Focusable="False"
                                         >
-                                        <TextBlock
+                                        <StackPanel
                                             Width="80"
+                                            Height="93"
                                             Focusable="False"
-                                            FontSize="10"
-                                            Text="{Binding ThumbnailName, Mode=OneWay}"
-                                            TextAlignment="Center"
-                                            TextWrapping="Wrap"
-                                            />
-                                        <Image
-                                            Width="80"
-                                            Height="80"
-                                            Focusable="False"
-                                            Source="{Binding ThumbnailImage, Mode=OneWay}"
-                                            />
-                                    </StackPanel>
+                                            >
+                                            <TextBlock
+                                                Width="80"
+                                                Focusable="False"
+                                                FontSize="10"
+                                                Text="{Binding ThumbnailName, Mode=OneWay}"
+                                                TextAlignment="Center"
+                                                TextWrapping="Wrap"
+                                                />
+                                            <Image
+                                                Width="80"
+                                                Height="80"
+                                                Focusable="False"
+                                                Source="{Binding ThumbnailImage, Mode=OneWay}"
+                                                />
+                                        </StackPanel>
+                                    </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
