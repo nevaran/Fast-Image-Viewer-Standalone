@@ -1,11 +1,13 @@
 ﻿using FIVStandard.Comparers;
 using FIVStandard.Modules;
+using FIVStandard.Views;
 using Gu.Localization;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -25,7 +27,23 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
-        private int ImageIndex { get; set; } = 0;
+        private int imageIndex = 0;
+
+        public int ImageIndex
+        {
+            get
+            {
+                return imageIndex;
+            }
+            set
+            {
+                if (imageIndex == value) return;
+
+                imageIndex = value;
+                UpdateCurrentImage();
+                OnPropertyChanged();
+            }
+        }
 
         public List<string> ImagesFound { get; set; } = new List<string>();
 
@@ -107,6 +125,20 @@ namespace FIVStandard
 
         public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
         #endregion
+
+        private ObservableCollection<ThumbnailTemplate> thumbnailImages = new ObservableCollection<ThumbnailTemplate>();
+
+        public ObservableCollection<ThumbnailTemplate> ThumbnailImages
+        {
+            get
+            {
+                return thumbnailImages;
+            }
+            set
+            {
+                thumbnailImages = value;
+            }
+        }
 
         public UpdateCheck AppUpdater { get; set; }
 
@@ -236,7 +268,7 @@ namespace FIVStandard
                 FindIndexInFiles(ActiveFile);
                 //SetTitleInformation();
 
-                ChangeImage(0);
+                ChangeImage(0, false);
             });
         }
 
@@ -280,6 +312,24 @@ namespace FIVStandard
             }
 
             ImagesFound.Sort(new NameComparer());
+
+            ThumbnailImages.Clear();//remove all items in the ListBox
+
+            c = ImagesFound.Count;
+            for (int i = 0; i < c; i++)
+            {
+                ThumbnailTemplate tt = new ThumbnailTemplate
+                {
+                    ThumbnailName = ImagesFound[i],
+                    ThumbnailImage = LoadThumbnail(Path.Combine(ActiveFolder, ImagesFound[i]))
+                };
+                ThumbnailImages.Add(tt);
+            }
+        }
+
+        void UpdateCurrentImage()
+        {
+            ChangeImage(imageIndex, true);
         }
 
         private void FindIndexInFiles(string openedFile)
@@ -290,7 +340,7 @@ namespace FIVStandard
                 if(openedFile == ImagesFound[i])
                 {
                     ImageIndex = i;
-                    ActiveFile = ImagesFound[ImageIndex];
+                    ActiveFile = ImagesFound[imageIndex];
                     ActivePath = Path.Combine(ActiveFolder, ActiveFile);
                     //MessageBox.Show(imagesFound.Count + " | " + imageIndex);//DEBUG
                     break;
@@ -318,7 +368,7 @@ namespace FIVStandard
             //GC.Collect();
         }
 
-        private void ChangeImage(int jump)
+        private void ChangeImage(int jump, bool moveToIndex)
         {
             if (ImagesFound.Count == 0)//no more images in the folder - go back to default null
             {
@@ -326,9 +376,18 @@ namespace FIVStandard
                 return;
             }
 
-            ImageIndex += jump;
-            if (ImageIndex < 0) ImageIndex = ImagesFound.Count - 1;
-            if (ImageIndex >= ImagesFound.Count) ImageIndex = 0;
+            if (moveToIndex)
+            {
+                if (jump == -1) return;
+                ImageIndex = jump;
+            }
+            else
+            {
+                ImageIndex += jump;
+
+                if (imageIndex < 0) ImageIndex = ImagesFound.Count - 1;
+                if (imageIndex >= ImagesFound.Count) ImageIndex = 0;
+            }
 
             if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ImagesFound[ImageIndex])))//keep moving onward until we find an existing file
             {
@@ -339,16 +398,16 @@ namespace FIVStandard
                 //remove nonexistent file from list - if there are more than 1
                 if (ImagesFound.Count > 1)
                 {
-                    ImagesFound.RemoveAt(ImageIndex);
+                    ImagesFound.RemoveAt(imageIndex);
                     SetTitleInformation();
                 }
 
-                ChangeImage(jump);
+                ChangeImage(jump, false);
 
                 return;
             }
 
-            ActiveFile = ImagesFound[ImageIndex];
+            ActiveFile = ImagesFound[imageIndex];
             ActivePath = Path.Combine(ActiveFolder, ActiveFile);
 
             NewUri(ActivePath);
@@ -453,6 +512,47 @@ namespace FIVStandard
             }
             if (ImageRotation != Rotation.Rotate0)
                 imgTemp.Rotation = ImageRotation;
+
+            imgTemp.EndInit();
+            imgTemp.Freeze();
+            stream.Close();
+            stream.Dispose();
+
+            return imgTemp;
+        }
+
+        public BitmapImage LoadThumbnail(string path)
+        {
+            BitmapImage imgTemp = new BitmapImage();
+            FileStream stream = File.OpenRead(path);
+            imgTemp.BeginInit();
+            imgTemp.CacheOption = BitmapCacheOption.OnLoad;
+            imgTemp.StreamSource = stream;
+
+            imgTemp.DecodePixelWidth = 80;
+            imgTemp.DecodePixelHeight = 80;
+
+            using (var imageStream = File.OpenRead(path))
+            {
+                Image img = Image.FromStream(imageStream);
+
+                //ImgWidth = img.Width;
+                //ImgHeight = img.Height;
+                try
+                {
+                    ExifOrientations eo = GetImageOreintation(img);
+                    Rotation imgRotation = OrientationDictionary[(int)eo];//eo angle from index
+
+                    if (imgRotation != Rotation.Rotate0)
+                        imgTemp.Rotation = imgRotation;
+                }
+                catch
+                {
+                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ImgOrientationFailedMsg));
+                    notifier.ShowError(cultureTranslated);
+                }
+                img.Dispose();
+            }
 
             imgTemp.EndInit();
             imgTemp.Freeze();
@@ -603,10 +703,10 @@ namespace FIVStandard
                 ToClipboard.ImageCopyToClipboard(ImageSource);
         }
 
-        private void FileCopyToClipboardCall()
+        /*private void FileCopyToClipboardCall()
         {
             ToClipboard.FileCopyToClipboard(ActivePath);
-        }
+        }*/
 
         private void FileCutToClipboardCall()
         {
@@ -700,11 +800,11 @@ namespace FIVStandard
 
             if (e.Key == Settings.GoForwardKey)
             {
-                ChangeImage(1);//go forward
+                ChangeImage(1, false);//go forward
             }
             if (e.Key == Settings.GoBackwardKey)
             {
-                ChangeImage(-1);//go back
+                ChangeImage(-1, false);//go back
             }
 
             if (e.Key == Settings.PauseKey)
@@ -747,14 +847,14 @@ namespace FIVStandard
         {
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
-            ChangeImage(1);//go forward
+            ChangeImage(1, false);//go forward
         }
 
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
-            ChangeImage(-1);//go back
+            ChangeImage(-1, false);//go back
         }
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -763,11 +863,11 @@ namespace FIVStandard
 
             if (e.ChangedButton == MouseButton.XButton1)
             {
-                ChangeImage(-1);//go back
+                ChangeImage(-1, false);//go back
             }
             if (e.ChangedButton == MouseButton.XButton2)
             {
-                ChangeImage(1);//go forward
+                ChangeImage(1, false);//go forward
             }
         }
 

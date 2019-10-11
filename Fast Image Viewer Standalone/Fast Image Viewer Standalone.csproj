@@ -160,6 +160,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\ThumbnailTemplate.xaml.cs">
+      <DependentUpon>ThumbnailTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ZoomBorder.cs" />
     <Page Include="HackerTheme.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -176,6 +179,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ThumbnailTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
