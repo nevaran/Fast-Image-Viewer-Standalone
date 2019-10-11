@@ -238,6 +238,7 @@
                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                             ItemsSource="{Binding ThumbnailImages, Mode=OneWay}"
                             SelectedIndex="{Binding ImageIndex, Mode=TwoWay}"
+                            SelectionChanged="ThumbnailList_SelectionChanged"
                             >
 
                             <ListBox.ItemsPanel>
@@ -274,7 +275,7 @@
                                                 Width="80"
                                                 Height="80"
                                                 Focusable="False"
-                                                Source="{Binding ThumbnailImage, Mode=OneWay}"
+                                                Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}"
                                                 />
                                         </StackPanel>
                                     </Border>

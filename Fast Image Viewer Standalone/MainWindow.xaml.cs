@@ -14,8 +14,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using ToastNotifications;
@@ -42,6 +44,20 @@ namespace FIVStandard
                 imageIndex = value;
                 UpdateCurrentImage();
                 OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<ThumbnailItemData> thumbnailImages = new ObservableCollection<ThumbnailItemData>();
+
+        public ObservableCollection<ThumbnailItemData> ThumbnailImages
+        {
+            get
+            {
+                return thumbnailImages;
+            }
+            set
+            {
+                thumbnailImages = value;
             }
         }
 
@@ -126,20 +142,6 @@ namespace FIVStandard
         public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
         #endregion
 
-        private ObservableCollection<ThumbnailItemData> thumbnailImages = new ObservableCollection<ThumbnailItemData>();
-
-        public ObservableCollection<ThumbnailItemData> ThumbnailImages
-        {
-            get
-            {
-                return thumbnailImages;
-            }
-            set
-            {
-                thumbnailImages = value;
-            }
-        }
-
         public UpdateCheck AppUpdater { get; set; }
 
         public SettingsManager Settings { get; set; }
@@ -191,10 +193,10 @@ namespace FIVStandard
             ToClipboard = new CopyFileToClipboard();
 
             //create new watcher events for used directory
-            fsw.Changed += Fsw_Updated;
-            fsw.Deleted += Fsw_Updated;
-            fsw.Created += Fsw_Updated;
-            fsw.Renamed += Fsw_Updated;
+            //fsw.Changed += Fsw_Updated;
+            fsw.Created += Fsw_Created;
+            fsw.Deleted += Fsw_Deleted;
+            fsw.Renamed += Fsw_Renamed;
 
             DataContext = this;
 
@@ -242,15 +244,6 @@ namespace FIVStandard
                     case WatcherChangeTypes.Changed:
                         cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ChangedWatcher));
                         break;
-                    case WatcherChangeTypes.Created:
-                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CreatedWatcher));
-                        break;
-                    case WatcherChangeTypes.Deleted:
-                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DeletedWatcher));
-                        break;
-                    case WatcherChangeTypes.Renamed:
-                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.RenamedWatcher));
-                        break;
                     default:
                         cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AllWatcher));
                         break;
@@ -269,6 +262,115 @@ namespace FIVStandard
                 //SetTitleInformation();
 
                 ChangeImage(0, false);
+            });
+        }
+
+        private void Fsw_Created(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ImagesFound.Add(e.Name);
+
+                ImagesFound = ImagesFound.OrderByAlphaNumeric((a) => a).ToList();//sort back changed list
+                //ThumbnailImages = ThumbnailImages.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();
+
+                for (int j = 0; j < ImagesFound.Count; j++)
+                {
+                    if (ImagesFound[j] == e.Name)//insert new item where the list index is found
+                    {
+                        ThumbnailItemData tt = new ThumbnailItemData
+                        {
+                            ThumbnailName = e.Name,
+                            ThumbnailImage = LoadThumbnail(e.FullPath)
+                        };
+                        ThumbnailImages.Insert(j, tt);
+
+                        break;
+                    }
+                }
+
+                FindIndexInFiles(ActiveFile);
+                SetTitleInformation();
+
+                ChangeImage(0, false);
+
+                notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CreatedWatcher))} \"{e.Name}\"");
+            });
+        }
+
+        private void Fsw_Deleted(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                for (int i = 0; i < ImagesFound.Count; i++)
+                {
+                    if (e.Name == ImagesFound[i])
+                    {
+                        //remove old image string AND item at index
+                        ImagesFound.RemoveAt(i);
+                        ThumbnailImages.RemoveAt(i);
+
+                        break;
+                    }
+                }
+
+                ChangeImage(0, false);
+
+                FindIndexInFiles(ActiveFile);
+                SetTitleInformation();
+
+                notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DeletedWatcher))} \"{e.Name}\"");
+            });
+        }
+
+        private void Fsw_Renamed(object sender, RenamedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                for (int i = 0; i < ImagesFound.Count; i++)
+                {
+                    if (e.OldName == ImagesFound[i])
+                    {
+                        //remove old image string AND item at index
+                        ImagesFound.RemoveAt(i);
+                        ThumbnailImages.RemoveAt(i);
+                        ImagesFound.Add(e.Name);
+
+                        ImagesFound = ImagesFound.OrderByAlphaNumeric((a) => a).ToList();//sort back changed list
+
+                        //find position of renamed string
+                        for (int j = 0; j < ImagesFound.Count; j++)
+                        {
+                            if (ImagesFound[j] == e.Name)//insert new item where the list index is found
+                            {
+                                //add new item in said position
+                                ThumbnailItemData tt = new ThumbnailItemData
+                                {
+                                    ThumbnailName = e.Name,
+                                    ThumbnailImage = LoadThumbnail(e.FullPath)
+                                };
+                                ThumbnailImages.Insert(j, tt);
+
+                                //if the viewed item is the changed one, update it
+                                if (imageIndex == j)
+                                {
+                                    ActiveFile = ImagesFound[j];
+                                }
+
+                                ChangeImage(0, false);
+
+                                FindIndexInFiles(ActiveFile);
+                                SetTitleInformation();
+
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+
+                notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.RenamedWatcher))} \"{e.OldName}\" -> \"{e.Name}\"");
             });
         }
 
@@ -311,7 +413,8 @@ namespace FIVStandard
                 }
             }
 
-            ImagesFound.Sort(new NameComparer());
+            //ImagesFound.Sort(new NameComparer());
+            ImagesFound = ImagesFound.OrderByAlphaNumeric((a) => a).ToList();
 
             ThumbnailImages.Clear();//remove all items in the ListBox
 
@@ -321,10 +424,14 @@ namespace FIVStandard
                 ThumbnailItemData tt = new ThumbnailItemData
                 {
                     ThumbnailName = ImagesFound[i],
-                    ThumbnailImage = LoadThumbnail(Path.Combine(ActiveFolder, ImagesFound[i]))
+                    //ThumbnailImage = LoadThumbnailAsync(Path.Combine(ActiveFolder, ImagesFound[i]))
                 };
+
                 ThumbnailImages.Add(tt);
             }
+
+            tokenSource2?.Cancel();
+            LoadAllThumbnailsAsync();
         }
 
         void UpdateCurrentImage()
@@ -521,6 +628,72 @@ namespace FIVStandard
             return imgTemp;
         }
 
+        CancellationTokenSource tokenSource2;
+        CancellationToken ct;
+
+        public Task LoadAllThumbnailsAsync()
+        {
+            tokenSource2 = new CancellationTokenSource();
+            ct = tokenSource2.Token;
+
+            return Task.Run(() =>
+            {
+                try
+                {
+                    int c = ThumbnailImages.Count;
+                    for (int i = 0; i < c; i++)
+                    {
+                        ct.ThrowIfCancellationRequested();
+
+                        BitmapImage imgTemp = new BitmapImage();
+                        FileStream stream = File.OpenRead(Path.Combine(ActiveFolder, ThumbnailImages[i].ThumbnailName));
+                        imgTemp.BeginInit();
+                        imgTemp.CacheOption = BitmapCacheOption.OnLoad;
+                        imgTemp.StreamSource = stream;
+
+                        imgTemp.DecodePixelWidth = 80;
+                        //imgTemp.DecodePixelHeight = 80;
+
+                        using (var imageStream = File.OpenRead(Path.Combine(ActiveFolder, ThumbnailImages[i].ThumbnailName)))
+                        {
+                            System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
+
+                            //ImgWidth = img.Width;
+                            //ImgHeight = img.Height;
+                            try
+                            {
+                                ExifOrientations eo = GetImageOreintation(img);
+                                Rotation imgRotation = OrientationDictionary[(int)eo];//eo angle from index
+
+                                if (imgRotation != Rotation.Rotate0)
+                                    imgTemp.Rotation = imgRotation;
+                            }
+                            catch
+                            {
+                                Application.Current.Dispatcher.Invoke(() =>
+                                {
+                                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ImgOrientationFailedMsg));
+                                    notifier.ShowError(cultureTranslated);
+                                });
+                            }
+                            img.Dispose();
+                        }
+
+                        imgTemp.EndInit();
+                        imgTemp.Freeze();
+                        stream.Close();
+                        stream.Dispose();
+
+                        ThumbnailImages[i].ThumbnailImage = imgTemp;
+                    }
+                }
+                catch
+                {
+
+                }
+            }, tokenSource2.Token);
+        }
+
         public BitmapImage LoadThumbnail(string path)
         {
             BitmapImage imgTemp = new BitmapImage();
@@ -534,7 +707,7 @@ namespace FIVStandard
 
             using (var imageStream = File.OpenRead(path))
             {
-                Image img = Image.FromStream(imageStream);
+                System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
 
                 //ImgWidth = img.Width;
                 //ImgHeight = img.Height;
@@ -653,7 +826,7 @@ namespace FIVStandard
                 //ImgWidth = decoder.Frames[0].PixelWidth;
                 //ImgHeight = decoder.Frames[0].PixelHeight;
 
-                Image img = Image.FromStream(imageStream);
+                System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
                 
                 ImgWidth = img.Width;
                 ImgHeight = img.Height;
@@ -923,6 +1096,13 @@ namespace FIVStandard
         {
             AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdateForced);
         }
+
+        private void ThumbnailList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (imageIndex < 0) return;
+
+            ((ListBox)sender).ScrollIntoView(thumbnailImages[imageIndex]);
+        }
         #endregion
 
         /*private int ParseStringToOnlyInt(string input)
@@ -960,7 +1140,7 @@ namespace FIVStandard
         };
 
         // Return the image's orientation
-        public static ExifOrientations GetImageOreintation(Image img)
+        public static ExifOrientations GetImageOreintation(System.Drawing.Image img)
         {
             // Get the index of the orientation property
             int orientation_index = Array.IndexOf(img.PropertyIdList, OrientationId);
