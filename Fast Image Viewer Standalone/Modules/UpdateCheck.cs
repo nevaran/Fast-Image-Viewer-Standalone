@@ -327,7 +327,7 @@ namespace FIVStandard.Modules
                 //RegisterApplicationRestart("", 2);
 
                 //TODO check if it installs where the already installed one is
-                Process.Start(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"), "/LOG /SILENT /CLOSEAPPLICATIONS");//TODO add working /RESTARTAPPLICATIONS
+                Process.Start(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"), "/SILENT /CLOSEAPPLICATIONS");//TODO add working /RESTARTAPPLICATIONS /LOG
 
                 /*var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
                 foreach (Process proc in processes)

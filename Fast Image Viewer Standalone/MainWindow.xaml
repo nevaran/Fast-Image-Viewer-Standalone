@@ -11,7 +11,7 @@
     xmlns:p="clr-namespace:FIVStandard.Properties"
     xmlns:utils="clr-namespace:FIVStandard.Utils"
     x:Name="MainFIV"
-    Title="FIV"
+    Title="{Binding TitleInformation, Mode=OneWay}"
     Width="800"
     Height="600"
     MinWidth="600"
@@ -247,6 +247,22 @@
                                                 Height="80"
                                                 Focusable="False"
                                                 Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}" />
+
+                                            <Border
+                                                Width="25"
+                                                Height="25"
+                                                Margin="-25,-25,0,0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Background="#00000000"
+                                                ToolTip="{localized:Static p:Resources.DownsizeOnTooltip}"
+                                                Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                                                <Path
+                                                    Data="M8.00684834,10 C6.34621185,10 5,11.3422643 5,12.9987856 L5,20.0012144 C5,21.6573979 6.33599155,23 8.00684834,23 L24.9931517,23 C26.6537881,23 28,21.6577357 28,20.0012144 L28,12.9987856 C28,11.3426021 26.6640085,10 24.9931517,10 L8.00684834,10 L8.00684834,10 Z M13,17 L13,19 L10.9998075,19 C10.4437166,19 10,18.5523709 10,18.0001925 L10,14.9998075 C10,14.4437166 10.4476291,14 10.9998075,14 L14,14 L14,13 L11.0048815,13 C9.89761602,13 9,13.8865548 9,15.0059191 L9,17.9940809 C9,19.1019194 9.8938998,20 11.0048815,20 L14,20 L14,19.25 L14,19.25 L14,17 L14,16 L11,16 L11,17 L13,17 L13,17 Z M16,14 L16,19 L15,19 L15,20 L18,20 L18,19 L17,19 L17,14 L18,14 L18,13 L15,13 L15,14 L16,14 L16,14 Z M20,16 L20,14 L24,14 L24,13 L19,13 L19,20 L20,20 L20,17 L23,17 L23,16 L20,16 L20,16 Z"
+                                                    Fill="{DynamicResource AccentColorBrush}"
+                                                    Stretch="Uniform"
+                                                    StrokeThickness="1" />
+                                            </Border>
                                         </StackPanel>
                                     </Border>
                                 </DataTemplate>
@@ -380,6 +396,7 @@
                             <Button
                                 Grid.Row="0"
                                 Grid.Column="2"
+                                Grid.ColumnSpan="3"
                                 MinWidth="100"
                                 Margin="0,10,10,7"
                                 HorizontalAlignment="Right"
@@ -1128,8 +1145,8 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
                             <!--  Force Download Setup Button  -->
@@ -1159,7 +1176,8 @@
                                 Grid.Row="2"
                                 Grid.Column="0"
                                 Padding="20,0,0,0"
-                                Text="{Binding AppUpdater.DownloadedChangelog, Mode=OneWay}" />
+                                Text="{Binding AppUpdater.DownloadedChangelog, Mode=OneWay}"
+                                TextWrapping="Wrap" />
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>

@@ -42,28 +42,36 @@ namespace FIVStandard
                 if (imageItem == value) return;
 
                 imageItem = value;
-                //UpdateCurrentImage();
                 OnPropertyChanged();
             }
         }
 
         public ListCollectionView ImagesDataView { get; }
 
-        private ObservableCollection<ThumbnailItemData> imagesData = new ObservableCollection<ThumbnailItemData>();
+        public ObservableCollection<ThumbnailItemData> ImagesData { get; } = new ObservableCollection<ThumbnailItemData>();
 
-        public ObservableCollection<ThumbnailItemData> ImagesData
+        public string TitleInformation
         {
             get
             {
-                return imagesData;
+                if (isDeletingFile)
+                {
+                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.Deleting));
+                    return $"{cultureTranslated} {ActiveFile}...";
+                }
+                else
+                {
+                    if(imageItem == null)//no image
+                    {
+                        return "FIV";
+                    }
+                    else
+                    {
+                        return $"[{ImagesDataView.CurrentPosition + 1}/{ImagesDataView.Count}] {imageItem.ThumbnailName}";
+                    }
+                }
             }
         }
-
-        //public List<string> ImagesFound { get; set; } = new List<string>();
-
-        private bool IsAnimated { get; set; } = false;
-
-        private bool IsPaused { get; set; } = false;
 
         #region Image Properties
         private Uri _mediaSource = null;
@@ -153,11 +161,44 @@ namespace FIVStandard
         private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */, ".JPG", ".JPEG", ".GIF", ".BMP", ".ICO", ".PNG" };//TODO: doesnt work: tiff svg
         private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
-        private System.Windows.Controls.Button editingButton = null;
+        private System.Windows.Controls.Button editingButton = null;//used for editing shortcuts
 
-        private bool IsDeletingFile { get; set; } = false;
+        private bool IsPaused { get; set; } = false;//if the animated image (gif) is paused or not
 
-        private string ActiveFile { get; set; } = "";//file name + extension
+        private bool isDeletingFile;
+
+        public bool IsDeletingFile
+        {
+            get
+            {
+                return isDeletingFile;
+            }
+            set
+            {
+                if (isDeletingFile == value) return;
+
+                isDeletingFile = value;
+                OnPropertyChanged("TitleInformation");
+            }
+        }
+
+        private string activeFile = "FIV";
+
+        public string ActiveFile//file name + extension
+        {
+            get
+            {
+                return activeFile;
+            }
+            set
+            {
+                if (activeFile == value) return;
+
+                activeFile = value;
+                OnPropertyChanged("TitleInformation");
+            }
+        }
+
         private string ActiveFolder { get; set; } = "";//directory
         public string ActivePath { get; set; } = "";//directory + file name + extension
 
@@ -186,9 +227,8 @@ namespace FIVStandard
         {
             InitializeComponent();
 
-            ImagesDataView = CollectionViewSource.GetDefaultView(imagesData) as ListCollectionView;
+            ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
             //ImagesDataView.SortDescriptions.Add(new SortDescription { PropertyName = "ThumbnailName", Direction = ListSortDirection.Ascending });
-
             ImagesDataView.CustomSort = new NaturalOrderComparer(false);
 
             AppUpdater = new UpdateCheck(this);
@@ -272,9 +312,18 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                string pathext = Path.GetExtension(e.Name);
+                bool isAnim;
+                if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
+                    isAnim = true;
+                else
+                    isAnim = false;
+
                 ThumbnailItemData tt = new ThumbnailItemData
                 {
                     ThumbnailName = e.Name,
+                    IsAnimated = isAnim,
+
                     ThumbnailImage = LoadThumbnail(e.FullPath)
                 };
                 ImagesData.Add(tt);
@@ -283,7 +332,7 @@ namespace FIVStandard
 
                 ChangeImage(0, false);
 
-                FindIndexInFiles(ActiveFile);
+                FindIndexInFiles(activeFile);
 
                 notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CreatedWatcher))} \"{e.Name}\"");
             });
@@ -293,9 +342,9 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                for (int i = 0; i < ImagesDataView.Count; i++)
+                for (int i = 0; i < ImagesData.Count; i++)
                 {
-                    if (e.Name == ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)
+                    if (e.Name == ImagesData[i].ThumbnailName)
                     {
                         ImagesData.RemoveAt(i);
 
@@ -305,7 +354,7 @@ namespace FIVStandard
 
                 ChangeImage(0, false);
 
-                FindIndexInFiles(ActiveFile);
+                FindIndexInFiles(activeFile);
 
                 notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DeletedWatcher))} \"{e.Name}\"");
             });
@@ -315,42 +364,58 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                for (int i = 0; i < ImagesDataView.Count; i++)
+                try
                 {
-                    if (e.OldName == ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)
+                    for (int i = 0; i < ImagesData.Count; i++)
                     {
-                        ImagesData.RemoveAt(i);
-
-                        ThumbnailItemData tt = new ThumbnailItemData
+                        if (e.OldName == ImagesData[i].ThumbnailName)
                         {
-                            ThumbnailName = e.Name,
-                            ThumbnailImage = LoadThumbnail(e.FullPath)
-                        };
-                        ImagesData.Add(tt);
+                            ImagesData.RemoveAt(i);
 
-                        //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
+                            string pathext = Path.GetExtension(e.Name);
+                            bool isAnim;
+                            if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
+                                isAnim = true;
+                            else
+                                isAnim = false;
 
-                        //if the viewed item is the changed one, update it
-                        if (imageItem.ThumbnailName == e.OldName)
-                        {
-                            ActiveFile = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
+                            ThumbnailItemData tt = new ThumbnailItemData
+                            {
+                                ThumbnailName = e.Name,
+                                IsAnimated = isAnim,
+
+                                ThumbnailImage = LoadThumbnail(e.FullPath)
+                            };
+                            ImagesData.Add(tt);
+
+                            //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
+
+                            //if the viewed item is the changed one, update it
+                            if (activeFile == e.OldName)
+                            {
+                                ActiveFile = ImagesData[i].ThumbnailName;
+                            }
+
+                            ChangeImage(0, false);
+
+                            FindIndexInFiles(activeFile);
+
+                            break;
                         }
-
-                        ChangeImage(0, false);
-
-                        FindIndexInFiles(ActiveFile);
-
-                        break;
                     }
-                }
 
-                notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.RenamedWatcher))} \"{e.OldName}\" -> \"{e.Name}\"");
+                    notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.RenamedWatcher))} \"{e.OldName}\" -> \"{e.Name}\"");
+                }
+                catch
+                {
+
+                }
             });
         }
 
         public void OpenNewFile(string path)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             ActiveFile = Path.GetFileName(path);
             ActiveFolder = Path.GetDirectoryName(path);
@@ -361,7 +426,7 @@ namespace FIVStandard
 
             GetDirectoryFiles(ActiveFolder);
 
-            FindIndexInFiles(ActiveFile);
+            FindIndexInFiles(activeFile);
 
             NewUri(path);
         }
@@ -383,26 +448,25 @@ namespace FIVStandard
                 {
                     filesFound[i] = Path.GetFileName(filesFound[i]);
 
+                    string pathext = Path.GetExtension(filesFound[i]);
+                    bool isAnim;
+                    if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
+                        isAnim = true;
+                    else
+                        isAnim = false;
+
                     ThumbnailItemData tt = new ThumbnailItemData
                     {
                         ThumbnailName = filesFound[i],
-                        //ThumbnailImage = LoadThumbnailAsync(Path.Combine(ActiveFolder, ImagesFound[i]))
+                        IsAnimated = isAnim
                     };
                     ImagesData.Add(tt);
                 }
             }
 
-            //ImagesFound.Sort(new NameComparer());
-            //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();
-
             tokenSource2?.Cancel();
             LoadAllThumbnailsAsync();
         }
-
-        /*void UpdateCurrentImage()
-        {
-            ChangeImage(ImagesDataView.CurrentPosition, true);
-        }*/
 
         private void FindIndexInFiles(string openedFile)
         {
@@ -412,20 +476,14 @@ namespace FIVStandard
                 if(openedFile == ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)
                 {
                     ImagesDataView.MoveCurrentToPosition(i);
-                    thumbnailList.SelectedIndex = ImagesDataView.CurrentPosition;
-                    ActiveFile = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
-                    ActivePath = Path.Combine(ActiveFolder, ActiveFile);
+                    //thumbnailList.SelectedIndex = ImagesDataView.CurrentPosition;
 
-                    SetTitleInformation();
+                    ActiveFile = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
+                    ActivePath = Path.Combine(ActiveFolder, activeFile);
 
                     break;
                 }
             }
-        }
-
-        private void SetTitleInformation()
-        {
-            Title = $"[{ImagesDataView.CurrentPosition + 1}/{ImagesDataView.Count}] {imageItem.ThumbnailName} ||| {ImagesDataView.CurrentPosition}";
         }
 
         /// <summary>
@@ -438,7 +496,7 @@ namespace FIVStandard
             ImageSource = null;
             ImgWidth = 0;
             ImgHeight = 0;
-            Title = "FIV";
+            //Title = "FIV";
         }
 
         private void ChangeImage(int jump, bool moveToIndex)
@@ -460,7 +518,7 @@ namespace FIVStandard
                 jumpIndex += ImagesDataView.CurrentPosition;
 
                 //wrap around a limit between 0 and how many images there are (minus 1)
-                if (jumpIndex < 0) jumpIndex = ImagesData.Count - 1;
+                if (jumpIndex < 0) jumpIndex = ImagesDataView.Count - 1;
                 if (jumpIndex >= ImagesDataView.Count) jumpIndex = 0;
 
                 ImagesDataView.MoveCurrentToPosition(jumpIndex);
@@ -468,40 +526,40 @@ namespace FIVStandard
 
             //ImageItem = ((ThumbnailItemData)ImagesDataView.GetItemAt(jumpIndex));
 
-            if (!FileSystem.FileExists(Path.Combine(ActiveFolder, imageItem.ThumbnailName)))//keep moving onward until we find an existing file
+            //TODO: fix random removes if deleting and adding back files
+            /*if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ActiveFile)))//keep moving onward until we find an existing file
             {
                 //remove nonexistent file from list - if there are more than 1
                 if (ImagesData.Count > 1)
                 {
                     ImagesData.RemoveAt(ImagesDataView.CurrentPosition);
-                    SetTitleInformation();
+                    Console.WriteLine($"ChangeImage- REMOVED ITEM {ActiveFile}@{ImagesDataView.CurrentPosition}");
+                    //SetTitleInformation();
                 }
 
-                ChangeImage(jump, false);
+                ChangeImage(jumpIndex, false);
 
                 return;
+            }*/
+
+            //keep moving onward until we find an existing file
+            //TEMP REPLACEMENT
+            if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition)).ThumbnailName)))
+            {
+                ChangeImage(jumpIndex, false);
             }
 
             ActiveFile = ImageItem.ThumbnailName;
-            ActivePath = Path.Combine(ActiveFolder, ActiveFile);
+            ActivePath = Path.Combine(ActiveFolder, activeFile);
 
             NewUri(ActivePath);
 
-            SetTitleInformation();
+            //SetTitleInformation();
         }
 
         private void TogglePause()
         {
-            /*controller = ImageBehavior.GetAnimationController(MainImage);
-
-            if (!isAnimated) return;
-
-            if (controller.IsPaused)
-                controller.Play();
-            else
-                controller.Pause();*/
-
-            if (IsAnimated)
+            if (imageItem.IsAnimated)
             {
                 if (IsPaused)
                 {
@@ -519,20 +577,13 @@ namespace FIVStandard
         private void NewUri(string path)
         {
 #if DEBUG
-            Stopwatch stopwatch = new Stopwatch();//DEBUG
-            stopwatch.Start();//DEBUG
+            //Stopwatch stopwatch = new Stopwatch();//DEBUG
+            //stopwatch.Start();//DEBUG
 #endif
-            string pathext = Path.GetExtension(path);
-            if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
-            {
-                IsAnimated = true;
-            }
-            else
-                IsAnimated = false;
 
             Uri uri = new Uri(path, UriKind.Absolute);
 
-            if (IsAnimated)
+            if (imageItem.IsAnimated)
             {
                 borderImg.Visibility = Visibility.Hidden;
                 border.Visibility = Visibility.Visible;
@@ -560,8 +611,8 @@ namespace FIVStandard
             }
 
 #if DEBUG
-            stopwatch.Stop();//DEBUG
-            notifier.ShowError($"NewUri time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
+            //stopwatch.Stop();//DEBUG
+            //notifier.ShowError($"NewUri time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
 #endif
 
         }
@@ -608,7 +659,7 @@ namespace FIVStandard
             {
                 try
                 {
-                    int c = ImagesData.Count;
+                    int c = ImagesDataView.Count;
                     for (int i = 0; i < c; i++)
                     {
                         ct.ThrowIfCancellationRequested();
@@ -740,12 +791,6 @@ namespace FIVStandard
                 {
                     IsDeletingFile = true;
 
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.Deleting));
-                        Title = $"{cultureTranslated} {ActiveFile}...";
-                    });
-
                     if (FileSystem.FileExists(path))
                     {
                         FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
@@ -774,7 +819,6 @@ namespace FIVStandard
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        //MessageBox.Show(e.Message + "\nIndex: " + ImageIndex);
                         notifier.ShowError(e.Message + "\nIndex: " + ImagesDataView.CurrentPosition);
                     });
                 }
@@ -787,58 +831,45 @@ namespace FIVStandard
         private void GetImageInformation(string path)
         {
             if (ImagesData.Count == 0) return;
-
-            using (var imageStream = File.OpenRead(path))
+            try
             {
-                //var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                //ImgWidth = decoder.Frames[0].PixelWidth;
-                //ImgHeight = decoder.Frames[0].PixelHeight;
-
-                System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
-                
-                ImgWidth = img.Width;
-                ImgHeight = img.Height;
-                try
+                using (var imageStream = File.OpenRead(path))
                 {
-                    ExifOrientations eo = GetImageOreintation(img);
-                    ImageRotation = OrientationDictionary[(int)eo];//eo angle from index
+                    //var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
+                    //ImgWidth = decoder.Frames[0].PixelWidth;
+                    //ImgHeight = decoder.Frames[0].PixelHeight;
+
+                    System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
+
+                    ImgWidth = img.Width;
+                    ImgHeight = img.Height;
+                    try
+                    {
+                        ExifOrientations eo = GetImageOreintation(img);
+                        ImageRotation = OrientationDictionary[(int)eo];//eo angle from index
 
 #if DEBUG
-                    //notifier.ShowInformation($"Image Orientation: [angle: {ImageRotation}] {eo}");
+                        //notifier.ShowInformation($"Image Orientation: [angle: {ImageRotation}] {eo}");
 #endif
+                    }
+                    catch
+                    {
+                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ImgOrientationFailedMsg));
+                        notifier.ShowError(cultureTranslated);
+                    }
+                    img.Dispose();
                 }
-                catch
-                {
-                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ImgOrientationFailedMsg));
-                    notifier.ShowError(cultureTranslated);
-                }
-                img.Dispose();
             }
-
-            /*if (MediaView.NaturalDuration.HasTimeSpan)//used for videos (avi mp4 etc.)
+            catch
             {
-                TimeSpan ts = MediaView.NaturalDuration.TimeSpan;
 
-                if(ts.TotalSeconds > 0)
-                {
-                    ImageInfoText.Text += "\nDuration ";
-
-                    if (ts.Hours > 0)
-                        ImageInfoText.Text += $"{ts.Hours}H ";
-
-                    if (ts.Minutes > 0)
-                        ImageInfoText.Text += $"{ts.Minutes}m ";
-
-                    if (ts.Seconds > 0)
-                        ImageInfoText.Text += $"{ts.Seconds}s";
-                }
-            }*/
+            }
         }
 
         private void ImageCopyToClipboardCall()
         {
             //ToClipboard.CopyToClipboard(ActivePath);
-            if (IsAnimated)
+            if (imageItem.IsAnimated)
                 ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaSource));
             else
                 ToClipboard.ImageCopyToClipboard(ImageSource);
@@ -908,7 +939,7 @@ namespace FIVStandard
 
         private void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             DeleteToRecycleAsync(ActivePath);
         }
@@ -937,7 +968,7 @@ namespace FIVStandard
                 return;
             }
 
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             if (e.Key == Settings.GoForwardKey)
             {
@@ -986,21 +1017,21 @@ namespace FIVStandard
 
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             ChangeImage(-1, false);//go back
         }
 
         private void OnClick_Next(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             ChangeImage(1, false);//go forward
         }
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             if (e.ChangedButton == MouseButton.XButton1)
             {
@@ -1014,7 +1045,7 @@ namespace FIVStandard
 
         private void OnOpenBrowseImage(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
@@ -1073,7 +1104,7 @@ namespace FIVStandard
 
             ChangeImage(0, true);
 
-            box.ScrollIntoView(imagesData[ImagesDataView.CurrentPosition]);
+            box.ScrollIntoView(ImagesData[ImagesDataView.CurrentPosition]);
         }
         #endregion
 

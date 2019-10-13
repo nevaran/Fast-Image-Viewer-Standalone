@@ -226,4 +226,61 @@
   <data name="AllWatcher" xml:space="preserve">
     <value>Всички промени</value>
   </data>
+  <data name="CheckForUpdatesStartToggleInfo" xml:space="preserve">
+    <value>Провери за нови актуализации при първото стартиране на програмата.</value>
+  </data>
+  <data name="CopyImageToClipboard" xml:space="preserve">
+    <value>Копирай изображението в клипборда</value>
+  </data>
+  <data name="ResetSettingsButton" xml:space="preserve">
+    <value>Нулиране на всички опции</value>
+  </data>
+  <data name="CutFileToClipboard" xml:space="preserve">
+    <value>Изрежи файлът в клипборда</value>
+  </data>
+  <data name="RemoveShortcut" xml:space="preserve">
+    <value>Премахване на преките пътища</value>
+  </data>
+  <data name="CheckForUpdatesStartToggle" xml:space="preserve">
+    <value>Провери за актуализации</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Изтриване</value>
+  </data>
+  <data name="StretchOnTooltip" xml:space="preserve">
+    <value>Разтягане Вкл.</value>
+  </data>
+  <data name="DownsizeOnTooltip" xml:space="preserve">
+    <value>Намаляване Вкл.</value>
+  </data>
+  <data name="DarkModeOnTooltip" xml:space="preserve">
+    <value>Тъмен Режим Вкл.</value>
+  </data>
+  <data name="DownloadLatest" xml:space="preserve">
+    <value>Изтегли най-новата версия</value>
+  </data>
+  <data name="DownloadLatestTooltip" xml:space="preserve">
+    <value>Изтегли най-новата версия на програмата</value>
+  </data>
+  <data name="NewVerAvailableInfo" xml:space="preserve">
+    <value>Налична е нова версия</value>
+  </data>
+  <data name="UpdatingInfo" xml:space="preserve">
+    <value>Актуализира се...</value>
+  </data>
+  <data name="AlreadyOnLatestVerInfo" xml:space="preserve">
+    <value>Последната версия вече е инсталирана</value>
+  </data>
+  <data name="CheckingForUpdatesInfo" xml:space="preserve">
+    <value>Проверка за нова актуализация...</value>
+  </data>
+  <data name="NoInternetInfo" xml:space="preserve">
+    <value>Няма интернет връзка</value>
+  </data>
+  <data name="DownloadingInfo" xml:space="preserve">
+    <value>Изтеглянето</value>
+  </data>
+  <data name="DownloadFinsihedInfo" xml:space="preserve">
+    <value>Изтеглянето Готово</value>
+  </data>
 </root>

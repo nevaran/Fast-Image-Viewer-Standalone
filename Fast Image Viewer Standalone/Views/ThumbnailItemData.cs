@@ -35,6 +35,21 @@ namespace FIVStandard.Views
             }
         }
 
+        private bool isAnimated;
+
+        public bool IsAnimated
+        {
+            get
+            {
+                return isAnimated;
+            }
+            set
+            {
+                isAnimated = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
