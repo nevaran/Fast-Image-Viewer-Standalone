@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -18,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using ToastNotifications;
@@ -29,39 +29,37 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
-        private int imageIndex = 0;
+        private ThumbnailItemData imageItem;
 
-        public int ImageIndex
+        public ThumbnailItemData ImageItem
         {
             get
             {
-                return imageIndex;
+                return imageItem;
             }
             set
             {
-                if (imageIndex == value) return;
+                if (imageItem == value) return;
 
-                imageIndex = value;
-                UpdateCurrentImage();
+                imageItem = value;
+                //UpdateCurrentImage();
                 OnPropertyChanged();
             }
         }
 
-        private ObservableCollection<ThumbnailItemData> thumbnailImages = new ObservableCollection<ThumbnailItemData>();
+        public ListCollectionView ImagesDataView { get; }
 
-        public ObservableCollection<ThumbnailItemData> ThumbnailImages
+        private ObservableCollection<ThumbnailItemData> imagesData = new ObservableCollection<ThumbnailItemData>();
+
+        public ObservableCollection<ThumbnailItemData> ImagesData
         {
             get
             {
-                return thumbnailImages;
-            }
-            set
-            {
-                thumbnailImages = value;
+                return imagesData;
             }
         }
 
-        public List<string> ImagesFound { get; set; } = new List<string>();
+        //public List<string> ImagesFound { get; set; } = new List<string>();
 
         private bool IsAnimated { get; set; } = false;
 
@@ -188,6 +186,11 @@ namespace FIVStandard
         {
             InitializeComponent();
 
+            ImagesDataView = CollectionViewSource.GetDefaultView(imagesData) as ListCollectionView;
+            //ImagesDataView.SortDescriptions.Add(new SortDescription { PropertyName = "ThumbnailName", Direction = ListSortDirection.Ascending });
+
+            ImagesDataView.CustomSort = new NaturalOrderComparer(false);
+
             AppUpdater = new UpdateCheck(this);
             Settings = new SettingsManager(this);
             ToClipboard = new CopyFileToClipboard();
@@ -234,7 +237,7 @@ namespace FIVStandard
             notifier.ShowError("");*/
         }
 
-        private void Fsw_Updated(object sender, FileSystemEventArgs e)//TODO: create more sophisticated updating where it doesnt load the whole directory again
+        /*private void Fsw_Updated(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -252,7 +255,7 @@ namespace FIVStandard
 
                 GetDirectoryFiles(ActiveFolder);
 
-                if (ImagesFound.Count < 1)
+                if (ImagesData.Count < 1)
                 {
                     ClearAllMedia();
                     return;
@@ -263,36 +266,24 @@ namespace FIVStandard
 
                 ChangeImage(0, false);
             });
-        }
+        }*/
 
         private void Fsw_Created(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                ImagesFound.Add(e.Name);
-
-                ImagesFound = ImagesFound.OrderByAlphaNumeric((a) => a).ToList();//sort back changed list
-                //ThumbnailImages = ThumbnailImages.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();
-
-                for (int j = 0; j < ImagesFound.Count; j++)
+                ThumbnailItemData tt = new ThumbnailItemData
                 {
-                    if (ImagesFound[j] == e.Name)//insert new item where the list index is found
-                    {
-                        ThumbnailItemData tt = new ThumbnailItemData
-                        {
-                            ThumbnailName = e.Name,
-                            ThumbnailImage = LoadThumbnail(e.FullPath)
-                        };
-                        ThumbnailImages.Insert(j, tt);
+                    ThumbnailName = e.Name,
+                    ThumbnailImage = LoadThumbnail(e.FullPath)
+                };
+                ImagesData.Add(tt);
 
-                        break;
-                    }
-                }
-
-                FindIndexInFiles(ActiveFile);
-                SetTitleInformation();
+                //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
                 ChangeImage(0, false);
+
+                FindIndexInFiles(ActiveFile);
 
                 notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CreatedWatcher))} \"{e.Name}\"");
             });
@@ -302,13 +293,11 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                for (int i = 0; i < ImagesFound.Count; i++)
+                for (int i = 0; i < ImagesDataView.Count; i++)
                 {
-                    if (e.Name == ImagesFound[i])
+                    if (e.Name == ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)
                     {
-                        //remove old image string AND item at index
-                        ImagesFound.RemoveAt(i);
-                        ThumbnailImages.RemoveAt(i);
+                        ImagesData.RemoveAt(i);
 
                         break;
                     }
@@ -317,7 +306,6 @@ namespace FIVStandard
                 ChangeImage(0, false);
 
                 FindIndexInFiles(ActiveFile);
-                SetTitleInformation();
 
                 notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DeletedWatcher))} \"{e.Name}\"");
             });
@@ -327,44 +315,30 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                for (int i = 0; i < ImagesFound.Count; i++)
+                for (int i = 0; i < ImagesDataView.Count; i++)
                 {
-                    if (e.OldName == ImagesFound[i])
+                    if (e.OldName == ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)
                     {
-                        //remove old image string AND item at index
-                        ImagesFound.RemoveAt(i);
-                        ThumbnailImages.RemoveAt(i);
-                        ImagesFound.Add(e.Name);
+                        ImagesData.RemoveAt(i);
 
-                        ImagesFound = ImagesFound.OrderByAlphaNumeric((a) => a).ToList();//sort back changed list
-
-                        //find position of renamed string
-                        for (int j = 0; j < ImagesFound.Count; j++)
+                        ThumbnailItemData tt = new ThumbnailItemData
                         {
-                            if (ImagesFound[j] == e.Name)//insert new item where the list index is found
-                            {
-                                //add new item in said position
-                                ThumbnailItemData tt = new ThumbnailItemData
-                                {
-                                    ThumbnailName = e.Name,
-                                    ThumbnailImage = LoadThumbnail(e.FullPath)
-                                };
-                                ThumbnailImages.Insert(j, tt);
+                            ThumbnailName = e.Name,
+                            ThumbnailImage = LoadThumbnail(e.FullPath)
+                        };
+                        ImagesData.Add(tt);
 
-                                //if the viewed item is the changed one, update it
-                                if (imageIndex == j)
-                                {
-                                    ActiveFile = ImagesFound[j];
-                                }
+                        //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
-                                ChangeImage(0, false);
-
-                                FindIndexInFiles(ActiveFile);
-                                SetTitleInformation();
-
-                                break;
-                            }
+                        //if the viewed item is the changed one, update it
+                        if (imageItem.ThumbnailName == e.OldName)
+                        {
+                            ActiveFile = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
                         }
+
+                        ChangeImage(0, false);
+
+                        FindIndexInFiles(ActiveFile);
 
                         break;
                     }
@@ -388,14 +362,13 @@ namespace FIVStandard
             GetDirectoryFiles(ActiveFolder);
 
             FindIndexInFiles(ActiveFile);
-            SetTitleInformation();
 
             NewUri(path);
         }
 
         private void GetDirectoryFiles(string searchFolder)
         {
-            ImagesFound.Clear();
+            ImagesData.Clear();
             List<string> filesFound = new List<string>();
 
             //filesFound.AddRange(Directory.GetFiles(searchFolder, "*.*", SearchOption.TopDirectoryOnly));
@@ -409,47 +382,42 @@ namespace FIVStandard
                 if (filters.Any(Path.GetExtension(filesFound[i]).Contains))
                 {
                     filesFound[i] = Path.GetFileName(filesFound[i]);
-                    ImagesFound.Add(filesFound[i]);
+
+                    ThumbnailItemData tt = new ThumbnailItemData
+                    {
+                        ThumbnailName = filesFound[i],
+                        //ThumbnailImage = LoadThumbnailAsync(Path.Combine(ActiveFolder, ImagesFound[i]))
+                    };
+                    ImagesData.Add(tt);
                 }
             }
 
             //ImagesFound.Sort(new NameComparer());
-            ImagesFound = ImagesFound.OrderByAlphaNumeric((a) => a).ToList();
-
-            ThumbnailImages.Clear();//remove all items in the ListBox
-
-            c = ImagesFound.Count;
-            for (int i = 0; i < c; i++)
-            {
-                ThumbnailItemData tt = new ThumbnailItemData
-                {
-                    ThumbnailName = ImagesFound[i],
-                    //ThumbnailImage = LoadThumbnailAsync(Path.Combine(ActiveFolder, ImagesFound[i]))
-                };
-
-                ThumbnailImages.Add(tt);
-            }
+            //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();
 
             tokenSource2?.Cancel();
             LoadAllThumbnailsAsync();
         }
 
-        void UpdateCurrentImage()
+        /*void UpdateCurrentImage()
         {
-            ChangeImage(imageIndex, true);
-        }
+            ChangeImage(ImagesDataView.CurrentPosition, true);
+        }*/
 
         private void FindIndexInFiles(string openedFile)
         {
-            int L = ImagesFound.Count;
+            int L = ImagesDataView.Count;
             for (int i = 0; i < L; i++)
             {
-                if(openedFile == ImagesFound[i])
+                if(openedFile == ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)
                 {
-                    ImageIndex = i;
-                    ActiveFile = ImagesFound[imageIndex];
+                    ImagesDataView.MoveCurrentToPosition(i);
+                    thumbnailList.SelectedIndex = ImagesDataView.CurrentPosition;
+                    ActiveFile = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
                     ActivePath = Path.Combine(ActiveFolder, ActiveFile);
-                    //MessageBox.Show(imagesFound.Count + " | " + imageIndex);//DEBUG
+
+                    SetTitleInformation();
+
                     break;
                 }
             }
@@ -457,55 +425,55 @@ namespace FIVStandard
 
         private void SetTitleInformation()
         {
-            Title = $"[{ImageIndex + 1}/{ImagesFound.Count}] {ImagesFound[ImageIndex]}";//TODO: fix crash when directory of active path is deleted
+            Title = $"[{ImagesDataView.CurrentPosition + 1}/{ImagesDataView.Count}] {imageItem.ThumbnailName} ||| {ImagesDataView.CurrentPosition}";
         }
 
         /// <summary>
-        /// Clear all saved paths and clean media view and finally cleanup memory
+        /// Clear all data (as if program is opened without opening an image)
         /// </summary>
         private void ClearAllMedia()
         {
-            ImagesFound.Clear();
+            ImagesData.Clear();
             MediaSource = null;
             ImageSource = null;
             ImgWidth = 0;
             ImgHeight = 0;
             Title = "FIV";
-
-            //GC.Collect();
         }
 
         private void ChangeImage(int jump, bool moveToIndex)
         {
-            if (ImagesFound.Count == 0)//no more images in the folder - go back to default null
+            if (ImagesData.Count == 0)//no more images in the folder - go back to default null
             {
                 ClearAllMedia();
                 return;
             }
 
+            int jumpIndex = jump;
+
             if (moveToIndex)
             {
-                if (jump == -1) return;
-
-                ImageIndex = jump;
+                //ImagesDataView.MoveCurrentToPosition(jumpIndex);
             }
             else
-                ImageIndex += jump;
-
-            //wrap around a limit between 0 and how many images there are (minus 1)
-            if (imageIndex < 0) ImageIndex = ImagesFound.Count - 1;
-            if (imageIndex >= ImagesFound.Count) ImageIndex = 0;
-
-            if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ImagesFound[ImageIndex])))//keep moving onward until we find an existing file
             {
-                //refresh the file lists in the directory
-                //GetDirectoryFiles(Path.GetDirectoryName(imagesFound[imageIndex]));
-                //FindIndexInFiles(imagesFound[imageIndex]);
+                jumpIndex += ImagesDataView.CurrentPosition;
 
+                //wrap around a limit between 0 and how many images there are (minus 1)
+                if (jumpIndex < 0) jumpIndex = ImagesData.Count - 1;
+                if (jumpIndex >= ImagesDataView.Count) jumpIndex = 0;
+
+                ImagesDataView.MoveCurrentToPosition(jumpIndex);
+            }
+
+            //ImageItem = ((ThumbnailItemData)ImagesDataView.GetItemAt(jumpIndex));
+
+            if (!FileSystem.FileExists(Path.Combine(ActiveFolder, imageItem.ThumbnailName)))//keep moving onward until we find an existing file
+            {
                 //remove nonexistent file from list - if there are more than 1
-                if (ImagesFound.Count > 1)
+                if (ImagesData.Count > 1)
                 {
-                    ImagesFound.RemoveAt(imageIndex);
+                    ImagesData.RemoveAt(ImagesDataView.CurrentPosition);
                     SetTitleInformation();
                 }
 
@@ -514,7 +482,7 @@ namespace FIVStandard
                 return;
             }
 
-            ActiveFile = ImagesFound[imageIndex];
+            ActiveFile = ImageItem.ThumbnailName;
             ActivePath = Path.Combine(ActiveFolder, ActiveFile);
 
             NewUri(ActivePath);
@@ -590,12 +558,12 @@ namespace FIVStandard
 
                 borderImg.Reset();
             }
+
 #if DEBUG
             stopwatch.Stop();//DEBUG
             notifier.ShowError($"NewUri time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
 #endif
 
-            //GC.Collect();
         }
 
         public BitmapImage LoadImage(string path)
@@ -640,13 +608,13 @@ namespace FIVStandard
             {
                 try
                 {
-                    int c = ThumbnailImages.Count;
+                    int c = ImagesData.Count;
                     for (int i = 0; i < c; i++)
                     {
                         ct.ThrowIfCancellationRequested();
 
                         BitmapImage imgTemp = new BitmapImage();
-                        FileStream stream = File.OpenRead(Path.Combine(ActiveFolder, ThumbnailImages[i].ThumbnailName));
+                        FileStream stream = File.OpenRead(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName));
                         imgTemp.BeginInit();
                         imgTemp.CacheOption = BitmapCacheOption.OnLoad;
                         imgTemp.StreamSource = stream;
@@ -654,7 +622,7 @@ namespace FIVStandard
                         imgTemp.DecodePixelWidth = 80;
                         //imgTemp.DecodePixelHeight = 80;
 
-                        using (var imageStream = File.OpenRead(Path.Combine(ActiveFolder, ThumbnailImages[i].ThumbnailName)))
+                        using (var imageStream = File.OpenRead(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)))
                         {
                             System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
 
@@ -684,7 +652,7 @@ namespace FIVStandard
                         stream.Close();
                         stream.Dispose();
 
-                        ThumbnailImages[i].ThumbnailImage = imgTemp;
+                        ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailImage = imgTemp;
                     }
                 }
                 catch
@@ -807,7 +775,7 @@ namespace FIVStandard
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         //MessageBox.Show(e.Message + "\nIndex: " + ImageIndex);
-                        notifier.ShowError(e.Message + "\nIndex: " + ImageIndex);
+                        notifier.ShowError(e.Message + "\nIndex: " + ImagesDataView.CurrentPosition);
                     });
                 }
             });
@@ -818,7 +786,7 @@ namespace FIVStandard
         /// </summary>
         private void GetImageInformation(string path)
         {
-            if (ImagesFound.Count == 0) return;
+            if (ImagesData.Count == 0) return;
 
             using (var imageStream = File.OpenRead(path))
             {
@@ -985,7 +953,7 @@ namespace FIVStandard
                 TogglePause();
             }
 
-            if (e.Key == Settings.DeleteKey && ImagesFound.Count > 0)
+            if (e.Key == Settings.DeleteKey && ImagesData.Count > 0)
             {
                 DeleteToRecycleAsync(ActivePath);
             }
@@ -1099,9 +1067,13 @@ namespace FIVStandard
 
         private void ThumbnailList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (imageIndex < 0) return;
+            if (ImagesDataView.CurrentPosition < 0) return;
 
-            ((ListBox)sender).ScrollIntoView(thumbnailImages[imageIndex]);
+            ListBox box = (ListBox)sender;
+
+            ChangeImage(0, true);
+
+            box.ScrollIntoView(imagesData[ImagesDataView.CurrentPosition]);
         }
         #endregion
 

@@ -5,15 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace FIVStandard.Comparers
 {
-    public static class NameComparer/* : IComparer<string>
-    {
-        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        static extern int StrCmpLogicalW(string x, string y);
-
-        public int Compare(string x, string y)
-        {
-            return StrCmpLogicalW(x, y);
-        }*/
+    public static class NameComparer
     {
         //ThumbnailItemData
         public static IOrderedEnumerable<T> OrderByAlphaNumeric<T>(this IEnumerable<T> source, Func<T, string> selector)

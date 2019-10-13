@@ -440,7 +440,7 @@ namespace FIVStandard.Modules
         {
             Properties.Settings.Default.DownsizeImage = DownsizeImageToggle;
 
-            if (mainWindow.ImagesFound.Count > 0)
+            if (mainWindow.ImagesData.Count > 0)
                 mainWindow.ImageSource = mainWindow.LoadImage(mainWindow.ActivePath);
 
             //Properties.Settings.Default.Save();
