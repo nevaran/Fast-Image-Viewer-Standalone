@@ -10,7 +10,7 @@ namespace FIVStandard.Modules
 
         public void ImageCopyToClipboard(BitmapSource img)
         {
-            if (img == null) return;
+            if (img is null) return;
 
             Clipboard.Clear();
             Clipboard.SetImage(img);

@@ -30,6 +30,7 @@
         <converter:TextToColorConverter x:Key="TextToColorConverter" />
         <converter:KeyToStringConverter x:Key="KeyToStringConverter" />
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:BoolToVisibilityConverterReverse x:Key="BoolToVisibilityConverterReverse" />
 
         <Style
             x:Key="ListBoxItemStyle"
@@ -209,7 +210,10 @@
                         <ListBox
                             x:Name="thumbnailList"
                             Margin="0,44,0,0"
+                            Focusable="False"
                             IsSynchronizedWithCurrentItem="True"
+                            IsTabStop="False"
+                            IsTextSearchEnabled="False"
                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                             ItemsSource="{Binding ImagesDataView, Mode=OneWay}"
                             SelectedItem="{Binding ImageItem, Mode=TwoWay}"
@@ -242,12 +246,25 @@
                                                 Text="{Binding ThumbnailName, Mode=OneWay}"
                                                 TextAlignment="Center"
                                                 TextTrimming="CharacterEllipsis" />
+
                                             <Image
                                                 Width="80"
                                                 Height="80"
                                                 Focusable="False"
+                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}" />
-
+                                            <!--
+                                            <MediaElement
+                                                Width="80"
+                                                Height="80"
+                                                Focusable="False"
+                                                IsMuted="True"
+                                                MediaEnded="ThumbnailMedia_OnClipEnded"
+                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                Source="{Binding ThumbnailMedia, Mode=OneWay, IsAsync=True}"
+                                                UnloadedBehavior="Manual"
+                                                Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
+                                            -->
                                             <Border
                                                 Width="25"
                                                 Height="25"
@@ -255,6 +272,7 @@
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Bottom"
                                                 Background="#00000000"
+                                                Focusable="False"
                                                 ToolTip="{localized:Static p:Resources.DownsizeOnTooltip}"
                                                 Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                                                 <Path
@@ -278,11 +296,11 @@
                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
                             <MediaElement
                                 Name="MediaView"
+                                Focusable="False"
                                 LoadedBehavior="Manual"
                                 MediaEnded="OnClipEnded"
                                 MediaOpened="OnClipOpened"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ScrubbingEnabled="True"
                                 Source="{Binding MediaSource, Mode=OneWay, IsAsync=True}"
                                 StretchDirection="DownOnly"
                                 UnloadedBehavior="Manual" />
@@ -978,6 +996,8 @@
                 Header="{localized:Static p:Resources.About}">
                 <ScrollViewer
                     Margin="5"
+                    Focusable="False"
+                    IsTabStop="False"
                     VerticalScrollBarVisibility="Auto">
                     <Grid
                         Margin="10"

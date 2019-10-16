@@ -14,7 +14,7 @@ drag and drop image
 
 rotate image buttons
 
-ListBox + Button with UniformGrid set as its ItemsPanel Gallery on the left side (MAYBE ItemsControl). bind an ObservableCollection to the ListBox.ItemsSource property
+***ListBox + with UniformGrid set as its ItemsPanel Gallery on the left side (MAYBE ItemsControl). bind an ObservableCollection to the ListBox.ItemsSource property
 example: https://www.wpftutorial.net/ListBoxItemsArrange.html
 
 -----------------
@@ -25,11 +25,12 @@ example: https://www.wpftutorial.net/ListBoxItemsArrange.html
 ***Update when file changed in active directory
 ***Rotate image based on file orientation property
 ***localization/globalization
+***FileSystemWatcher to update only changed files instead of updating whole list
 
 -----------------
 
 switch to json saving of settings
 
-FileSystemWatcher to update only changed files instead of updating whole list
+
 
 -----------------

@@ -43,6 +43,7 @@ namespace FIVStandard
 
                 imageItem = value;
                 OnPropertyChanged();
+                OnPropertyChanged("TitleInformation");
             }
         }
 
@@ -56,79 +57,78 @@ namespace FIVStandard
             {
                 if (isDeletingFile)
                 {
-                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.Deleting));
-                    return $"{cultureTranslated} {ActiveFile}...";
+                    return $"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.Deleting))} {ActiveFile}...";
                 }
                 else
                 {
-                    if(imageItem == null)//no image
+                    if(imageItem is null)//no image
                     {
                         return "FIV";
                     }
                     else
                     {
-                        return $"[{ImagesDataView.CurrentPosition + 1}/{ImagesDataView.Count}] {imageItem.ThumbnailName}";
+                        return $"[{ImagesDataView.CurrentPosition + 1}/{ImagesDataView.Count}] {activeFile}";
                     }
                 }
             }
         }
 
         #region Image Properties
-        private Uri _mediaSource = null;
+        private Uri mediaSource = null;
 
         public Uri MediaSource
         {
             get
             {
-                return _mediaSource;
+                return mediaSource;
             }
             set
             {
-                _mediaSource = value;
+                mediaSource = value;
                 OnPropertyChanged();
             }
         }
 
-        private BitmapImage _imageSource = null;
+        private BitmapImage imageSource = null;
 
         public BitmapImage ImageSource
         {
             get
             {
-                return _imageSource;
+                return imageSource;
             }
             set
             {
-                _imageSource = value;
+                imageSource = value;
                 OnPropertyChanged();
             }
         }
 
-        private int _imgWidth = 0;
+        private int imgWidth = 0;
         public int ImgWidth
         {
             get
             {
-                return _imgWidth;
+                return imgWidth;
             }
             set
             {
-                _imgWidth = value;
+                imgWidth = value;
                 OnPropertyChanged();
                 OnPropertyChanged("ImgResolution");
             }
         }
 
-        private int _imgHeight = 0;
+        private int imgHeight = 0;
         public int ImgHeight
         {
             get
             {
-                return _imgHeight;
+                return imgHeight;
             }
             set
             {
-                _imgHeight = value;
+                imgHeight = value;
                 OnPropertyChanged();
                 OnPropertyChanged("ImgResolution");
             }
@@ -138,10 +138,10 @@ namespace FIVStandard
         {
             get
             {
-                if (_imgWidth == 0 || _imgHeight == 0)
+                if (imgWidth == 0 || imgHeight == 0)
                     return "owo";
                 else
-                    return $"{_imgWidth}x{_imgHeight}";
+                    return $"{imgWidth}x{imgHeight}";
             }
         }
 
@@ -155,6 +155,8 @@ namespace FIVStandard
         public CopyFileToClipboard ToClipboard { get; set; }
 
         public string StartupPath;//program startup path
+
+        private bool selectedNew = false;//used to avoid ListBox event to re-select the image, doubling the loading time
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
@@ -195,7 +197,7 @@ namespace FIVStandard
                 if (activeFile == value) return;
 
                 activeFile = value;
-                OnPropertyChanged("TitleInformation");
+                //OnPropertyChanged("TitleInformation");
             }
         }
 
@@ -324,9 +326,11 @@ namespace FIVStandard
                     ThumbnailName = e.Name,
                     IsAnimated = isAnim,
 
-                    ThumbnailImage = LoadThumbnail(e.FullPath)
+                    //ThumbnailImage = GetThumbnail(e.FullPath)
                 };
                 ImagesData.Add(tt);
+
+                LoadSingleThumbnailAsync(e.Name, e.FullPath, false);
 
                 //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
@@ -370,6 +374,8 @@ namespace FIVStandard
                     {
                         if (e.OldName == ImagesData[i].ThumbnailName)
                         {
+                            BitmapImage oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
+
                             ImagesData.RemoveAt(i);
 
                             string pathext = Path.GetExtension(e.Name);
@@ -384,9 +390,11 @@ namespace FIVStandard
                                 ThumbnailName = e.Name,
                                 IsAnimated = isAnim,
 
-                                ThumbnailImage = LoadThumbnail(e.FullPath)
+                                ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
                             };
                             ImagesData.Add(tt);
+
+                            //LoadSingleThumbnailAsync(e.Name, e.FullPath, false);
 
                             //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
@@ -416,6 +424,8 @@ namespace FIVStandard
         public void OpenNewFile(string path)
         {
             if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
+
+            selectedNew = true;
 
             ActiveFile = Path.GetFileName(path);
             ActiveFolder = Path.GetDirectoryName(path);
@@ -464,7 +474,6 @@ namespace FIVStandard
                 }
             }
 
-            tokenSource2?.Cancel();
             LoadAllThumbnailsAsync();
         }
 
@@ -499,6 +508,25 @@ namespace FIVStandard
             //Title = "FIV";
         }
 
+        private void TogglePause()
+        {
+            if (imageItem is null) return;
+
+            if (imageItem.IsAnimated)
+            {
+                if (IsPaused)
+                {
+                    MediaView.Play();
+                    IsPaused = false;
+                }
+                else
+                {
+                    MediaView.Pause();
+                    IsPaused = true;
+                }
+            }
+        }
+
         private void ChangeImage(int jump, bool moveToIndex)
         {
             if (ImagesData.Count == 0)//no more images in the folder - go back to default null
@@ -509,7 +537,7 @@ namespace FIVStandard
 
             int jumpIndex = jump;
 
-            if (moveToIndex)
+            if (moveToIndex)//ghost function since its already handled by ListBox and collection
             {
                 //ImagesDataView.MoveCurrentToPosition(jumpIndex);
             }
@@ -554,31 +582,16 @@ namespace FIVStandard
 
             NewUri(ActivePath);
 
-            //SetTitleInformation();
-        }
+            selectedNew = false;
 
-        private void TogglePause()
-        {
-            if (imageItem.IsAnimated)
-            {
-                if (IsPaused)
-                {
-                    MediaView.Play();
-                    IsPaused = false;
-                }
-                else
-                {
-                    MediaView.Pause();
-                    IsPaused = true;
-                }
-            }
+            //SetTitleInformation();
         }
 
         private void NewUri(string path)
         {
 #if DEBUG
-            //Stopwatch stopwatch = new Stopwatch();//DEBUG
-            //stopwatch.Start();//DEBUG
+            Stopwatch stopwatch = new Stopwatch();//DEBUG
+            stopwatch.Start();//DEBUG
 #endif
 
             Uri uri = new Uri(path, UriKind.Absolute);
@@ -603,7 +616,6 @@ namespace FIVStandard
 
                 GetImageInformation(ActivePath);
 
-                //MediaView?.Close();
                 MediaSource = null;
                 ImageSource = LoadImage(path);
 
@@ -611,8 +623,8 @@ namespace FIVStandard
             }
 
 #if DEBUG
-            //stopwatch.Stop();//DEBUG
-            //notifier.ShowError($"NewUri time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
+            stopwatch.Stop();//DEBUG
+            notifier.ShowError($"NewUri time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
 #endif
 
         }
@@ -647,74 +659,87 @@ namespace FIVStandard
             return imgTemp;
         }
 
-        CancellationTokenSource tokenSource2;
+        CancellationTokenSource allThumbnailTokenSource;
         CancellationToken ct;
 
         public Task LoadAllThumbnailsAsync()
         {
-            tokenSource2 = new CancellationTokenSource();
-            ct = tokenSource2.Token;
+            allThumbnailTokenSource?.Cancel();
+
+            allThumbnailTokenSource = new CancellationTokenSource();
+            ct = allThumbnailTokenSource.Token;
 
             return Task.Run(() =>
             {
-                try
+                int c = ImagesDataView.Count;
+                for (int i = 0; i < c; i++)
                 {
-                    int c = ImagesDataView.Count;
-                    for (int i = 0; i < c; i++)
+                    ct.ThrowIfCancellationRequested();
+
+                    ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
+
+                    /*if (tid.IsAnimated)//TODO add option "Animate thumbnail gifs" check
                     {
-                        ct.ThrowIfCancellationRequested();
-
-                        BitmapImage imgTemp = new BitmapImage();
-                        FileStream stream = File.OpenRead(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName));
-                        imgTemp.BeginInit();
-                        imgTemp.CacheOption = BitmapCacheOption.OnLoad;
-                        imgTemp.StreamSource = stream;
-
-                        imgTemp.DecodePixelWidth = 80;
-                        //imgTemp.DecodePixelHeight = 80;
-
-                        using (var imageStream = File.OpenRead(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)))
-                        {
-                            System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
-
-                            //ImgWidth = img.Width;
-                            //ImgHeight = img.Height;
-                            try
-                            {
-                                ExifOrientations eo = GetImageOreintation(img);
-                                Rotation imgRotation = OrientationDictionary[(int)eo];//eo angle from index
-
-                                if (imgRotation != Rotation.Rotate0)
-                                    imgTemp.Rotation = imgRotation;
-                            }
-                            catch
-                            {
-                                Application.Current.Dispatcher.Invoke(() =>
-                                {
-                                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ImgOrientationFailedMsg));
-                                    notifier.ShowError(cultureTranslated);
-                                });
-                            }
-                            img.Dispose();
-                        }
-
-                        imgTemp.EndInit();
-                        imgTemp.Freeze();
-                        stream.Close();
-                        stream.Dispose();
-
-                        ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailImage = imgTemp;
+                        //tid.ThumbnailMedia = new Uri(Path.Combine(ActiveFolder, tid.ThumbnailName));
                     }
-                }
-                catch
-                {
+                    else
+                    {
+                        //TODO put normal thumbnail load here
+                    }*/
 
+                    tid.ThumbnailImage = GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
-            }, tokenSource2.Token);
+
+            }, allThumbnailTokenSource.Token);
         }
 
-        public BitmapImage LoadThumbnail(string path)
+        /// <summary>
+        /// Load a single image to the defined position (via file name).
+        /// </summary>
+        /// <param name="name"> The Name + Extension of the file</param>
+        /// <param name="fullPath"> Complete path to the file, including the name and extension</param>
+        /// <param name="overrideThumbnail"> If true: replace the thumbnail even if there is already one generated</param>
+        /// <returns></returns>
+        public Task LoadSingleThumbnailAsync(string name, string fullPath, bool overrideThumbnail)
         {
+            return Task.Run(() =>
+            {
+                int c = ImagesDataView.Count;
+                for (int i = 0; i < c; i++)
+                {
+                    ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
+
+                    if(tid.ThumbnailName == name)
+                    {
+                        if(overrideThumbnail || tid.ThumbnailImage is null)
+                            tid.ThumbnailImage = GetThumbnail(fullPath, tid);
+
+                        break;
+                    }
+                }
+
+                /*if (tid.IsAnimated)//TODO add option "Animate thumbnail gifs" check
+                {
+                    //tid.ThumbnailMedia = new Uri(Path.Combine(ActiveFolder, tid.ThumbnailName));
+                }
+                else
+                {
+                    //TODO put normal thumbnail load here
+                }*/
+
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path">The full path to the file, including extension</param>
+        /// <param name="itemData">Used for saving the image orientation, width, and height in the given ThumbnailItemData</param>
+        /// <returns></returns>
+        private BitmapImage GetThumbnail(string path, ThumbnailItemData itemData)
+        {
+            if (!File.Exists(path)) return null;
+
             BitmapImage imgTemp = new BitmapImage();
             FileStream stream = File.OpenRead(path);
             imgTemp.BeginInit();
@@ -722,28 +747,21 @@ namespace FIVStandard
             imgTemp.StreamSource = stream;
 
             imgTemp.DecodePixelWidth = 80;
-            imgTemp.DecodePixelHeight = 80;
+            //imgTemp.DecodePixelHeight = 80;
 
             using (var imageStream = File.OpenRead(path))
             {
-                System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
-
-                //ImgWidth = img.Width;
-                //ImgHeight = img.Height;
-                try
+                using (System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
                 {
-                    ExifOrientations eo = GetImageOreintation(img);
-                    Rotation imgRotation = OrientationDictionary[(int)eo];//eo angle from index
+                    Rotation imgRotation = GetImageOreintation(img);//get rotation
+
+                    itemData.ImageWidth = img.Width;
+                    itemData.ImageHeight = img.Height;
+                    itemData.ImageOrientation = imgRotation;
 
                     if (imgRotation != Rotation.Rotate0)
                         imgTemp.Rotation = imgRotation;
                 }
-                catch
-                {
-                    string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ImgOrientationFailedMsg));
-                    notifier.ShowError(cultureTranslated);
-                }
-                img.Dispose();
             }
 
             imgTemp.EndInit();
@@ -766,18 +784,10 @@ namespace FIVStandard
 
         public void ExploreFile()
         {
-            try
+            if (File.Exists(ActivePath))
             {
-                if (File.Exists(ActivePath))
-                {
-                    //Clean up file path so it can be navigated OK
-                    Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(ActivePath)));
-                }
-            }
-            catch (Exception e)
-            {
-                //MessageBox.Show(e.Message);
-                notifier.ShowInformation(e.Message);
+                //Clean up file path so it can be navigated OK
+                Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(ActivePath)));
             }
         }
 
@@ -787,41 +797,30 @@ namespace FIVStandard
 
             return Task.Run(() =>
             {
-                try
+                IsDeletingFile = true;
+
+                if (FileSystem.FileExists(path))
                 {
-                    IsDeletingFile = true;
+                    FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
 
-                    if (FileSystem.FileExists(path))
+                    //remove deleted item from list
+                    /*Application.Current.Dispatcher.Invoke(() => this is done in the file watcher now
                     {
-                        FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
-
-                        //remove deleted item from list
-                        /*Application.Current.Dispatcher.Invoke(() => this is done in the file watcher now
-                        {
-                            ImagesFound.RemoveAt(ImageIndex);
-                            ChangeImage(-1);//go back to a previous file after deletion
-                            //SetTitleInformation();
-                        });*/
-                    }
-                    else
-                    {
-                        //MessageBox.Show("File not found: " + path);
-                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.FileNotFoundMsg));
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            notifier.ShowWarning($"{cultureTranslated}: {path}");
-                        });
-                    }
-
-                    IsDeletingFile = false;
+                        ImagesFound.RemoveAt(ImageIndex);
+                        ChangeImage(-1);//go back to a previous file after deletion
+                        //SetTitleInformation();
+                    });*/
                 }
-                catch (Exception e)
+                else
                 {
+                    //MessageBox.Show("File not found: " + path);
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        notifier.ShowError(e.Message + "\nIndex: " + ImagesDataView.CurrentPosition);
+                        notifier.ShowWarning($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.FileNotFoundMsg))}: {path}");
                     });
                 }
+
+                IsDeletingFile = false;
             });
         }
 
@@ -831,44 +830,40 @@ namespace FIVStandard
         private void GetImageInformation(string path)
         {
             if (ImagesData.Count == 0) return;
-            try
+
+            //ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition));
+
+            if(ImageItem.ImageOrientation != null)//if we have a set orientation in the item data, use it instead
             {
-                using (var imageStream = File.OpenRead(path))
-                {
-                    //var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                    //ImgWidth = decoder.Frames[0].PixelWidth;
-                    //ImgHeight = decoder.Frames[0].PixelHeight;
+                ImgWidth = ImageItem.ImageWidth;
+                ImgHeight = ImageItem.ImageHeight;
+                ImageRotation = (Rotation)ImageItem.ImageOrientation;
 
-                    System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
-
-                    ImgWidth = img.Width;
-                    ImgHeight = img.Height;
-                    try
-                    {
-                        ExifOrientations eo = GetImageOreintation(img);
-                        ImageRotation = OrientationDictionary[(int)eo];//eo angle from index
-
-#if DEBUG
-                        //notifier.ShowInformation($"Image Orientation: [angle: {ImageRotation}] {eo}");
-#endif
-                    }
-                    catch
-                    {
-                        string cultureTranslated = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ImgOrientationFailedMsg));
-                        notifier.ShowError(cultureTranslated);
-                    }
-                    img.Dispose();
-                }
+                return;
             }
-            catch
-            {
 
+            using (var imageStream = File.OpenRead(path))
+            {
+                //var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
+                //ImgWidth = decoder.Frames[0].PixelWidth;
+                //ImgHeight = decoder.Frames[0].PixelHeight;
+
+                System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
+
+                ImgWidth = img.Width;
+                ImgHeight = img.Height;
+
+                ImageRotation = GetImageOreintation(img);//get rotation
+
+                img.Dispose();
             }
         }
 
         private void ImageCopyToClipboardCall()
         {
             //ToClipboard.CopyToClipboard(ActivePath);
+            if (imageItem is null || !File.Exists(ActivePath)) return;
+
             if (imageItem.IsAnimated)
                 ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaSource));
             else
@@ -882,20 +877,22 @@ namespace FIVStandard
 
         private void FileCutToClipboardCall()
         {
+            if (imageItem is null || !File.Exists(ActivePath)) return;
+
             ToClipboard.FileCutToClipBoard(ActivePath);
         }
 
         #region XAML events
-        private void OnClipEnded(object sender, RoutedEventArgs e)
-        {
-            MediaView.Position = new TimeSpan(0, 0, 1);
-            MediaView.Play();
-        }
-
         private void OnDonateClick(object sender, RoutedEventArgs e)
         {
             ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
             Process.Start(sInfo);
+        }
+
+        private void OnClipEnded(object sender, RoutedEventArgs e)
+        {
+            MediaView.Position = new TimeSpan(0, 0, 1);
+            MediaView.Play();
         }
 
         private void OnClipOpened(object sender, RoutedEventArgs e)
@@ -972,10 +969,12 @@ namespace FIVStandard
 
             if (e.Key == Settings.GoForwardKey)
             {
+                selectedNew = true;
                 ChangeImage(1, false);//go forward
             }
             if (e.Key == Settings.GoBackwardKey)
             {
+                selectedNew = true;
                 ChangeImage(-1, false);//go back
             }
 
@@ -1019,6 +1018,7 @@ namespace FIVStandard
         {
             if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
+            selectedNew = true;
             ChangeImage(-1, false);//go back
         }
 
@@ -1026,6 +1026,7 @@ namespace FIVStandard
         {
             if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
+            selectedNew = true;
             ChangeImage(1, false);//go forward
         }
 
@@ -1035,10 +1036,12 @@ namespace FIVStandard
 
             if (e.ChangedButton == MouseButton.XButton1)
             {
+                selectedNew = true;
                 ChangeImage(-1, false);//go back
             }
             if (e.ChangedButton == MouseButton.XButton2)
             {
+                selectedNew = true;
                 ChangeImage(1, false);//go forward
             }
         }
@@ -1098,14 +1101,19 @@ namespace FIVStandard
 
         private void ThumbnailList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (ImagesDataView.CurrentPosition < 0) return;
-
-            ListBox box = (ListBox)sender;
+            if (ImagesDataView.CurrentPosition < 0 || selectedNew) return;
 
             ChangeImage(0, true);
 
-            box.ScrollIntoView(ImagesData[ImagesDataView.CurrentPosition]);
+            thumbnailList.ScrollIntoView(ImagesData[ImagesDataView.CurrentPosition]);
         }
+
+        /*private void ThumbnailMedia_OnClipEnded(object sender, RoutedEventArgs e)//used for list box's data template's media element control
+        {
+            MediaElement me = (MediaElement)sender;
+            me.Position = new TimeSpan(0, 0, 1);
+            me.Play();
+        }*/
         #endregion
 
         /*private int ParseStringToOnlyInt(string input)
@@ -1143,17 +1151,18 @@ namespace FIVStandard
         };
 
         // Return the image's orientation
-        public static ExifOrientations GetImageOreintation(System.Drawing.Image img)
+        public Rotation GetImageOreintation(System.Drawing.Image img)
         {
             // Get the index of the orientation property
             int orientation_index = Array.IndexOf(img.PropertyIdList, OrientationId);
 
             // If there is no such property, return Unknown
-            if (orientation_index < 0) return ExifOrientations.Unknown;
+            if (orientation_index < 0) return OrientationDictionary[0];//ExifOrientations.Unknown
+
+            ExifOrientations eo = (ExifOrientations)img.GetPropertyItem(OrientationId).Value[0];
 
             // Return the orientation value
-            return (ExifOrientations)
-                img.GetPropertyItem(OrientationId).Value[0];
+            return OrientationDictionary[(int)eo];
         }
 
         #region INotifyPropertyChanged
