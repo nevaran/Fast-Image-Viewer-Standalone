@@ -582,8 +582,6 @@ namespace FIVStandard
 
             NewUri(ActivePath);
 
-            selectedNew = false;
-
             //SetTitleInformation();
         }
 
@@ -621,6 +619,8 @@ namespace FIVStandard
 
                 borderImg.Reset();
             }
+
+            selectedNew = false;
 
 #if DEBUG
             stopwatch.Stop();//DEBUG
@@ -687,7 +687,8 @@ namespace FIVStandard
                         //TODO put normal thumbnail load here
                     }*/
 
-                    tid.ThumbnailImage = GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
+                    if(tid.ThumbnailImage is null)
+                        tid.ThumbnailImage = GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
 
             }, allThumbnailTokenSource.Token);
@@ -848,14 +849,13 @@ namespace FIVStandard
                 //ImgWidth = decoder.Frames[0].PixelWidth;
                 //ImgHeight = decoder.Frames[0].PixelHeight;
 
-                System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream);
+                using(System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
+                {
+                    ImgWidth = img.Width;
+                    ImgHeight = img.Height;
 
-                ImgWidth = img.Width;
-                ImgHeight = img.Height;
-
-                ImageRotation = GetImageOreintation(img);//get rotation
-
-                img.Dispose();
+                    ImageRotation = GetImageOreintation(img);//get rotation
+                }
             }
         }
 
@@ -1101,9 +1101,12 @@ namespace FIVStandard
 
         private void ThumbnailList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (ImagesDataView.CurrentPosition < 0 || selectedNew) return;
+            if (ImagesDataView.CurrentPosition < 0) return;
 
-            ChangeImage(0, true);
+            if (!selectedNew)
+            {
+                ChangeImage(0, true);
+            }
 
             thumbnailList.ScrollIntoView(ImagesData[ImagesDataView.CurrentPosition]);
         }
