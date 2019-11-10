@@ -7,15 +7,14 @@
 ***Image stretched
 ***Downsize Image
 ***Zoom sensitivity
+***ListBox + with UniformGrid set as its ItemsPanel Gallery on the left side (MAYBE ItemsControl). bind an ObservableCollection to the ListBox.ItemsSource property
+example: https://www.wpftutorial.net/ListBoxItemsArrange.html
 
-update mode (silent, very silent, full)
+update mode option (silent, very silent, full)
 
 drag and drop image
 
 rotate image buttons
-
-***ListBox + with UniformGrid set as its ItemsPanel Gallery on the left side (MAYBE ItemsControl). bind an ObservableCollection to the ListBox.ItemsSource property
-example: https://www.wpftutorial.net/ListBoxItemsArrange.html
 
 -----------------
 

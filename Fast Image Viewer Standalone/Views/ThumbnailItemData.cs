@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIVStandard.Modules;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
@@ -7,6 +8,8 @@ namespace FIVStandard.Views
 {
     public partial class ThumbnailItemData : INotifyPropertyChanged
     {
+        public static SettingsManager Settings { get; set; }
+
         private string thumbnailName;
 
         public string ThumbnailName

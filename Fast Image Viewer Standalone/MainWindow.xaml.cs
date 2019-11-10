@@ -16,7 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -44,6 +44,8 @@ namespace FIVStandard
                 imageItem = value;
                 OnPropertyChanged();
                 OnPropertyChanged("TitleInformation");
+
+                ScrollToListView();
             }
         }
 
@@ -197,7 +199,7 @@ namespace FIVStandard
                 if (activeFile == value) return;
 
                 activeFile = value;
-                //OnPropertyChanged("TitleInformation");
+                OnPropertyChanged("TitleInformation");
             }
         }
 
@@ -237,6 +239,8 @@ namespace FIVStandard
             Settings = new SettingsManager(this);
             ToClipboard = new CopyFileToClipboard();
 
+            ThumbnailItemData.Settings = Settings;
+
             //create new watcher events for used directory
             //fsw.Changed += Fsw_Updated;
             fsw.Created += Fsw_Created;
@@ -246,6 +250,8 @@ namespace FIVStandard
             DataContext = this;
 
             Settings.Load();
+
+            dragStarted = false;//hack for avoiding reloading the images when you start the program
 
             //AppWindow = this;//used for debugging ZoomBorder
         }
@@ -694,6 +700,37 @@ namespace FIVStandard
             }, allThumbnailTokenSource.Token);
         }
 
+        public Task ReloadAllThumbnailsAsync()
+        {
+            allThumbnailTokenSource?.Cancel();
+
+            allThumbnailTokenSource = new CancellationTokenSource();
+            ct = allThumbnailTokenSource.Token;
+
+            return Task.Run(() =>
+            {
+                int c = ImagesDataView.Count;
+                for (int i = 0; i < c; i++)
+                {
+                    ct.ThrowIfCancellationRequested();
+
+                    ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
+
+                    /*if (tid.IsAnimated)//TODO add option "Animate thumbnail gifs" check
+                    {
+                        //tid.ThumbnailMedia = new Uri(Path.Combine(ActiveFolder, tid.ThumbnailName));
+                    }
+                    else
+                    {
+                        //TODO put normal thumbnail load here
+                    }*/
+
+                    tid.ThumbnailImage = GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
+                }
+
+            }, allThumbnailTokenSource.Token);
+        }
+
         /// <summary>
         /// Load a single image to the defined position (via file name).
         /// </summary>
@@ -747,7 +784,7 @@ namespace FIVStandard
             imgTemp.CacheOption = BitmapCacheOption.OnLoad;
             imgTemp.StreamSource = stream;
 
-            imgTemp.DecodePixelWidth = 80;
+            imgTemp.DecodePixelWidth = Settings.ThumbnailRes;
             //imgTemp.DecodePixelHeight = 80;
 
             using (var imageStream = File.OpenRead(path))
@@ -1107,8 +1144,30 @@ namespace FIVStandard
             {
                 ChangeImage(0, true);
             }
+        }
 
+        private void ScrollToListView()
+        {
             thumbnailList.ScrollIntoView(ImagesData[ImagesDataView.CurrentPosition]);
+        }
+
+        private bool dragStarted = true;
+
+        private void ThumbnailSlider_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            ReloadAllThumbnailsAsync();
+            this.dragStarted = false;
+        }
+
+        private void ThumbnailSlider_DragStarted(object sender, DragStartedEventArgs e)
+        {
+            this.dragStarted = true;
+        }
+
+        public void ThumbnailSlider_ValueChanged()
+        {
+            if (!dragStarted)
+                ReloadAllThumbnailsAsync();
         }
 
         /*private void ThumbnailMedia_OnClipEnded(object sender, RoutedEventArgs e)//used for list box's data template's media element control

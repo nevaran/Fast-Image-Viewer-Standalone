@@ -12,7 +12,7 @@ namespace FIVStandard.Modules
 {
     public class SettingsManager : INotifyPropertyChanged
     {
-        private readonly MainWindow mainWindow;
+        public readonly MainWindow mainWindow;
 
         #region Keys Properties
         private bool _shortcutButtonsOn = true;
@@ -314,6 +314,59 @@ namespace FIVStandard.Modules
                 OnCheckForUpdatesStartToggle();
             }
         }
+
+        private int thumbnailSize = 80;
+
+        public int ThumbnailSize
+        {
+            get
+            {
+                return thumbnailSize;
+            }
+            set
+            {
+                thumbnailSize = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ThumbnailSizePlusText");
+                OnPropertyChanged("ThumbnailSizeGifTag");
+
+                OnThumbnailSizeChanged();
+            }
+        }
+
+        public int ThumbnailSizePlusText
+        {
+            get
+            {
+                return (ThumbnailSize + 13);
+            }
+        }
+
+        public int ThumbnailSizeGifTag
+        {
+            get
+            {
+                return (int)((float)ThumbnailSize / 3.2);
+            }
+        }
+
+        private int thumbnailRes = 80;
+
+        public int ThumbnailRes
+        {
+            get
+            {
+                return thumbnailRes;
+            }
+            set
+            {
+                thumbnailRes = value;
+                OnPropertyChanged();
+
+                OnThumbnailResChanged();
+                mainWindow.ThumbnailSlider_ValueChanged();
+            }
+        }
         #endregion
 
         public SettingsManager(MainWindow mw)
@@ -321,6 +374,12 @@ namespace FIVStandard.Modules
             mainWindow = mw;
 
             Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
+
+            if (Properties.Settings.Default.UpgradeRequired)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeRequired = false;
+            }
 
             //ThemeManager.AddAccent("HackerTheme", new Uri("pack://application:,,,/MahAppsMetroThemesSample;component/CustomAccents/HackerTheme.xaml"));
         }
@@ -336,6 +395,8 @@ namespace FIVStandard.Modules
             DownsizeImageToggle = savs.DownsizeImage;
             ZoomSensitivity = savs.ZoomSensitivity;
             CheckForUpdatesStartToggle = savs.CheckUpdateAtStart;
+            thumbnailSize = savs.ThumbnailSize;
+            ThumbnailRes = savs.ThumbnailRes;
 
             GoForwardKey = (Key)savs.GoForwardKey;
             GoBackwardKey = (Key)savs.GoBackWardKey;
@@ -448,9 +509,19 @@ namespace FIVStandard.Modules
 
         private void OnZoomSensitivitySlider()
         {
-            Properties.Settings.Default.ZoomSensitivity = ZoomSensitivity;
+            Properties.Settings.Default.ZoomSensitivity = _zoomSensitivity;
 
             //Properties.Settings.Default.Save();
+        }
+
+        private void OnThumbnailSizeChanged()
+        {
+            Properties.Settings.Default.ThumbnailSize = thumbnailSize;
+        }
+
+        private void OnThumbnailResChanged()
+        {
+            Properties.Settings.Default.ThumbnailRes = thumbnailRes;
         }
 
         private void OnCheckForUpdatesStartToggle()

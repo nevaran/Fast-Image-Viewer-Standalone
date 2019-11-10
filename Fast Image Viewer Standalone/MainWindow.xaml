@@ -235,12 +235,12 @@
                                         BorderThickness="2"
                                         Focusable="False">
                                         <StackPanel
-                                            Width="80"
-                                            Height="93"
+                                            Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
+                                            Height="{Binding Settings.ThumbnailSizePlusText, Mode=OneWay}"
                                             Focusable="False"
                                             ToolTip="{Binding ThumbnailName, Mode=OneWay}">
                                             <TextBlock
-                                                Width="80"
+                                                Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 Focusable="False"
                                                 FontSize="10"
                                                 Text="{Binding ThumbnailName, Mode=OneWay}"
@@ -248,8 +248,8 @@
                                                 TextTrimming="CharacterEllipsis" />
 
                                             <Image
-                                                Width="80"
-                                                Height="80"
+                                                Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
+                                                Height="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 Focusable="False"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}" />
@@ -266,9 +266,9 @@
                                                 Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" />
                                             -->
                                             <Border
-                                                Width="25"
-                                                Height="25"
-                                                Margin="-25,-25,0,0"
+                                                Width="{Binding Settings.ThumbnailSizeGifTag, Mode=OneWay}"
+                                                Height="{Binding Settings.ThumbnailSizeGifTag, Mode=OneWay}"
+                                                Margin="-40,-40,0,0"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Bottom"
                                                 Background="#00000000"
@@ -348,6 +348,8 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition
@@ -356,55 +358,6 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-
-                            <!--<Canvas Background="Red" />
-                            <Canvas
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Background="Green"
-                                />
-                            <Canvas Grid.Row="1" Background="Red" />
-                            <Canvas
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                Background="Green"
-                                />
-                            <Canvas Grid.Row="2" Background="Red" />
-                            <Canvas
-                                Grid.Row="2"
-                                Grid.Column="2"
-                                Background="Green"
-                                />
-                            <Canvas Grid.Row="3" Background="Red" />
-                            <Canvas
-                                Grid.Row="3"
-                                Grid.Column="2"
-                                Background="Green"
-                                />
-                            <Canvas Grid.Row="4" Background="Red" />
-                            <Canvas
-                                Grid.Row="4"
-                                Grid.Column="2"
-                                Background="Green"
-                                />
-                            <Canvas Grid.Row="5" Background="Red" />
-                            <Canvas
-                                Grid.Row="5"
-                                Grid.Column="2"
-                                Background="Green"
-                                />
-                            <Canvas Grid.Row="6" Background="Red" />
-                            <Canvas
-                                Grid.Row="6"
-                                Grid.Column="2"
-                                Background="Green"
-                                />
-                            <Canvas Grid.Row="7" Background="Azure" />
-                            <Canvas
-                                Grid.Row="7"
-                                Grid.Column="2"
-                                Background="Yellow"
-                                />-->
 
                             <Separator
                                 Grid.ColumnSpan="3"
@@ -660,6 +613,88 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Text="{localized:Static p:Resources.CheckForUpdatesStartToggleInfo}"
+                                TextWrapping="Wrap" />
+
+                            <!--  Thumbnail Size  -->
+                            <TextBlock
+                                Grid.Row="8"
+                                Margin="10,50,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding Settings.ThumbnailSize, Mode=OneWay}"
+                                TextAlignment="Center" />
+                            <Slider
+                                Grid.Row="8"
+                                Height="100"
+                                Margin="20,0,5,0"
+                                VerticalAlignment="Center"
+                                Focusable="False"
+                                IsSnapToTickEnabled="True"
+                                IsTabStop="False"
+                                LargeChange="5"
+                                Maximum="120"
+                                Minimum="40"
+                                SmallChange="5"
+                                TickFrequency="5"
+                                Value="{Binding Settings.ThumbnailSize, Mode=TwoWay}" />
+
+                            <StackPanel
+                                Grid.Row="8"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal">
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Grid.Row="8"
+                                Grid.Column="2"
+                                Height="60"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="{localized:Static p:Resources.ThumbnailSizeInfo}"
+                                TextWrapping="Wrap" />
+
+                            <!--  Thumbnail Resolution  -->
+                            <TextBlock
+                                Grid.Row="9"
+                                Margin="10,50,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding Settings.ThumbnailRes, Mode=OneWay}"
+                                TextAlignment="Center" />
+                            <Slider
+                                Grid.Row="9"
+                                Height="100"
+                                Margin="20,0,5,0"
+                                VerticalAlignment="Center"
+                                Focusable="False"
+                                IsSnapToTickEnabled="True"
+                                IsTabStop="False"
+                                LargeChange="5"
+                                Maximum="120"
+                                Minimum="40"
+                                SmallChange="5"
+                                Thumb.DragCompleted="ThumbnailSlider_DragCompleted"
+                                Thumb.DragStarted="ThumbnailSlider_DragStarted"
+                                TickFrequency="5"
+                                Value="{Binding Settings.ThumbnailRes, Mode=TwoWay}" />
+
+                            <StackPanel
+                                Grid.Row="9"
+                                Grid.Column="1"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Orientation="Horizontal">
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Grid.Row="9"
+                                Grid.Column="2"
+                                Height="60"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Text="{localized:Static p:Resources.ThumbnailResInfo}"
                                 TextWrapping="Wrap" />
 
                             <!--  End Settings Grid  -->

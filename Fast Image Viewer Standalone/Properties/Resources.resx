@@ -283,4 +283,10 @@
   <data name="Deleting" xml:space="preserve">
     <value>Deleting</value>
   </data>
+  <data name="ThumbnailSizeInfo" xml:space="preserve">
+    <value>Change the size of each item of the thumbnail list. Default is 80. (40-120)</value>
+  </data>
+  <data name="ThumbnailResInfo" xml:space="preserve">
+    <value>The resolution (in pixels) of each thumbnail image. A lower number will reduce memory consumption and increase loading speed of each thumbnail. Default is 80. (40-120)</value>
+  </data>
 </root>
