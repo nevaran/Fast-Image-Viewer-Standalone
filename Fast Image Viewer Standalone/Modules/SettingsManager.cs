@@ -164,6 +164,21 @@ namespace FIVStandard.Modules
                 OnPropertyChanged();
             }
         }
+
+        private Key _thumbnailListKey = Key.T;
+
+        public Key ThumbnailListKey
+        {
+            get
+            {
+                return _thumbnailListKey;
+            }
+            set
+            {
+                _thumbnailListKey = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Settings Properties
@@ -315,6 +330,23 @@ namespace FIVStandard.Modules
             }
         }
 
+        private bool enableThumbnailListToggle = true;
+
+        public bool EnableThumbnailListToggle
+        {
+            get
+            {
+                return enableThumbnailListToggle;
+            }
+            set
+            {
+                enableThumbnailListToggle = value;
+                OnPropertyChanged();
+
+                OnEnableThumbnailChanged();
+            }
+        }
+
         private int thumbnailSize = 80;
 
         public int ThumbnailSize
@@ -395,7 +427,8 @@ namespace FIVStandard.Modules
             DownsizeImageToggle = savs.DownsizeImage;
             ZoomSensitivity = savs.ZoomSensitivity;
             CheckForUpdatesStartToggle = savs.CheckUpdateAtStart;
-            thumbnailSize = savs.ThumbnailSize;
+            EnableThumbnailListToggle = savs.EnableThumbnailList;
+            ThumbnailSize = savs.ThumbnailSize;
             ThumbnailRes = savs.ThumbnailRes;
 
             GoForwardKey = (Key)savs.GoForwardKey;
@@ -407,6 +440,7 @@ namespace FIVStandard.Modules
             ExploreFileKey = (Key)savs.ExploreFileKey;
             CopyImageToClipboardKey = (Key)savs.CopyToClipboardKey;
             CutFileToClipboardKey = (Key)savs.CutToClipboardKey;
+            ThumbnailListKey = (Key)savs.ThumbnailListKey;
         }
 
         public void Save()
@@ -427,6 +461,7 @@ namespace FIVStandard.Modules
             savs.ExploreFileKey = (int)ExploreFileKey;
             savs.CopyToClipboardKey = (int)CopyImageToClipboardKey;
             savs.CutToClipboardKey = (int)CutFileToClipboardKey;
+            savs.ThumbnailListKey = (int)ThumbnailListKey;
         }
 
         public void ResetToDefault()
@@ -512,6 +547,11 @@ namespace FIVStandard.Modules
             Properties.Settings.Default.ZoomSensitivity = _zoomSensitivity;
 
             //Properties.Settings.Default.Save();
+        }
+
+        private void OnEnableThumbnailChanged()
+        {
+            Properties.Settings.Default.EnableThumbnailList = enableThumbnailListToggle;
         }
 
         private void OnThumbnailSizeChanged()

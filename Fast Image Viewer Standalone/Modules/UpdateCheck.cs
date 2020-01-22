@@ -17,6 +17,9 @@ namespace FIVStandard.Modules
         /// Notifies if up to date and new version available; downloads and installs
         /// </summary>
         FullUpdate,
+        /// <summary>
+        /// Updates check, download, and installs no matter the version
+        /// </summary>
         FullUpdateForced,
         /// <summary>
         /// Notifies only if new version is available
@@ -256,6 +259,7 @@ namespace FIVStandard.Modules
 
                 if (HasLaterVersion())
                 {
+                    if(mainWindow.Settings.CheckForUpdatesStartToggle)
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion.ToString()})");
@@ -266,6 +270,7 @@ namespace FIVStandard.Modules
                 }
                 else
                 {
+                    if(mainWindow.Settings.CheckForUpdatesStartToggle)
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion.ToString()}");

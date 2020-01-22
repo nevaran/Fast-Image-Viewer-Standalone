@@ -19,9 +19,9 @@
     FontSize="16"
     Icon="Resources/FIVIcon.ico"
     IsTabStop="False"
-    KeyDown="OnKeyDown"
     Loaded="OnAppLoaded"
     MouseDown="OnMouseDown"
+    PreviewKeyDown="OnKeyDown"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
@@ -31,12 +31,20 @@
         <converter:KeyToStringConverter x:Key="KeyToStringConverter" />
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:BoolToVisibilityConverterReverse x:Key="BoolToVisibilityConverterReverse" />
+        <converter:BoolFromAccentToGrayConverter x:Key="BoolFromAccentToGrayConverter" />
 
         <Style
             x:Key="ListBoxItemStyle"
             BasedOn="{StaticResource {x:Type ListBoxItem}}"
             TargetType="ListBoxItem">
+
             <Setter Property="Padding" Value="5" />
+            <Setter Property="IsTabStop" Value="False" />
+            <!--  Fixes spacebar not working and some other bugs if selecting via mouse but disables now the actual selecing  -->
+            <Setter Property="Focusable" Value="False" />
+            <EventSetter
+                Event="PreviewMouseDown"
+                Handler="ListBox_PreviewMouseDown" />
         </Style>
     </Window.Resources>
 
@@ -217,7 +225,8 @@
                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                             ItemsSource="{Binding ImagesDataView, Mode=OneWay}"
                             SelectedItem="{Binding ImageItem, Mode=TwoWay}"
-                            SelectionChanged="ThumbnailList_SelectionChanged">
+                            SelectionChanged="ThumbnailList_SelectionChanged"
+                            Visibility="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
 
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -278,6 +287,7 @@
                                                 <Path
                                                     Data="M8.00684834,10 C6.34621185,10 5,11.3422643 5,12.9987856 L5,20.0012144 C5,21.6573979 6.33599155,23 8.00684834,23 L24.9931517,23 C26.6537881,23 28,21.6577357 28,20.0012144 L28,12.9987856 C28,11.3426021 26.6640085,10 24.9931517,10 L8.00684834,10 L8.00684834,10 Z M13,17 L13,19 L10.9998075,19 C10.4437166,19 10,18.5523709 10,18.0001925 L10,14.9998075 C10,14.4437166 10.4476291,14 10.9998075,14 L14,14 L14,13 L11.0048815,13 C9.89761602,13 9,13.8865548 9,15.0059191 L9,17.9940809 C9,19.1019194 9.8938998,20 11.0048815,20 L14,20 L14,19.25 L14,19.25 L14,17 L14,16 L11,16 L11,17 L13,17 L13,17 Z M16,14 L16,19 L15,19 L15,20 L18,20 L18,19 L17,19 L17,14 L18,14 L18,13 L15,13 L15,14 L16,14 L16,14 Z M20,16 L20,14 L24,14 L24,13 L19,13 L19,20 L20,20 L20,17 L23,17 L23,16 L20,16 L20,16 Z"
                                                     Fill="{DynamicResource AccentColorBrush}"
+                                                    Focusable="False"
                                                     Stretch="Uniform"
                                                     StrokeThickness="1" />
                                             </Border>
@@ -350,12 +360,13 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition
                                     Width="Auto"
                                     SharedSizeGroup="A" />
-                                <ColumnDefinition Width="Auto" />
+                                <!--<ColumnDefinition Width="Auto" />-->
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
@@ -366,11 +377,10 @@
                             <!--  Reset Settings Button  -->
                             <Button
                                 Grid.Row="0"
-                                Grid.Column="2"
-                                Grid.ColumnSpan="3"
+                                Grid.Column="0"
                                 MinWidth="100"
-                                Margin="0,10,10,7"
-                                HorizontalAlignment="Right"
+                                Margin="20,10,10,27"
+                                HorizontalAlignment="Left"
                                 Click="OnResetSettingsClick"
                                 Content="{localized:Static p:Resources.ResetSettingsButton}"
                                 Focusable="False"
@@ -378,12 +388,20 @@
                                 IsTabStop="False" />
 
                             <!--  Language Dropdown  -->
+                            <TextBlock
+                                Grid.Row="1"
+                                Margin="20,0,0,0"
+                                VerticalAlignment="Top"
+                                FontWeight="DemiBold"
+                                Text="{localized:Static p:Resources.Language}"
+                                TextAlignment="Left"
+                                ToolTip="{localized:Static p:Resources.ShownLanguageInfo}" />
                             <Controls:SplitButton
                                 x:Name="ShownLanguageDrop"
                                 Grid.Row="1"
                                 Height="60"
-                                Margin="20,0,5,0"
-                                VerticalAlignment="Center"
+                                Margin="20,25,5,0"
+                                VerticalAlignment="Top"
                                 Click="OnLanguageClick"
                                 Focusable="False"
                                 IsTabStop="False"
@@ -391,62 +409,35 @@
                                 Orientation="Vertical"
                                 SelectedIndex="{Binding Settings.ShownLanguageDropIndex, Mode=TwoWay}" />
 
-                            <StackPanel
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                Height="60"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.ShownLanguageInfo}"
-                                TextWrapping="Wrap" />
-
                             <!--  Dark Mode Toggle  -->
                             <Controls:ToggleSwitch
                                 Grid.Row="2"
-                                Width="140"
                                 Height="100"
                                 Padding="20,40,0,0"
                                 VerticalAlignment="Center"
+                                ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.DarkMode}"
                                 IsChecked="{Binding Settings.DarkModeToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}" />
-
-                            <StackPanel
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Grid.Row="2"
-                                Grid.Column="2"
-                                Height="60"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.DarkModeInfo}"
-                                TextWrapping="Wrap" />
+                                OnLabel="{localized:Static p:Resources.On}"
+                                ToolTip="{localized:Static p:Resources.DarkModeInfo}" />
 
                             <!--  Theme Accent Dropdown  -->
+                            <TextBlock
+                                Grid.Row="3"
+                                Margin="20,40,0,0"
+                                VerticalAlignment="Top"
+                                FontWeight="DemiBold"
+                                Text="{localized:Static p:Resources.ThemeAccent}"
+                                TextAlignment="Left"
+                                ToolTip="{localized:Static p:Resources.ThemeAccentInfo}" />
                             <Controls:SplitButton
                                 x:Name="ThemeAccentDrop"
                                 Grid.Row="3"
                                 Height="60"
-                                Margin="20,40,5,0"
+                                Margin="20,65,5,0"
                                 VerticalAlignment="Center"
                                 Click="OnAccentClick"
                                 Focusable="False"
@@ -462,55 +453,20 @@
                                 </Controls:SplitButton.ItemContainerStyle>
                             </Controls:SplitButton>
 
-                            <StackPanel
-                                Grid.Row="3"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Grid.Row="3"
-                                Grid.Column="2"
-                                Height="60"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.ThemeAccentInfo}"
-                                TextWrapping="Wrap" />
-
                             <!--  Stretch Image Toggle  -->
                             <Controls:ToggleSwitch
                                 Grid.Row="4"
                                 Height="100"
                                 Padding="20,40,0,0"
                                 VerticalAlignment="Center"
+                                ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.StretchImage}"
                                 IsChecked="{Binding Settings.StretchImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}" />
-
-                            <StackPanel
-                                Grid.Row="4"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Grid.Row="4"
-                                Grid.Column="2"
-                                Height="60"
-                                Padding="0,0,20,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.StretchImageInfo}"
-                                TextWrapping="Wrap" />
+                                OnLabel="{localized:Static p:Resources.On}"
+                                ToolTip="{localized:Static p:Resources.StretchImageInfo}" />
 
                             <!--  Downsize Image  -->
                             <Controls:ToggleSwitch
@@ -518,44 +474,35 @@
                                 Height="100"
                                 Padding="20,40,0,0"
                                 VerticalAlignment="Center"
+                                ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.DownsizeImage}"
                                 IsChecked="{Binding Settings.DownsizeImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}" />
-
-                            <StackPanel
-                                Grid.Row="5"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Grid.Row="5"
-                                Grid.Column="2"
-                                Height="60"
-                                Padding="0,0,20,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.DownsizeImageInfo}"
-                                TextWrapping="Wrap" />
+                                OnLabel="{localized:Static p:Resources.On}"
+                                ToolTip="{localized:Static p:Resources.DownsizeImageInfo}" />
 
                             <!--  Zoom Sensitivity  -->
                             <TextBlock
                                 Grid.Row="6"
-                                Margin="10,50,0,0"
+                                Margin="20,0,0,0"
                                 VerticalAlignment="Center"
+                                FontWeight="DemiBold"
+                                Text="{localized:Static p:Resources.ZoomSensitivity}"
+                                TextAlignment="Left"
+                                ToolTip="{localized:Static p:Resources.ZoomSensitivityInfo}" />
+                            <TextBlock
+                                Grid.Row="6"
+                                Margin="10,70,0,0"
+                                VerticalAlignment="Center"
+                                FontWeight="DemiBold"
                                 Text="{Binding Settings.ZoomSensitivityString, Mode=OneWay}"
                                 TextAlignment="Center" />
                             <Slider
                                 Grid.Row="6"
-                                Height="100"
-                                Margin="20,0,5,0"
-                                VerticalAlignment="Center"
+                                Margin="20,60,5,0"
+                                VerticalAlignment="Top"
                                 Focusable="False"
                                 IsSnapToTickEnabled="True"
                                 IsTabStop="False"
@@ -565,69 +512,133 @@
                                 TickFrequency="0.05"
                                 Value="{Binding Settings.ZoomSensitivity, Mode=TwoWay}" />
 
-                            <StackPanel
-                                Grid.Row="6"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Grid.Row="6"
-                                Grid.Column="2"
-                                Height="60"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.ZoomSensitivityInfo}"
-                                TextWrapping="Wrap" />
-
                             <!--  Check for Updates at Startup  -->
                             <Controls:ToggleSwitch
                                 Grid.Row="7"
                                 Height="100"
                                 Padding="20,40,0,0"
                                 VerticalAlignment="Center"
+                                ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.CheckForUpdatesStartToggle}"
                                 IsChecked="{Binding Settings.CheckForUpdatesStartToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}" />
+                                OnLabel="{localized:Static p:Resources.On}"
+                                ToolTip="{localized:Static p:Resources.CheckForUpdatesStartToggleInfo}" />
 
-                            <StackPanel
-                                Grid.Row="7"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
+                            <!--  Enable Thumbnail List Toggle  -->
+                            <Controls:ToggleSwitch
+                                Grid.Row="8"
+                                Height="100"
+                                Padding="20,40,0,0"
+                                VerticalAlignment="Center"
+                                ContentDirection="RightToLeft"
+                                Focusable="False"
+                                Header="{localized:Static p:Resources.EnableThumbnailList}"
+                                IsChecked="{Binding Settings.EnableThumbnailListToggle, Mode=TwoWay}"
+                                IsTabStop="False"
+                                OffLabel="{localized:Static p:Resources.Off}"
+                                OnLabel="{localized:Static p:Resources.On}"
+                                ToolTip="{localized:Static p:Resources.EnableThumbnailListInfo}" />
 
-                            <TextBlock
-                                Grid.Row="7"
-                                Grid.Column="2"
-                                Height="60"
-                                Padding="0,0,20,0"
+                            <!--  TREE BRANCHING LINES  -->
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.CheckForUpdatesStartToggleInfo}"
-                                TextWrapping="Wrap" />
+                                Background="{DynamicResource AccentColorBrush}" />
+                            <Border
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,40,0,0"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource AccentColorBrush}" />
+                            <Border
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,40,0,0"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource AccentColorBrush}" />
+                            <Border
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,40,0,0"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource AccentColorBrush}" />
+                            <Border
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,40,0,0"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource AccentColorBrush}" />
+                            <Border
+                                Grid.Row="6"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,40,0,0"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource AccentColorBrush}" />
+                            <Border
+                                Grid.Row="7"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,40,0,0"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource AccentColorBrush}" />
+                            <Border
+                                Grid.Row="8"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,40,0,-40"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource AccentColorBrush}" />
+                            <Border
+                                Grid.Row="9"
+                                Grid.Column="0"
+                                Width="40"
+                                Height="2"
+                                Margin="10,40,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Background="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay}" />
+                            <Border
+                                Grid.Row="9"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="50,40,0,0"
+                                HorizontalAlignment="Left"
+                                Background="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay}" />
 
                             <!--  Thumbnail Size  -->
                             <TextBlock
-                                Grid.Row="8"
-                                Margin="10,50,0,0"
+                                Grid.Row="9"
+                                Margin="60,0,-20,0"
                                 VerticalAlignment="Center"
+                                FontWeight="DemiBold"
+                                Text="{localized:Static p:Resources.ThumbnailSize}"
+                                TextAlignment="Left"
+                                ToolTip="{localized:Static p:Resources.ThumbnailSizeInfo}" />
+                            <TextBlock
+                                Grid.Row="9"
+                                Margin="50,70,-20,0"
+                                VerticalAlignment="Center"
+                                FontWeight="DemiBold"
                                 Text="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                 TextAlignment="Center" />
                             <Slider
-                                Grid.Row="8"
-                                Height="100"
-                                Margin="20,0,5,0"
-                                VerticalAlignment="Center"
+                                Grid.Row="9"
+                                Margin="60,60,-15,0"
+                                VerticalAlignment="Top"
                                 Focusable="False"
+                                IsEnabled="{Binding Settings.EnableThumbnailListToggle}"
                                 IsSnapToTickEnabled="True"
                                 IsTabStop="False"
                                 LargeChange="5"
@@ -637,37 +648,28 @@
                                 TickFrequency="5"
                                 Value="{Binding Settings.ThumbnailSize, Mode=TwoWay}" />
 
-                            <StackPanel
-                                Grid.Row="8"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Grid.Row="8"
-                                Grid.Column="2"
-                                Height="60"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.ThumbnailSizeInfo}"
-                                TextWrapping="Wrap" />
-
                             <!--  Thumbnail Resolution  -->
                             <TextBlock
-                                Grid.Row="9"
-                                Margin="10,50,0,0"
+                                Grid.Row="10"
+                                Margin="60,0,-20,0"
                                 VerticalAlignment="Center"
+                                FontWeight="DemiBold"
+                                Text="{localized:Static p:Resources.ThumbnailRes}"
+                                TextAlignment="Left"
+                                ToolTip="{localized:Static p:Resources.ThumbnailResInfo}" />
+                            <TextBlock
+                                Grid.Row="10"
+                                Margin="50,70,-20,0"
+                                VerticalAlignment="Center"
+                                FontWeight="DemiBold"
                                 Text="{Binding Settings.ThumbnailRes, Mode=OneWay}"
                                 TextAlignment="Center" />
                             <Slider
-                                Grid.Row="9"
-                                Height="100"
-                                Margin="20,0,5,0"
-                                VerticalAlignment="Center"
+                                Grid.Row="10"
+                                Margin="60,60,-15,0"
+                                VerticalAlignment="Top"
                                 Focusable="False"
+                                IsEnabled="{Binding Settings.EnableThumbnailListToggle}"
                                 IsSnapToTickEnabled="True"
                                 IsTabStop="False"
                                 LargeChange="5"
@@ -678,24 +680,6 @@
                                 Thumb.DragStarted="ThumbnailSlider_DragStarted"
                                 TickFrequency="5"
                                 Value="{Binding Settings.ThumbnailRes, Mode=TwoWay}" />
-
-                            <StackPanel
-                                Grid.Row="9"
-                                Grid.Column="1"
-                                Height="60"
-                                VerticalAlignment="Bottom"
-                                Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Grid.Row="9"
-                                Grid.Column="2"
-                                Height="60"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Text="{localized:Static p:Resources.ThumbnailResInfo}"
-                                TextWrapping="Wrap" />
 
                             <!--  End Settings Grid  -->
                         </Grid>
@@ -717,12 +701,22 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
+
+                            <Border
+                                Grid.Row="2"
+                                Grid.RowSpan="19"
+                                Grid.Column="0"
+                                Width="2"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                Background="{DynamicResource AccentColorBrush}" />
 
                             <TextBlock
                                 Grid.Row="1"
@@ -1007,6 +1001,38 @@
                                 Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}" />
                             <Button
                                 Grid.Row="10"
+                                Grid.Column="2"
+                                MinWidth="27"
+                                MinHeight="27"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Background="#D14B4B"
+                                Click="OnRemoveShortcutClick"
+                                Content="X"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
+                                ToolTip="{localized:Static p:Resources.RemoveShortcut}" />
+
+                            <TextBlock
+                                Grid.Row="11"
+                                Grid.Column="0"
+                                Margin="30,0,0,0"
+                                Focusable="False"
+                                Text="{localized:Static p:Resources.ShowThumbnailList}" />
+                            <Button
+                                Grid.Row="11"
+                                Grid.Column="1"
+                                MinWidth="80"
+                                Margin="5,0,0,5"
+                                HorizontalAlignment="Left"
+                                Click="OnShortcutClick"
+                                Content="{Binding Settings.ThumbnailListKey, Converter={StaticResource KeyToStringConverter}}"
+                                Focusable="False"
+                                IsTabStop="False"
+                                Tag="{Binding Settings.ThumbnailListKey, Mode=TwoWay}" />
+                            <Button
+                                Grid.Row="11"
                                 Grid.Column="2"
                                 MinWidth="27"
                                 MinHeight="27"

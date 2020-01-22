@@ -304,6 +304,24 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thumbnail List.
+        /// </summary>
+        public static string EnableThumbnailList {
+            get {
+                return ResourceManager.GetString("EnableThumbnailList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show a list of thumbnails of all images on the side..
+        /// </summary>
+        public static string EnableThumbnailListInfo {
+            get {
+                return ResourceManager.GetString("EnableThumbnailListInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Explore image location.
         /// </summary>
         public static string ExploreImageLocationShortcut {
@@ -346,6 +364,15 @@ namespace FIVStandard.Properties {
         public static string ImgOrientationFailedMsg {
             get {
                 return ResourceManager.GetString("ImgOrientationFailedMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
             }
         }
         
@@ -485,6 +512,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Thumbnail List.
+        /// </summary>
+        public static string ShowThumbnailList {
+            get {
+                return ResourceManager.GetString("ShowThumbnailList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stretch Image.
         /// </summary>
         public static string StretchImage {
@@ -521,6 +557,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme Accent.
+        /// </summary>
+        public static string ThemeAccent {
+            get {
+                return ResourceManager.GetString("ThemeAccent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the accent colors..
         /// </summary>
         public static string ThemeAccentInfo {
@@ -530,11 +575,29 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Resolution.
+        /// </summary>
+        public static string ThumbnailRes {
+            get {
+                return ResourceManager.GetString("ThumbnailRes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The resolution (in pixels) of each thumbnail image. A lower number will reduce memory consumption and increase loading speed of each thumbnail. Default is 80. (40-120).
         /// </summary>
         public static string ThumbnailResInfo {
             get {
                 return ResourceManager.GetString("ThumbnailResInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Size.
+        /// </summary>
+        public static string ThumbnailSize {
+            get {
+                return ResourceManager.GetString("ThumbnailSize", resourceCulture);
             }
         }
         
@@ -562,6 +625,15 @@ namespace FIVStandard.Properties {
         public static string WhatsNew {
             get {
                 return ResourceManager.GetString("WhatsNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom Sensitivity.
+        /// </summary>
+        public static string ZoomSensitivity {
+            get {
+                return ResourceManager.GetString("ZoomSensitivity", resourceCulture);
             }
         }
         

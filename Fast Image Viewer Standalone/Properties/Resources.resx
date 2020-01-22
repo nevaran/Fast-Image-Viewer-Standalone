@@ -289,4 +289,28 @@
   <data name="ThumbnailResInfo" xml:space="preserve">
     <value>The resolution (in pixels) of each thumbnail image. A lower number will reduce memory consumption and increase loading speed of each thumbnail. Default is 80. (40-120)</value>
   </data>
+  <data name="EnableThumbnailList" xml:space="preserve">
+    <value>Thumbnail List</value>
+  </data>
+  <data name="EnableThumbnailListInfo" xml:space="preserve">
+    <value>Show a list of thumbnails of all images on the side.</value>
+  </data>
+  <data name="ZoomSensitivity" xml:space="preserve">
+    <value>Zoom Sensitivity</value>
+  </data>
+  <data name="ThumbnailSize" xml:space="preserve">
+    <value>Thumbnail Size</value>
+  </data>
+  <data name="ThumbnailRes" xml:space="preserve">
+    <value>Thumbnail Resolution</value>
+  </data>
+  <data name="ThemeAccent" xml:space="preserve">
+    <value>Theme Accent</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ShowThumbnailList" xml:space="preserve">
+    <value>Show Thumbnail List</value>
+  </data>
 </root>

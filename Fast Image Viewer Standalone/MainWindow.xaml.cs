@@ -16,6 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -45,11 +46,11 @@ namespace FIVStandard
                 OnPropertyChanged();
                 OnPropertyChanged("TitleInformation");
 
-                ScrollToListView();
+                //ScrollToListView();
             }
         }
 
-        public ListCollectionView ImagesDataView { get; }
+        public ListCollectionView ImagesDataView { get; }//sorted list - use this
 
         public ObservableCollection<ThumbnailItemData> ImagesData { get; } = new ObservableCollection<ThumbnailItemData>();
 
@@ -258,8 +259,8 @@ namespace FIVStandard
 
         private void OnAppLoaded(object sender, RoutedEventArgs e)
         {
-            if(Settings.CheckForUpdatesStartToggle)
-                AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+            //if (Settings.CheckForUpdatesStartToggle)
+            AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
 
             string[] args = Environment.GetCommandLineArgs();
 
@@ -331,7 +332,6 @@ namespace FIVStandard
                 {
                     ThumbnailName = e.Name,
                     IsAnimated = isAnim,
-
                     //ThumbnailImage = GetThumbnail(e.FullPath)
                 };
                 ImagesData.Add(tt);
@@ -633,6 +633,7 @@ namespace FIVStandard
             notifier.ShowError($"NewUri time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
 #endif
 
+            ScrollToListView();
         }
 
         public BitmapImage LoadImage(string path)
@@ -985,6 +986,9 @@ namespace FIVStandard
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            //IInputElement focusedControl = FocusManager.GetFocusedElement(this);
+            //MessageBox.Show(focusedControl.ToString());
+
             if (Settings.ShortcutButtonsOn == false)
             {
                 if (e.Key == Key.System || e.Key == Key.LWin || e.Key == Key.RWin) return;//blacklisted keys
@@ -1048,6 +1052,11 @@ namespace FIVStandard
             if(e.Key == Settings.CutFileToClipboardKey)
             {
                 FileCutToClipboardCall();
+            }
+
+            if(e.Key == Settings.ThumbnailListKey)
+            {
+                Settings.EnableThumbnailListToggle = !Settings.EnableThumbnailListToggle;
             }
         }
 
@@ -1143,12 +1152,27 @@ namespace FIVStandard
             if (!selectedNew)
             {
                 ChangeImage(0, true);
+
+                //MainFIV.Focus();
+                //Keyboard.ClearFocus();
             }
         }
 
         private void ScrollToListView()
         {
-            thumbnailList.ScrollIntoView(ImagesData[ImagesDataView.CurrentPosition]);
+            int cp = ImagesDataView.CurrentPosition;
+
+            if (cp < 0)//dont do anything if not 0 or more aka nothing selected (-1)
+                return;
+
+            thumbnailList.ScrollIntoView(ImagesDataView.GetItemAt(cp));
+        }
+
+        //select event when using the mouse on the list box items
+        private void ListBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var tid = (ListBoxItem)sender;
+            ImageItem = (ThumbnailItemData)tid.Content;
         }
 
         private bool dragStarted = true;

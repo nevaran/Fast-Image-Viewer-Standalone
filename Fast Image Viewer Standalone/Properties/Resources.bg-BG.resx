@@ -283,4 +283,7 @@
   <data name="DownloadFinsihedInfo" xml:space="preserve">
     <value>Изтеглянето Готово</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Език</value>
+  </data>
 </root>

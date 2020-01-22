@@ -134,6 +134,7 @@
     </ApplicationDefinition>
     <Compile Include="Comparers\NameComparer.cs" />
     <Compile Include="Comparers\NaturalOrderComparer.cs" />
+    <Compile Include="Converters\BoolFromAccentToGrayConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverterReverse.cs" />
     <Compile Include="Converters\KeyToStringConverter.cs" />
