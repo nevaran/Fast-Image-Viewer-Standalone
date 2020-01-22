@@ -313,4 +313,7 @@
   <data name="ShowThumbnailList" xml:space="preserve">
     <value>Show Thumbnail List</value>
   </data>
+  <data name="ThumbnailListOnTooltip" xml:space="preserve">
+    <value>Thumbnail List On</value>
+  </data>
 </root>

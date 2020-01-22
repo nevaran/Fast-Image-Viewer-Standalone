@@ -575,6 +575,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thumbnail List On.
+        /// </summary>
+        public static string ThumbnailListOnTooltip {
+            get {
+                return ResourceManager.GetString("ThumbnailListOnTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thumbnail Resolution.
         /// </summary>
         public static string ThumbnailRes {

@@ -144,6 +144,7 @@
     </Compile>
     <Compile Include="Modules\CopyFileToClipboard.cs" />
     <Compile Include="Modules\SettingsManager.cs" />
+    <Compile Include="Modules\SvgReader.cs" />
     <Compile Include="Modules\UpdateCheck.cs" />
     <Compile Include="Modules\WpfScreen.cs" />
     <Compile Include="Properties\Resources.pt-BR.Designer.cs">

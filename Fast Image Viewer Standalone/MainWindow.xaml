@@ -83,8 +83,9 @@
                 Background="#00000000"
                 ToolTip="{localized:Static p:Resources.DarkModeOnTooltip}"
                 Visibility="{Binding Settings.DarkModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                <!--  Data="M0 128v768h768V128H0zM64 832V192h640L64 832z"  -->
                 <Path
-                    Data="M0 128v768h768V128H0zM64 832V192h640L64 832z"
+                    Data="M16,20 C16.3453,20 16.6803809,19.9562469 17.0000012,19.8739822 C15.2747721,19.429939 14,17.8638391 14,16 C14,14.1361609 15.2747721,12.570061 17.0000012,12.1260178 C16.6803809,12.0437531 16.3453,12 16,12 C13.7908609,12 12,13.7908609 12,16 C12,18.2091391 13.7908609,20 16,20 Z M16,22 C12.6862913,22 10,19.3137087 10,16 C10,12.6862913 12.6862913,10 16,10 C19.3137087,10 22,12.6862913 22,16 C22,19.3137087 19.3137087,22 16,22 Z M16,22"
                     Fill="{DynamicResource AccentColorBrush}"
                     Stretch="Uniform" />
             </Border>
@@ -111,6 +112,19 @@
                 Visibility="{Binding Settings.DownsizeImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
                 <Path
                     Data="M21,15H23V17H21V15M21,11H23V13H21V11M23,19H21V21C22,21 23,20 23,19M13,3H15V5H13V3M21,7H23V9H21V7M21,3V5H23C23,4 22,3 21,3M1,7H3V9H1V7M17,3H19V5H17V3M17,19H19V21H17V19M3,3C2,3 1,4 1,5H3V3M9,3H11V5H9V3M5,3H7V5H5V3M1,11V19A2,2 0 0,0 3,21H15V11H1M3,19L5.5,15.79L7.29,17.94L9.79,14.72L13,19H3Z"
+                    Fill="{DynamicResource AccentColorBrush}"
+                    Stretch="Uniform" />
+            </Border>
+            <Border
+                Width="15"
+                Height="15"
+                Margin="0,0,5,0"
+                VerticalAlignment="Center"
+                Background="#00000000"
+                ToolTip="{localized:Static p:Resources.ThumbnailListOnTooltip}"
+                Visibility="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}">
+                <Path
+                    Data="M4 14h4v-4H4v4zm0 5h4v-4H4v4zM4 9h4V5H4v4zm5 5h12v-4H9v4zm0 5h12v-4H9v4zM9 5v4h12V5H9z"
                     Fill="{DynamicResource AccentColorBrush}"
                     Stretch="Uniform" />
             </Border>
