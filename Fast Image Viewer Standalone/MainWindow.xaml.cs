@@ -1157,9 +1157,6 @@ namespace FIVStandard
             if (!selectedNew)
             {
                 ChangeImage(0, true);
-
-                //MainFIV.Focus();
-                //Keyboard.ClearFocus();
             }
         }
 

@@ -186,9 +186,10 @@ namespace FIVStandard.Modules
         {
             ("en", "English (en)"),
             ("bg-BG", "Български (bg-BG)"),
-            ("nl-NL", "Dutch (nl-BE/nl-NL)"),
-            ("pt-BR", "Portuguese (pt-BR)"),
-            ("se-SE", "Swedish (se-SE)"),
+            ("nl-NL", "Nederlands (nl-BE/nl-NL)"),
+            ("pt-BR", "Portuguesa (pt-BR)"),
+            ("se-SE", "Svenska (se-SE)"),
+            ("da-DK", "Dansk (da-DK)"),
         };
 
         private int _shownLanguageDropIndex = 0;

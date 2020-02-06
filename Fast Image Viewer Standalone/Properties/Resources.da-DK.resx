@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FIVIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FIVIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="WhatsNew" xml:space="preserve">
+    <value>Nyheder</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Åben</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Indstillinger</value>
+  </data>
+  <data name="Donate" xml:space="preserve">
+    <value>Donationer</value>
+  </data>
+  <data name="OpenFileLocation" xml:space="preserve">
+    <value>Åbn fil</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Slet</value>
+  </data>
+  <data name="ShownLanguageInfo" xml:space="preserve">
+    <value>Skift sprog.</value>
+  </data>
+  <data name="DarkMode" xml:space="preserve">
+    <value>Mørk tilstand</value>
+  </data>
+  <data name="DarkModeInfo" xml:space="preserve">
+    <value>Skift mellem mørk og lys tilstand.</value>
+  </data>
+  <data name="ThemeAccentInfo" xml:space="preserve">
+    <value>Skift accentfarver.</value>
+  </data>
+  <data name="StretchImage" xml:space="preserve">
+    <value>Stræk billede</value>
+  </data>
+  <data name="StretchImageInfo" xml:space="preserve">
+    <value>Altid stræk billede så det passer til lærredet.</value>
+  </data>
+  <data name="DownsizeImage" xml:space="preserve">
+    <value>Skrump billedet</value>
+  </data>
+  <data name="DownsizeImageInfo" xml:space="preserve">
+    <value>Skrump billedet så det passer til lærredet. Det nedsætter hukommelsen brug for billeder større end skærmen.</value>
+  </data>
+  <data name="ZoomSensitivityInfo" xml:space="preserve">
+    <value>Skift zoom ind og ud følsomhed på billedet. (Default er 1.00)</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Tænd</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Sluk</value>
+  </data>
+  <data name="PreviousImageShortcut" xml:space="preserve">
+    <value>Gå tilbage</value>
+  </data>
+  <data name="NextImageShortcut" xml:space="preserve">
+    <value>Næste billedet</value>
+  </data>
+  <data name="DeleteImageShortcut" xml:space="preserve">
+    <value>Slet billede</value>
+  </data>
+  <data name="DownsizeImageShortcut" xml:space="preserve">
+    <value>Skrump billede</value>
+  </data>
+  <data name="PauseAnimationShortcut" xml:space="preserve">
+    <value>Sæt animation på pause</value>
+  </data>
+  <data name="StretchImageShortcut" xml:space="preserve">
+    <value>Stræk billede</value>
+  </data>
+  <data name="ExploreImageLocationShortcut" xml:space="preserve">
+    <value>Udforsk billede plads</value>
+  </data>
+  <data name="Shortcuts" xml:space="preserve">
+    <value>Genvej</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Check efter opdateringer</value>
+  </data>
+  <data name="FileNotFoundMsg" xml:space="preserve">
+    <value>Fil ikke fundet</value>
+  </data>
+  <data name="ImgOrientationFailedMsg" xml:space="preserve">
+    <value>Kunne ikke finde billedet orientering</value>
+  </data>
+  <data name="ChangedWatcher" xml:space="preserve">
+    <value>Skiftede</value>
+  </data>
+  <data name="CreatedWatcher" xml:space="preserve">
+    <value>Check sidst lavede projekter</value>
+  </data>
+  <data name="DeletedWatcher" xml:space="preserve">
+    <value>Slettede projekter</value>
+  </data>
+  <data name="RenamedWatcher" xml:space="preserve">
+    <value>Omdøbede projekter</value>
+  </data>
+  <data name="AllWatcher" xml:space="preserve">
+    <value>Alle ændringer</value>
+  </data>
+  <data name="CopyImageToClipboard" xml:space="preserve">
+    <value>Kopier billedet til kopiholder</value>
+  </data>
+  <data name="ResetSettingsButton" xml:space="preserve">
+    <value>Genstart alt</value>
+  </data>
+  <data name="CutFileToClipboard" xml:space="preserve">
+    <value>Klip fil til kopiholder</value>
+  </data>
+  <data name="RemoveShortcut" xml:space="preserve">
+    <value>Slet genvej</value>
+  </data>
+  <data name="DarkModeOnTooltip" xml:space="preserve">
+    <value>Mørk tilstand tændt</value>
+  </data>
+  <data name="StretchOnTooltip" xml:space="preserve">
+    <value>Stræk tændt</value>
+  </data>
+  <data name="DownsizeOnTooltip" xml:space="preserve">
+    <value>Skrump tændt</value>
+  </data>
+  <data name="DownloadLatest" xml:space="preserve">
+    <value>Download seneste</value>
+  </data>
+  <data name="DownloadLatestTooltip" xml:space="preserve">
+    <value>Download sidste nye opsætning for programmet</value>
+  </data>
+  <data name="NewVerAvailableInfo" xml:space="preserve">
+    <value>nye version klar til opdatering</value>
+  </data>
+  <data name="UpdatingInfo" xml:space="preserve">
+    <value>Opdatere...</value>
+  </data>
+  <data name="AlreadyOnLatestVerInfo" xml:space="preserve">
+    <value>Nyeste opdatering allerede installeret</value>
+  </data>
+  <data name="CheckingForUpdatesInfo" xml:space="preserve">
+    <value>Søger efter opdateringer...</value>
+  </data>
+  <data name="NoInternetInfo" xml:space="preserve">
+    <value>Intet internet tilsluttet</value>
+  </data>
+  <data name="DownloadingInfo" xml:space="preserve">
+    <value>Downloader</value>
+  </data>
+  <data name="DownloadFinsihedInfo" xml:space="preserve">
+    <value>Download færdig</value>
+  </data>
+  <data name="CheckForUpdatesStartToggle" xml:space="preserve">
+    <value>Søg efter opdateringer</value>
+  </data>
+  <data name="CheckForUpdatesStartToggleInfo" xml:space="preserve">
+    <value>Altid søg efter opdateringer når programmet starter.</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Sletter</value>
+  </data>
+  <data name="ThumbnailSizeInfo" xml:space="preserve">
+    <value>Skift størrelse for hver ting i thumbnail listen. Default er 80. (40-120)</value>
+  </data>
+  <data name="ThumbnailResInfo" xml:space="preserve">
+    <value>Opløsningen i pixels i hvert Thumbnail billede. Et lavere tal vil reducerer hukommelses brug og gør loading hastigheden langsommere ved hver thumbnail. Default er 80. (40-120)</value>
+  </data>
+  <data name="EnableThumbnailList" xml:space="preserve">
+    <value>Thumbnail List</value>
+  </data>
+  <data name="EnableThumbnailListInfo" xml:space="preserve">
+    <value>Vis thumbnail listen over all billeder i siden.</value>
+  </data>
+  <data name="ZoomSensitivity" xml:space="preserve">
+    <value>Zoom følsomhed</value>
+  </data>
+  <data name="ThumbnailSize" xml:space="preserve">
+    <value>Thumbnail størrelse</value>
+  </data>
+  <data name="ThumbnailRes" xml:space="preserve">
+    <value>Thumbnail opløsning</value>
+  </data>
+  <data name="ThemeAccent" xml:space="preserve">
+    <value>Thema accent</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprog</value>
+  </data>
+  <data name="ShowThumbnailList" xml:space="preserve">
+    <value>Vis thumbnail list</value>
+  </data>
+  <data name="ThumbnailListOnTooltip" xml:space="preserve">
+    <value>Thumbnail list Tændt</value>
+  </data>
+  <data name="AutoupdateToggle" xml:space="preserve">
+    <value>Automatisk opdatering</value>
+  </data>
+  <data name="AutoupdateToggleInfo" xml:space="preserve">
+    <value>Automatisk download og opdatering af program.</value>
+  </data>
+  <data name="ThumbnailListColumns" xml:space="preserve">
+    <value>Thumbnail list kolonner</value>
+  </data>
+  <data name="ThumbnailListColumnsInfo" xml:space="preserve">
+    <value>Mængden af kolonner i thumbnail listen. (max 3)</value>
+  </data>
+</root>
