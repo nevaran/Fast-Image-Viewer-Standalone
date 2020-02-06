@@ -316,4 +316,16 @@
   <data name="ThumbnailListOnTooltip" xml:space="preserve">
     <value>Thumbnail List On</value>
   </data>
+  <data name="AutoupdateToggle" xml:space="preserve">
+    <value>Autoupdate</value>
+  </data>
+  <data name="AutoupdateToggleInfo" xml:space="preserve">
+    <value>Automatically download and install new update.</value>
+  </data>
+  <data name="ThumbnailListColumns" xml:space="preserve">
+    <value>Thumbnail List Columns</value>
+  </data>
+  <data name="ThumbnailListColumnsInfo" xml:space="preserve">
+    <value>The amount of columns in the Thumbnail List. (Max 3)</value>
+  </data>
 </root>

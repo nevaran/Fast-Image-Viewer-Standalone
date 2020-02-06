@@ -577,7 +577,7 @@ namespace FIVStandard
             }*/
 
             //keep moving onward until we find an existing file
-            //TEMP REPLACEMENT
+            //TEMP REPLACEMENT (maybe)
             if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition)).ThumbnailName)))
             {
                 ChangeImage(jumpIndex, false);
@@ -694,7 +694,7 @@ namespace FIVStandard
                         //TODO put normal thumbnail load here
                     }*/
 
-                    if(tid.ThumbnailImage is null)
+                    if(tid.ThumbnailImage is null)//dont load the thumbnail if we already have one there
                         tid.ThumbnailImage = GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
 
@@ -872,7 +872,12 @@ namespace FIVStandard
 
             //ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition));
 
-            if(ImageItem.ImageOrientation != null)//if we have a set orientation in the item data, use it instead
+            if(ImageItem.ThumbnailImage is null)
+            {
+                LoadSingleThumbnailAsync(ImageItem.ThumbnailName, path, false);
+            }
+
+            if (ImageItem.ImageOrientation != null)//if we have a set orientation in the item data, use it instead
             {
                 ImgWidth = ImageItem.ImageWidth;
                 ImgHeight = ImageItem.ImageHeight;

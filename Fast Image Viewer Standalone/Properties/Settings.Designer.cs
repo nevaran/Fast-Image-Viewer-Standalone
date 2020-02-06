@@ -274,5 +274,29 @@ namespace FIVStandard.Properties {
                 this["ThumbnailListKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoupdateToggle {
+            get {
+                return ((bool)(this["AutoupdateToggle"]));
+            }
+            set {
+                this["AutoupdateToggle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int ThumbnailListColumns {
+            get {
+                return ((int)(this["ThumbnailListColumns"]));
+            }
+            set {
+                this["ThumbnailListColumns"] = value;
+            }
+        }
     }
 }

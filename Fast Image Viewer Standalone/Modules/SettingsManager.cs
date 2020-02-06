@@ -330,6 +330,23 @@ namespace FIVStandard.Modules
             }
         }
 
+        private bool _autoupdateToggle = false;
+
+        public bool AutoupdateToggle
+        {
+            get
+            {
+                return _autoupdateToggle;
+            }
+            set
+            {
+                _autoupdateToggle = value;
+                OnPropertyChanged();
+
+                OnAutoupdateToggle();
+            }
+        }
+
         private bool enableThumbnailListToggle = true;
 
         public bool EnableThumbnailListToggle
@@ -399,6 +416,23 @@ namespace FIVStandard.Modules
                 mainWindow.ThumbnailSlider_ValueChanged();
             }
         }
+
+        private int thumbnailListColumns = 2;
+
+        public int ThumbnailListColumns
+        {
+            get
+            {
+                return thumbnailListColumns;
+            }
+            set
+            {
+                thumbnailListColumns = value;
+                OnPropertyChanged();
+
+                OnThumbnailListColumnChanged();
+            }
+        }
         #endregion
 
         public SettingsManager(MainWindow mw)
@@ -427,9 +461,11 @@ namespace FIVStandard.Modules
             DownsizeImageToggle = savs.DownsizeImage;
             ZoomSensitivity = savs.ZoomSensitivity;
             CheckForUpdatesStartToggle = savs.CheckUpdateAtStart;
+            AutoupdateToggle = savs.AutoupdateToggle;
             EnableThumbnailListToggle = savs.EnableThumbnailList;
             ThumbnailSize = savs.ThumbnailSize;
             ThumbnailRes = savs.ThumbnailRes;
+            ThumbnailListColumns = savs.ThumbnailListColumns;
 
             GoForwardKey = (Key)savs.GoForwardKey;
             GoBackwardKey = (Key)savs.GoBackWardKey;
@@ -564,9 +600,19 @@ namespace FIVStandard.Modules
             Properties.Settings.Default.ThumbnailRes = thumbnailRes;
         }
 
+        private void OnThumbnailListColumnChanged()
+        {
+            Properties.Settings.Default.ThumbnailListColumns = thumbnailListColumns;
+        }
+
         private void OnCheckForUpdatesStartToggle()
         {
             Properties.Settings.Default.CheckUpdateAtStart = CheckForUpdatesStartToggle;
+        }
+
+        private void OnAutoupdateToggle()
+        {
+            Properties.Settings.Default.AutoupdateToggle = AutoupdateToggle;
         }
 
         #region INotifyPropertyChanged

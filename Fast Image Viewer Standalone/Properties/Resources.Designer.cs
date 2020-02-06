@@ -88,6 +88,24 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Autoupdate.
+        /// </summary>
+        public static string AutoupdateToggle {
+            get {
+                return ResourceManager.GetString("AutoupdateToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically download and install new update..
+        /// </summary>
+        public static string AutoupdateToggleInfo {
+            get {
+                return ResourceManager.GetString("AutoupdateToggleInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changed.
         /// </summary>
         public static string ChangedWatcher {
@@ -571,6 +589,24 @@ namespace FIVStandard.Properties {
         public static string ThemeAccentInfo {
             get {
                 return ResourceManager.GetString("ThemeAccentInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail List Columns.
+        /// </summary>
+        public static string ThumbnailListColumns {
+            get {
+                return ResourceManager.GetString("ThumbnailListColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The amount of columns in the Thumbnail List. (Max 3).
+        /// </summary>
+        public static string ThumbnailListColumnsInfo {
+            get {
+                return ResourceManager.GetString("ThumbnailListColumnsInfo", resourceCulture);
             }
         }
         

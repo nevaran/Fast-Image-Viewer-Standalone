@@ -270,13 +270,20 @@ namespace FIVStandard.Modules
                 }
                 else
                 {
-                    if(mainWindow.Settings.CheckForUpdatesStartToggle)
-                    Application.Current.Dispatcher.Invoke(() =>
+                    if (mainWindow.Settings.CheckForUpdatesStartToggle)
                     {
-                        mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion.ToString()}");
-                    });
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion.ToString()}");
+                        });
+                    }
 
                     NotUpdating = true;
+
+                    if (mainWindow.Settings.CheckForUpdatesStartToggle && mainWindow.Settings.AutoupdateToggle)
+                    {
+                        DownloadNewAppVersion();
+                    }
                 }
             }
         }
