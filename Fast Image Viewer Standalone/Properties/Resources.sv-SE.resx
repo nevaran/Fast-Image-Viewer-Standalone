@@ -283,4 +283,49 @@
   <data name="Deleting" xml:space="preserve">
     <value>Raderar</value>
   </data>
+  <data name="ThumbnailListColumnsInfo" xml:space="preserve">
+    <value>Mängden kolumner i miniatyrlistan. (Max 3)</value>
+  </data>
+  <data name="ThumbnailListColumns" xml:space="preserve">
+    <value>Miniatyrlista kolumner</value>
+  </data>
+  <data name="AutoupdateToggleInfo" xml:space="preserve">
+    <value>Ladda ner och installera uppdatering automatiskt.</value>
+  </data>
+  <data name="AutoupdateToggle" xml:space="preserve">
+    <value>Automatiska uppdateringar</value>
+  </data>
+  <data name="ThumbnailListOnTooltip" xml:space="preserve">
+    <value>Miniatyrlista På</value>
+  </data>
+  <data name="ShowThumbnailList" xml:space="preserve">
+    <value>Visa miniatyrlista</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Språk</value>
+  </data>
+  <data name="ThemeAccent" xml:space="preserve">
+    <value>Färgtema</value>
+  </data>
+  <data name="ThumbnailRes" xml:space="preserve">
+    <value>Miniatyr upplösning</value>
+  </data>
+  <data name="ThumbnailSize" xml:space="preserve">
+    <value>Miniatyr storlek</value>
+  </data>
+  <data name="ZoomSensitivity" xml:space="preserve">
+    <value>Zoomkänslighet</value>
+  </data>
+  <data name="EnableThumbnailListInfo" xml:space="preserve">
+    <value>Visa en lista av miniatyrer av bilderna vid sidan.</value>
+  </data>
+  <data name="EnableThumbnailList" xml:space="preserve">
+    <value>Miniatyrlista</value>
+  </data>
+  <data name="ThumbnailResInfo" xml:space="preserve">
+    <value>Storleken (i pixlar) av varje miniatyrbild. Ett lägre värde reducerar minnesanvändningen och snabbar upp laddningen av miniatyrer. Standard är 80. (40-120)</value>
+  </data>
+  <data name="ThumbnailSizeInfo" xml:space="preserve">
+    <value>Ändra storleken på varje miniatyrbild i listan. Standard är 80. (40-120)</value>
+  </data>
 </root>
