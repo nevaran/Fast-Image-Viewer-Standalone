@@ -157,8 +157,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Resources.sv-SE.Designer.cs">
-      <DependentUpon>Resources.sv-SE.resx</DependentUpon>
+    <Compile Include="Properties\Resources.se-SE.Designer.cs">
+      <DependentUpon>Resources.se-SE.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -212,9 +212,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.pt-BR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.sv-SE.resx">
+    <EmbeddedResource Include="Properties\Resources.se-SE.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.sv-SE.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.se-SE.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.nl-NL.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

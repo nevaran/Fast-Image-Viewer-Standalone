@@ -188,7 +188,7 @@ namespace FIVStandard.Modules
             ("bg-BG", "Български (bg-BG)"),
             ("nl-NL", "Nederlands (nl-BE/nl-NL)"),
             ("pt-BR", "Portuguesa (pt-BR)"),
-            ("sv-SE", "Svenska (sv-SE)"),
+            ("se-SE", "Svenska (se-SE)"),
             ("da-DK", "Dansk (da-DK)"),
         };
 
