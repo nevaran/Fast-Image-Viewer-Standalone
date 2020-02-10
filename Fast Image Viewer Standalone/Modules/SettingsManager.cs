@@ -540,33 +540,18 @@ namespace FIVStandard.Modules
             {
                 ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[ThemeAccentDropIndex]), ThemeManager.GetAppTheme("BaseLight"));
             }
-
-            //Properties.Settings.Default.Save();
         }
 
         private void OnLanguageChanged()
         {
             Properties.Settings.Default.ShownLanguage = ShownLanguageDropIndex;
-            //Properties.Settings.Default.Save();
 
             Translator.Culture = CultureInfo.GetCultureInfo(ShownLanguage[ShownLanguageDropIndex].tag);
         }
 
         private void OnStretchSwitch()
         {
-            if (StretchImageToggle)
-            {
-                mainWindow.MediaView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
-                mainWindow.PictureView.StretchDirection = System.Windows.Controls.StretchDirection.Both;
-            }
-            else
-            {
-                mainWindow.MediaView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
-                mainWindow.PictureView.StretchDirection = System.Windows.Controls.StretchDirection.DownOnly;
-            }
-
             Properties.Settings.Default.ImageStretched = StretchImageToggle;
-            //Properties.Settings.Default.Save();
         }
 
         private void OnDownsizeSwitch()
@@ -575,15 +560,11 @@ namespace FIVStandard.Modules
 
             if (mainWindow.ImagesData.Count > 0)
                 mainWindow.ImageSource = mainWindow.LoadImage(mainWindow.ActivePath);
-
-            //Properties.Settings.Default.Save();
         }
 
         private void OnZoomSensitivitySlider()
         {
             Properties.Settings.Default.ZoomSensitivity = _zoomSensitivity;
-
-            //Properties.Settings.Default.Save();
         }
 
         private void OnEnableThumbnailChanged()

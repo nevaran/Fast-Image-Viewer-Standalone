@@ -89,6 +89,9 @@
     <Reference Include="Gu.Wpf.Localization, Version=6.4.3.0, Culture=neutral, PublicKeyToken=63b557f19697202e, processorArchitecture=MSIL">
       <HintPath>..\packages\Gu.Wpf.Localization.6.4.3.0\lib\net45\Gu.Wpf.Localization.dll</HintPath>
     </Reference>
+    <Reference Include="Magick.NET-Q8-AnyCPU, Version=7.15.1.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET-Q8-AnyCPU.7.15.1\lib\net40\Magick.NET-Q8-AnyCPU.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -135,6 +138,7 @@
     <Compile Include="Comparers\NameComparer.cs" />
     <Compile Include="Comparers\NaturalOrderComparer.cs" />
     <Compile Include="Converters\BoolFromAccentToGrayConverter.cs" />
+    <Compile Include="Converters\BoolToStretchDirectionConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverterReverse.cs" />
     <Compile Include="Converters\KeyToStringConverter.cs" />

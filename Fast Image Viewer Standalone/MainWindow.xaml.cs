@@ -2,6 +2,7 @@
 using FIVStandard.Modules;
 using FIVStandard.Views;
 using Gu.Localization;
+using ImageMagick;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
@@ -259,8 +260,10 @@ namespace FIVStandard
 
         private void OnAppLoaded(object sender, RoutedEventArgs e)
         {
-            //if (Settings.CheckForUpdatesStartToggle)
-            AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+            if (Settings.CheckForUpdatesStartToggle)
+                AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
+            else
+                AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
 
             string[] args = Environment.GetCommandLineArgs();
 
@@ -653,14 +656,14 @@ namespace FIVStandard
                 else if (ImgHeight > borderImg.ActualHeight)
                     imgTemp.DecodePixelHeight = (int)r.Height;*/
 
-                imgTemp.DecodePixelWidth = (int)(ImgWidth * ScaleToBox(ImgWidth, (int)r.Width, ImgHeight, (int)r.Height));
+                if(imgWidth > r.Width || imgHeight > r.Height)
+                    imgTemp.DecodePixelWidth = (int)(ImgWidth * ScaleToBox(ImgWidth, (int)r.Width, ImgHeight, (int)r.Height));
             }
             if (ImageRotation != Rotation.Rotate0)
                 imgTemp.Rotation = ImageRotation;
 
             imgTemp.EndInit();
             imgTemp.Freeze();
-            stream.Close();
             stream.Dispose();
 
             return imgTemp;
@@ -788,7 +791,19 @@ namespace FIVStandard
             imgTemp.DecodePixelWidth = Settings.ThumbnailRes;
             //imgTemp.DecodePixelHeight = 80;
 
-            using (FileStream imageStream = File.OpenRead(path))
+            using (MagickImage image = new MagickImage(path))
+            {
+                Rotation imgRotation = GetOrientationRotation(image.Orientation);//get rotation
+
+                itemData.ImageWidth = image.BaseWidth;
+                itemData.ImageHeight = image.BaseHeight;
+                itemData.ImageOrientation = imgRotation;
+
+                if (imgRotation != Rotation.Rotate0)
+                    imgTemp.Rotation = imgRotation;
+            }
+
+            /*using (FileStream imageStream = File.OpenRead(path))
             {
                 using (System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
                 {
@@ -801,14 +816,40 @@ namespace FIVStandard
                     if (imgRotation != Rotation.Rotate0)
                         imgTemp.Rotation = imgRotation;
                 }
-            }
+            }*/
 
             imgTemp.EndInit();
             imgTemp.Freeze();
-            stream.Close();
             stream.Dispose();
             
             return imgTemp;
+        }
+
+        private Rotation GetOrientationRotation(OrientationType ot)
+        {
+            switch (ot)
+            {
+                case OrientationType.Undefined:
+                    return Rotation.Rotate0;
+                case OrientationType.TopLeft:
+                    return Rotation.Rotate0;
+                case OrientationType.TopRight:
+                    return Rotation.Rotate90;
+                case OrientationType.BottomRight:
+                    return Rotation.Rotate180;
+                case OrientationType.BottomLeft:
+                    return Rotation.Rotate270;
+                case OrientationType.LeftTop:
+                    return Rotation.Rotate0;
+                case OrientationType.RightTop:
+                    return Rotation.Rotate90;
+                case OrientationType.RightBottom:
+                    return Rotation.Rotate180;
+                case OrientationType.LeftBotom:
+                    return Rotation.Rotate270;
+            }
+
+            return Rotation.Rotate0;
         }
 
         private double ScaleToBox(double w, double sw, double h, double sh)
@@ -886,7 +927,16 @@ namespace FIVStandard
                 return;
             }
 
-            using (var imageStream = File.OpenRead(path))
+            using (MagickImage image = new MagickImage(path))
+            {
+                Rotation imgRotation = GetOrientationRotation(image.Orientation);//get rotation
+
+                ImgWidth = image.BaseWidth;
+                ImgHeight = image.BaseHeight;
+                ImageRotation = imgRotation;
+            }
+
+            /*using (var imageStream = File.OpenRead(path))
             {
                 //var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
                 //ImgWidth = decoder.Frames[0].PixelWidth;
@@ -896,10 +946,9 @@ namespace FIVStandard
                 {
                     ImgWidth = img.Width;
                     ImgHeight = img.Height;
-
                     ImageRotation = GetImageOreintation(img);//get rotation
                 }
-            }
+            }*/
         }
 
         private void ImageCopyToClipboardCall()
@@ -1142,7 +1191,7 @@ namespace FIVStandard
 
         private void OnCheckUpdateClick(object sender, RoutedEventArgs e)
         {
-            AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+            AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
         }
 
         private void OnForceDownloadSetupClick(object sender, RoutedEventArgs e)
@@ -1150,7 +1199,7 @@ namespace FIVStandard
             AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdateForced);
         }
 
-        private void ThumbnailList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ThumbnailList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ImagesDataView.CurrentPosition < 0) return;
 
@@ -1210,7 +1259,7 @@ namespace FIVStandard
         }*/
 
         // Orientations
-        public const int OrientationId = 0x0112;// 274 / 0x0112
+        /*public const int OrientationId = 0x0112;// 274 / 0x0112
 
         public enum ExifOrientations
         {
@@ -1251,7 +1300,7 @@ namespace FIVStandard
 
             // Return the orientation value
             return OrientationDictionary[(int)eo];
-        }
+        }*/
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

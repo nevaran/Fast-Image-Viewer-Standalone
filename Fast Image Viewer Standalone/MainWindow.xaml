@@ -32,6 +32,7 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:BoolToVisibilityConverterReverse x:Key="BoolToVisibilityConverterReverse" />
         <converter:BoolFromAccentToGrayConverter x:Key="BoolFromAccentToGrayConverter" />
+        <converter:BoolToStretchDirectionConverter x:Key="BoolToStretchDirectionConverter" />
 
         <Style
             x:Key="ListBoxItemStyle"
@@ -326,7 +327,7 @@
                                 MediaOpened="OnClipOpened"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Source="{Binding MediaSource, Mode=OneWay, IsAsync=True}"
-                                StretchDirection="DownOnly"
+                                StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
                                 UnloadedBehavior="Manual" />
                         </utils:ZoomBorder>
 
@@ -341,8 +342,8 @@
                             <Image
                                 Name="PictureView"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Source="{Binding ImageSource, Mode=OneWay}"
-                                StretchDirection="DownOnly" />
+                                Source="{Binding ImageSource, Mode=OneWay, IsAsync=True}"
+                                StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}" />
                         </utils:ZoomBorder>
                     </Grid>
                 </Grid>
@@ -1198,6 +1199,11 @@
                                         <Paragraph>
                                             <Bold>Gu.Localization</Bold>
                                             by Johan Larsson</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>Magick.NET</Bold>
+                                            by Dirk Lemstra</Paragraph>
                                     </ListItem>
                                 </List>
 

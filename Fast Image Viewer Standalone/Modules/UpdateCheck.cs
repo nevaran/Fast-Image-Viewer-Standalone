@@ -22,9 +22,13 @@ namespace FIVStandard.Modules
         /// </summary>
         FullUpdateForced,
         /// <summary>
-        /// Notifies only if new version is available
+        /// Downloads version information without any user notifications
         /// </summary>
         SilentVersionCheck,
+        /// <summary>
+        /// Notifies the user about the version status
+        /// </summary>
+        ForcedVersionCheck
     }
 
     public class UpdateCheck : INotifyPropertyChanged
@@ -152,7 +156,10 @@ namespace FIVStandard.Modules
                                     Download_FullForced();
                                     break;
                                 case UpdateCheckType.SilentVersionCheck:
-                                    Download_VersionInfo();
+                                    Download_VersionInfo(false);
+                                    break;
+                                case UpdateCheckType.ForcedVersionCheck:
+                                    Download_VersionInfo(true);
                                     break;
                             }
                         }
@@ -244,7 +251,7 @@ namespace FIVStandard.Modules
             }
         }
 
-        private void Download_VersionInfo()
+        private void Download_VersionInfo(bool notifies)
         {
             //txt file containing version and update notes
             var webRequest = WebRequest.Create(@"https://drive.google.com/uc?export=download&id=1cqCjCSZpo3bSF8G9Wrk0fT-ypQY7RKMn");
@@ -259,7 +266,7 @@ namespace FIVStandard.Modules
 
                 if (HasLaterVersion())
                 {
-                    if(mainWindow.Settings.CheckForUpdatesStartToggle)
+                    if(notifies)
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion.ToString()})");
@@ -270,13 +277,11 @@ namespace FIVStandard.Modules
                 }
                 else
                 {
-                    if (mainWindow.Settings.CheckForUpdatesStartToggle)
+                    if (notifies)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion.ToString()}");
-                        });
-                    }
+                        mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion.ToString()}");
+                    });
 
                     NotUpdating = true;
 
