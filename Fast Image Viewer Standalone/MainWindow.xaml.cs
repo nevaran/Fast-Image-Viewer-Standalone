@@ -598,10 +598,10 @@ namespace FIVStandard
             stopwatch.Start();//DEBUG
 #endif
 
-            Uri uri = new Uri(path, UriKind.Absolute);
-
             if (imageItem.IsAnimated)
             {
+                Uri uri = new Uri(path, UriKind.Absolute);
+
                 borderImg.Visibility = Visibility.Hidden;
                 border.Visibility = Visibility.Visible;
 
@@ -788,7 +788,7 @@ namespace FIVStandard
             imgTemp.DecodePixelWidth = Settings.ThumbnailRes;
             //imgTemp.DecodePixelHeight = 80;
 
-            using (var imageStream = File.OpenRead(path))
+            using (FileStream imageStream = File.OpenRead(path))
             {
                 using (System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
                 {
@@ -807,7 +807,7 @@ namespace FIVStandard
             imgTemp.Freeze();
             stream.Close();
             stream.Dispose();
-
+            
             return imgTemp;
         }
 
@@ -892,7 +892,7 @@ namespace FIVStandard
                 //ImgWidth = decoder.Frames[0].PixelWidth;
                 //ImgHeight = decoder.Frames[0].PixelHeight;
 
-                using(System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
+                using (System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
                 {
                     ImgWidth = img.Width;
                     ImgHeight = img.Height;
