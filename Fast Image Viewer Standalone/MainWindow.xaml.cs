@@ -2,6 +2,7 @@
 using FIVStandard.Modules;
 using FIVStandard.Views;
 using Gu.Localization;
+using ImageMagick;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
@@ -268,6 +269,8 @@ namespace FIVStandard
             {
                 StartupPath = Path.GetDirectoryName(args[0]);
 
+                MagickAnyCPU.CacheDirectory = StartupPath;
+
 #if DEBUG
                 string path = @"D:\Google Drive\temp\alltypes\3.png";
 
@@ -380,7 +383,7 @@ namespace FIVStandard
                     {
                         if (e.OldName == ImagesData[i].ThumbnailName)
                         {
-                            BitmapImage oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
+                            BitmapSource oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
 
                             ImagesData.RemoveAt(i);
 
@@ -598,10 +601,10 @@ namespace FIVStandard
             stopwatch.Start();//DEBUG
 #endif
 
-            Uri uri = new Uri(path, UriKind.Absolute);
-
             if (imageItem.IsAnimated)
             {
+                Uri uri = new Uri(path, UriKind.Absolute);
+
                 borderImg.Visibility = Visibility.Hidden;
                 border.Visibility = Visibility.Visible;
 
@@ -655,6 +658,7 @@ namespace FIVStandard
 
                 imgTemp.DecodePixelWidth = (int)(ImgWidth * ScaleToBox(ImgWidth, (int)r.Width, ImgHeight, (int)r.Height));
             }
+
             if (ImageRotation != Rotation.Rotate0)
                 imgTemp.Rotation = ImageRotation;
 
@@ -775,11 +779,23 @@ namespace FIVStandard
         /// <param name="path">The full path to the file, including extension</param>
         /// <param name="itemData">Used for saving the image orientation, width, and height in the given ThumbnailItemData</param>
         /// <returns></returns>
-        private BitmapImage GetThumbnail(string path, ThumbnailItemData itemData)
+        private BitmapSource GetThumbnail(string path, ThumbnailItemData itemData)
         {
             if (!File.Exists(path)) return null;
 
-            BitmapImage imgTemp = new BitmapImage();
+            using (MagickImage image = new MagickImage(path))
+            {
+                image.Resize(Settings.ThumbnailRes, Settings.ThumbnailRes);
+
+                itemData.ImageWidth = image.BaseWidth;
+                itemData.ImageHeight = image.BaseHeight;
+                itemData.ImageOrientation = GetImageOrientation(image);
+                image.Rotate(ToDegreesDictionary[(int)itemData.ImageOrientation]);
+
+                return image.ToBitmapSource();
+            }
+
+            /*BitmapImage imgTemp = new BitmapImage();
             FileStream stream = File.OpenRead(path);
             imgTemp.BeginInit();
             imgTemp.CacheOption = BitmapCacheOption.OnLoad;
@@ -808,7 +824,24 @@ namespace FIVStandard
             stream.Close();
             stream.Dispose();
 
-            return imgTemp;
+            return imgTemp;*/
+        }
+        public BitmapImage ToBitmapImage(System.Drawing.Bitmap bitmap)
+        {
+            using (var memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+
+                return bitmapImage;
+            }
         }
 
         private double ScaleToBox(double w, double sw, double h, double sh)
@@ -886,20 +919,20 @@ namespace FIVStandard
                 return;
             }
 
-            using (var imageStream = File.OpenRead(path))
+            //we dont have orientation, so we assume we need to fetch all information for the image that we need
+            using (MagickImage image = new MagickImage(path))
             {
-                //var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-                //ImgWidth = decoder.Frames[0].PixelWidth;
-                //ImgHeight = decoder.Frames[0].PixelHeight;
+                ImgWidth = image.BaseWidth;
+                ImgHeight = image.BaseHeight;
+                ImageRotation = GetImageOrientation(image);
 
-                using(System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
-                {
-                    ImgWidth = img.Width;
-                    ImgHeight = img.Height;
-
-                    ImageRotation = GetImageOreintation(img);//get rotation
-                }
+                //ImageRotation = GetImageOreintation(img);
             }
+        }
+
+        private Rotation GetImageOrientation(MagickImage image)
+        {
+            return OrientationDictionary[(int)image.Orientation];
         }
 
         private void ImageCopyToClipboardCall()
@@ -1209,10 +1242,7 @@ namespace FIVStandard
             return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
         }*/
 
-        // Orientations
-        public const int OrientationId = 0x0112;// 274 / 0x0112
-
-        public enum ExifOrientations
+        private enum ExifOrientations
         {
             Unknown = 0,//0
             TopLeft = 1,//0
@@ -1225,7 +1255,7 @@ namespace FIVStandard
             LeftBottom = 8,//270
         }
 
-        readonly Dictionary<int, Rotation> OrientationDictionary = new Dictionary<int, Rotation>()
+        private readonly Dictionary<int, Rotation> OrientationDictionary = new Dictionary<int, Rotation>()
         {
             {0, Rotation.Rotate0},
             {1, Rotation.Rotate0},
@@ -1238,20 +1268,18 @@ namespace FIVStandard
             {8, Rotation.Rotate270}
         };
 
-        // Return the image's orientation
-        public Rotation GetImageOreintation(System.Drawing.Image img)
+        private readonly Dictionary<int, int> ToDegreesDictionary = new Dictionary<int, int>()
         {
-            // Get the index of the orientation property
-            int orientation_index = Array.IndexOf(img.PropertyIdList, OrientationId);
-
-            // If there is no such property, return Unknown
-            if (orientation_index < 0) return OrientationDictionary[0];//ExifOrientations.Unknown
-
-            ExifOrientations eo = (ExifOrientations)img.GetPropertyItem(OrientationId).Value[0];
-
-            // Return the orientation value
-            return OrientationDictionary[(int)eo];
-        }
+            {0, 0},
+            {1, 0},
+            {2, 90},
+            {3, 180},
+            {4, 270},
+            {5, 0},
+            {6, 90},
+            {7, 180},
+            {8, 270}
+        };
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
