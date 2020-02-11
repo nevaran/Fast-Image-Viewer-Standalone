@@ -15,36 +15,37 @@ namespace FIVStandard.Core
         public static BitmapImage Load(string path, int imgWidth, int imgHeight, Rotation imgRotation)
         {
             BitmapImage imgTemp = new BitmapImage();
-            FileStream stream = File.OpenRead(path);
-            imgTemp.BeginInit();
-            imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting file from file lockup
-            //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
-            imgTemp.StreamSource = stream;
-
-            if (Settings.DownsizeImageToggle)
+            using (FileStream stream = File.OpenRead(path))
             {
-                Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+                imgTemp.BeginInit();
+                imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting file from file lockup
+                                                               //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
+                imgTemp.StreamSource = stream;
 
-                if (imgWidth > r.Width || imgHeight > r.Height)
-                    imgTemp.DecodePixelWidth = (int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height));
+                if (Settings.DownsizeImageToggle)
+                {
+                    Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+
+                    if (imgWidth > r.Width || imgHeight > r.Height)
+                        imgTemp.DecodePixelWidth = (int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height));
+                }
+                if (imgRotation != Rotation.Rotate0)
+                    imgTemp.Rotation = imgRotation;
+
+                imgTemp.EndInit();
+                imgTemp.Freeze();
             }
-            if (imgRotation != Rotation.Rotate0)
-                imgTemp.Rotation = imgRotation;
-
-            imgTemp.EndInit();
-            imgTemp.Freeze();
-            stream.Dispose();
 
             return imgTemp;
         }
 
-        public static (int imgWidth, int imgHeight, Rotation imgRotation) GetImageInformation(string path, ThumbnailItemData ImageItem, ListCollectionView ImagesDataView)
+        public static (int imgWidth, int imgHeight, Rotation imgRotation) GetImageInformation(string path, ThumbnailItemData ImageItem)
         {
             var info = (imgWidth:0, imgHeight:0, imgRotation:Rotation.Rotate0);
 
             if (ImageItem.ThumbnailImage is null)
             {
-                Task.Run(() => LoadSingleThumbnail(ImageItem.ThumbnailName, path, false, ImagesDataView));
+                Task.Run(() => LoadSingleThumbnail(ImageItem, path, false));
             }
 
             if (ImageItem.ImageOrientation != null)//if we have a set orientation in the item data, use it instead
@@ -56,7 +57,7 @@ namespace FIVStandard.Core
 
             using (MagickImage image = new MagickImage(path))
             {
-                Rotation imgRotation = Tools.GetOrientationRotation(image.Orientation);//get rotation
+                Rotation imgRotation = GetOrientationRotation(image.Orientation);//get rotation
 
                 info.imgWidth = image.BaseWidth;
                 info.imgHeight = image.BaseHeight;
@@ -73,30 +74,19 @@ namespace FIVStandard.Core
         /// <param name="fullPath"> Complete path to the file, including the name and extension</param>
         /// <param name="overrideThumbnail"> If true: replace the thumbnail even if there is already one generated</param>
         /// <returns></returns>
-        public static void LoadSingleThumbnail(string name, string fullPath, bool overrideThumbnail, ListCollectionView ImagesDataView)
+        public static void LoadSingleThumbnail(ThumbnailItemData tid, string fullPath, bool overrideThumbnail)
         {
-            int c = ImagesDataView.Count;
-            for (int i = 0; i < c; i++)
+            if (overrideThumbnail || tid.ThumbnailImage is null)
+                tid.ThumbnailImage = GetThumbnail(fullPath, tid);
+
+            /*if (tid.IsAnimated)//TODO add option "Animate thumbnail gifs" check
             {
-                ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
-
-                if (tid.ThumbnailName == name)
-                {
-                    if (overrideThumbnail || tid.ThumbnailImage is null)
-                        tid.ThumbnailImage = GetThumbnail(fullPath, tid);
-
-                    break;
-                }
+                //tid.ThumbnailMedia = new Uri(Path.Combine(ActiveFolder, tid.ThumbnailName));
             }
-
-                /*if (tid.IsAnimated)//TODO add option "Animate thumbnail gifs" check
-                {
-                    //tid.ThumbnailMedia = new Uri(Path.Combine(ActiveFolder, tid.ThumbnailName));
-                }
-                else
-                {
-                    //TODO put normal thumbnail load here
-                }*/
+            else
+            {
+                //TODO put normal thumbnail load here
+            }*/
         }
 
         public static BitmapImage GetThumbnail(string path, ThumbnailItemData itemData)
@@ -114,7 +104,7 @@ namespace FIVStandard.Core
 
             using (MagickImage image = new MagickImage(path))
             {
-                Rotation imgRotation = Tools.GetOrientationRotation(image.Orientation);//get rotation
+                Rotation imgRotation = GetOrientationRotation(image.Orientation);//get rotation
 
                 itemData.ImageWidth = image.BaseWidth;
                 itemData.ImageHeight = image.BaseHeight;

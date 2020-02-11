@@ -345,7 +345,7 @@ namespace FIVStandard
                 };
                 ImagesData.Add(tt);
 
-                Task.Run(() => Tools.LoadSingleThumbnail(e.Name, e.FullPath, false, ImagesDataView));
+                Task.Run(() => Tools.LoadSingleThumbnail(tt, e.FullPath, false));
 
                 //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
@@ -628,7 +628,7 @@ namespace FIVStandard
 
                 if (ImagesData.Count > 0)
                 {
-                    var (iWidth, iHeight, iRotation) = Tools.GetImageInformation(ActivePath, ImageItem, ImagesDataView);
+                    var (iWidth, iHeight, iRotation) = Tools.GetImageInformation(ActivePath, ImageItem);
                     ImgWidth = iWidth;
                     ImgHeight = iHeight;
                     ImageRotation = iRotation;
@@ -974,7 +974,12 @@ namespace FIVStandard
         private void OnClipOpened(object sender, RoutedEventArgs e)
         {
             if (ImagesData.Count > 0)
-                Tools.GetImageInformation(ActivePath, ImageItem, ImagesDataView);
+            {
+                var (iWidth, iHeight, iRotation) = Tools.GetImageInformation(ActivePath, ImageItem);
+                ImgWidth = iWidth;
+                ImgHeight = iHeight;
+                ImageRotation = iRotation;
+            }
         }
 
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)
