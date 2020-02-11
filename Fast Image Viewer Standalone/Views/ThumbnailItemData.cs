@@ -1,4 +1,4 @@
-﻿using FIVStandard.Modules;
+﻿using FIVStandard.Core;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;

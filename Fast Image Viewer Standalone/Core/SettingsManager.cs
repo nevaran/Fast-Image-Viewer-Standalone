@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace FIVStandard.Core
 {
-    public class SettingsManager : INotifyPropertyChanged
+    public class SettingsManager : INotifyPropertyChanged, ISettings
     {
         public readonly MainWindow mainWindow;
 
@@ -559,7 +559,7 @@ namespace FIVStandard.Core
             Properties.Settings.Default.DownsizeImage = DownsizeImageToggle;
 
             if (mainWindow.ImagesData.Count > 0)
-                mainWindow.ImageSource = mainWindow.LoadImage(mainWindow.ActivePath);
+                mainWindow.ImageSource = Tools.Load(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight, mainWindow.ImageRotation);//mainWindow.LoadImage(mainWindow.ActivePath);
         }
 
         private void OnZoomSensitivitySlider()
