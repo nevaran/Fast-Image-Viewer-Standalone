@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ToastNotifications.Messages;
 
-namespace FIVStandard.Modules
+namespace FIVStandard.Core
 {
     public enum UpdateCheckType
     {

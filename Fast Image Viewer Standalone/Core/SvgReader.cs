@@ -4,7 +4,7 @@
 using System.IO;
 using System.Windows;
 
-namespace FIVStandard.Modules
+namespace FIVStandard.Core
 {
     static class SvgReader
     {

@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
-namespace FIVStandard.Modules
+namespace FIVStandard.Core
 {
     public class SettingsManager : INotifyPropertyChanged
     {

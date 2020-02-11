@@ -1,5 +1,5 @@
 ﻿using FIVStandard.Comparers;
-using FIVStandard.Modules;
+using FIVStandard.Core;
 using FIVStandard.Views;
 using Gu.Localization;
 using ImageMagick;
@@ -65,7 +65,7 @@ namespace FIVStandard
                 }
                 else
                 {
-                    if(imageItem is null)//no image
+                    if(ImageItem is null)//no image
                     {
                         return "FIV";
                     }
@@ -109,6 +109,7 @@ namespace FIVStandard
         }
 
         private int imgWidth = 0;
+
         public int ImgWidth
         {
             get
@@ -124,6 +125,7 @@ namespace FIVStandard
         }
 
         private int imgHeight = 0;
+
         public int ImgHeight
         {
             get
@@ -142,10 +144,10 @@ namespace FIVStandard
         {
             get
             {
-                if (imgWidth == 0 || imgHeight == 0)
+                if (ImgWidth == 0 || ImgHeight == 0)
                     return "owo";
                 else
-                    return $"{imgWidth}x{imgHeight}";
+                    return $"{ImgWidth}x{ImgHeight}";
             }
         }
 
@@ -164,10 +166,10 @@ namespace FIVStandard
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif"/*, ".tiff"*/, ".bmp"/*, ".svg"*/, ".ico"/*, ".mp4", ".avi" */, ".JPG", ".JPEG", ".GIF", ".BMP", ".ICO", ".PNG" };//TODO: doesnt work: tiff svg
+        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico"/*, ".tiff", ".svg", ".mp4", ".avi" */, ".JPG", ".JPEG", ".PNG", ".GIF", ".BMP", ".ICO" };//TODO: doesnt work: tiff svg
         private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
-        private System.Windows.Controls.Button editingButton = null;//used for editing shortcuts
+        private Button editingButton = null;//used for editing shortcuts
 
         private bool IsPaused { get; set; } = false;//if the animated image (gif) is paused or not
 
@@ -432,7 +434,7 @@ namespace FIVStandard
 
         public void OpenNewFile(string path)
         {
-            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
 
@@ -519,9 +521,9 @@ namespace FIVStandard
 
         private void TogglePause()
         {
-            if (imageItem is null) return;
+            if (ImageItem is null) return;
 
-            if (imageItem.IsAnimated)
+            if (ImageItem.IsAnimated)
             {
                 if (IsPaused)
                 {
@@ -601,7 +603,7 @@ namespace FIVStandard
             stopwatch.Start();//DEBUG
 #endif
 
-            if (imageItem.IsAnimated)
+            if (ImageItem.IsAnimated)
             {
                 Uri uri = new Uri(path, UriKind.Absolute);
 
@@ -656,7 +658,7 @@ namespace FIVStandard
                 else if (ImgHeight > borderImg.ActualHeight)
                     imgTemp.DecodePixelHeight = (int)r.Height;*/
 
-                if(imgWidth > r.Width || imgHeight > r.Height)
+                if(ImgWidth > r.Width || ImgHeight > r.Height)
                     imgTemp.DecodePixelWidth = (int)(ImgWidth * ScaleToBox(ImgWidth, (int)r.Width, ImgHeight, (int)r.Height));
             }
             if (ImageRotation != Rotation.Rotate0)
@@ -825,33 +827,6 @@ namespace FIVStandard
             return imgTemp;
         }
 
-        private Rotation GetOrientationRotation(OrientationType ot)
-        {
-            switch (ot)
-            {
-                case OrientationType.Undefined:
-                    return Rotation.Rotate0;
-                case OrientationType.TopLeft:
-                    return Rotation.Rotate0;
-                case OrientationType.TopRight:
-                    return Rotation.Rotate90;
-                case OrientationType.BottomRight:
-                    return Rotation.Rotate180;
-                case OrientationType.BottomLeft:
-                    return Rotation.Rotate270;
-                case OrientationType.LeftTop:
-                    return Rotation.Rotate0;
-                case OrientationType.RightTop:
-                    return Rotation.Rotate90;
-                case OrientationType.RightBottom:
-                    return Rotation.Rotate180;
-                case OrientationType.LeftBotom:
-                    return Rotation.Rotate270;
-            }
-
-            return Rotation.Rotate0;
-        }
-
         private double ScaleToBox(double w, double sw, double h, double sh)
         {
             double scaleWidth = sw / w;
@@ -954,9 +929,9 @@ namespace FIVStandard
         private void ImageCopyToClipboardCall()
         {
             //ToClipboard.CopyToClipboard(ActivePath);
-            if (imageItem is null || !File.Exists(ActivePath)) return;
+            if (ImageItem is null || !File.Exists(ActivePath)) return;
 
-            if (imageItem.IsAnimated)
+            if (ImageItem.IsAnimated)
                 ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaSource));
             else
                 ToClipboard.ImageCopyToClipboard(ImageSource);
@@ -969,7 +944,7 @@ namespace FIVStandard
 
         private void FileCutToClipboardCall()
         {
-            if (imageItem is null || !File.Exists(ActivePath)) return;
+            if (ImageItem is null || !File.Exists(ActivePath)) return;
 
             ToClipboard.FileCutToClipBoard(ActivePath);
         }
@@ -1028,7 +1003,7 @@ namespace FIVStandard
 
         private void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             DeleteToRecycleAsync(ActivePath);
         }
@@ -1060,7 +1035,7 @@ namespace FIVStandard
                 return;
             }
 
-            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             if (e.Key == Settings.GoForwardKey)
             {
@@ -1116,7 +1091,7 @@ namespace FIVStandard
 
         private void OnClick_Prev(object sender, RoutedEventArgs e)
         {
-            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
             ChangeImage(-1, false);//go back
@@ -1124,7 +1099,7 @@ namespace FIVStandard
 
         private void OnClick_Next(object sender, RoutedEventArgs e)
         {
-            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
             ChangeImage(1, false);//go forward
@@ -1132,7 +1107,7 @@ namespace FIVStandard
 
         private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             if (e.ChangedButton == MouseButton.XButton1)
             {
@@ -1257,6 +1232,33 @@ namespace FIVStandard
         {
             return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
         }*/
+
+        private Rotation GetOrientationRotation(OrientationType ot)
+        {
+            switch (ot)
+            {
+                case OrientationType.Undefined:
+                    return Rotation.Rotate0;
+                case OrientationType.TopLeft:
+                    return Rotation.Rotate0;
+                case OrientationType.TopRight:
+                    return Rotation.Rotate90;
+                case OrientationType.BottomRight:
+                    return Rotation.Rotate180;
+                case OrientationType.BottomLeft:
+                    return Rotation.Rotate270;
+                case OrientationType.LeftTop:
+                    return Rotation.Rotate0;
+                case OrientationType.RightTop:
+                    return Rotation.Rotate90;
+                case OrientationType.RightBottom:
+                    return Rotation.Rotate180;
+                case OrientationType.LeftBotom:
+                    return Rotation.Rotate270;
+            }
+
+            return Rotation.Rotate0;
+        }
 
         // Orientations
         /*public const int OrientationId = 0x0112;// 274 / 0x0112
