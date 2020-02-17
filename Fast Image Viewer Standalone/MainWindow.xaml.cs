@@ -166,8 +166,8 @@ namespace FIVStandard
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico"/*, ".tiff", ".svg", ".mp4", ".avi" */, ".JPG", ".JPEG", ".PNG", ".GIF", ".BMP", ".ICO" };//TODO: doesnt work: tiff svg
-        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
+        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"/*, ".tiff", ".svg", ".mp4", ".avi" */ };//TODO: doesnt work: tiff svg
+        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO, *WEBP)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO;*WEBP"/* + "|All files (*.*)|*.*" */};
 
         private Button editingButton = null;//used for editing shortcuts
 
@@ -330,17 +330,11 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                string pathext = Path.GetExtension(e.Name);
-                bool isAnim;
-                if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
-                    isAnim = true;
-                else
-                    isAnim = false;
-
                 ThumbnailItemData tt = new ThumbnailItemData
                 {
                     ThumbnailName = e.Name,
-                    IsAnimated = isAnim,
+                    IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name)),
+                    IsWebp = Tools.IsWebp(Path.GetExtension(Path.GetExtension(e.Name)))
                     //ThumbnailImage = GetThumbnail(e.FullPath)
                 };
                 ImagesData.Add(tt);
@@ -393,17 +387,11 @@ namespace FIVStandard
 
                             ImagesData.RemoveAt(i);
 
-                            string pathext = Path.GetExtension(e.Name);
-                            bool isAnim;
-                            if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
-                                isAnim = true;
-                            else
-                                isAnim = false;
-
                             ThumbnailItemData tt = new ThumbnailItemData
                             {
                                 ThumbnailName = e.Name,
-                                IsAnimated = isAnim,
+                                IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name)),
+                                IsWebp = Tools.IsWebp(Path.GetExtension(Path.GetExtension(e.Name))),
 
                                 ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
                             };
@@ -469,21 +457,15 @@ namespace FIVStandard
             int c = filesFound.Count;
             for (int i = 0; i < c; i++)
             {
-                if (filters.Any(Path.GetExtension(filesFound[i]).Contains))
+                if (filters.Any(Path.GetExtension(filesFound[i].ToLower()).Contains))
                 {
                     filesFound[i] = Path.GetFileName(filesFound[i]);
-
-                    string pathext = Path.GetExtension(filesFound[i]);
-                    bool isAnim;
-                    if (pathext == ".gif"/* || pathext == ".mp4" || pathext == ".avi"*/)
-                        isAnim = true;
-                    else
-                        isAnim = false;
 
                     ThumbnailItemData tt = new ThumbnailItemData
                     {
                         ThumbnailName = filesFound[i],
-                        IsAnimated = isAnim
+                        IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(filesFound[i])),
+                        IsWebp = Tools.IsWebp(Path.GetExtension(filesFound[i]))
                     };
                     ImagesData.Add(tt);
                 }
@@ -608,15 +590,22 @@ namespace FIVStandard
 
             if (ImageItem.IsAnimated)
             {
-                Uri uri = new Uri(path, UriKind.Absolute);
-
                 borderImg.Visibility = Visibility.Hidden;
                 border.Visibility = Visibility.Visible;
 
-                ImageSource = null;
-                MediaSource = uri;
-
                 IsPaused = false;
+
+                if (ImageItem.IsWebp)
+                {
+                    
+                }
+                else
+                {
+                    Uri uri = new Uri(path, UriKind.Absolute);
+
+                    ImageSource = null;
+                    MediaSource = uri;
+                }
 
                 MediaView.Play();
                 border.Reset();

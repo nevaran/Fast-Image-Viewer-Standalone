@@ -98,6 +98,21 @@ namespace FIVStandard.Views
             }
         }
 
+        private bool isWebp = false;
+
+        public bool IsWebp
+        {
+            get
+            {
+                return isWebp;
+            }
+            set
+            {
+                isWebp = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Rotation? imageOrientation = null;//if null, it will be counted as if the orientation is not yet set up
 
         public Rotation? ImageOrientation

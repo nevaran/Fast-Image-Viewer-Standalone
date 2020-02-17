@@ -131,6 +131,19 @@ namespace FIVStandard.Core
             return scale;
         }
 
+        public static bool IsAnimatedExtension(string ext) => ext switch
+        {
+            ".gif" => true,
+            ".webp" => true,
+            _ => false,
+        };
+
+        public static bool IsWebp(string ext) => ext switch
+        {
+            ".webp" => true,
+            _ => false,
+        };
+
         public static Rotation GetOrientationRotation(OrientationType ot) => ot switch
         {
             OrientationType.TopLeft     => Rotation.Rotate0,
