@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using static FIVStandard.Core.SettingsStore;
 
@@ -12,14 +11,14 @@ namespace FIVStandard.Core
 {
     static class Tools
     {
-        public static BitmapImage Load(string path, int imgWidth, int imgHeight, Rotation imgRotation)
+        public static BitmapImage LoadImage(string path, int imgWidth, int imgHeight, Rotation imgRotation)
         {
             BitmapImage imgTemp = new BitmapImage();
             using (FileStream stream = File.OpenRead(path))
             {
                 imgTemp.BeginInit();
-                imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting file from file lockup
-                                                               //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
+                imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting and cutting file from file lockup
+                //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
                 imgTemp.StreamSource = stream;
 
                 if (Settings.DownsizeImageToggle)
@@ -39,6 +38,12 @@ namespace FIVStandard.Core
             return imgTemp;
         }
 
+        /// <summary>
+        /// Gets the width, height, and orientation of the image and assigns it to the given ThumbnailItemData.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="ImageItem"></param>
+        /// <returns></returns>
         public static (int imgWidth, int imgHeight, Rotation imgRotation) GetImageInformation(string path, ThumbnailItemData ImageItem)
         {
             var info = (imgWidth:0, imgHeight:0, imgRotation:Rotation.Rotate0);
@@ -89,34 +94,41 @@ namespace FIVStandard.Core
             }*/
         }
 
+        /// <summary>
+        /// Gets a resized version of the image file, and gets it's orientation and size (wdith and height)
+        /// </summary>
+        /// <param name="path">The full path to the file, including extension</param>
+        /// <param name="itemData">Used for saving the image orientation, width, and height in the given ThumbnailItemData</param>
+        /// <returns></returns>
         public static BitmapImage GetThumbnail(string path, ThumbnailItemData itemData)
         {
             if (!File.Exists(path)) return null;
 
             BitmapImage imgTemp = new BitmapImage();
-            FileStream stream = File.OpenRead(path);
-            imgTemp.BeginInit();
-            imgTemp.CacheOption = BitmapCacheOption.OnLoad;
-            imgTemp.StreamSource = stream;
-
-            imgTemp.DecodePixelWidth = Settings.ThumbnailRes;
-            //imgTemp.DecodePixelHeight = 80;
-
-            using (MagickImage image = new MagickImage(path))
+            using (FileStream stream = File.OpenRead(path))
             {
-                Rotation imgRotation = GetOrientationRotation(image.Orientation);//get rotation
+                imgTemp.BeginInit();
+                imgTemp.CacheOption = BitmapCacheOption.OnLoad;
+                imgTemp.StreamSource = stream;
 
-                itemData.ImageWidth = image.BaseWidth;
-                itemData.ImageHeight = image.BaseHeight;
-                itemData.ImageOrientation = imgRotation;
+                imgTemp.DecodePixelWidth = Settings.ThumbnailRes;
+                //imgTemp.DecodePixelHeight = 80;
 
-                if (imgRotation != Rotation.Rotate0)
-                    imgTemp.Rotation = imgRotation;
+                using (MagickImage image = new MagickImage(path))
+                {
+                    Rotation imgRotation = GetOrientationRotation(image.Orientation);//get rotation
+
+                    itemData.ImageWidth = image.BaseWidth;
+                    itemData.ImageHeight = image.BaseHeight;
+                    itemData.ImageOrientation = imgRotation;
+
+                    if (imgRotation != Rotation.Rotate0)
+                        imgTemp.Rotation = imgRotation;
+                }
+
+                imgTemp.EndInit();
+                imgTemp.Freeze();
             }
-
-            imgTemp.EndInit();
-            imgTemp.Freeze();
-            stream.Dispose();
 
             return imgTemp;
         }
@@ -134,12 +146,6 @@ namespace FIVStandard.Core
         public static bool IsAnimatedExtension(string ext) => ext switch
         {
             ".gif" => true,
-            ".webp" => true,
-            _ => false,
-        };
-
-        public static bool IsWebp(string ext) => ext switch
-        {
             ".webp" => true,
             _ => false,
         };

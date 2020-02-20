@@ -414,7 +414,6 @@ namespace FIVStandard.Core
                 OnPropertyChanged();
 
                 OnThumbnailResChanged();
-                mainWindow.ThumbnailSlider_ValueChanged();
             }
         }
 
@@ -559,7 +558,7 @@ namespace FIVStandard.Core
             Properties.Settings.Default.DownsizeImage = DownsizeImageToggle;
 
             if (mainWindow.ImagesData.Count > 0)
-                mainWindow.ImageSource = Tools.Load(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight, mainWindow.ImageRotation);//mainWindow.LoadImage(mainWindow.ActivePath);
+                mainWindow.ImageSource = Tools.LoadImage(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight, mainWindow.ImageRotation);//mainWindow.LoadImage(mainWindow.ActivePath);
         }
 
         private void OnZoomSensitivitySlider()
@@ -580,6 +579,7 @@ namespace FIVStandard.Core
         private void OnThumbnailResChanged()
         {
             Properties.Settings.Default.ThumbnailRes = thumbnailRes;
+            mainWindow.ThumbnailResSlider_ValueChanged();
         }
 
         private void OnThumbnailListColumnChanged()

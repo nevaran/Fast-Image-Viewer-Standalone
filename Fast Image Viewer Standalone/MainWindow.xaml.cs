@@ -2,7 +2,6 @@
 using FIVStandard.Core;
 using FIVStandard.Views;
 using Gu.Localization;
-using ImageMagick;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
@@ -33,6 +32,9 @@ namespace FIVStandard
     {
         private ThumbnailItemData imageItem;
 
+        /// <summary>
+        /// The class reference to the currently viewed image
+        /// </summary>
         public ThumbnailItemData ImageItem
         {
             get
@@ -166,8 +168,8 @@ namespace FIVStandard
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"/*, ".tiff", ".svg", ".mp4", ".avi" */ };//TODO: doesnt work: tiff svg
-        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO, *WEBP)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO;*WEBP"/* + "|All files (*.*)|*.*" */};
+        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico"/*, ".tiff", ".svg", ".mp4", ".avi" */ };//TODO: doesnt work: tiff svg
+        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images (*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO, *WEBP)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO"/* + "|All files (*.*)|*.*" */};
 
         private Button editingButton = null;//used for editing shortcuts
 
@@ -334,7 +336,6 @@ namespace FIVStandard
                 {
                     ThumbnailName = e.Name,
                     IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name)),
-                    IsWebp = Tools.IsWebp(Path.GetExtension(Path.GetExtension(e.Name)))
                     //ThumbnailImage = GetThumbnail(e.FullPath)
                 };
                 ImagesData.Add(tt);
@@ -391,7 +392,6 @@ namespace FIVStandard
                             {
                                 ThumbnailName = e.Name,
                                 IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name)),
-                                IsWebp = Tools.IsWebp(Path.GetExtension(Path.GetExtension(e.Name))),
 
                                 ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
                             };
@@ -465,7 +465,6 @@ namespace FIVStandard
                     {
                         ThumbnailName = filesFound[i],
                         IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(filesFound[i])),
-                        IsWebp = Tools.IsWebp(Path.GetExtension(filesFound[i]))
                     };
                     ImagesData.Add(tt);
                 }
@@ -577,8 +576,6 @@ namespace FIVStandard
             ActivePath = Path.Combine(ActiveFolder, activeFile);
 
             NewUri(ActivePath);
-
-            //SetTitleInformation();
         }
 
         private void NewUri(string path)
@@ -595,17 +592,10 @@ namespace FIVStandard
 
                 IsPaused = false;
 
-                if (ImageItem.IsWebp)
-                {
-                    
-                }
-                else
-                {
-                    Uri uri = new Uri(path, UriKind.Absolute);
+                Uri uri = new Uri(path, UriKind.Absolute);
 
-                    ImageSource = null;
-                    MediaSource = uri;
-                }
+                MediaSource = uri;
+                ImageSource = null;
 
                 MediaView.Play();
                 border.Reset();
@@ -624,7 +614,7 @@ namespace FIVStandard
                 }
 
                 MediaSource = null;
-                ImageSource = Tools.Load(path, ImgWidth, ImgHeight, ImageRotation);
+                ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight, ImageRotation);
 
                 borderImg.Reset();
             }
@@ -638,36 +628,6 @@ namespace FIVStandard
 
             ScrollToListView();
         }
-
-       // public BitmapImage LoadImage(string path)
-       // {
-       //     BitmapImage imgTemp = new BitmapImage();
-       //     FileStream stream = File.OpenRead(path);
-       //     imgTemp.BeginInit();
-       //     imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting file from file lockup
-       //     //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
-       //     imgTemp.StreamSource = stream;
-       //
-       //     if (Settings.DownsizeImageToggle)
-       //     {
-       //         Rect r = WpfScreen.GetScreenFrom(this).ScreenBounds;
-       //         /*if (ImgWidth > borderImg.ActualWidth)
-       //             imgTemp.DecodePixelWidth = (int)r.Width;
-       //         else if (ImgHeight > borderImg.ActualHeight)
-       //             imgTemp.DecodePixelHeight = (int)r.Height;*/
-       //
-       //         if(ImgWidth > r.Width || ImgHeight > r.Height)
-       //             imgTemp.DecodePixelWidth = (int)(ImgWidth * ScaleToBox(ImgWidth, (int)r.Width, ImgHeight, (int)r.Height));
-       //     }
-       //     if (ImageRotation != Rotation.Rotate0)
-       //         imgTemp.Rotation = ImageRotation;
-       //
-       //     imgTemp.EndInit();
-       //     imgTemp.Freeze();
-       //     stream.Dispose();
-       //
-       //     return imgTemp;
-       // }
 
         CancellationTokenSource allThumbnailTokenSource;
         CancellationToken ct;
@@ -698,7 +658,7 @@ namespace FIVStandard
                     }*/
 
                     if(tid.ThumbnailImage is null)//dont load the thumbnail if we already have one there
-                        tid.ThumbnailImage = GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
+                        tid.ThumbnailImage = Tools.GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
 
             }, allThumbnailTokenSource.Token);
@@ -729,111 +689,11 @@ namespace FIVStandard
                         //TODO put normal thumbnail load here
                     }*/
 
-                    tid.ThumbnailImage = GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
+                    tid.ThumbnailImage = Tools.GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
 
             }, allThumbnailTokenSource.Token);
         }
-
-        /// <summary>
-        /// Load a single image to the defined position (via file name).
-        /// </summary>
-        /// <param name="name"> The Name + Extension of the file</param>
-        /// <param name="fullPath"> Complete path to the file, including the name and extension</param>
-        /// <param name="overrideThumbnail"> If true: replace the thumbnail even if there is already one generated</param>
-        /// <returns></returns>
-        //public Task LoadSingleThumbnailAsync(string name, string fullPath, bool overrideThumbnail)
-        //{
-        //    return Task.Run(() =>
-        //    {
-        //        int c = ImagesDataView.Count;
-        //        for (int i = 0; i < c; i++)
-        //        {
-        //            ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
-
-        //            if(tid.ThumbnailName == name)
-        //            {
-        //                if(overrideThumbnail || tid.ThumbnailImage is null)
-        //                    tid.ThumbnailImage = GetThumbnail(fullPath, tid);
-
-        //                break;
-        //            }
-        //        }
-
-        //        /*if (tid.IsAnimated)//TODO add option "Animate thumbnail gifs" check
-        //        {
-        //            //tid.ThumbnailMedia = new Uri(Path.Combine(ActiveFolder, tid.ThumbnailName));
-        //        }
-        //        else
-        //        {
-        //            //TODO put normal thumbnail load here
-        //        }*/
-
-        //    });
-        //}
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="path">The full path to the file, including extension</param>
-        /// <param name="itemData">Used for saving the image orientation, width, and height in the given ThumbnailItemData</param>
-        /// <returns></returns>
-        private BitmapImage GetThumbnail(string path, ThumbnailItemData itemData)
-        {
-            if (!File.Exists(path)) return null;
-
-            BitmapImage imgTemp = new BitmapImage();
-            FileStream stream = File.OpenRead(path);
-            imgTemp.BeginInit();
-            imgTemp.CacheOption = BitmapCacheOption.OnLoad;
-            imgTemp.StreamSource = stream;
-
-            imgTemp.DecodePixelWidth = Settings.ThumbnailRes;
-            //imgTemp.DecodePixelHeight = 80;
-
-            using (MagickImage image = new MagickImage(path))
-            {
-                Rotation imgRotation = Tools.GetOrientationRotation(image.Orientation);//get rotation
-
-                itemData.ImageWidth = image.BaseWidth;
-                itemData.ImageHeight = image.BaseHeight;
-                itemData.ImageOrientation = imgRotation;
-
-                if (imgRotation != Rotation.Rotate0)
-                    imgTemp.Rotation = imgRotation;
-            }
-
-            /*using (FileStream imageStream = File.OpenRead(path))
-            {
-                using (System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
-                {
-                    Rotation imgRotation = GetImageOreintation(img);//get rotation
-
-                    itemData.ImageWidth = img.Width;
-                    itemData.ImageHeight = img.Height;
-                    itemData.ImageOrientation = imgRotation;
-
-                    if (imgRotation != Rotation.Rotate0)
-                        imgTemp.Rotation = imgRotation;
-                }
-            }*/
-
-            imgTemp.EndInit();
-            imgTemp.Freeze();
-            stream.Dispose();
-            
-            return imgTemp;
-        }
-
-        /*private double ScaleToBox(double w, double sw, double h, double sh)
-        {
-            double scaleWidth = sw / w;
-            double scaleHeight = sh / h;
-
-            double scale = Math.Min(scaleWidth, scaleHeight);
-
-            return scale;
-        }*/
 
         public void ExploreFile()
         {
@@ -866,7 +726,6 @@ namespace FIVStandard
                 }
                 else
                 {
-                    //MessageBox.Show("File not found: " + path);
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         notifier.ShowWarning($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.FileNotFoundMsg))}: {path}");
@@ -876,53 +735,6 @@ namespace FIVStandard
                 IsDeletingFile = false;
             });
         }
-
-        /// <summary>
-        /// Gets the gif image information (width, height, orientation)
-        /// </summary>
-        //private void GetImageInformation(string path)
-        //{
-        //    if (ImagesData.Count == 0) return;
-
-        //    //ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition));
-
-        //    if(ImageItem.ThumbnailImage is null)
-        //    {
-        //        Task.Run(() => Tools.LoadSingleThumbnail(ImageItem.ThumbnailName, path, false, ImagesDataView));
-        //    }
-
-        //    if (ImageItem.ImageOrientation != null)//if we have a set orientation in the item data, use it instead
-        //    {
-        //        ImgWidth = ImageItem.ImageWidth;
-        //        ImgHeight = ImageItem.ImageHeight;
-        //        ImageRotation = (Rotation)ImageItem.ImageOrientation;
-
-        //        return;
-        //    }
-
-        //    using (MagickImage image = new MagickImage(path))
-        //    {
-        //        Rotation imgRotation = Tools.GetOrientationRotation(image.Orientation);//get rotation
-
-        //        ImgWidth = image.BaseWidth;
-        //        ImgHeight = image.BaseHeight;
-        //        ImageRotation = imgRotation;
-        //    }
-
-        //    /*using (var imageStream = File.OpenRead(path))
-        //    {
-        //        //var decoder = BitmapDecoder.Create(imageStream, BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.Default);
-        //        //ImgWidth = decoder.Frames[0].PixelWidth;
-        //        //ImgHeight = decoder.Frames[0].PixelHeight;
-
-        //        using (System.Drawing.Image img = System.Drawing.Image.FromStream(imageStream))
-        //        {
-        //            ImgWidth = img.Width;
-        //            ImgHeight = img.Height;
-        //            ImageRotation = GetImageOreintation(img);//get rotation
-        //        }
-        //    }*/
-        //}
 
         private void ImageCopyToClipboardCall()
         {
@@ -989,8 +801,6 @@ namespace FIVStandard
                 Settings.ShownLanguageDropIndex++;
 
             ShownLanguageDrop.SelectedIndex = Settings.ShownLanguageDropIndex;
-
-            //ChangeAccent();//called in OnAccentChanged
         }
 
         private void OnAccentClick(object sender, RoutedEventArgs e)
@@ -1001,8 +811,6 @@ namespace FIVStandard
                 Settings.ThemeAccentDropIndex++;
 
             ThemeAccentDrop.SelectedIndex = Settings.ThemeAccentDropIndex;
-
-            //ChangeAccent();//called in OnAccentChanged
         }
 
         private void OnDeleteClick(object sender, RoutedEventArgs e)
@@ -1144,19 +952,16 @@ namespace FIVStandard
 
         private void OnShortcutClick(object sender, RoutedEventArgs e)
         {
-            editingButton = (System.Windows.Controls.Button)sender;
+            editingButton = (Button)sender;
 
             Settings.ShortcutButtonsOn = false;//disable the buttons until done editing
 
-            //TODO: put text when editing for user to know; save changed buttons; add reset button for key resets
-
-            //Binding myBinding = BindingOperations.GetBinding(b, System.Windows.Controls.Button.ContentProperty);
-            //string p = myBinding.Path.Path;
+            //TODO: put text when editing for user to know; save changed buttons
         }
 
         private void OnRemoveShortcutClick(object sender, RoutedEventArgs e)
         {
-            editingButton = (System.Windows.Controls.Button)sender;
+            editingButton = (Button)sender;
 
             editingButton.Tag = Key.None;
 
@@ -1218,7 +1023,7 @@ namespace FIVStandard
             this.dragStarted = true;
         }
 
-        public void ThumbnailSlider_ValueChanged()
+        public void ThumbnailResSlider_ValueChanged()
         {
             if (!dragStarted)
                 ReloadAllThumbnailsAsync();
@@ -1235,50 +1040,6 @@ namespace FIVStandard
         /*private int ParseStringToOnlyInt(string input)
         {
             return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
-        }*/
-
-        // Orientations
-        /*public const int OrientationId = 0x0112;// 274 / 0x0112
-
-        public enum ExifOrientations
-        {
-            Unknown = 0,//0
-            TopLeft = 1,//0
-            TopRight = 2,//90
-            BottomRight = 3,//180
-            BottomLeft = 4,//270
-            LeftTop = 5,//0
-            RightTop = 6,//90
-            RightBottom = 7,//180
-            LeftBottom = 8,//270
-        }
-
-        readonly Dictionary<int, Rotation> OrientationDictionary = new Dictionary<int, Rotation>()
-        {
-            {0, Rotation.Rotate0},
-            {1, Rotation.Rotate0},
-            {2, Rotation.Rotate90},
-            {3, Rotation.Rotate180},
-            {4, Rotation.Rotate270},
-            {5, Rotation.Rotate0},
-            {6, Rotation.Rotate90},
-            {7, Rotation.Rotate180},
-            {8, Rotation.Rotate270}
-        };
-
-        // Return the image's orientation
-        public Rotation GetImageOreintation(System.Drawing.Image img)
-        {
-            // Get the index of the orientation property
-            int orientation_index = Array.IndexOf(img.PropertyIdList, OrientationId);
-
-            // If there is no such property, return Unknown
-            if (orientation_index < 0) return OrientationDictionary[0];//ExifOrientations.Unknown
-
-            ExifOrientations eo = (ExifOrientations)img.GetPropertyItem(OrientationId).Value[0];
-
-            // Return the orientation value
-            return OrientationDictionary[(int)eo];
         }*/
 
         #region INotifyPropertyChanged

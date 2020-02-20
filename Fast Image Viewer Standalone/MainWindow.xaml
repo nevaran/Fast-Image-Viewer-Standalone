@@ -312,6 +312,7 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
+                        <!--  Media Control  -->
                         <utils:ZoomBorder
                             x:Name="border"
                             Grid.Column="1"
@@ -649,6 +650,7 @@
                                 FontWeight="DemiBold"
                                 Text="{Binding Settings.ThumbnailListColumns, Mode=OneWay}"
                                 TextAlignment="Center" />
+                            <!--  Thumb.DragCompleted="ThumbnailSlider_DragCompleted"  -->
                             <Slider
                                 Grid.Row="12"
                                 Margin="60,60,-15,0"
@@ -661,7 +663,6 @@
                                 Maximum="3"
                                 Minimum="1"
                                 SmallChange="1"
-                                Thumb.DragCompleted="ThumbnailSlider_DragCompleted"
                                 Thumb.DragStarted="ThumbnailSlider_DragStarted"
                                 TickFrequency="1"
                                 Value="{Binding Settings.ThumbnailListColumns, Mode=TwoWay}" />
