@@ -2,6 +2,7 @@
 using ImageMagick;
 using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -14,27 +15,60 @@ namespace FIVStandard.Core
         public static BitmapImage LoadImage(string path, int imgWidth, int imgHeight, Rotation imgRotation)
         {
             BitmapImage imgTemp = new BitmapImage();
-            using (FileStream stream = File.OpenRead(path))
+            imgTemp.BeginInit();
+            imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting and cutting file from file lockup
+            //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
+            
+            /*string ext = Path.GetExtension(path);
+
+            if(ext == ".webp")
             {
-                imgTemp.BeginInit();
-                imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting and cutting file from file lockup
-                //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
-                imgTemp.StreamSource = stream;
-
-                if (Settings.DownsizeImageToggle)
+                try
                 {
-                    Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+                    var fbytes = File.ReadAllBytes(path);
+                    var decoder = new Imazen.WebP.SimpleDecoder();
+                    var bitmap = decoder.DecodeFromBytes(fbytes, fbytes.Length);
 
-                    if (imgWidth > r.Width || imgHeight > r.Height)
-                        imgTemp.DecodePixelWidth = (int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height));
+                    using MemoryStream stream = new MemoryStream();
+                    bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                    imgTemp.StreamSource = stream;
+
+                    if (Settings.DownsizeImageToggle)
+                    {
+                        Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+
+                        if (imgWidth > r.Width || imgHeight > r.Height)
+                            imgTemp.DecodePixelWidth = (int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height));
+                    }
+                    if (imgRotation != Rotation.Rotate0)
+                        imgTemp.Rotation = imgRotation;
+
+                    imgTemp.EndInit();
+                    imgTemp.Freeze();
                 }
-                if (imgRotation != Rotation.Rotate0)
-                    imgTemp.Rotation = imgRotation;
+                catch
+                {
 
-                imgTemp.EndInit();
-                imgTemp.Freeze();
+                }
+            }*/
+
+            using FileStream stream = File.OpenRead(path);
+            imgTemp.StreamSource = stream;
+
+            if (Settings.DownsizeImageToggle)
+            {
+                Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+
+                if (imgWidth > r.Width || imgHeight > r.Height)
+                    imgTemp.DecodePixelWidth = (int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height));
             }
+            if (imgRotation != Rotation.Rotate0)
+                imgTemp.Rotation = imgRotation;
 
+            imgTemp.EndInit();
+            imgTemp.Freeze();
+
+            //MessageBox.Show(imgTemp.HasAnimatedProperties.ToString());
             return imgTemp;
         }
 
@@ -143,10 +177,25 @@ namespace FIVStandard.Core
             return scale;
         }
 
+        /*private static string FileDialogAddType(string currentFilter, string addedType)TODO: finish options for choosing what file is automatically opened
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("*.JPG, *.JPEG, *.PNG, *.GIF, *.BMP, *ICO, *WEBP)|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO;*.WEBP");//REFERENCE
+
+            sb.Append("Image");
+            //add info here
+            sb.Append("|");
+            //add file types here
+            
+
+            return sb.ToString();
+        }*/
+
         public static bool IsAnimatedExtension(string ext) => ext switch
         {
             ".gif" => true,
-            ".webp" => true,
+            //".webp" => true,
             _ => false,
         };
 
