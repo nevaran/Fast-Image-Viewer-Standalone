@@ -238,8 +238,8 @@ namespace FIVStandard
             InitializeComponent();
 
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
-            //ImagesDataView.SortDescriptions.Add(new SortDescription { PropertyName = "ThumbnailName", Direction = ListSortDirection.Ascending });
             ImagesDataView.CustomSort = new NaturalOrderComparer(false);
+            //ImagesDataView.SortDescriptions.Add(new SortDescription { PropertyName = "ThumbnailName", Direction = ListSortDirection.Ascending });
 
             AppUpdater = new UpdateCheck(this);
             
@@ -335,7 +335,7 @@ namespace FIVStandard
                 ThumbnailItemData tt = new ThumbnailItemData
                 {
                     ThumbnailName = e.Name,
-                    IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name)),
+                    IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name).ToLower()),
                     //ThumbnailImage = GetThumbnail(e.FullPath)
                 };
                 ImagesData.Add(tt);
@@ -386,23 +386,27 @@ namespace FIVStandard
                         {
                             BitmapImage oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
 
-                            ImagesData.RemoveAt(i);
+                            //ImagesData.RemoveAt(i);
 
                             ThumbnailItemData tt = new ThumbnailItemData
                             {
                                 ThumbnailName = e.Name,
-                                IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name)),
+                                IsAnimated = ImagesData[i].IsAnimated,
 
                                 ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
                             };
-                            ImagesData.Add(tt);
+                            //ImagesData.Add(tt);
+
+                            ImagesData[i] = tt;
+
+                            //ImagesData[i].ThumbnailName = e.Name;
 
                             //LoadSingleThumbnail(e.Name, e.FullPath, false);
 
                             //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
                             //if the viewed item is the changed one, update it
-                            if (activeFile == e.OldName)
+                            if (ActiveFile == e.OldName)
                             {
                                 ActiveFile = ImagesData[i].ThumbnailName;
                             }
@@ -457,14 +461,15 @@ namespace FIVStandard
             int c = filesFound.Count;
             for (int i = 0; i < c; i++)
             {
-                if (filters.Any(Path.GetExtension(filesFound[i].ToLower()).Contains))
+                string ext = Path.GetExtension(filesFound[i].ToLower());
+                if (filters.Any(ext.Contains))
                 {
                     filesFound[i] = Path.GetFileName(filesFound[i]);
 
                     ThumbnailItemData tt = new ThumbnailItemData
                     {
                         ThumbnailName = filesFound[i],
-                        IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(filesFound[i])),
+                        IsAnimated = Tools.IsAnimatedExtension(ext),
                     };
                     ImagesData.Add(tt);
                 }
