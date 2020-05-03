@@ -4,9 +4,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using ToastNotifications.Messages;
 
 namespace FIVStandard.Core
@@ -92,8 +93,7 @@ namespace FIVStandard.Core
             }
         }
 
-        private Task _task;
-        private readonly object _lock = new object();
+        private readonly SemaphoreSlim _lock = new SemaphoreSlim(1);
 
         private string _updaterMessage = "";
 
@@ -126,8 +126,11 @@ namespace FIVStandard.Core
         }
 
         //https://drive.google.com/uc?export=download&id=FILE_ID
-        private const string setupURL = "https://drive.google.com/uc?export=download&id=19Ds5qxy4QVFlFljIgZjHenXOA1qALQ8R";
-        private const string changelogURL = "https://drive.google.com/uc?export=download&id=1cqCjCSZpo3bSF8G9Wrk0fT-ypQY7RKMn";
+        //private const string setupURL = "https://drive.google.com/uc?export=download&id=19Ds5qxy4QVFlFljIgZjHenXOA1qALQ8R";
+        //private const string changelogURL = "https://drive.google.com/uc?export=download&id=1cqCjCSZpo3bSF8G9Wrk0fT-ypQY7RKMn";
+
+        private const string setupURL = "https://github.com/nevaran/FIV-Storage/blob/master/FIV%20Setup.exe?raw=true";
+        private const string changelogURL = "https://github.com/nevaran/FIV-Storage/blob/master/VersionControl.txt?raw=true";
 
         public UpdateCheck(MainWindow mw)
         {
@@ -136,175 +139,117 @@ namespace FIVStandard.Core
             CurrentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
         }
 
-        public Task CheckForUpdates(UpdateCheckType updateType)
+        public async Task CheckForUpdates(UpdateCheckType updateType)
         {
-            lock (_lock)//prevent more than one checks being started in new threads
+            await _lock.WaitAsync();
+
+            try
             {
-                if (_task is null)
+                NotUpdating = false;
+
+                switch (updateType)
                 {
-                    return _task = Task.Run(() =>
-                    {
-                        try
-                        {
-                            NotUpdating = false;
-
-                            switch(updateType){
-                                case UpdateCheckType.FullUpdate:
-                                    Download_Full();
-                                    break;
-                                case UpdateCheckType.FullUpdateForced:
-                                    Download_FullForced();
-                                    break;
-                                case UpdateCheckType.SilentVersionCheck:
-                                    Download_VersionInfo(false);
-                                    break;
-                                case UpdateCheckType.ForcedVersionCheck:
-                                    Download_VersionInfo(true);
-                                    break;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Application.Current.Dispatcher.Invoke(() =>
-                            {
-                                mainWindow.notifier.ShowError(e.ToString());
-                                //e.Message
-                                //e.StackTrace
-                            });
-                        }
-
-                        lock (_lock)
-                        {
-                            _task = null;
-                        }
-                    });
+                    case UpdateCheckType.FullUpdate:
+                        await Download_Full();
+                        break;
+                    case UpdateCheckType.FullUpdateForced:
+                        await Download_FullForced();
+                        break;
+                    case UpdateCheckType.SilentVersionCheck:
+                        await Download_VersionInfo(false);
+                        break;
+                    case UpdateCheckType.ForcedVersionCheck:
+                        await Download_VersionInfo(true);
+                        break;
                 }
-
-                return _task;
+            }
+            catch// (Exception e)
+            {
+                //mainWindow.notifier.ShowError(e.ToString());
+                //e.Message
+                //e.StackTrace
+                //Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                _lock.Release();
             }
         }
 
-        private void Download_Full()
+        private async Task Download_Full()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            mainWindow.notifier.ShowInformation(Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CheckingForUpdatesInfo)));
+
+            await GetHttpChangelog();
+
+            if (HasLaterVersion())
             {
-                mainWindow.notifier.ShowInformation(Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CheckingForUpdatesInfo)));
-            });
+                mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion.ToString()})");
 
-            //txt file containing version and update notes
-            var webRequest = WebRequest.Create(changelogURL);
-
-            using (var response = webRequest.GetResponse())
-            using (var content = response.GetResponseStream())
-            using (var reader = new StreamReader(content))
+                UpdaterMessage = "";
+                NotUpdating = true;
+            }
+            else
             {
-                DownloadVersion = new Version(reader.ReadLine());
-                reader.ReadLine();//empty line between version and notes
-                DownloadedChangelog = reader.ReadToEnd();
+                mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}. {Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo))} ({DownloadVersion.ToString()})");
 
-                if (HasLaterVersion())
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion.ToString()})");
-                    });
-
-                    UpdaterMessage = "";
-                    NotUpdating = true;
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}. {Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo))} ({DownloadVersion.ToString()})");
-                    });
-
-                    DownloadNewAppVersion();
-                }
+                await DownloadNewAppVersion();
             }
         }
 
-        private void Download_FullForced()
+        private async Task Download_FullForced()
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                mainWindow.notifier.ShowInformation(Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CheckingForUpdatesInfo)));
-            });
+            mainWindow.notifier.ShowInformation(Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CheckingForUpdatesInfo)));
 
-            //txt file containing version and update notes
-            var webRequest = WebRequest.Create(changelogURL);
+            await GetHttpChangelog();
 
-            using (var response = webRequest.GetResponse())
-            using (var content = response.GetResponseStream())
-            using (var reader = new StreamReader(content))
-            {
-                DownloadVersion = new Version(reader.ReadLine());
-                reader.ReadLine();//empty line between version and notes
-                DownloadedChangelog = reader.ReadToEnd();
+            mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo))} ({DownloadVersion.ToString()})");
 
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo))} ({DownloadVersion.ToString()})");
-                });
-
-                DownloadNewAppVersion();
-            }
+            await DownloadNewAppVersion();
         }
 
-        private void Download_VersionInfo(bool notifies)
+        private async Task Download_VersionInfo(bool notifies)
         {
-            //txt file containing version and update notes
-            var webRequest = WebRequest.Create(@"https://drive.google.com/uc?export=download&id=1cqCjCSZpo3bSF8G9Wrk0fT-ypQY7RKMn");
+            await GetHttpChangelog();
 
-            using (var response = webRequest.GetResponse())
-            using (var content = response.GetResponseStream())
-            using (var reader = new StreamReader(content))
+            if (HasLaterVersion())
             {
-                DownloadVersion = new Version(reader.ReadLine());
-                reader.ReadLine();//empty line between version and notes
-                DownloadedChangelog = reader.ReadToEnd();
+                if (notifies)
+                    mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion.ToString()})");
 
-                if (HasLaterVersion())
+                UpdaterMessage = "";
+                NotUpdating = true;
+            }
+            else
+            {
+                if (notifies)
+                    mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion.ToString()}");
+
+                NotUpdating = true;
+
+                if (mainWindow.Settings.CheckForUpdatesStartToggle && mainWindow.Settings.AutoupdateToggle)
                 {
-                    if(notifies)
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion.ToString()})");
-                    });
-
-                    UpdaterMessage = "";
-                    NotUpdating = true;
-                }
-                else
-                {
-                    if (notifies)
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion.ToString()}");
-                    });
-
-                    NotUpdating = true;
-
-                    if (mainWindow.Settings.CheckForUpdatesStartToggle && mainWindow.Settings.AutoupdateToggle)
-                    {
-                        DownloadNewAppVersion();
-                    }
+                    await DownloadNewAppVersion();
                 }
             }
         }
 
-        private void DownloadNewAppVersion()
+        private async Task DownloadNewAppVersion()
         {
             if (CheckForInternetConnection())
             {
                 UpdaterMessage = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo));
 
-                using (WebClient fileClient = new WebClient())
+                using var client = new HttpClientDownloadWithProgress(setupURL, Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"));
+                client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
                 {
-                    fileClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Exe_DownloadCompleted);
-                    fileClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Exe_ProgressChanged);
-                    fileClient.DownloadFileAsync(new Uri(setupURL), Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"));
-                }
+                    //string info = $"{progressPercentage}%\n{totalBytesDownloaded / 1048576}/{(totalFileSize / 1048576)}mB";
+                    string info = $"{totalBytesDownloaded / 1024}kB";//1048576 = mB
+                    UpdaterMessage = $"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DownloadingInfo))}: {info}";
+                };
+                client.DownloadComplete += Client_DownloadComplete;
+
+                await client.StartDownload();
             }
             else
             {
@@ -312,17 +257,7 @@ namespace FIVStandard.Core
             }
         }
 
-        private void Exe_ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            //UpdaterMessage = $"Downloading: {(e.BytesReceived / 1024)}/{(e.TotalBytesToReceive / 1024)}kB ({e.ProgressPercentage}%)";
-            UpdaterMessage = $"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DownloadingInfo))}: {(e.BytesReceived / 1024)}kB";
-            /*if (e.BytesReceived == e.TotalBytesToReceive)
-            {
-                UpdaterMessage = $"Download Complete: {(e.TotalBytesToReceive / 1024)}kB (100%)";
-            }*/
-        }
-
-        private void Exe_DownloadCompleted(object sender, AsyncCompletedEventArgs e)
+        private void Client_DownloadComplete()
         {
             UpdaterMessage = $"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DownloadFinsihedInfo))}!";
             //Thread.Sleep(500);
@@ -354,17 +289,24 @@ namespace FIVStandard.Core
             NotUpdating = true;
         }
 
+        private async Task GetHttpChangelog()
+        {
+            //txt file containing version and update notes
+            HttpClient httpClient = new HttpClient();
+
+            using var reader = new StreamReader(await httpClient.GetStreamAsync(changelogURL));
+            DownloadVersion = new Version(reader.ReadLine().Trim(new Char[] { '•' }));
+            reader.ReadLine();//empty line between version and notes
+            DownloadedChangelog = reader.ReadToEnd();
+        }
+
         public static bool CheckForInternetConnection()
         {
             try
             {
-                using (var client = new WebClient())
-                {
-                    using (var stream = client.OpenRead("http://www.google.com"))
-                    {
-                        return true;
-                    }
-                }
+                using var client = new WebClient();
+                using var stream = client.OpenRead("http://www.google.com");
+                return true;
             }
             catch
             {

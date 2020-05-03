@@ -1,5 +1,6 @@
 ﻿using Gu.Localization;
 using MahApps.Metro;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -433,6 +434,130 @@ namespace FIVStandard.Core
                 OnThumbnailListColumnChanged();
             }
         }
+
+        public List<string> FilterActiveList { get; set; } = new List<string>();//".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"
+        public string[] FilterActiveArray { get; set; } = null;
+
+        private bool filterJpg = true;
+
+        public bool FilterJpg
+        {
+            get
+            {
+                return filterJpg;
+            }
+            set
+            {
+                filterJpg = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
+        private bool filterJpeg = true;
+
+        public bool FilterJpeg
+        {
+            get
+            {
+                return filterJpeg;
+            }
+            set
+            {
+                filterJpeg = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
+        private bool filterPng = true;
+
+        public bool FilterPng
+        {
+            get
+            {
+                return filterPng;
+            }
+            set
+            {
+                filterPng = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
+        private bool filterGif = true;
+
+        public bool FilterGif
+        {
+            get
+            {
+                return filterGif;
+            }
+            set
+            {
+                filterGif = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
+        private bool filterBmp = true;
+
+        public bool FilterBmp
+        {
+            get
+            {
+                return filterBmp;
+            }
+            set
+            {
+                filterBmp = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
+        private bool filterIco = true;
+
+        public bool FilterIco
+        {
+            get
+            {
+                return filterIco;
+            }
+            set
+            {
+                filterIco = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
+        private bool filterWebp = true;
+
+        public bool FilterWebp
+        {
+            get
+            {
+                return filterWebp;
+            }
+            set
+            {
+                filterWebp = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
+        public bool ReloadFolderFlag = false;//flag for confirming if the list of images needs to be reloaded (ie from changing what types to be displayed)
         #endregion
 
         public SettingsManager(MainWindow mw)
@@ -477,6 +602,14 @@ namespace FIVStandard.Core
             CopyImageToClipboardKey = (Key)savs.CopyToClipboardKey;
             CutFileToClipboardKey = (Key)savs.CutToClipboardKey;
             ThumbnailListKey = (Key)savs.ThumbnailListKey;
+
+            FilterJpg = savs.FilterJpg;
+            FilterJpeg = savs.FilterJpeg;
+            FilterPng = savs.FilterPng;
+            FilterGif = savs.FilterGif;
+            FilterBmp = savs.FilterBmp;
+            FilterIco = savs.FilterIco;
+            FilterWebp = savs.FilterWebp;
         }
 
         public void Save()
@@ -603,6 +736,71 @@ namespace FIVStandard.Core
         public void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public void ClearActiveFilterList()
+        {
+            FilterActiveList.Clear();
+        }
+
+        public void AddActiveFilter(string newFilterElement)
+        {
+            FilterActiveList.Add(newFilterElement);
+        }
+
+        public void UpdateActiveFilterList()
+        {
+            ClearActiveFilterList();
+
+            if (filterJpg)
+            {
+                AddActiveFilter(".jpg");
+            }
+            if (filterJpeg)
+            {
+                AddActiveFilter(".jpeg");
+            }
+            if (filterPng)
+            {
+                AddActiveFilter(".png");
+            }
+            if (filterGif)
+            {
+                AddActiveFilter(".gif");
+            }
+            if (filterBmp)
+            {
+                AddActiveFilter(".bmp");
+            }
+            if (filterIco)
+            {
+                AddActiveFilter(".ico");
+            }
+            if (filterWebp)
+            {
+                AddActiveFilter(".webp");
+            }
+
+            FilterActiveArray = FilterActiveList.ToArray();
+
+            if (mainWindow.ProgramLoaded == false) return;//fixes crash
+
+            UpdateAllTypesProperties();
+
+            ReloadFolderFlag = true;
+        }
+
+        public void UpdateAllTypesProperties()
+        {
+            var savs = Properties.Settings.Default;//saved settings shortcut
+
+            savs.FilterJpg = FilterJpg;
+            savs.FilterJpeg = FilterJpeg;
+            savs.FilterPng = FilterPng;
+            savs.FilterGif = FilterGif;
+            savs.FilterBmp = FilterBmp;
+            savs.FilterIco = FilterIco;
+            savs.FilterWebp = FilterWebp;
         }
         #endregion
     }

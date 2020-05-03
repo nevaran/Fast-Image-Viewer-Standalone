@@ -168,7 +168,7 @@ namespace FIVStandard
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"/*, ".tiff", ".svg", ".mp4", ".avi" */ };//TODO: doesnt work: tiff svg
+        //private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"/*, ".tiff", ".svg", ".mp4", ".avi" */ };//TODO: doesnt work: tiff svg
         private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO;*.WEBP"/* + "|All files (*.*)|*.*" */};
 
         private Button editingButton = null;//used for editing shortcuts
@@ -176,6 +176,8 @@ namespace FIVStandard
         private bool IsPaused { get; set; } = false;//if the animated image (gif) is paused or not
 
         private bool isDeletingFile;
+
+        public bool ProgramLoaded = false;
 
         public bool IsDeletingFile
         {
@@ -263,15 +265,17 @@ namespace FIVStandard
 
             dragStarted = false;//hack for avoiding reloading the images when you start the program
 
+            ProgramLoaded = true;
+
             //AppWindow = this;//used for debugging ZoomBorder
         }
 
-        private void OnAppLoaded(object sender, RoutedEventArgs e)
+        private async void OnAppLoaded(object sender, RoutedEventArgs e)
         {
             if (Settings.CheckForUpdatesStartToggle)
-                AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
+                await AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
             else
-                AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+                await AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
 
             string[] args = Environment.GetCommandLineArgs();
 
@@ -332,6 +336,8 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                if (!Tools.IsOfType(e.Name, Settings.FilterActiveArray)) return;//ignore if the file is not a valid type
+
                 ThumbnailItemData tt = new ThumbnailItemData
                 {
                     ThumbnailName = e.Name,
@@ -344,9 +350,11 @@ namespace FIVStandard
 
                 //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
-                ChangeImage(0, false);
+                //ChangeImage(0, false);
 
-                FindIndexInFiles(activeFile);
+                //FindIndexInFiles(activeFile);
+
+                OnPropertyChanged("TitleInformation");//update title information
 
                 notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CreatedWatcher))} \"{e.Name}\"");
             });
@@ -356,19 +364,29 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
+                bool dirty = false;
+
                 for (int i = 0; i < ImagesData.Count; i++)
                 {
                     if (e.Name == ImagesData[i].ThumbnailName)
                     {
                         ImagesData.RemoveAt(i);
+                        dirty = true;
 
                         break;
                     }
                 }
 
-                ChangeImage(0, false);
+                if (!Tools.IsOfType(e.Name, Settings.FilterActiveArray) && dirty) return;//dont send a message if its not one of our files
 
-                FindIndexInFiles(activeFile);
+                if(ImageItem.ThumbnailName == e.Name)
+                {
+                    ChangeImage(0, false);
+                }
+
+                OnPropertyChanged("TitleInformation");//update title information
+
+                //FindIndexInFiles(activeFile);
 
                 notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DeletedWatcher))} \"{e.Name}\"");
             });
@@ -384,36 +402,47 @@ namespace FIVStandard
                     {
                         if (e.OldName == ImagesData[i].ThumbnailName)
                         {
-                            BitmapImage oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
-
-                            //ImagesData.RemoveAt(i);
-
-                            ThumbnailItemData tt = new ThumbnailItemData
+                            if (Tools.IsOfType(e.Name, Settings.FilterActiveArray))
                             {
-                                ThumbnailName = e.Name,
-                                IsAnimated = ImagesData[i].IsAnimated,
+                                BitmapImage oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
 
-                                ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
-                            };
-                            //ImagesData.Add(tt);
+                                //ImagesData.RemoveAt(i);
 
-                            ImagesData[i] = tt;
+                                ThumbnailItemData tt = new ThumbnailItemData
+                                {
+                                    ThumbnailName = e.Name,
+                                    IsAnimated = ImagesData[i].IsAnimated,
 
-                            //ImagesData[i].ThumbnailName = e.Name;
+                                    ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
+                                };
+                                //ImagesData.Add(tt);
 
-                            //LoadSingleThumbnail(e.Name, e.FullPath, false);
+                                ImagesData[i] = tt;
 
-                            //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
+                                //ImagesData[i].ThumbnailName = e.Name;
 
-                            //if the viewed item is the changed one, update it
-                            if (ActiveFile == e.OldName)
-                            {
-                                ActiveFile = ImagesData[i].ThumbnailName;
+                                //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
+
+                                //if the viewed item is the changed one, update it
+                                if (ActiveFile == e.OldName)
+                                {
+                                    ActiveFile = ImagesData[i].ThumbnailName;
+                                }
+
+                                if (ImageItem.ThumbnailName == e.Name)
+                                {
+                                    ChangeImage(0, false);
+                                }
+
+                                //FindIndexInFiles(activeFile);
                             }
+                            else//file has been renamed to something with a non-valid extension - remove it from the list
+                            {
+                                ImagesData.RemoveAt(i);
+                                ChangeImage(0, false);
 
-                            ChangeImage(0, false);
-
-                            FindIndexInFiles(activeFile);
+                                //FindIndexInFiles(activeFile);
+                            }
 
                             break;
                         }
@@ -441,6 +470,13 @@ namespace FIVStandard
             fsw.Path = ActiveFolder;
             fsw.EnableRaisingEvents = true;//File Watcher is enabled/disabled
 
+            if (Settings.FilterActiveArray.Length == 0)
+            {
+                ImagesData.Clear();
+                ChangeImage(0, false);
+                return;
+            }
+
             GetDirectoryFiles(ActiveFolder);
 
             FindIndexInFiles(activeFile);
@@ -462,7 +498,7 @@ namespace FIVStandard
             for (int i = 0; i < c; i++)
             {
                 string ext = Path.GetExtension(filesFound[i].ToLower());
-                if (filters.Any(ext.Contains))
+                if (Settings.FilterActiveArray.Any(ext.Contains))
                 {
                     filesFound[i] = Path.GetFileName(filesFound[i]);
 
@@ -589,6 +625,12 @@ namespace FIVStandard
             Stopwatch stopwatch = new Stopwatch();//DEBUG
             stopwatch.Start();//DEBUG
 #endif
+
+            if (!Tools.IsOfType(path, Settings.FilterActiveArray))
+            {
+                ChangeImage(0, false);
+                return;
+            }
 
             if (ImageItem.IsAnimated)
             {
@@ -720,14 +762,6 @@ namespace FIVStandard
                 if (FileSystem.FileExists(path))
                 {
                     FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
-
-                    //remove deleted item from list
-                    /*Application.Current.Dispatcher.Invoke(() => this is done in the file watcher now
-                    {
-                        ImagesFound.RemoveAt(ImageIndex);
-                        ChangeImage(-1);//go back to a previous file after deletion
-                        //SetTitleInformation();
-                    });*/
                 }
                 else
                 {
@@ -978,14 +1012,14 @@ namespace FIVStandard
             Settings.ResetToDefault();
         }
 
-        private void OnCheckUpdateClick(object sender, RoutedEventArgs e)
+        private async void OnCheckUpdateClick(object sender, RoutedEventArgs e)
         {
-            AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
+            await AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
         }
 
-        private void OnForceDownloadSetupClick(object sender, RoutedEventArgs e)
+        private async void OnForceDownloadSetupClick(object sender, RoutedEventArgs e)
         {
-            AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdateForced);
+            await AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdateForced);
         }
 
         private void ThumbnailList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1032,6 +1066,14 @@ namespace FIVStandard
         {
             if (!dragStarted)
                 ReloadAllThumbnailsAsync();
+        }
+
+        private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Settings.ReloadFolderFlag == false) return;//dont refresh if not flagged
+
+            Settings.ReloadFolderFlag = false;
+            OpenNewFile(ActivePath);
         }
 
         /*private void ThumbnailMedia_OnClipEnded(object sender, RoutedEventArgs e)//used for list box's data template's media element control

@@ -298,5 +298,89 @@ namespace FIVStandard.Properties {
                 this["ThumbnailListColumns"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterJpg {
+            get {
+                return ((bool)(this["FilterJpg"]));
+            }
+            set {
+                this["FilterJpg"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterJpeg {
+            get {
+                return ((bool)(this["FilterJpeg"]));
+            }
+            set {
+                this["FilterJpeg"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterPng {
+            get {
+                return ((bool)(this["FilterPng"]));
+            }
+            set {
+                this["FilterPng"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterGif {
+            get {
+                return ((bool)(this["FilterGif"]));
+            }
+            set {
+                this["FilterGif"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterBmp {
+            get {
+                return ((bool)(this["FilterBmp"]));
+            }
+            set {
+                this["FilterBmp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterIco {
+            get {
+                return ((bool)(this["FilterIco"]));
+            }
+            set {
+                this["FilterIco"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterWebp {
+            get {
+                return ((bool)(this["FilterWebp"]));
+            }
+            set {
+                this["FilterWebp"] = value;
+            }
+        }
     }
 }

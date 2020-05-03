@@ -2,7 +2,7 @@
 using ImageMagick;
 using System;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -138,9 +138,11 @@ namespace FIVStandard.Core
         {
             if (!File.Exists(path)) return null;
 
-            BitmapImage imgTemp = new BitmapImage();
-            using (FileStream stream = File.OpenRead(path))
+            BitmapImage imgTemp = null;
+            try
             {
+                using FileStream stream = File.OpenRead(path);
+                imgTemp = new BitmapImage();
                 imgTemp.BeginInit();
                 imgTemp.CacheOption = BitmapCacheOption.OnLoad;
                 imgTemp.StreamSource = stream;
@@ -163,8 +165,24 @@ namespace FIVStandard.Core
                 imgTemp.EndInit();
                 imgTemp.Freeze();
             }
+            catch
+            {
+
+            }
 
             return imgTemp;
+        }
+
+        /// <summary>
+        /// Checks if the string has an extension of the given valid types
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsOfType(string file, string[] extensions)
+        {
+            string ext = Path.GetExtension(file.ToLower());
+            if (extensions.Any(ext.Contains)) return true;
+
+            return false;
         }
 
         private static double ScaleToBox(double w, double sw, double h, double sh)

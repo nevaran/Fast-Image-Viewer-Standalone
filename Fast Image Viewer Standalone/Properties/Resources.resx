@@ -328,4 +328,10 @@
   <data name="ThumbnailListColumnsInfo" xml:space="preserve">
     <value>The amount of columns in the Thumbnail List. (Max 3)</value>
   </data>
+  <data name="FileType" xml:space="preserve">
+    <value>File Type</value>
+  </data>
+  <data name="FileTypeInfo" xml:space="preserve">
+    <value>Choose which file types are loaded into the viewer.</value>
+  </data>
 </root>
