@@ -1,6 +1,5 @@
 ﻿using FIVStandard.Views;
 using ImageMagick;
-using IronOcr;
 using System;
 using System.IO;
 using System.Linq;
@@ -194,30 +193,6 @@ namespace FIVStandard.Core
             double scale = Math.Min(scaleWidth, scaleHeight);
 
             return scale;
-        }
-
-        public static bool FindContainTextInImage(string path, string contain)
-        {
-            Console.WriteLine("SEARCHING: " + path);
-            var Ocr = new AdvancedOcr()
-            {
-                CleanBackgroundNoise = true,
-                EnhanceContrast = true,
-                EnhanceResolution = true,
-                Language = IronOcr.Languages.English.OcrLanguagePack,
-                Strategy = IronOcr.AdvancedOcr.OcrStrategy.Advanced,
-                ColorSpace = AdvancedOcr.OcrColorSpace.Color,
-                DetectWhiteTextOnDarkBackgrounds = true,
-                InputImageType = AdvancedOcr.InputTypes.Document,
-                RotateAndStraighten = true,
-                ReadBarCodes = true,
-                ColorDepth = 4
-            };
-            var Results = Ocr.Read(path);
-
-            Console.WriteLine("CONTAINS: " + Results.Text);
-
-            return Results.Text.Contains(contain);
         }
 
         /*private static string FileDialogAddType(string currentFilter, string addedType)TODO: finish options for choosing what file is automatically opened

@@ -214,22 +214,6 @@ namespace FIVStandard
         private string ActiveFolder { get; set; } = "";//directory
         public string ActivePath { get; set; } = "";//directory + file name + extension
 
-        private string searchAutoOCRText = "";
-
-        public string SearchAutoOCRText
-        {
-            get
-            {
-                return searchAutoOCRText;
-            }
-            set
-            {
-                searchAutoOCRText = value;
-                OnPropertyChanged();
-            }
-        }
-
-
         private readonly FileSystemWatcher fsw = new FileSystemWatcher()
         {
             NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite
@@ -904,20 +888,6 @@ namespace FIVStandard
 
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
-            if (AutoOCRSearchBar.IsFocused)
-            {
-                if(e.Key == Key.Escape)
-                {
-                    Keyboard.ClearFocus();
-                }
-                else if(e.Key == Key.Enter || e.Key == Key.Return)
-                {
-                    OnSearchAutoOCR(null, null);
-                }
-
-                return;
-            }
-
             if (e.Key == Settings.GoForwardKey)
             {
                 selectedNew = true;
@@ -1019,33 +989,6 @@ namespace FIVStandard
             //GC.Collect();
         }
 
-        private void OnSearchAutoOCR(object sender, RoutedEventArgs e)
-        {
-            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
-
-            Keyboard.ClearFocus();
-
-            int L = ImagesDataView.Count;
-            int LCounter = L-1;
-            for (int i = ImagesDataView.CurrentPosition; LCounter > 0; i++)
-            {
-                Console.WriteLine("STARTING SEARCH..." + i);
-                if (i > L) i = 0;//loop back to first image of the list
-
-                if (Tools.FindContainTextInImage(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName), SearchAutoOCRText))
-                {
-                    ImagesDataView.MoveCurrentToPosition(i);
-                    //thumbnailList.SelectedIndex = ImagesDataView.CurrentPosition;
-
-                    ActiveFile = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
-                    ActivePath = Path.Combine(ActiveFolder, activeFile);
-
-                    break;
-                }
-                LCounter--;
-            }
-        }
-
         private void OnShortcutClick(object sender, RoutedEventArgs e)
         {
             editingButton = (Button)sender;
@@ -1139,14 +1082,14 @@ namespace FIVStandard
             me.Position = new TimeSpan(0, 0, 1);
             me.Play();
         }*/
-            #endregion
+        #endregion
 
-            /*private int ParseStringToOnlyInt(string input)
-            {
-                return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
-            }*/
+        /*private int ParseStringToOnlyInt(string input)
+        {
+            return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
+        }*/
 
-            #region INotifyPropertyChanged
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged([CallerMemberName] string name = null)

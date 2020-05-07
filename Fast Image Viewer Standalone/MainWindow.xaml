@@ -236,29 +236,6 @@
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         />
 
-                    <TextBox
-                        x:Name="AutoOCRSearchBar"
-                        Width="80"
-                        Margin="0,10,145,0"
-                        Padding="0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        IsTabStop="False"
-                        Text="{Binding SearchAutoOCRText, Mode=TwoWay}"
-                        />
-                    <Button
-                        Width="30"
-                        Margin="0,10,113,0"
-                        Padding="0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Click="OnSearchAutoOCR"
-                        Content="🔎"
-                        Focusable="False"
-                        IsTabStop="False"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        />
-
                     <Button
                         Width="75"
                         Margin="0,10,10,0"

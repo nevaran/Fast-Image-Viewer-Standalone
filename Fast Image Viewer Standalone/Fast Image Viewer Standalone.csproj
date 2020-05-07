@@ -78,9 +78,6 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ChineseTraditional, Version=4.0.0.20746, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.ChineseTraditional.4.4.4.1\lib\net40\ChineseTraditional.dll</HintPath>
-    </Reference>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
@@ -93,56 +90,8 @@
     <Reference Include="Gu.Wpf.Localization, Version=6.4.3.0, Culture=neutral, PublicKeyToken=63b557f19697202e, processorArchitecture=MSIL">
       <HintPath>..\packages\Gu.Wpf.Localization.6.4.3.0\lib\net45\Gu.Wpf.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="IronOcr, Version=4.4.0.21181, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.4.4.0\lib\net40\IronOcr.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Arabic, Version=4.4.4.18393, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Arabic.4.4.4.11\lib\net40\IronOcr.Arabic.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.ChineseSimplified, Version=4.0.0.20746, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.ChineseSimplified.4.4.4.1\lib\net40\IronOcr.ChineseSimplified.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Danish, Version=4.0.0.20749, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Danish.4.4.4.1\lib\net40\IronOcr.Danish.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Finnish, Version=4.0.0.20748, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Finnish.4.4.4.1\lib\net40\IronOcr.Finnish.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.French, Version=4.0.0.20747, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.French.4.4.4.1\lib\net40\IronOcr.French.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.German, Version=4.0.0.20745, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.German.4.4.4.1\lib\net40\IronOcr.German.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Hebrew, Version=4.0.0.20748, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Hebrew.4.4.4.1\lib\net40\IronOcr.Hebrew.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.International, Version=4.4.4.22148, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ocr.4.4.4.11\lib\net40\IronOcr.International.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Italian, Version=4.0.0.20748, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Italian.4.4.4.1\lib\net40\IronOcr.Italian.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Japanese, Version=4.0.0.20747, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Japanese.4.4.4.1\lib\net40\IronOcr.Japanese.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Korean, Version=4.0.0.20746, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Korean.4.4.4.1\lib\net40\IronOcr.Korean.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Norwegian, Version=4.0.0.20748, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Norwegian.4.4.4.1\lib\net40\IronOcr.Norwegian.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Portuguese, Version=4.0.0.15217, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Portuguese.4.4.4.1\lib\net40\IronOcr.Portuguese.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Russian, Version=4.0.0.20748, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Russian.4.4.4.1\lib\net40\IronOcr.Russian.dll</HintPath>
-    </Reference>
-    <Reference Include="IronOcr.Spanish, Version=4.0.0.20747, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronOcr.Languages.Spanish.4.4.4.1\lib\net40\IronOcr.Spanish.dll</HintPath>
-    </Reference>
-    <Reference Include="Magick.NET-Q8-AnyCPU, Version=7.16.1.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
-      <HintPath>..\packages\Magick.NET-Q8-AnyCPU.7.16.1\lib\net40\Magick.NET-Q8-AnyCPU.dll</HintPath>
+    <Reference Include="Magick.NET-Q8-AnyCPU, Version=7.15.5.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET-Q8-AnyCPU.7.15.5\lib\net40\Magick.NET-Q8-AnyCPU.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
@@ -309,6 +258,9 @@
     <Analyzer Include="..\packages\Gu.Localization.Analyzers.6.4.3.0\analyzers\dotnet\cs\Gu.Localization.Analyzers.dll" />
     <Analyzer Include="..\packages\Gu.Localization.Analyzers.6.4.3.0\analyzers\dotnet\cs\Gu.Roslyn.AnalyzerExtensions.dll" />
     <Analyzer Include="..\packages\Gu.Localization.Analyzers.6.4.3.0\analyzers\dotnet\cs\Gu.Roslyn.CodeFixExtensions.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="EncryptIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
