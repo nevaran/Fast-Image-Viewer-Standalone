@@ -237,6 +237,8 @@ namespace FIVStandard
 
         public MainWindow()
         {
+            //SingleInstance();//TODO: find way to send argument between programs
+
             InitializeComponent();
 
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
@@ -270,6 +272,107 @@ namespace FIVStandard
             //AppWindow = this;//used for debugging ZoomBorder
         }
 
+        /*Mutex fivMutex;
+        private void SingleInstance()
+        {
+            //dont allow more than one instance of the app
+            fivMutex = new Mutex(true, "4b7ae177-8698-4713-b655-ee64c1106aea", out bool aIsNewInstance);//GUID - 4b7ae177-8698-4713-b655-ee64c1106aea
+            if (!aIsNewInstance)
+            {
+                string[] args = Environment.GetCommandLineArgs();
+
+                if (args.Length > 0)//get startup path
+                {
+                    //Path.GetDirectoryName(args[0]);
+                    if (args.Length > 1)//opened file
+                    {
+                        OpenNewFile(args[1]);
+                    }
+                }
+
+                //MessageBox.Show("Already an instance is running...");
+                App.Current.Shutdown();
+            }
+        }
+
+        private void ServerInstance()
+        {
+            try
+            {
+                IPAddress ipAd = IPAddress.Parse("127.0.0.1");
+                // use local m/c IP address, and 
+                // use the same in the client
+
+                //Initializes the Listener
+                TcpListener myList = new TcpListener(ipAd, 6969);
+
+                //Start Listeneting at the specified port
+                myList.Start();
+
+                Console.WriteLine("The server is running at port 8001...");
+                Console.WriteLine("The local End point is  :" + myList.LocalEndpoint);
+                Console.WriteLine("Waiting for a connection.....");
+
+                Socket s = myList.AcceptSocket();
+                Console.WriteLine("Connection accepted from " + s.RemoteEndPoint);
+
+                byte[] b = new byte[255];
+                int k = s.Receive(b);
+                Console.WriteLine("Recieved...");
+                for (int i = 0; i < k; i++)
+                    Console.Write(Convert.ToChar(b[i]));
+
+                b.ToString();
+
+                ASCIIEncoding asen = new ASCIIEncoding();
+                s.Send(asen.GetBytes("The string was recieved by the server."));
+                Console.WriteLine("\nSent Acknowledgement");
+                //clean up
+                s.Close();
+                myList.Stop();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error..... " + e.StackTrace);
+            }
+        }
+
+        private void ClientInstance(string msg)
+        {
+            try
+            {
+                TcpClient tcpclnt = new TcpClient();
+                Console.WriteLine("Connecting.....");
+
+                tcpclnt.Connect("127.0.0.1", 6969);
+                // use the ipaddress as in the server program
+
+                Console.WriteLine("Connected");
+
+                Stream stm = tcpclnt.GetStream();
+
+                ASCIIEncoding asen = new ASCIIEncoding();
+                byte[] ba = asen.GetBytes(msg);
+                Console.WriteLine("Transmitting.....");
+
+                stm.Write(ba, 0, ba.Length);
+
+                byte[] bb = new byte[255];
+                int k = stm.Read(bb, 0, 255);
+
+                for (int i = 0; i < k; i++)
+                    Console.Write(Convert.ToChar(bb[i]));
+
+                tcpclnt.Close();
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine("Error..... " + e.StackTrace);
+            }
+        }*/
+
         private async void OnAppLoaded(object sender, RoutedEventArgs e)
         {
             if (Settings.CheckForUpdatesStartToggle)
@@ -288,11 +391,11 @@ namespace FIVStandard
 
                 OpenNewFile(path);
 #endif
-            }
 
-            if (args.Length > 1)
-            {
-                OpenNewFile(args[1]);
+                if (args.Length > 1)
+                {
+                    OpenNewFile(args[1]);
+                }
             }
 
             /*notifier.ShowInformation("");
