@@ -28,8 +28,14 @@ rotate image buttons
 
 -----------------
 
+add window state save ( maximized, size, position(?) )
+
+add support to copy to clipboard the current gif/animation frame viewed
+
 switch to json saving of settings
 
+add options for up and down arrow keys to scrub through the thumbnail images vertically
 
+fix installed (inno setup) not associating program with file types fully
 
 -----------------

@@ -781,7 +781,10 @@ namespace FIVStandard
             if (ImageItem is null || !File.Exists(ActivePath)) return;
 
             if (ImageItem.IsAnimated)
+            {
+                //ToClipboard.GifCopyToClipboard(MediaSource);
                 ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaSource));
+            }
             else
                 ToClipboard.ImageCopyToClipboard(ImageSource);
         }

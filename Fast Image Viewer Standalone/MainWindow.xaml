@@ -57,12 +57,14 @@
         <Controls:WindowCommands
             Focusable="False"
             IsTabStop="False"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
             <Button
                 Click="OnDonateClick"
                 Content="{localized:Static p:Resources.Donate}"
                 Focusable="False"
                 IsTabStop="False"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 />
             <Button
                 Click="OnCheckUpdateClick"
@@ -70,6 +72,7 @@
                 Focusable="False"
                 IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
                 IsTabStop="False"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
@@ -82,6 +85,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Orientation="Horizontal"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
 
             <Border
@@ -90,6 +94,7 @@
                 Margin="0,0,5,0"
                 VerticalAlignment="Center"
                 Background="#00000000"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{localized:Static p:Resources.DarkModeOnTooltip}"
                 Visibility="{Binding Settings.DarkModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 >
@@ -97,6 +102,7 @@
                 <Path
                     Data="M16,20 C16.3453,20 16.6803809,19.9562469 17.0000012,19.8739822 C15.2747721,19.429939 14,17.8638391 14,16 C14,14.1361609 15.2747721,12.570061 17.0000012,12.1260178 C16.6803809,12.0437531 16.3453,12 16,12 C13.7908609,12 12,13.7908609 12,16 C12,18.2091391 13.7908609,20 16,20 Z M16,22 C12.6862913,22 10,19.3137087 10,16 C10,12.6862913 12.6862913,10 16,10 C19.3137087,10 22,12.6862913 22,16 C22,19.3137087 19.3137087,22 16,22 Z M16,22"
                     Fill="{DynamicResource AccentColorBrush}"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     Stretch="Uniform"
                     />
             </Border>
@@ -106,12 +112,14 @@
                 Margin="0,0,5,0"
                 VerticalAlignment="Center"
                 Background="#00000000"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{localized:Static p:Resources.StretchOnTooltip}"
                 Visibility="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 >
                 <Path
                     Data="M20,2H4C2.89,2 2,2.89 2,4V20C2,21.11 2.89,22 4,22H20C21.11,22 22,21.11 22,20V4C22,2.89 21.11,2 20,2M9,19H5V15L6.29,16.29L7.83,14.75L9.25,16.17L7.71,17.71M7.83,9.25L6.29,7.71L5,9V5H9L7.71,6.29L9.25,7.83M19,19H15L16.29,17.71L14.75,16.17L16.17,14.75L17.71,16.29L19,15M19,9L17.71,7.71L16.17,9.25L14.75,7.83L16.29,6.29L15,5H19"
                     Fill="{DynamicResource AccentColorBrush}"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     Stretch="Uniform"
                     />
             </Border>
@@ -121,12 +129,14 @@
                 Margin="0,0,5,0"
                 VerticalAlignment="Center"
                 Background="#00000000"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{localized:Static p:Resources.DownsizeOnTooltip}"
                 Visibility="{Binding Settings.DownsizeImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 >
                 <Path
                     Data="M21,15H23V17H21V15M21,11H23V13H21V11M23,19H21V21C22,21 23,20 23,19M13,3H15V5H13V3M21,7H23V9H21V7M21,3V5H23C23,4 22,3 21,3M1,7H3V9H1V7M17,3H19V5H17V3M17,19H19V21H17V19M3,3C2,3 1,4 1,5H3V3M9,3H11V5H9V3M5,3H7V5H5V3M1,11V19A2,2 0 0,0 3,21H15V11H1M3,19L5.5,15.79L7.29,17.94L9.79,14.72L13,19H3Z"
                     Fill="{DynamicResource AccentColorBrush}"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     Stretch="Uniform"
                     />
             </Border>
@@ -136,12 +146,14 @@
                 Margin="0,0,5,0"
                 VerticalAlignment="Center"
                 Background="#00000000"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{localized:Static p:Resources.ThumbnailListOnTooltip}"
                 Visibility="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 >
                 <Path
                     Data="M4 14h4v-4H4v4zm0 5h4v-4H4v4zM4 9h4V5H4v4zm5 5h12v-4H9v4zm0 5h12v-4H9v4zM9 5v4h12V5H9z"
                     Fill="{DynamicResource AccentColorBrush}"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     Stretch="Uniform"
                     />
             </Border>
@@ -157,6 +169,7 @@
             <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.General}"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <Grid
                     Focusable="False"
@@ -168,24 +181,31 @@
                             <MenuItem
                                 Click="OnOpenFileLocation"
                                 Header="{localized:Static p:Resources.OpenFileLocation}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <MenuItem
                                 Click="OnCopyToClipboard"
                                 Header="{localized:Static p:Resources.CopyImageToClipboard}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <MenuItem
                                 Click="OnCutToClipboard"
                                 Header="{localized:Static p:Resources.CutFileToClipboard}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Separator />
                             <MenuItem
                                 Click="OnDeleteClick"
                                 Header="{localized:Static p:Resources.Delete}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                         </ContextMenu>
                     </Grid.ContextMenu>
 
-                    <Separator VerticalAlignment="Top" />
+                    <Separator
+                        VerticalAlignment="Top"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        />
 
                     <!--  Image Information  -->
                     <Border
@@ -269,6 +289,7 @@
                             IsTextSearchEnabled="False"
                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                             ItemsSource="{Binding ImagesDataView, Mode=OneWay}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             SelectedItem="{Binding ImageItem, Mode=TwoWay}"
                             SelectionChanged="ThumbnailList_SelectionChanged"
                             Visibility="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
@@ -281,6 +302,7 @@
                                         Columns="{Binding Settings.ThumbnailListColumns, Mode=OneWay}"
                                         Focusable="False"
                                         IsItemsHost="True"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
@@ -290,17 +312,20 @@
                                         BorderBrush="{DynamicResource AccentColorBrush}"
                                         BorderThickness="2"
                                         Focusable="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         >
                                         <StackPanel
                                             Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                             Height="{Binding Settings.ThumbnailSizePlusText, Mode=OneWay}"
                                             Focusable="False"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             ToolTip="{Binding ThumbnailName, Mode=OneWay}"
                                             >
                                             <TextBlock
                                                 Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 Focusable="False"
                                                 FontSize="10"
+                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Text="{Binding ThumbnailName, Mode=OneWay}"
                                                 TextAlignment="Center"
                                                 TextTrimming="CharacterEllipsis"
@@ -333,6 +358,7 @@
                                                 VerticalAlignment="Bottom"
                                                 Background="#00000000"
                                                 Focusable="False"
+                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 ToolTip="{localized:Static p:Resources.DownsizeOnTooltip}"
                                                 Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                                                 >
@@ -340,6 +366,7 @@
                                                     Data="M8.00684834,10 C6.34621185,10 5,11.3422643 5,12.9987856 L5,20.0012144 C5,21.6573979 6.33599155,23 8.00684834,23 L24.9931517,23 C26.6537881,23 28,21.6577357 28,20.0012144 L28,12.9987856 C28,11.3426021 26.6640085,10 24.9931517,10 L8.00684834,10 L8.00684834,10 Z M13,17 L13,19 L10.9998075,19 C10.4437166,19 10,18.5523709 10,18.0001925 L10,14.9998075 C10,14.4437166 10.4476291,14 10.9998075,14 L14,14 L14,13 L11.0048815,13 C9.89761602,13 9,13.8865548 9,15.0059191 L9,17.9940809 C9,19.1019194 9.8938998,20 11.0048815,20 L14,20 L14,19.25 L14,19.25 L14,17 L14,16 L11,16 L11,17 L13,17 L13,17 Z M16,14 L16,19 L15,19 L15,20 L18,20 L18,19 L17,19 L17,14 L18,14 L18,13 L15,13 L15,14 L16,14 L16,14 Z M20,16 L20,14 L24,14 L24,13 L19,13 L19,20 L20,20 L20,17 L23,17 L23,16 L20,16 L20,16 Z"
                                                     Fill="{DynamicResource AccentColorBrush}"
                                                     Focusable="False"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                     Stretch="Uniform"
                                                     StrokeThickness="1"
                                                     />
@@ -403,6 +430,7 @@
                     <StackPanel
                         Focusable="False"
                         Orientation="Vertical"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
 
                         <Grid
@@ -439,6 +467,7 @@
                             <Separator
                                 Grid.ColumnSpan="3"
                                 VerticalAlignment="Top"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
                             <!--  Reset Settings Button  -->
@@ -453,6 +482,7 @@
                                 Focusable="False"
                                 FontSize="14"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
                             <!--  Language Dropdown  -->
@@ -461,6 +491,7 @@
                                 Margin="20,0,0,0"
                                 VerticalAlignment="Top"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.Language}"
                                 TextAlignment="Left"
                                 ToolTip="{localized:Static p:Resources.ShownLanguageInfo}"
@@ -476,6 +507,7 @@
                                 IsTabStop="False"
                                 ItemsSource="{Binding Settings.GetLanguageString, Mode=OneTime}"
                                 Orientation="Vertical"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SelectedIndex="{Binding Settings.ShownLanguageDropIndex, Mode=TwoWay}"
                                 />
 
@@ -491,6 +523,7 @@
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.DarkModeInfo}"
                                 />
 
@@ -500,6 +533,7 @@
                                 Margin="20,40,0,0"
                                 VerticalAlignment="Top"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ThemeAccent}"
                                 TextAlignment="Left"
                                 ToolTip="{localized:Static p:Resources.ThemeAccentInfo}"
@@ -515,6 +549,7 @@
                                 IsTabStop="False"
                                 ItemsSource="{Binding Settings.ThemeAccents, Mode=OneWay}"
                                 Orientation="Vertical"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SelectedIndex="{Binding Settings.ThemeAccentDropIndex, Mode=TwoWay}"
                                 >
                                 <Controls:SplitButton.ItemContainerStyle>
@@ -537,6 +572,7 @@
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 ToolTip="{localized:Static p:Resources.StretchImageInfo}"
                                 />
 
@@ -552,6 +588,7 @@
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.DownsizeImageInfo}"
                                 />
 
@@ -561,6 +598,7 @@
                                 Margin="20,0,0,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ZoomSensitivity}"
                                 TextAlignment="Left"
                                 ToolTip="{localized:Static p:Resources.ZoomSensitivityInfo}"
@@ -570,6 +608,7 @@
                                 Margin="10,70,0,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{Binding Settings.ZoomSensitivityString, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
@@ -583,6 +622,7 @@
                                 LargeChange="0.05"
                                 Maximum="2"
                                 Minimum="0.1"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 TickFrequency="0.05"
                                 Value="{Binding Settings.ZoomSensitivity, Mode=TwoWay}"
                                 />
@@ -599,6 +639,7 @@
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.CheckForUpdatesStartToggleInfo}"
                                 />
 
@@ -615,6 +656,7 @@
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.AutoupdateToggleInfo}"
                                 />
 
@@ -630,6 +672,7 @@
                                 IsTabStop="False"
                                 OffLabel="{localized:Static p:Resources.Off}"
                                 OnLabel="{localized:Static p:Resources.On}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.EnableThumbnailListInfo}"
                                 />
 
@@ -639,6 +682,7 @@
                                 Margin="60,0,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ThumbnailSize}"
                                 TextAlignment="Left"
                                 ToolTip="{localized:Static p:Resources.ThumbnailSizeInfo}"
@@ -648,6 +692,7 @@
                                 Margin="50,70,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
@@ -662,6 +707,7 @@
                                 LargeChange="5"
                                 Maximum="120"
                                 Minimum="40"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SmallChange="5"
                                 TickFrequency="5"
                                 Value="{Binding Settings.ThumbnailSize, Mode=TwoWay}"
@@ -673,6 +719,7 @@
                                 Margin="60,0,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ThumbnailRes}"
                                 TextAlignment="Left"
                                 ToolTip="{localized:Static p:Resources.ThumbnailResInfo}"
@@ -682,6 +729,7 @@
                                 Margin="50,70,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{Binding Settings.ThumbnailRes, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
@@ -696,6 +744,7 @@
                                 LargeChange="5"
                                 Maximum="120"
                                 Minimum="40"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SmallChange="5"
                                 Thumb.DragCompleted="ThumbnailSlider_DragCompleted"
                                 Thumb.DragStarted="ThumbnailSlider_DragStarted"
@@ -709,6 +758,7 @@
                                 Margin="60,0,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ThumbnailListColumns}"
                                 TextAlignment="Left"
                                 ToolTip="{localized:Static p:Resources.ThumbnailListColumnsInfo}"
@@ -718,6 +768,7 @@
                                 Margin="50,70,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{Binding Settings.ThumbnailListColumns, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
@@ -733,6 +784,7 @@
                                 LargeChange="1"
                                 Maximum="3"
                                 Minimum="1"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SmallChange="1"
                                 Thumb.DragStarted="ThumbnailSlider_DragStarted"
                                 TickFrequency="1"
@@ -743,9 +795,11 @@
                             <StackPanel
                                 Grid.Row="13"
                                 Margin="20,40,0,0"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 >
                                 <TextBlock
                                     FontWeight="DemiBold"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{localized:Static p:Resources.FileType}"
                                     TextAlignment="Left"
                                     ToolTip="{localized:Static p:Resources.FileTypeInfo}"
@@ -762,6 +816,7 @@
                                     Focusable="False"
                                     IsChecked="{Binding Settings.FilterJpg, Mode=TwoWay}"
                                     IsTabStop="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
                                 <CheckBox
                                     Margin="0,5,5,0"
@@ -769,6 +824,7 @@
                                     Focusable="False"
                                     IsChecked="{Binding Settings.FilterJpeg, Mode=TwoWay}"
                                     IsTabStop="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
                                 <CheckBox
                                     Margin="0,5,5,0"
@@ -783,6 +839,7 @@
                                     Focusable="False"
                                     IsChecked="{Binding Settings.FilterGif, Mode=TwoWay}"
                                     IsTabStop="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
                                 <CheckBox
                                     Margin="0,5,5,0"
@@ -790,6 +847,7 @@
                                     Focusable="False"
                                     IsChecked="{Binding Settings.FilterBmp, Mode=TwoWay}"
                                     IsTabStop="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
                                 <CheckBox
                                     Margin="0,5,5,0"
@@ -797,6 +855,7 @@
                                     Focusable="False"
                                     IsChecked="{Binding Settings.FilterIco, Mode=TwoWay}"
                                     IsTabStop="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
                                 <CheckBox
                                     Margin="0,5,5,0"
@@ -804,6 +863,7 @@
                                     Focusable="False"
                                     IsChecked="{Binding Settings.FilterWebp, Mode=TwoWay}"
                                     IsTabStop="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
                             </StackPanel>
 
@@ -815,6 +875,7 @@
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="2"
@@ -823,6 +884,7 @@
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="3"
@@ -831,6 +893,7 @@
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="4"
@@ -839,6 +902,7 @@
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="5"
@@ -847,6 +911,7 @@
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="6"
@@ -855,6 +920,7 @@
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
                             <Border
@@ -864,6 +930,7 @@
                                 Margin="10,40,0,-40"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="8"
@@ -874,6 +941,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Background="{Binding Settings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="8"
@@ -883,6 +951,7 @@
                                 Margin="50,40,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{Binding Settings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
                             <Border
@@ -892,6 +961,7 @@
                                 Margin="10,40,0,-40"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="10"
@@ -902,6 +972,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Background="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
                                 Grid.Row="10"
@@ -911,6 +982,7 @@
                                 Margin="50,40,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
                             <Border
@@ -921,6 +993,7 @@
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
                             <!--  End Settings Grid  -->
@@ -928,7 +1001,7 @@
 
                         <!--  Shortcuts  -->
                         <Grid
-                            Margin="10"
+                            Margin="10,20,10,10"
                             Focusable="False"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
@@ -959,6 +1032,7 @@
                                 Width="2"
                                 HorizontalAlignment="Left"
                                 Background="{DynamicResource AccentColorBrush}"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
                             <TextBlock
@@ -967,6 +1041,7 @@
                                 Margin="0,0,0,10"
                                 Focusable="False"
                                 FontSize="30"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.Shortcuts}"
                                 />
 
@@ -975,6 +1050,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.PreviousImageShortcut}"
                                 />
                             <Button
@@ -987,6 +1063,7 @@
                                 Content="{Binding Settings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1001,6 +1078,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1010,6 +1088,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.NextImageShortcut}"
                                 />
                             <Button
@@ -1022,6 +1101,7 @@
                                 Content="{Binding Settings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1036,6 +1116,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1045,6 +1126,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.PauseAnimationShortcut}"
                                 />
                             <Button
@@ -1057,6 +1139,7 @@
                                 Content="{Binding Settings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1071,6 +1154,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1080,6 +1164,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.DeleteImageShortcut}"
                                 />
                             <Button
@@ -1092,6 +1177,7 @@
                                 Content="{Binding Settings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1106,6 +1192,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1115,6 +1202,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.StretchImageShortcut}"
                                 />
                             <Button
@@ -1127,6 +1215,7 @@
                                 Content="{Binding Settings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1141,6 +1230,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1150,6 +1240,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.DownsizeImageShortcut}"
                                 />
                             <Button
@@ -1162,6 +1253,7 @@
                                 Content="{Binding Settings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1176,6 +1268,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1185,6 +1278,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ExploreImageLocationShortcut}"
                                 />
                             <Button
@@ -1197,6 +1291,7 @@
                                 Content="{Binding Settings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1211,6 +1306,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1220,6 +1316,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.CopyImageToClipboard}"
                                 />
                             <Button
@@ -1232,6 +1329,7 @@
                                 Content="{Binding Settings.CopyImageToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.CopyImageToClipboardKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1246,6 +1344,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.CopyImageToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1255,6 +1354,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.CutFileToClipboard}"
                                 />
                             <Button
@@ -1267,6 +1367,7 @@
                                 Content="{Binding Settings.CutFileToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1281,6 +1382,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1290,6 +1392,7 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ShowThumbnailList}"
                                 />
                             <Button
@@ -1302,6 +1405,7 @@
                                 Content="{Binding Settings.ThumbnailListKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.ThumbnailListKey, Mode=TwoWay}"
                                 />
                             <Button
@@ -1316,6 +1420,7 @@
                                 Content="X"
                                 Focusable="False"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{localized:Static p:Resources.RemoveShortcut}"
                                 />
@@ -1329,6 +1434,7 @@
             <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.About}"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <ScrollViewer
                     Margin="5"
@@ -1354,6 +1460,7 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             Focusable="False"
+                            HorizontalScrollBarVisibility="Disabled"
                             IsTabStop="False"
                             VerticalScrollBarVisibility="Disabled"
                             >
@@ -1494,19 +1601,21 @@
             <Controls:MetroTabItem
                 Controls:ControlsHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.WhatsNew}"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <ScrollViewer
                     Margin="5,5,5,5"
                     Focusable="False"
-                    VerticalScrollBarVisibility="Auto"
                     >
                     <StackPanel
                         Focusable="False"
                         Orientation="Vertical"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
 
                         <TextBlock
                             Padding="10,0"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             Text="{Binding AppUpdater.UpdaterMessage, Mode=OneWay}"
                             TextAlignment="Center"
                             />
@@ -1536,12 +1645,14 @@
                                 Focusable="False"
                                 IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
                                 IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.DownloadLatestTooltip}"
                                 />
 
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 >
                                 <TextBlock.Inlines>
                                     <Run
@@ -1555,6 +1666,7 @@
                                 Grid.Row="2"
                                 Grid.Column="0"
                                 Padding="20,0,0,0"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{Binding AppUpdater.DownloadedChangelog, Mode=OneWay}"
                                 TextWrapping="Wrap"
                                 />

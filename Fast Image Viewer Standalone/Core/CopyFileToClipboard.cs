@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -14,6 +15,14 @@ namespace FIVStandard.Core
 
             Clipboard.Clear();
             Clipboard.SetImage(img);
+        }
+
+        public void GifCopyToClipboard(Uri img)
+        {
+            if (img is null) return;
+
+            Clipboard.Clear();
+            Clipboard.SetData(DataFormats.GetDataFormat("GIF").Name, img);
         }
 
         public void FileCopyToClipboard(string path)
