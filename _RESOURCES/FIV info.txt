@@ -28,6 +28,8 @@ rotate image buttons
 
 -----------------
 
+find a way to clear transparent background in gifs from glitching
+
 add window state save ( maximized, size, position(?) )
 
 add support to copy to clipboard the current gif/animation frame viewed

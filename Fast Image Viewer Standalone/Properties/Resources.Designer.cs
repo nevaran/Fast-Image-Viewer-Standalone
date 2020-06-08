@@ -647,7 +647,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The resolution (in pixels) of each thumbnail image. A lower number will reduce memory consumption and increase loading speed of each thumbnail. Default is 80. (40-120).
+        ///   Looks up a localized string similar to The resolution (in pixels) of each thumbnail image. A lower number will reduce memory consumption and increase loading speed of each thumbnail. Default is 80. (40-240).
         /// </summary>
         public static string ThumbnailResInfo {
             get {
@@ -665,7 +665,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the size of each item of the thumbnail list. Default is 80. (40-120).
+        ///   Looks up a localized string similar to Change the size of each item of the thumbnail list. Default is 80. (40-240).
         /// </summary>
         public static string ThumbnailSizeInfo {
             get {

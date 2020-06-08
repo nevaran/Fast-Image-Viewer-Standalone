@@ -284,10 +284,10 @@
     <value>Sletter</value>
   </data>
   <data name="ThumbnailSizeInfo" xml:space="preserve">
-    <value>Skift størrelse for hver ting i thumbnail listen. Default er 80. (40-120)</value>
+    <value>Skift størrelse for hver ting i thumbnail listen. Default er 80. (40-240)</value>
   </data>
   <data name="ThumbnailResInfo" xml:space="preserve">
-    <value>Opløsningen i pixels i hvert Thumbnail billede. Et lavere tal vil reducerer hukommelses brug og gør loading hastigheden langsommere ved hver thumbnail. Default er 80. (40-120)</value>
+    <value>Opløsningen i pixels i hvert Thumbnail billede. Et lavere tal vil reducerer hukommelses brug og gør loading hastigheden langsommere ved hver thumbnail. Default er 80. (40-240)</value>
   </data>
   <data name="EnableThumbnailList" xml:space="preserve">
     <value>Thumbnail List</value>

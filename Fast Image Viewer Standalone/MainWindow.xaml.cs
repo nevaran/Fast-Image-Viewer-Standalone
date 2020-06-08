@@ -482,7 +482,7 @@ namespace FIVStandard
 
                 if (!Tools.IsOfType(e.Name, Settings.FilterActiveArray) && dirty) return;//dont send a message if its not one of our files
 
-                if(ImageItem.ThumbnailName == e.Name)
+                if(ImageItem == null || ImageItem.ThumbnailName == e.Name)
                 {
                     ChangeImage(0, false);
                 }
@@ -614,7 +614,7 @@ namespace FIVStandard
                 }
             }
 
-            LoadAllThumbnailsAsync();
+            //LoadAllThumbnailsAsync();//TODO: get rid when lazy loading is implemented
         }
 
         private void FindIndexInFiles(string openedFile)
@@ -1180,6 +1180,15 @@ namespace FIVStandard
 
             Settings.ReloadFolderFlag = false;
             OpenNewFile(ActivePath);
+        }
+
+        private void OnThumbnailItemVisible(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem lbi = sender as ListBoxItem;
+            ThumbnailItemData dataItem = (ThumbnailItemData)lbi.Content;
+
+            Task.Run(() => Tools.LoadSingleThumbnail(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
+            //dataItem.ThumbnailImage = null;
         }
 
         /*private void ThumbnailMedia_OnClipEnded(object sender, RoutedEventArgs e)//used for list box's data template's media element control
