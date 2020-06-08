@@ -1,12 +1,10 @@
-﻿using Gu.Localization;
-using MahApps.Metro;
-using System;
+﻿using ControlzEx.Theming;
+using Gu.Localization;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Input;
 
 namespace FIVStandard.Core
@@ -235,7 +233,6 @@ namespace FIVStandard.Core
             }
         }
 
-        //public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
         public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
 
         private int _themeAccentDropIndex = 0;
@@ -250,6 +247,8 @@ namespace FIVStandard.Core
             {
                 _themeAccentDropIndex = value;
                 OnPropertyChanged();
+                OnPropertyChanged("CheckForUpdatesStartToggle");
+                OnPropertyChanged("EnableThumbnailListToggle");
 
                 OnAccentChanged();
             }
@@ -664,14 +663,18 @@ namespace FIVStandard.Core
 
         private void ChangeTheme()
         {
+            string theme;
             if (DarkModeToggle)
             {
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[ThemeAccentDropIndex]), ThemeManager.GetAppTheme("BaseDark"));
+                theme = "Dark";
+                //ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[ThemeAccentDropIndex]), ThemeManager.GetAppTheme("BaseDark"));
             }
             else
             {
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[ThemeAccentDropIndex]), ThemeManager.GetAppTheme("BaseLight"));
+                theme = "Light";
+                //ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[ThemeAccentDropIndex]), ThemeManager.GetAppTheme("BaseLight"));
             }
+            ThemeManager.Current.ChangeTheme(mainWindow, $"{theme}.{ThemeAccents[ThemeAccentDropIndex]}");
         }
 
         private void OnLanguageChanged()
@@ -696,28 +699,28 @@ namespace FIVStandard.Core
 
         private void OnZoomSensitivitySlider()
         {
-            Properties.Settings.Default.ZoomSensitivity = _zoomSensitivity;
+            Properties.Settings.Default.ZoomSensitivity = ZoomSensitivity;
         }
 
         private void OnEnableThumbnailChanged()
         {
-            Properties.Settings.Default.EnableThumbnailList = enableThumbnailListToggle;
+            Properties.Settings.Default.EnableThumbnailList = EnableThumbnailListToggle;
         }
 
         private void OnThumbnailSizeChanged()
         {
-            Properties.Settings.Default.ThumbnailSize = thumbnailSize;
+            Properties.Settings.Default.ThumbnailSize = ThumbnailSize;
         }
 
         private void OnThumbnailResChanged()
         {
-            Properties.Settings.Default.ThumbnailRes = thumbnailRes;
+            Properties.Settings.Default.ThumbnailRes = ThumbnailRes;
             mainWindow.ThumbnailResSlider_ValueChanged();
         }
 
         private void OnThumbnailListColumnChanged()
         {
-            Properties.Settings.Default.ThumbnailListColumns = thumbnailListColumns;
+            Properties.Settings.Default.ThumbnailListColumns = ThumbnailListColumns;
         }
 
         private void OnCheckForUpdatesStartToggle()
@@ -737,6 +740,7 @@ namespace FIVStandard.Core
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+        #endregion
 
         public void ClearActiveFilterList()
         {
@@ -802,6 +806,5 @@ namespace FIVStandard.Core
             savs.FilterIco = FilterIco;
             savs.FilterWebp = FilterWebp;
         }
-        #endregion
     }
 }

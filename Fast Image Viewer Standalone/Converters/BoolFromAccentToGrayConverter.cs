@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using static FIVStandard.Core.SettingsStore;
 
 namespace FIVStandard.Converters
 {
     class BoolFromAccentToGrayConverter : IValueConverter
     {
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Color c;
             if ((bool)value == true)
             {
-                var accentColor = MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor");
-                c = (Color)accentColor;
+                var accentColor = ControlzEx.Theming.ThemeManager.Current.GetTheme($"Dark.{Settings.ThemeAccents[Settings.ThemeAccentDropIndex]}", false).PrimaryAccentColor;
+                c = accentColor;
             }
             else
             {

@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace FIVStandard.Core
 {
     interface ISettings
@@ -6,5 +8,9 @@ namespace FIVStandard.Core
         bool DownsizeImageToggle { get; }
 
         int ThumbnailRes { get; }
+
+        List<string> ThemeAccents { get; }
+
+        int ThemeAccentDropIndex { get; }
     }
 }

@@ -22,6 +22,7 @@
     Loaded="OnAppLoaded"
     MouseDown="OnMouseDown"
     PreviewKeyDown="OnKeyDown"
+    TitleCharacterCasing="Normal"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d"
@@ -105,7 +106,7 @@
                 <!--  Data="M0 128v768h768V128H0zM64 832V192h640L64 832z"  -->
                 <Path
                     Data="M16,20 C16.3453,20 16.6803809,19.9562469 17.0000012,19.8739822 C15.2747721,19.429939 14,17.8638391 14,16 C14,14.1361609 15.2747721,12.570061 17.0000012,12.1260178 C16.6803809,12.0437531 16.3453,12 16,12 C13.7908609,12 12,13.7908609 12,16 C12,18.2091391 13.7908609,20 16,20 Z M16,22 C12.6862913,22 10,19.3137087 10,16 C10,12.6862913 12.6862913,10 16,10 C19.3137087,10 22,12.6862913 22,16 C22,19.3137087 19.3137087,22 16,22 Z M16,22"
-                    Fill="{DynamicResource AccentColorBrush}"
+                    Fill="{DynamicResource MahApps.Brushes.Accent}"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     Stretch="Uniform"
                     />
@@ -122,7 +123,7 @@
                 >
                 <Path
                     Data="M20,2H4C2.89,2 2,2.89 2,4V20C2,21.11 2.89,22 4,22H20C21.11,22 22,21.11 22,20V4C22,2.89 21.11,2 20,2M9,19H5V15L6.29,16.29L7.83,14.75L9.25,16.17L7.71,17.71M7.83,9.25L6.29,7.71L5,9V5H9L7.71,6.29L9.25,7.83M19,19H15L16.29,17.71L14.75,16.17L16.17,14.75L17.71,16.29L19,15M19,9L17.71,7.71L16.17,9.25L14.75,7.83L16.29,6.29L15,5H19"
-                    Fill="{DynamicResource AccentColorBrush}"
+                    Fill="{DynamicResource MahApps.Brushes.Accent}"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     Stretch="Uniform"
                     />
@@ -139,7 +140,7 @@
                 >
                 <Path
                     Data="M21,15H23V17H21V15M21,11H23V13H21V11M23,19H21V21C22,21 23,20 23,19M13,3H15V5H13V3M21,7H23V9H21V7M21,3V5H23C23,4 22,3 21,3M1,7H3V9H1V7M17,3H19V5H17V3M17,19H19V21H17V19M3,3C2,3 1,4 1,5H3V3M9,3H11V5H9V3M5,3H7V5H5V3M1,11V19A2,2 0 0,0 3,21H15V11H1M3,19L5.5,15.79L7.29,17.94L9.79,14.72L13,19H3Z"
-                    Fill="{DynamicResource AccentColorBrush}"
+                    Fill="{DynamicResource MahApps.Brushes.Accent}"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     Stretch="Uniform"
                     />
@@ -156,7 +157,7 @@
                 >
                 <Path
                     Data="M4 14h4v-4H4v4zm0 5h4v-4H4v4zM4 9h4V5H4v4zm5 5h12v-4H9v4zm0 5h12v-4H9v4zM9 5v4h12V5H9z"
-                    Fill="{DynamicResource AccentColorBrush}"
+                    Fill="{DynamicResource MahApps.Brushes.Accent}"
                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                     Stretch="Uniform"
                     />
@@ -171,7 +172,7 @@
             >
 
             <Controls:MetroTabItem
-                Controls:ControlsHelper.HeaderFontSize="16"
+                Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.General}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
@@ -313,14 +314,14 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border
-                                        BorderBrush="{DynamicResource AccentColorBrush}"
+                                        BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                                         BorderThickness="2"
                                         Focusable="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         >
                                         <StackPanel
                                             Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
-                                            Height="{Binding Settings   .ThumbnailSizePlusText, Mode=OneWay}"
+                                            Height="{Binding Settings.ThumbnailSizePlusText, Mode=OneWay}"
                                             Focusable="False"
                                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             ToolTip="{Binding ThumbnailName, Mode=OneWay}"
@@ -369,7 +370,7 @@
                                                 <Path
                                                     VerticalAlignment="Top"
                                                     Data="M8.00684834,10 C6.34621185,10 5,11.3422643 5,12.9987856 L5,20.0012144 C5,21.6573979 6.33599155,23 8.00684834,23 L24.9931517,23 C26.6537881,23 28,21.6577357 28,20.0012144 L28,12.9987856 C28,11.3426021 26.6640085,10 24.9931517,10 L8.00684834,10 L8.00684834,10 Z M13,17 L13,19 L10.9998075,19 C10.4437166,19 10,18.5523709 10,18.0001925 L10,14.9998075 C10,14.4437166 10.4476291,14 10.9998075,14 L14,14 L14,13 L11.0048815,13 C9.89761602,13 9,13.8865548 9,15.0059191 L9,17.9940809 C9,19.1019194 9.8938998,20 11.0048815,20 L14,20 L14,19.25 L14,19.25 L14,17 L14,16 L11,16 L11,17 L13,17 L13,17 Z M16,14 L16,19 L15,19 L15,20 L18,20 L18,19 L17,19 L17,14 L18,14 L18,13 L15,13 L15,14 L16,14 L16,14 Z M20,16 L20,14 L24,14 L24,13 L19,13 L19,20 L20,20 L20,17 L23,17 L23,16 L20,16 L20,16 Z"
-                                                    Fill="{DynamicResource AccentColorBrush}"
+                                                    Fill="{DynamicResource MahApps.Brushes.Accent}"
                                                     Focusable="False"
                                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                     Stretch="Uniform"
@@ -423,7 +424,7 @@
                 </Grid>
             </Controls:MetroTabItem>
             <Controls:MetroTabItem
-                Controls:ControlsHelper.HeaderFontSize="16"
+                Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.Settings}"
                 >
                 <!--  Custom content here  -->
@@ -523,10 +524,10 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.DarkMode}"
-                                IsChecked="{Binding Settings.DarkModeToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.DarkModeToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}"
+                                OffContent="{localized:Static p:Resources.Off}"
+                                OnContent="{localized:Static p:Resources.On}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.DarkModeInfo}"
                                 />
@@ -572,10 +573,10 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.StretchImage}"
-                                IsChecked="{Binding Settings.StretchImageToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.StretchImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}"
+                                OffContent="{localized:Static p:Resources.Off}"
+                                OnContent="{localized:Static p:Resources.On}"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 ToolTip="{localized:Static p:Resources.StretchImageInfo}"
                                 />
@@ -588,10 +589,10 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.DownsizeImage}"
-                                IsChecked="{Binding Settings.DownsizeImageToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.DownsizeImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}"
+                                OffContent="{localized:Static p:Resources.Off}"
+                                OnContent="{localized:Static p:Resources.On}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.DownsizeImageInfo}"
                                 />
@@ -609,7 +610,7 @@
                                 />
                             <TextBlock
                                 Grid.Row="6"
-                                Margin="10,70,0,0"
+                                Margin="10,80,0,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -639,10 +640,10 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.CheckForUpdatesStartToggle}"
-                                IsChecked="{Binding Settings.CheckForUpdatesStartToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.CheckForUpdatesStartToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}"
+                                OffContent="{localized:Static p:Resources.Off}"
+                                OnContent="{localized:Static p:Resources.On}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.CheckForUpdatesStartToggleInfo}"
                                 />
@@ -655,11 +656,11 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.AutoupdateToggle}"
-                                IsChecked="{Binding Settings.AutoupdateToggle, Mode=TwoWay}"
                                 IsEnabled="{Binding Settings.CheckForUpdatesStartToggle}"
+                                IsOn="{Binding Settings.AutoupdateToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}"
+                                OffContent="{localized:Static p:Resources.Off}"
+                                OnContent="{localized:Static p:Resources.On}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.AutoupdateToggleInfo}"
                                 />
@@ -672,10 +673,10 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{localized:Static p:Resources.EnableThumbnailList}"
-                                IsChecked="{Binding Settings.EnableThumbnailListToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.EnableThumbnailListToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffLabel="{localized:Static p:Resources.Off}"
-                                OnLabel="{localized:Static p:Resources.On}"
+                                OffContent="{localized:Static p:Resources.Off}"
+                                OnContent="{localized:Static p:Resources.On}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{localized:Static p:Resources.EnableThumbnailListInfo}"
                                 />
@@ -693,7 +694,7 @@
                                 />
                             <TextBlock
                                 Grid.Row="10"
-                                Margin="50,70,-20,0"
+                                Margin="50,80,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -730,7 +731,7 @@
                                 />
                             <TextBlock
                                 Grid.Row="11"
-                                Margin="50,70,-20,0"
+                                Margin="50,90,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -769,7 +770,7 @@
                                 />
                             <TextBlock
                                 Grid.Row="12"
-                                Margin="50,70,-20,0"
+                                Margin="50,90,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -880,7 +881,7 @@
                                 Width="2"
                                 Margin="10,0,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -889,7 +890,7 @@
                                 Width="2"
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -898,7 +899,7 @@
                                 Width="2"
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -907,7 +908,7 @@
                                 Width="2"
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -916,7 +917,7 @@
                                 Width="2"
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -925,7 +926,7 @@
                                 Width="2"
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
@@ -935,7 +936,7 @@
                                 Width="2"
                                 Margin="10,40,0,-40"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -966,7 +967,7 @@
                                 Width="2"
                                 Margin="10,40,0,-40"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -998,7 +999,7 @@
                                 Width="2"
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
@@ -1037,7 +1038,7 @@
                                 Grid.Column="0"
                                 Width="2"
                                 HorizontalAlignment="Left"
-                                Background="{DynamicResource AccentColorBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
@@ -1438,7 +1439,7 @@
                 </ScrollViewer>
             </Controls:MetroTabItem>
             <Controls:MetroTabItem
-                Controls:ControlsHelper.HeaderFontSize="16"
+                Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.About}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
@@ -1605,7 +1606,7 @@
                 </ScrollViewer>
             </Controls:MetroTabItem>
             <Controls:MetroTabItem
-                Controls:ControlsHelper.HeaderFontSize="16"
+                Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{localized:Static p:Resources.WhatsNew}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
