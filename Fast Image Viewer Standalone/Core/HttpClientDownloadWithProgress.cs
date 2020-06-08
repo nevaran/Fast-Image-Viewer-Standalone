@@ -36,7 +36,6 @@ public class HttpClientDownloadWithProgress : IDisposable
         response.EnsureSuccessStatusCode();
 
         var totalBytes = response.Content.Headers.ContentLength;
-        MessageBox.Show(totalBytes.ToString());
 
         using var contentStream = await response.Content.ReadAsStreamAsync();
         await ProcessContentStream(totalBytes, contentStream);

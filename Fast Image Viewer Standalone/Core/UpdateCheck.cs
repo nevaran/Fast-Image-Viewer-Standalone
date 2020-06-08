@@ -245,8 +245,8 @@ namespace FIVStandard.Core
                 using var client = new HttpClientDownloadWithProgress(setupURL, Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"));
                 client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
                 {
-                    //string info = $"{progressPercentage}%\n{totalBytesDownloaded / 1048576}/{(totalFileSize / 1048576)}mB";
-                    string info = $"{totalBytesDownloaded / 1024}kB";//1048576 = mB
+                    string info = $"{progressPercentage}%\n{totalBytesDownloaded / 1048576}/{(totalFileSize / 1048576)}mB";
+                    //string info = $"{totalBytesDownloaded / 1024}kB";//1048576 = mB
                     UpdaterMessage = $"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DownloadingInfo))}: {info}";
                 };
                 client.DownloadComplete += Client_DownloadComplete;
