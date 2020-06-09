@@ -214,6 +214,14 @@ namespace FIVStandard
         private string ActiveFolder { get; set; } = "";//directory
         public string ActivePath { get; set; } = "";//directory + file name + extension
 
+        public string DonationLink
+        {
+            get
+            {
+                return "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url";
+            }
+        }
+
         private readonly FileSystemWatcher fsw = new FileSystemWatcher()
         {
             NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite
@@ -907,7 +915,7 @@ namespace FIVStandard
         #region XAML events
         private void OnDonateClick(object sender, RoutedEventArgs e)
         {
-            ProcessStartInfo sInfo = new ProcessStartInfo("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
+            ProcessStartInfo sInfo = new ProcessStartInfo(DonationLink);
             Process.Start(sInfo);
         }
 
@@ -1189,6 +1197,12 @@ namespace FIVStandard
 
             Task.Run(() => Tools.LoadSingleThumbnail(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
             //dataItem.ThumbnailImage = null;
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            ProcessStartInfo sInfo = new ProcessStartInfo(e.Uri.ToString());
+            Process.Start(sInfo);
         }
 
         /*private void ThumbnailMedia_OnClipEnded(object sender, RoutedEventArgs e)//used for list box's data template's media element control

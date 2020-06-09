@@ -1456,27 +1456,32 @@
                         >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <FlowDocumentScrollViewer
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Focusable="False"
+                        <RichTextBox
+                            Padding="0,0,0,0"
+                            AcceptsReturn="False"
+                            AllowDrop="False"
+                            AutoWordSelection="False"
+                            BorderThickness="0"
+                            FontSize="16"
                             HorizontalScrollBarVisibility="Disabled"
+                            IsDocumentEnabled="True"
+                            IsReadOnly="True"
                             IsTabStop="False"
-                            VerticalScrollBarVisibility="Disabled"
+                            IsUndoEnabled="False"
+                            TextOptions.TextHintingMode="Fixed"
                             >
-                            <FlowDocument Focusable="False">
+                            <FlowDocument>
                                 <Paragraph>
                                     <Image
                                         Width="50"
                                         Height="50"
                                         Margin="0,0,30,0"
+                                        Focusable="False"
                                         Source="Resources/FIVIcon.ico"
                                         />
                                     <Run
@@ -1491,33 +1496,80 @@
                                 </Paragraph>
 
                                 <Paragraph>
+                                    <Run Text="Please consider" />
+                                    <Bold>
+                                        <Hyperlink
+                                            NavigateUri="{Binding DonationLink, Mode=OneTime}"
+                                            RequestNavigate="Hyperlink_RequestNavigate"
+                                            >
+                                            Donating.
+                                        </Hyperlink>
+                                    </Bold>
+                                    It helps a ton!</Paragraph>
+
+                                <Paragraph>
                                     Used libraries:
                                 </Paragraph>
 
                                 <List>
                                     <ListItem>
                                         <Paragraph>
-                                            <Bold>MahApps.Metro</Bold>
+                                            <Bold>
+                                                <Hyperlink
+                                                    NavigateUri="https://github.com/MahApps/MahApps.Metro"
+                                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                                    >
+                                                    MahApps.Metro
+                                                </Hyperlink>
+                                            </Bold>
                                             by Jan Karger, Dennis Daume, Brendan Forster, Paul Jenkins, Jake Ginnivan, Alex Mitchell</Paragraph>
                                     </ListItem>
                                     <ListItem>
                                         <Paragraph>
-                                            <Bold>ToastNotifications</Bold>
-                                            by DevCrew.pl Rafał Łopatka</Paragraph>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Paragraph>
-                                            <Bold>Fody</Bold>
-                                            by Fody</Paragraph>
-                                    </ListItem>
-                                    <ListItem>
-                                        <Paragraph>
-                                            <Bold>Gu.Localization</Bold>
+                                            <Bold>
+                                                <Hyperlink
+                                                    NavigateUri="https://github.com/GuOrg/Gu.Localization"
+                                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                                    >
+                                                    Gu.Localization
+                                                </Hyperlink>
+                                            </Bold>
                                             by Johan Larsson</Paragraph>
                                     </ListItem>
                                     <ListItem>
                                         <Paragraph>
-                                            <Bold>Magick.NET</Bold>
+                                            <Bold>
+                                                <Hyperlink
+                                                    NavigateUri="https://github.com/Fody/Fody"
+                                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                                    >
+                                                    Fody
+                                                </Hyperlink>
+                                            </Bold>
+                                            by Fody</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>
+                                                <Hyperlink
+                                                    NavigateUri="https://github.com/rafallopatka/ToastNotifications"
+                                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                                    >
+                                                    ToastNotifications
+                                                </Hyperlink>
+                                            </Bold>
+                                            by DevCrew.pl Rafał Łopatka</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>
+                                                <Hyperlink
+                                                    NavigateUri="https://github.com/dlemstra/Magick.NET"
+                                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                                    >
+                                                    Magick.NET
+                                                </Hyperlink>
+                                            </Bold>
                                             by Dirk Lemstra</Paragraph>
                                     </ListItem>
                                 </List>
@@ -1558,50 +1610,8 @@
                                         </Paragraph>
                                     </ListItem>
                                 </List>
-
-                                <!--<Table CellSpacing="0">
-                            <TableRowGroup>
-                                <TableRow FontWeight="Bold">
-                                    <TableCell />
-                                    <TableCell>
-                                        <Paragraph TextAlignment="Right">WinForms</Paragraph>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Paragraph TextAlignment="Right">WPF</Paragraph>
-                                    </TableCell>
-                                </TableRow>
-                            </TableRowGroup>
-
-                            <TableRowGroup>
-                                <TableRow>
-                                    <TableCell FontWeight="Bold">
-                                        <Paragraph>Lines of code</Paragraph>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Paragraph TextAlignment="Right">1.718.000</Paragraph>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Paragraph TextAlignment="Right">1.542.000</Paragraph>
-                                    </TableCell>
-                                </TableRow>
-                            </TableRowGroup>
-                            <TableRowGroup>
-                                <TableRow>
-                                    <TableCell FontWeight="Bold">
-                                        <Paragraph>Developers</Paragraph>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Paragraph TextAlignment="Right">633.000</Paragraph>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Paragraph TextAlignment="Right">981.000</Paragraph>
-                                    </TableCell>
-                                </TableRow>
-                            </TableRowGroup>
-                        </Table>
-                        <Paragraph FontStyle="Italic" Foreground="Silver">A table of made up WinForms/WPF numbers</Paragraph>-->
                             </FlowDocument>
-                        </FlowDocumentScrollViewer>
+                        </RichTextBox>
                     </Grid>
                 </ScrollViewer>
             </Controls:MetroTabItem>
