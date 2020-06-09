@@ -129,10 +129,8 @@ namespace FIVStandard.Core
         //private const string setupURL = "https://drive.google.com/uc?export=download&id=19Ds5qxy4QVFlFljIgZjHenXOA1qALQ8R";
         //private const string changelogURL = "https://drive.google.com/uc?export=download&id=1cqCjCSZpo3bSF8G9Wrk0fT-ypQY7RKMn";
 
-        //https://github.com/nevaran/Fast-Image-Viewer-Standalone/releases/latest/download/FIV.Setup.exe
-        //private const string setupURL = "https://github.com/nevaran/FIV-Storage/blob/master/FIV%20Setup.exe?raw=true";
-        private const string setupURL = "https://github.com/nevaran/FIV-Storage/releases/latest/download/FIV.Setup.exe";
-        private const string changelogURL = "https://github.com/nevaran/FIV-Storage/blob/master/VersionControl.txt?raw=true";
+        private const string setupURL = "https://github.com/nevaran/FIV/releases/latest/download/FIV.Setup.exe";
+        private const string changelogURL = "https://github.com/nevaran/FIV/releases/latest/download/VersionControl.txt";
 
         public UpdateCheck(MainWindow mw)
         {
