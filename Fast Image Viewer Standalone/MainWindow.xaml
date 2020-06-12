@@ -1572,6 +1572,18 @@
                                             </Bold>
                                             by Dirk Lemstra</Paragraph>
                                     </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>
+                                                <Hyperlink
+                                                    NavigateUri="https://github.com/XamlAnimatedGif/WpfAnimatedGif"
+                                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                                    >
+                                                    WpfAnimatedGif
+                                                </Hyperlink>
+                                            </Bold>
+                                            by Thomas Levesque</Paragraph>
+                                    </ListItem>
                                 </List>
 
                                 <Paragraph>
