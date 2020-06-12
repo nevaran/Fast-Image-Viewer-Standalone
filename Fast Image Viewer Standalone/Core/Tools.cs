@@ -18,39 +18,6 @@ namespace FIVStandard.Core
             imgTemp.BeginInit();
             imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting and cutting file from file lockup
             //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
-            
-            /*string ext = Path.GetExtension(path);
-
-            if(ext == ".webp")
-            {
-                try
-                {
-                    var fbytes = File.ReadAllBytes(path);
-                    var decoder = new Imazen.WebP.SimpleDecoder();
-                    var bitmap = decoder.DecodeFromBytes(fbytes, fbytes.Length);
-
-                    using MemoryStream stream = new MemoryStream();
-                    bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-                    imgTemp.StreamSource = stream;
-
-                    if (Settings.DownsizeImageToggle)
-                    {
-                        Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
-
-                        if (imgWidth > r.Width || imgHeight > r.Height)
-                            imgTemp.DecodePixelWidth = (int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height));
-                    }
-                    if (imgRotation != Rotation.Rotate0)
-                        imgTemp.Rotation = imgRotation;
-
-                    imgTemp.EndInit();
-                    imgTemp.Freeze();
-                }
-                catch
-                {
-
-                }
-            }*/
 
             using FileStream stream = File.OpenRead(path);
             imgTemp.StreamSource = stream;
