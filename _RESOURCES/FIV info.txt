@@ -1,3 +1,5 @@
+legend - *** completed; ^^ deprecated/abandoned
+
 -----------------OPTIONS
 
 ***Theme Accent colors
@@ -25,6 +27,7 @@ rotate image buttons
 ***Rotate image based on file orientation property
 ***localization/globalization
 ***FileSystemWatcher to update only changed files instead of updating whole list
+^^add options for up and down arrow keys to scrub through the thumbnail images vertically - DEPRECATED: thumbnail list is a fixed single column now
 
 -----------------
 
@@ -32,12 +35,10 @@ find a way to clear transparent background in gifs from glitching
 
 add window state save ( maximized, size, position(?) )
 
-add support to copy to clipboard the current gif/animation frame viewed
+add support to copy to clipboard the current gif/animation frame viewed (example for use in discord)
 
 switch to json saving of settings
 
-add options for up and down arrow keys to scrub through the thumbnail images vertically
-
-fix installed (inno setup) not associating program with file types fully
+fix installer (inno setup) not associating program with file types fully
 
 -----------------

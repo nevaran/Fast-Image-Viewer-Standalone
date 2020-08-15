@@ -258,10 +258,9 @@ namespace FIVStandard
             // these lines shouldn't be in this class
             Settings = new SettingsManager(this);
             SettingsStore.InitSettingsStore(Settings);
+            ThumbnailItemData.Settings = Settings;
 
             ToClipboard = new CopyFileToClipboard();
-
-            ThumbnailItemData.Settings = Settings;
 
             //create new watcher events for used directory
             //fsw.Changed += Fsw_Updated;
@@ -1196,7 +1195,6 @@ namespace FIVStandard
             ThumbnailItemData dataItem = (ThumbnailItemData)lbi.Content;
 
             Task.Run(() => Tools.LoadSingleThumbnail(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
-            //dataItem.ThumbnailImage = null;
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
