@@ -18,6 +18,7 @@ namespace FIVStandard.Core
             imgTemp.BeginInit();
             imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting and cutting file from file lockup
             //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
+            imgTemp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;//TODO: test if this option ruins something
 
             using FileStream stream = File.OpenRead(path);
             imgTemp.StreamSource = stream;
@@ -112,6 +113,7 @@ namespace FIVStandard.Core
                 imgTemp = new BitmapImage();
                 imgTemp.BeginInit();
                 imgTemp.CacheOption = BitmapCacheOption.OnLoad;
+                imgTemp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;//TODO: test if this option ruins something
                 imgTemp.StreamSource = stream;
 
                 imgTemp.DecodePixelWidth = Settings.ThumbnailRes;

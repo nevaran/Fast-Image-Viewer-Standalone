@@ -12,7 +12,7 @@ namespace FIVStandard.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -49,7 +49,7 @@ namespace FIVStandard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.3")]
         public double ZoomSensitivity {
             get {
                 return ((double)(this["ZoomSensitivity"]));
@@ -217,7 +217,7 @@ namespace FIVStandard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("80")]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
         public int ThumbnailSize {
             get {
                 return ((int)(this["ThumbnailSize"]));
@@ -229,7 +229,7 @@ namespace FIVStandard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("80")]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
         public int ThumbnailRes {
             get {
                 return ((int)(this["ThumbnailRes"]));

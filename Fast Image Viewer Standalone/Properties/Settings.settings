@@ -9,7 +9,7 @@
       <Value Profile="(Default)">4</Value>
     </Setting>
     <Setting Name="ZoomSensitivity" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">0.3</Value>
     </Setting>
     <Setting Name="ImageStretched" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -51,10 +51,10 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ThumbnailSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">80</Value>
+      <Value Profile="(Default)">120</Value>
     </Setting>
     <Setting Name="ThumbnailRes" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">80</Value>
+      <Value Profile="(Default)">120</Value>
     </Setting>
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
