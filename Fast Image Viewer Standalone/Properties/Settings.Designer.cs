@@ -382,5 +382,17 @@ namespace FIVStandard.Properties {
                 this["FilterWebp"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterWebm {
+            get {
+                return ((bool)(this["FilterWebm"]));
+            }
+            set {
+                this["FilterWebm"] = value;
+            }
+        }
     }
 }
