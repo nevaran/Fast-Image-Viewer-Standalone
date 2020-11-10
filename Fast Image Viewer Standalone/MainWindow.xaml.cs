@@ -487,7 +487,7 @@ namespace FIVStandard
                     }
                 }
 
-                if (!Tools.IsOfType(e.Name, Settings.FilterActiveArray) && dirty) return;//dont send a message if its not one of our files
+                if (!Tools.IsOfType(e.Name, Settings.FilterActiveArray) && !dirty) return;//dont send a message if its not one of our files
 
                 if(ImageItem == null || ImageItem.ThumbnailName == e.Name)
                 {
@@ -544,21 +544,17 @@ namespace FIVStandard
                                     ChangeImage(0, false);
                                 }
 
-                                //FindIndexInFiles(activeFile);
+                                notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.RenamedWatcher))} \"{e.OldName}\" -> \"{e.Name}\"");
                             }
                             else//file has been renamed to something with a non-valid extension - remove it from the list
                             {
                                 ImagesData.RemoveAt(i);
                                 ChangeImage(0, false);
-
-                                //FindIndexInFiles(activeFile);
                             }
 
                             break;
                         }
                     }
-
-                    notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.RenamedWatcher))} \"{e.OldName}\" -> \"{e.Name}\"");
                 }
                 catch
                 {
