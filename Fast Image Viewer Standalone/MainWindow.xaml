@@ -10,6 +10,7 @@
     xmlns:localized="http://gu.se/Localization"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:p="clr-namespace:FIVStandard.Properties"
+    xmlns:uc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
     xmlns:utils="clr-namespace:FIVStandard.Utils"
     x:Name="MainFIV"
     Title="{Binding TitleInformation, Mode=OneWay}"
@@ -407,7 +408,7 @@
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
                                 UnloadedBehavior="Manual"
                                 />-->
-                            <ffme:MediaElement
+                            <!--<ffme:MediaElement
                                 x:Name="MediaView"
                                 Background="Transparent"
                                 Focusable="False"
@@ -420,6 +421,13 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
                                 UnloadedBehavior="Close"
+                                />-->
+                            <uc:VideoView
+                                x:Name="MediaView"
+                                Background="Transparent"
+                                Focusable="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                Unloaded="Controls_Unloaded"
                                 />
                         </utils:ZoomBorder>
 
