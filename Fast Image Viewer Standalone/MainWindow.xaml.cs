@@ -882,7 +882,7 @@ namespace FIVStandard
             //ToClipboard.CopyToClipboard(ActivePath);
             if (ImageItem is null || !File.Exists(ActivePath)) return;
 
-            if (ImageItem.IsAnimated)
+            if (ImageItem.IsAnimated || Path.GetExtension(ImageItem.ThumbnailName) == ".webp")
             {
                 //ToClipboard.GifCopyToClipboard(MediaSource);
                 ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaView.Source));
