@@ -14,30 +14,38 @@ namespace FIVStandard.Core
     {
         public static BitmapImage LoadImage(string path, int imgWidth, int imgHeight, Rotation imgRotation)
         {
-            BitmapImage imgTemp = new BitmapImage();
-            imgTemp.BeginInit();
-            imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting and cutting file from file lockup
-            //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
-            imgTemp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;//TODO: test if this option ruins something
-
-            using FileStream stream = File.OpenRead(path);
-            imgTemp.StreamSource = stream;
-
-            if (Settings.DownsizeImageToggle)
+            try
             {
-                Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+                BitmapImage imgTemp = new BitmapImage();
 
-                if (imgWidth > r.Width || imgHeight > r.Height)
-                    imgTemp.DecodePixelWidth = (int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height));
+                imgTemp.BeginInit();
+                imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting and cutting file from file lockup
+                                                               //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
+                imgTemp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;//TODO: test if this option ruins something
+
+                using FileStream stream = File.OpenRead(path);
+                imgTemp.StreamSource = stream;
+
+                if (Settings.DownsizeImageToggle)
+                {
+                    Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+
+                    if (imgWidth > r.Width || imgHeight > r.Height)
+                        imgTemp.DecodePixelWidth = (int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height));
+                }
+                if (imgRotation != Rotation.Rotate0)
+                    imgTemp.Rotation = imgRotation;
+
+                imgTemp.EndInit();
+                imgTemp.Freeze();
+
+                //MessageBox.Show(imgTemp.HasAnimatedProperties.ToString());
+                return imgTemp;
             }
-            if (imgRotation != Rotation.Rotate0)
-                imgTemp.Rotation = imgRotation;
-
-            imgTemp.EndInit();
-            imgTemp.Freeze();
-
-            //MessageBox.Show(imgTemp.HasAnimatedProperties.ToString());
-            return imgTemp;
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -106,9 +114,10 @@ namespace FIVStandard.Core
         {
             if (!File.Exists(path)) return null;
 
-            BitmapImage imgTemp = null;
             try
             {
+                BitmapImage imgTemp = null;
+
                 using FileStream stream = File.OpenRead(path);
                 imgTemp = new BitmapImage();
                 imgTemp.BeginInit();
@@ -117,7 +126,6 @@ namespace FIVStandard.Core
                 imgTemp.StreamSource = stream;
 
                 imgTemp.DecodePixelWidth = Settings.ThumbnailRes;
-                //imgTemp.DecodePixelHeight = 80;
 
                 using (MagickImage image = new MagickImage(path))
                 {
@@ -133,13 +141,12 @@ namespace FIVStandard.Core
 
                 imgTemp.EndInit();
                 imgTemp.Freeze();
+                return imgTemp;
             }
             catch
             {
-
+                return null;
             }
-
-            return imgTemp;
         }
 
         /// <summary>
@@ -183,6 +190,7 @@ namespace FIVStandard.Core
         {
             ".gif" => true,
             //".webp" => true,
+            ".webm" => true,
             _ => false,
         };
 

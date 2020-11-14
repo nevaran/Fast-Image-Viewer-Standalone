@@ -556,6 +556,23 @@ namespace FIVStandard.Core
             }
         }
 
+        private bool filterWebm = true;
+
+        public bool FilterWebm
+        {
+            get
+            {
+                return filterWebm;
+            }
+            set
+            {
+                filterWebm = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
         public bool ReloadFolderFlag = false;//flag for confirming if the list of images needs to be reloaded (ie from changing what types to be displayed)
         #endregion
 
@@ -609,6 +626,7 @@ namespace FIVStandard.Core
             FilterBmp = savs.FilterBmp;
             FilterIco = savs.FilterIco;
             FilterWebp = savs.FilterWebp;
+            FilterWebm = savs.FilterWebm;
         }
 
         public void Save()
@@ -784,6 +802,10 @@ namespace FIVStandard.Core
             {
                 AddActiveFilter(".webp");
             }
+            if (filterWebm)
+            {
+                AddActiveFilter(".webm");
+            }
 
             FilterActiveArray = FilterActiveList.ToArray();
 
@@ -804,7 +826,7 @@ namespace FIVStandard.Core
             savs.FilterGif = FilterGif;
             savs.FilterBmp = FilterBmp;
             savs.FilterIco = FilterIco;
-            savs.FilterWebp = FilterWebp;
+            savs.FilterWebm = FilterWebm;
         }
     }
 }
