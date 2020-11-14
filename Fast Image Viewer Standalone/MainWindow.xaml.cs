@@ -1,5 +1,4 @@
-﻿using FFmpeg.AutoGen;
-using FIVStandard.Comparers;
+﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
 using FIVStandard.Views;
 using Gu.Localization;
@@ -26,7 +25,6 @@ using ToastNotifications;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
-using Unosquare.FFME;
 
 namespace FIVStandard
 {
@@ -82,6 +80,21 @@ namespace FIVStandard
         }
 
         #region Image Properties
+        private Uri mediaSource = null;
+
+        public Uri MediaSource
+        {
+            get
+            {
+                return mediaSource;
+            }
+            set
+            {
+                mediaSource = value;
+                OnPropertyChanged();
+            }
+        }
+
         private BitmapImage imageSource = null;
 
         public BitmapImage ImageSource
@@ -143,8 +156,6 @@ namespace FIVStandard
         public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
         #endregion
 
-        private double totalMediaTime = 0;
-
         public UpdateCheck AppUpdater { get; set; }
 
         public SettingsManager Settings { get; set; }
@@ -158,13 +169,13 @@ namespace FIVStandard
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
         //private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"/*, ".tiff", ".svg", ".mp4", ".avi" */ };//TODO: doesnt work: tiff svg
-        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
+        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO;*.WEBP"/* + "|All files (*.*)|*.*" */};
 
         private Button editingButton = null;//used for editing shortcuts
 
+        private bool IsPaused { get; set; } = false;//if the animated image (gif) is paused or not
+
         private bool isDeletingFile;
-        private bool forDeletiionMediaFlag = false;
-        private string forDeletionMediaPath = "";
 
         public bool ProgramLoaded = false;
 
@@ -237,8 +248,6 @@ namespace FIVStandard
             //SingleInstance();//TODO: find way to send argument between programs
 
             InitializeComponent();
-
-            Library.FFmpegLoadModeFlags = FFmpegLoadMode.MinimumFeatures;
 
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
             ImagesDataView.CustomSort = new NaturalOrderComparer(false);
@@ -383,8 +392,6 @@ namespace FIVStandard
             if (args.Length > 0)//get startup path
             {
                 StartupPath = Path.GetDirectoryName(args[0]);
-
-                Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
 
 #if DEBUG
                 string path = @"D:\Google Drive\temp\alltypes\3.png";
@@ -637,8 +644,7 @@ namespace FIVStandard
         private void ClearAllMedia()
         {
             ImagesData.Clear();
-            //MediaSource = null;
-            MediaView.Close();
+            MediaSource = null;
             ImageSource = null;
             ImgWidth = 0;
             ImgHeight = 0;
@@ -650,13 +656,15 @@ namespace FIVStandard
 
             if (ImageItem.IsAnimated)
             {
-                if (MediaView.IsPaused)
+                if (IsPaused)
                 {
                     MediaView.Play();
+                    IsPaused = false;
                 }
                 else
                 {
                     MediaView.Pause();
+                    IsPaused = true;
                 }
             }
         }
@@ -686,6 +694,24 @@ namespace FIVStandard
                 ImagesDataView.MoveCurrentToPosition(jumpIndex);
             }
 
+            //ImageItem = ((ThumbnailItemData)ImagesDataView.GetItemAt(jumpIndex));
+
+            //TODO: fix random removes if deleting and adding back files
+            /*if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ActiveFile)))//keep moving onward until we find an existing file
+            {
+                //remove nonexistent file from list - if there are more than 1
+                if (ImagesData.Count > 1)
+                {
+                    ImagesData.RemoveAt(ImagesDataView.CurrentPosition);
+                    Console.WriteLine($"ChangeImage- REMOVED ITEM {ActiveFile}@{ImagesDataView.CurrentPosition}");
+                    //SetTitleInformation();
+                }
+
+                ChangeImage(jumpIndex, false);
+
+                return;
+            }*/
+
             //keep moving onward until we find an existing file
             //TEMP REPLACEMENT (maybe)
             if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition)).ThumbnailName)))
@@ -714,26 +740,17 @@ namespace FIVStandard
 
             if (ImageItem.IsAnimated)
             {
-                MediaProgression.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                MediaProgression.Visibility = Visibility.Hidden;
-            }
-
-            if (ImageItem.IsAnimated || Path.GetExtension(ImageItem.ThumbnailName) == ".webp")
-            {
                 borderImg.Visibility = Visibility.Hidden;
                 border.Visibility = Visibility.Visible;
 
+                IsPaused = false;
+
                 Uri uri = new Uri(path, UriKind.Absolute);
 
-                //MediaSource = uri;
-
-                MediaView.Open(uri);
+                MediaSource = uri;
                 ImageSource = null;
 
-                //MediaView.Play();
+                MediaView.Play();
                 border.Reset();
             }
             else
@@ -749,8 +766,7 @@ namespace FIVStandard
                     ImageRotation = iRotation;
                 }
 
-                MediaView.Close();
-                //MediaSource = null;
+                MediaSource = null;
                 ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight, ImageRotation);
 
                 borderImg.Reset();
@@ -845,17 +861,6 @@ namespace FIVStandard
         {
             if (!File.Exists(path)) return Task.CompletedTask;
 
-            if(MediaView.HasVideo && forDeletiionMediaFlag == false)
-            {
-                IsDeletingFile = true;
-
-                forDeletionMediaPath = ActivePath;
-                forDeletiionMediaFlag = true;
-                MediaView.Close();
-            }
-
-            if (forDeletiionMediaFlag == true) return Task.CompletedTask;
-
             return Task.Run(() =>
             {
                 IsDeletingFile = true;
@@ -873,7 +878,6 @@ namespace FIVStandard
                 }
 
                 IsDeletingFile = false;
-                forDeletiionMediaFlag = false;
             });
         }
 
@@ -885,7 +889,7 @@ namespace FIVStandard
             if (ImageItem.IsAnimated)
             {
                 //ToClipboard.GifCopyToClipboard(MediaSource);
-                ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaView.Source));
+                ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaSource));
             }
             else
                 ToClipboard.ImageCopyToClipboard(ImageSource);
@@ -910,35 +914,20 @@ namespace FIVStandard
             Process.Start(sInfo);
         }
 
-        private void MediaView_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
+        private void OnClipEnded(object sender, RoutedEventArgs e)
+        {
+            MediaView.Position = new TimeSpan(0, 0, 1);
+            MediaView.Play();
+        }
+
+        private void OnClipOpened(object sender, RoutedEventArgs e)
         {
             if (ImagesData.Count > 0)
             {
-                //var (iWidth, iHeight, iRotation) = Tools.GetImageInformation(ActivePath, ImageItem);
-                ImgWidth = MediaView.NaturalVideoWidth;
-                ImgHeight = MediaView.NaturalVideoHeight;
-                ImageRotation = Rotation.Rotate0;
-
-                totalMediaTime = MediaView.NaturalDuration.Value.TotalMilliseconds;
-            }
-        }
-
-        private void MediaView_PositionChanged(object sender, Unosquare.FFME.Common.PositionChangedEventArgs e)
-        {
-            double currentTime = e.Position.TotalMilliseconds;
-            
-            if (totalMediaTime == 0 || currentTime == 0)
-                MediaProgression.Value = 0;
-            else
-                MediaProgression.Value = (currentTime / totalMediaTime) * 100;
-        }
-
-        private void MediaView_MediaClosed(object sender, EventArgs e)
-        {
-            if (forDeletiionMediaFlag == true)
-            {
-                forDeletiionMediaFlag = false;
-                DeleteToRecycleAsync(forDeletionMediaPath);
+                var (iWidth, iHeight, iRotation) = Tools.GetImageInformation(ActivePath, ImageItem);
+                ImgWidth = iWidth;
+                ImgHeight = iHeight;
+                ImageRotation = iRotation;
             }
         }
 
