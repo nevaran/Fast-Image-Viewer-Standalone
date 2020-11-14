@@ -3,7 +3,6 @@ using FIVStandard.Comparers;
 using FIVStandard.Core;
 using FIVStandard.Views;
 using Gu.Localization;
-using LibVLCSharp.Shared;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
@@ -144,6 +143,8 @@ namespace FIVStandard
         public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
         #endregion
 
+        private double totalMediaTime = 0;
+
         public UpdateCheck AppUpdater { get; set; }
 
         public SettingsManager Settings { get; set; }
@@ -237,7 +238,7 @@ namespace FIVStandard
 
             InitializeComponent();
 
-            //Library.FFmpegLoadModeFlags = FFmpegLoadMode.MinimumFeatures;
+            Library.FFmpegLoadModeFlags = FFmpegLoadMode.MinimumFeatures;
 
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
             ImagesDataView.CustomSort = new NaturalOrderComparer(false);
@@ -383,17 +384,7 @@ namespace FIVStandard
             {
                 StartupPath = Path.GetDirectoryName(args[0]);
 
-                LibVLCSharp.Shared.Core.Initialize(@$"{StartupPath}\libvlc\win-x64");
-                _libVLC = new LibVLC(enableDebugLogs: false);
-                _mediaPlayer = new MediaPlayer(_libVLC);
-                _mediaPlayer.Mute = true;
-
-                _mediaPlayer.PositionChanged += MediaPlayer_PositionChanged;
-                _mediaPlayer.EndReached += MediaPlayer_EndReached;
-                _mediaPlayer.MediaChanged += MediaPlayer_MediaChanged;
-
-                MediaView.MediaPlayer = _mediaPlayer;
-                //Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
+                Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
 
 #if DEBUG
                 string path = @"D:\Google Drive\temp\alltypes\3.png";
@@ -647,9 +638,7 @@ namespace FIVStandard
         {
             ImagesData.Clear();
             //MediaSource = null;
-            //MediaView.Close();
-            MediaView.MediaPlayer.Stop();
-            MediaView.MediaPlayer.Media.Dispose();
+            MediaView.Close();
             ImageSource = null;
             ImgWidth = 0;
             ImgHeight = 0;
@@ -661,13 +650,13 @@ namespace FIVStandard
 
             if (ImageItem.IsAnimated)
             {
-                if (MediaView.MediaPlayer.IsPlaying)
+                if (MediaView.IsPaused)
                 {
-                    MediaView.MediaPlayer.Play();
+                    MediaView.Play();
                 }
                 else
                 {
-                    MediaView.MediaPlayer.Pause();
+                    MediaView.Pause();
                 }
             }
         }
@@ -739,13 +728,12 @@ namespace FIVStandard
 
                 Uri uri = new Uri(path, UriKind.Absolute);
 
-                using (var media = new Media(_libVLC, uri))
-                {
-                    MediaView.MediaPlayer.Play(media);
-                }
+                //MediaSource = uri;
 
+                MediaView.Open(uri);
                 ImageSource = null;
 
+                //MediaView.Play();
                 border.Reset();
             }
             else
@@ -761,11 +749,7 @@ namespace FIVStandard
                     ImageRotation = iRotation;
                 }
 
-                if (MediaView.MediaPlayer.Media != null)
-                {
-                    MediaView.MediaPlayer.Stop();
-                    MediaView.MediaPlayer.Media.Dispose();
-                }
+                MediaView.Close();
                 //MediaSource = null;
                 ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight, ImageRotation);
 
@@ -861,14 +845,13 @@ namespace FIVStandard
         {
             if (!File.Exists(path)) return Task.CompletedTask;
 
-            if(MediaView.MediaPlayer.Media != null && forDeletiionMediaFlag == false)
+            if(MediaView.HasVideo && forDeletiionMediaFlag == false)
             {
                 IsDeletingFile = true;
 
                 forDeletionMediaPath = ActivePath;
                 forDeletiionMediaFlag = true;
-                MediaView.MediaPlayer.Stop();
-                MediaView.MediaPlayer.Media.Dispose();
+                MediaView.Close();
             }
 
             if (forDeletiionMediaFlag == true) return Task.CompletedTask;
@@ -902,7 +885,7 @@ namespace FIVStandard
             if (ImageItem.IsAnimated)
             {
                 //ToClipboard.GifCopyToClipboard(MediaSource);
-                //ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaView.MediaPlayer.Media.));//TODO: figure out how to get the source
+                ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaView.Source));
             }
             else
                 ToClipboard.ImageCopyToClipboard(ImageSource);
@@ -927,52 +910,36 @@ namespace FIVStandard
             Process.Start(sInfo);
         }
 
-        LibVLC _libVLC;
-        MediaPlayer _mediaPlayer;
-
-        private void Controls_Unloaded(object sender, RoutedEventArgs e)
-        {
-            _mediaPlayer.Stop();
-            _mediaPlayer.Dispose();
-            _libVLC.Dispose();
-        }
-
-        private void MediaPlayer_MediaChanged(object sender, MediaPlayerMediaChangedEventArgs e)
+        private void MediaView_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
         {
             if (ImagesData.Count > 0)
             {
                 //var (iWidth, iHeight, iRotation) = Tools.GetImageInformation(ActivePath, ImageItem);
-                //ImgWidth = MediaView.NaturalVideoWidth;
-                //ImgHeight = MediaView.NaturalVideoHeight;
-                ImgWidth = 1;
-                ImgHeight = 1;
+                ImgWidth = MediaView.NaturalVideoWidth;
+                ImgHeight = MediaView.NaturalVideoHeight;
                 ImageRotation = Rotation.Rotate0;
-            }
 
+                totalMediaTime = MediaView.NaturalDuration.Value.TotalMilliseconds;
+            }
+        }
+
+        private void MediaView_PositionChanged(object sender, Unosquare.FFME.Common.PositionChangedEventArgs e)
+        {
+            double currentTime = e.Position.TotalMilliseconds;
+            
+            if (totalMediaTime == 0 || currentTime == 0)
+                MediaProgression.Value = 0;
+            else
+                MediaProgression.Value = (currentTime / totalMediaTime) * 100;
+        }
+
+        private void MediaView_MediaClosed(object sender, EventArgs e)
+        {
             if (forDeletiionMediaFlag == true)
             {
                 forDeletiionMediaFlag = false;
                 DeleteToRecycleAsync(forDeletionMediaPath);
             }
-        }
-
-        private void MediaPlayer_PositionChanged(object sender, MediaPlayerPositionChangedEventArgs e)
-        {
-            float currentTime = e.Position;
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                MediaProgression.Value = currentTime * 100;
-            });
-        }
-
-        private void MediaPlayer_EndReached(object sender, EventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                MediaView.MediaPlayer.Position = 0;
-                MediaView.MediaPlayer.Play();
-            });
         }
 
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)
