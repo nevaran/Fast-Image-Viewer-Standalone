@@ -196,7 +196,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Views\ThumbnailItemData.cs" />
-    <Compile Include="ZoomBorder.cs" />
+    <Compile Include="Core\ZoomBorder.cs" />
     <Page Include="HackerTheme.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </Page>

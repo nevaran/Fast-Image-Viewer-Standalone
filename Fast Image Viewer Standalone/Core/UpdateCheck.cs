@@ -89,7 +89,7 @@ namespace FIVStandard.Core
         {
             get
             {
-                return $"({_downloadVersion.ToString()})";
+                return $"({_downloadVersion})";
             }
         }
 
@@ -184,14 +184,14 @@ namespace FIVStandard.Core
 
             if (HasLaterVersion())
             {
-                mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion.ToString()})");
+                mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion})");
 
                 UpdaterMessage = "";
                 NotUpdating = true;
             }
             else
             {
-                mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}. {Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo))} ({DownloadVersion.ToString()})");
+                mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}. {Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo))} ({DownloadVersion})");
 
                 await DownloadNewAppVersion();
             }
@@ -203,7 +203,7 @@ namespace FIVStandard.Core
 
             await GetHttpChangelog();
 
-            mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo))} ({DownloadVersion.ToString()})");
+            mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.UpdatingInfo))} ({DownloadVersion})");
 
             await DownloadNewAppVersion();
         }
@@ -215,7 +215,7 @@ namespace FIVStandard.Core
             if (HasLaterVersion())
             {
                 if (notifies)
-                    mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion.ToString()})");
+                    mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AlreadyOnLatestVerInfo))}({DownloadVersion})");
 
                 UpdaterMessage = "";
                 NotUpdating = true;
@@ -223,7 +223,7 @@ namespace FIVStandard.Core
             else
             {
                 if (notifies)
-                    mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion.ToString()}");
+                    mainWindow.notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.NewVerAvailableInfo))}: {DownloadVersion}");
 
                 NotUpdating = true;
 

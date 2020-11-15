@@ -238,7 +238,11 @@ namespace FIVStandard
 
             InitializeComponent();
 
-            Library.FFmpegLoadModeFlags = FFmpegLoadMode.MinimumFeatures;
+            StartupPath = System.AppDomain.CurrentDomain.BaseDirectory;
+
+            //Library.FFmpegLoadModeFlags = FFmpegLoadMode.MinimumFeatures;
+            Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
+            //Library.LoadFFmpeg();
 
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
             ImagesDataView.CustomSort = new NaturalOrderComparer(false);
@@ -382,9 +386,7 @@ namespace FIVStandard
 
             if (args.Length > 0)//get startup path
             {
-                StartupPath = Path.GetDirectoryName(args[0]);
-
-                Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
+                //StartupPath = Path.GetDirectoryName(args[0]);
 
 #if DEBUG
                 string path = @"D:\Google Drive\temp\alltypes\3.png";
@@ -733,7 +735,6 @@ namespace FIVStandard
                 MediaView.Open(uri);
                 ImageSource = null;
 
-                //MediaView.Play();
                 border.Reset();
             }
             else
@@ -752,6 +753,7 @@ namespace FIVStandard
                 MediaView.Close();
                 //MediaSource = null;
                 ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight, ImageRotation);
+                //Tools.LoadImageDirect(path, PictureView);
 
                 borderImg.Reset();
             }
@@ -764,6 +766,7 @@ namespace FIVStandard
 #endif
 
             ScrollToListView();
+            GC.Collect();
         }
 
         CancellationTokenSource allThumbnailTokenSource;
@@ -904,6 +907,20 @@ namespace FIVStandard
         }
 
         #region XAML events
+        private void Media_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Note that you can have more than one file.
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                // Assuming you have one file that you care about, pass it off to whatever
+                // handling code you have defined.
+                if (files.Length >= 1)
+                    OpenNewFile(files[0]);
+            }
+        }
+
         private void OnDonateClick(object sender, RoutedEventArgs e)
         {
             ProcessStartInfo sInfo = new ProcessStartInfo(DonationLink);
@@ -940,6 +957,8 @@ namespace FIVStandard
                 forDeletiionMediaFlag = false;
                 DeleteToRecycleAsync(forDeletionMediaPath);
             }
+
+            GC.Collect();//clean up memory just in case
         }
 
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)

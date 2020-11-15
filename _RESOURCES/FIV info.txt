@@ -9,14 +9,15 @@ legend - *** completed; ^^ deprecated/abandoned
 ***Image stretched
 ***Downsize Image
 ***Zoom sensitivity
+***drop-load image
 ***ListBox + with UniformGrid set as its ItemsPanel Gallery on the left side (MAYBE ItemsControl). bind an ObservableCollection to the ListBox.ItemsSource property
 example: https://www.wpftutorial.net/ListBoxItemsArrange.html
 
 update mode option (silent, very silent, full)
 
-drag and drop image
-
 rotate image buttons
+
+drag from app to other apps(like discord) for sharing
 
 -----------------
 

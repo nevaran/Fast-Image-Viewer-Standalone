@@ -277,6 +277,8 @@
 
                     <!--  MediaElement Control  -->
                     <Grid
+                        AllowDrop="True"
+                        Drop="Media_Drop"
                         Focusable="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
@@ -410,8 +412,8 @@
                             <ffme:MediaElement
                                 x:Name="MediaView"
                                 Background="Transparent"
-                                Focusable="False"
                                 IsMuted="True"
+                                IsTabStop="False"
                                 LoadedBehavior="Play"
                                 LoopingBehavior="Play"
                                 MediaClosed="MediaView_MediaClosed"

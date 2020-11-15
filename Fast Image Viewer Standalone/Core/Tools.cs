@@ -3,6 +3,7 @@ using ImageMagick;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Cache;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -19,8 +20,8 @@ namespace FIVStandard.Core
                 BitmapImage imgTemp = new BitmapImage();
 
                 imgTemp.BeginInit();
-                imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs to make workaround for deleting and cutting file from file lockup
-                                                               //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs to make workaround for deleting file
+                imgTemp.CacheOption = BitmapCacheOption.OnLoad;//TODO: remove this so it loads faster - needs workaround for deleting and cutting file from file lockup
+                //imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;//TODO: remove this so it loads faster - needs workaround for deleting file and cutting file from file lockup
                 imgTemp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;//TODO: test if this option ruins something
 
                 using FileStream stream = File.OpenRead(path);
@@ -39,7 +40,6 @@ namespace FIVStandard.Core
                 imgTemp.EndInit();
                 imgTemp.Freeze();
 
-                //MessageBox.Show(imgTemp.HasAnimatedProperties.ToString());
                 return imgTemp;
             }
             catch
@@ -47,6 +47,11 @@ namespace FIVStandard.Core
                 return null;
             }
         }
+
+        /*public static void LoadImageDirect(string path, System.Windows.Controls.Image imgControl)
+        {
+            imgControl.Source = new BitmapImage(new Uri(path));
+        }*/
 
         /// <summary>
         /// Gets the width, height, and orientation of the image and assigns it to the given ThumbnailItemData.
@@ -122,7 +127,7 @@ namespace FIVStandard.Core
                 imgTemp = new BitmapImage();
                 imgTemp.BeginInit();
                 imgTemp.CacheOption = BitmapCacheOption.OnLoad;
-                imgTemp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;//TODO: test if this option ruins something
+                imgTemp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
                 imgTemp.StreamSource = stream;
 
                 imgTemp.DecodePixelWidth = Settings.ThumbnailRes;
