@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 
 [assembly: AssemblyTitle("Fast Image Viewer")]
-[assembly: AssemblyDescription("Simple image viewer for fast and easy viewing with a modern and minimalistic design.")]
+[assembly: AssemblyDescription("Flexible and efficient image viewer for easy viewing with a minimalistic design.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nevaran")]
 [assembly: AssemblyProduct("Fast Image Viewer")]

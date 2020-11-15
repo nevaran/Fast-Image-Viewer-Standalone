@@ -417,23 +417,6 @@ namespace FIVStandard.Core
             }
         }
 
-        private int thumbnailListColumns = 2;
-
-        public int ThumbnailListColumns
-        {
-            get
-            {
-                return thumbnailListColumns;
-            }
-            set
-            {
-                thumbnailListColumns = value;
-                OnPropertyChanged();
-
-                OnThumbnailListColumnChanged();
-            }
-        }
-
         public List<string> FilterActiveList { get; set; } = new List<string>();//".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"
         public string[] FilterActiveArray { get; set; } = null;
 
@@ -606,7 +589,6 @@ namespace FIVStandard.Core
             EnableThumbnailListToggle = savs.EnableThumbnailList;
             ThumbnailSize = savs.ThumbnailSize;
             ThumbnailRes = savs.ThumbnailRes;
-            ThumbnailListColumns = savs.ThumbnailListColumns;
 
             GoForwardKey = (Key)savs.GoForwardKey;
             GoBackwardKey = (Key)savs.GoBackWardKey;
@@ -736,11 +718,6 @@ namespace FIVStandard.Core
             mainWindow.ThumbnailResSlider_ValueChanged();
         }
 
-        private void OnThumbnailListColumnChanged()
-        {
-            Properties.Settings.Default.ThumbnailListColumns = ThumbnailListColumns;
-        }
-
         private void OnCheckForUpdatesStartToggle()
         {
             Properties.Settings.Default.CheckUpdateAtStart = CheckForUpdatesStartToggle;
@@ -750,15 +727,6 @@ namespace FIVStandard.Core
         {
             Properties.Settings.Default.AutoupdateToggle = AutoupdateToggle;
         }
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-        #endregion
 
         public void ClearActiveFilterList()
         {
@@ -828,5 +796,14 @@ namespace FIVStandard.Core
             savs.FilterIco = FilterIco;
             savs.FilterWebm = FilterWebm;
         }
+
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        #endregion
     }
 }
