@@ -1,6 +1,8 @@
 ﻿using FIVStandard.Views;
 using ImageMagick;
+using Microsoft.WindowsAPICodePack.Shell;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -82,6 +84,11 @@ namespace FIVStandard.Core
 
             try
             {
+                if(Path.GetExtension(path) == ".webm")
+                {
+                    return;
+                }
+
                 var settings = new MagickReadSettings
                 {
                     Width = Settings.ThumbnailRes
@@ -102,6 +109,8 @@ namespace FIVStandard.Core
                 tid.ThumbnailImage = null;
             }
         }
+
+        
 
         /// <summary>
         /// Checks if the string has an extension of the given valid types
@@ -131,6 +140,42 @@ namespace FIVStandard.Core
             ".webm" => true,
             _ => false,
         };
+
+        /*public static BitmapImage WriteableBitmapToBitmapImage(WriteableBitmap wbm)
+        {
+            BitmapImage bmImage = new BitmapImage();
+            using (MemoryStream stream = new MemoryStream())
+            {
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(wbm));
+                encoder.Save(stream);
+                bmImage.BeginInit();
+                bmImage.CacheOption = BitmapCacheOption.OnLoad;
+                bmImage.StreamSource = stream;
+                bmImage.EndInit();
+                bmImage.Freeze();
+            }
+            return bmImage;
+        }*/
+
+        /*public static BitmapSource BitmapToBitmapSource(System.Drawing.Bitmap bitmap)
+        {
+            var bitmapData = bitmap.LockBits(
+                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+            var bitmapSource = BitmapSource.Create(
+                bitmapData.Width, bitmapData.Height,
+                bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                PixelFormats.Bgr24, null,
+                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+            bitmap.UnlockBits(bitmapData);
+
+            //bitmap.Dispose();
+
+            return bitmapSource;
+        }*/
 
         /*public static BitmapImage LoadBitmapImage(string path, int imgWidth, int imgHeight)
         {

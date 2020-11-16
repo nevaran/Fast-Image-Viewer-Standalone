@@ -298,9 +298,6 @@
   <data name="EnableThumbnailList" xml:space="preserve">
     <value>Списък Миниатюри</value>
   </data>
-  <data name="ThumbnailListColumns" xml:space="preserve">
-    <value>Колони на Списакът</value>
-  </data>
   <data name="ThumbnailSizeInfo" xml:space="preserve">
     <value>Промени големината на всеки елемент в списъка с миниатюри. По подразбиране е 80. (40-240)</value>
   </data>
@@ -324,9 +321,6 @@
   </data>
   <data name="AutoupdateToggleInfo" xml:space="preserve">
     <value>Автоматично изтегляне и инсталиране на нова актуализация.</value>
-  </data>
-  <data name="ThumbnailListColumnsInfo" xml:space="preserve">
-    <value>Брой колони в списъка с миниатюри. (Макс. 3)</value>
   </data>
   <data name="FileType" xml:space="preserve">
     <value>Тип файл</value>

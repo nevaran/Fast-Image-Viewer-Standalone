@@ -322,12 +322,6 @@
   <data name="AutoupdateToggleInfo" xml:space="preserve">
     <value>Automatically download and install new update.</value>
   </data>
-  <data name="ThumbnailListColumns" xml:space="preserve">
-    <value>Thumbnail List Columns</value>
-  </data>
-  <data name="ThumbnailListColumnsInfo" xml:space="preserve">
-    <value>The amount of columns in the Thumbnail List. (Max 3)</value>
-  </data>
   <data name="FileType" xml:space="preserve">
     <value>File Type</value>
   </data>

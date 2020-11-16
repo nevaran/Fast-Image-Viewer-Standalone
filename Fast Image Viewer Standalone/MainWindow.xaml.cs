@@ -5,6 +5,7 @@ using Gu.Localization;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Shell;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -650,10 +651,20 @@ namespace FIVStandard
         {
             ImagesData.Clear();
             //MediaSource = null;
-            MediaView.Close();
+            CloseMedia();
             ImageSource = null;
             ImgWidth = 0;
             ImgHeight = 0;
+        }
+
+        private async void OpenMedia(Uri uri)
+        {
+            await MediaView.Open(uri);
+        }
+
+        private async void CloseMedia()
+        {
+            await MediaView.Close();
         }
 
         private void TogglePause()
@@ -743,7 +754,7 @@ namespace FIVStandard
                 //MediaSource = uri;
 
                 ImageSource = null;
-                MediaView.Open(uri);
+                OpenMedia(uri);
 
                 border.Reset();
             }
@@ -759,7 +770,7 @@ namespace FIVStandard
                     ImgHeight = ImageItem.ImageHeight;
                 }
 
-                MediaView.Close();
+                CloseMedia();
                 ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight);
 
                 borderImg.Reset();
@@ -843,7 +854,7 @@ namespace FIVStandard
 
                 forDeletionMediaPath = ActivePath;
                 forDeletiionMediaFlag = true;
-                MediaView.Close();
+                CloseMedia();
             }
 
             if (forDeletiionMediaFlag == true) return Task.CompletedTask;
@@ -1213,6 +1224,20 @@ namespace FIVStandard
             ListBoxItem lbi = sender as ListBoxItem;
             ThumbnailItemData dataItem = (ThumbnailItemData)lbi.Content;
 
+            if (Path.GetExtension(dataItem.ThumbnailName) == ".webm")
+            {
+                try
+                {
+                    var shellFile = ShellObject.FromParsingName(Path.Combine(ActiveFolder, dataItem.ThumbnailName));
+                    dataItem.ThumbnailImage = shellFile.Thumbnail.BitmapSource;
+                    shellFile.Dispose();
+                }
+                catch
+                {
+
+                }
+            }
+            else
             Task.Run(() => Tools.LoadSingleThumbnailData(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
         }
 

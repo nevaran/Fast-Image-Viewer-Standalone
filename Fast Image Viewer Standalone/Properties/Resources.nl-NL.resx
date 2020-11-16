@@ -143,7 +143,7 @@
     <value>Bestand verwijderen</value>
   </data>
   <data name="ShownLanguageInfo" xml:space="preserve">
-    <value>Weergegeven taal wijzigen.</value>
+    <value>Wijzig de weergegeven taal.</value>
   </data>
   <data name="DarkMode" xml:space="preserve">
     <value>Donkere modus</value>
@@ -223,7 +223,109 @@
   <data name="AllWatcher" xml:space="preserve">
     <value>Alle wijzigingen</value>
   </data>
+  <data name="ThemeAccent" xml:space="preserve">
+    <value>Kleurenthema</value>
+  </data>
   <data name="WhatsNew" xml:space="preserve">
-    <value>Wat is er nieuw</value>
+    <value>Nieuws</value>
+  </data>
+  <data name="CopyImageToClipboard" xml:space="preserve">
+    <value>Kopieer afbeelding naar klembord</value>
+  </data>
+  <data name="ResetSettingsButton" xml:space="preserve">
+    <value>Alles herstellen</value>
+  </data>
+  <data name="CutFileToClipboard" xml:space="preserve">
+    <value>Knip bestand naar klembord</value>
+  </data>
+  <data name="RemoveShortcut" xml:space="preserve">
+    <value>Snelkoppeling verwijderen</value>
+  </data>
+  <data name="DarkModeOnTooltip" xml:space="preserve">
+    <value>Donkere modus Aan</value>
+  </data>
+  <data name="StretchOnTooltip" xml:space="preserve">
+    <value>Uitrekken Aan</value>
+  </data>
+  <data name="DownsizeOnTooltip" xml:space="preserve">
+    <value>Verkleinen Aan</value>
+  </data>
+  <data name="DownloadLatest" xml:space="preserve">
+    <value>Download nieuwste</value>
+  </data>
+  <data name="DownloadLatestTooltip" xml:space="preserve">
+    <value>Download de nieuwste instellingen voor het programma</value>
+  </data>
+  <data name="NewVerAvailableInfo" xml:space="preserve">
+    <value>Nieuwe versie beschikbaar</value>
+  </data>
+  <data name="UpdatingInfo" xml:space="preserve">
+    <value>Updaten...</value>
+  </data>
+  <data name="AlreadyOnLatestVerInfo" xml:space="preserve">
+    <value>Nieuwste versie al geïnstalleerd</value>
+  </data>
+  <data name="CheckingForUpdatesInfo" xml:space="preserve">
+    <value>Zoeken naar updates...</value>
+  </data>
+  <data name="NoInternetInfo" xml:space="preserve">
+    <value>Geen internetverbinding</value>
+  </data>
+  <data name="DownloadingInfo" xml:space="preserve">
+    <value>Downloaden</value>
+  </data>
+  <data name="DownloadFinsihedInfo" xml:space="preserve">
+    <value>Download afgerond</value>
+  </data>
+  <data name="CheckForUpdatesStartToggle" xml:space="preserve">
+    <value>Controleer op updates</value>
+  </data>
+  <data name="CheckForUpdatesStartToggleInfo" xml:space="preserve">
+    <value>Controleer op updates wanneer het programma opstart.</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="ThumbnailSizeInfo" xml:space="preserve">
+    <value>Pas de grootte aan van elke pictogram in de lijst. Standaard is 80. (40-240)</value>
+  </data>
+  <data name="ThumbnailResInfo" xml:space="preserve">
+    <value>De resolutie (in pixels) van elke pictrogram. Een lager getal zal minder werkgeheugen gebruiken en versnelt de laadtijd van elke pictogram. Standaard is 80. (40-240)</value>
+  </data>
+  <data name="EnableThumbnailList" xml:space="preserve">
+    <value>Pictogrammen lijst</value>
+  </data>
+  <data name="EnableThumbnailListInfo" xml:space="preserve">
+    <value>Geef een lijst van voorbeelden van alle afbeeldingen aan de zijkant weer.</value>
+  </data>
+  <data name="ZoomSensitivity" xml:space="preserve">
+    <value>Zoom gevoeligheid</value>
+  </data>
+  <data name="ThumbnailSize" xml:space="preserve">
+    <value>Pictogramgrootte</value>
+  </data>
+  <data name="ThumbnailRes" xml:space="preserve">
+    <value>Pictogramresolutie</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Taal</value>
+  </data>
+  <data name="ShowThumbnailList" xml:space="preserve">
+    <value>Geef pictogrammenlijst weer</value>
+  </data>
+  <data name="ThumbnailListOnTooltip" xml:space="preserve">
+    <value>Pictogrammenlijst aan</value>
+  </data>
+  <data name="AutoupdateToggle" xml:space="preserve">
+    <value>Autoupdate</value>
+  </data>
+  <data name="AutoupdateToggleInfo" xml:space="preserve">
+    <value>Download en installeer automatisch nieuwe updates.</value>
+  </data>
+  <data name="FileType" xml:space="preserve">
+    <value>Bestandstype</value>
+  </data>
+  <data name="FileTypeInfo" xml:space="preserve">
+    <value>Kies welke bestandstypes er geladen worden in de afspeler.</value>
   </data>
 </root>

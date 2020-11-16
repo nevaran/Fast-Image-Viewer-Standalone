@@ -611,24 +611,6 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thumbnail List Columns.
-        /// </summary>
-        public static string ThumbnailListColumns {
-            get {
-                return ResourceManager.GetString("ThumbnailListColumns", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The amount of columns in the Thumbnail List. (Max 3).
-        /// </summary>
-        public static string ThumbnailListColumnsInfo {
-            get {
-                return ResourceManager.GetString("ThumbnailListColumnsInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Thumbnail List On.
         /// </summary>
         public static string ThumbnailListOnTooltip {

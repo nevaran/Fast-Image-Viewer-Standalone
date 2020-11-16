@@ -322,12 +322,6 @@
   <data name="AutoupdateToggleInfo" xml:space="preserve">
     <value>Automatisk download og opdatering af program.</value>
   </data>
-  <data name="ThumbnailListColumns" xml:space="preserve">
-    <value>Thumbnail list kolonner</value>
-  </data>
-  <data name="ThumbnailListColumnsInfo" xml:space="preserve">
-    <value>Mængden af kolonner i thumbnail listen. (max 3)</value>
-  </data>
   <data name="FileType" xml:space="preserve">
     <value>Filtype</value>
   </data>

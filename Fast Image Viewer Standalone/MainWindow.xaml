@@ -1547,6 +1547,30 @@
                                             </Bold>
                                             by Dirk Lemstra</Paragraph>
                                     </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>
+                                                <Hyperlink
+                                                    NavigateUri="https://github.com/unosquare/ffmediaelement"
+                                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                                    >
+                                                    FFME.Windows
+                                                </Hyperlink>
+                                            </Bold>
+                                            by Mario Di Vece</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>
+                                            <Bold>
+                                                <Hyperlink
+                                                    NavigateUri="https://github.com/contre/Windows-API-Code-Pack-1.1"
+                                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                                    >
+                                                    Microsoft-WindowsAPICodePack
+                                                </Hyperlink>
+                                            </Bold>
+                                            by rpastric, contre, dahall</Paragraph>
+                                    </ListItem>
                                 </List>
 
                                 <Paragraph>
@@ -1566,7 +1590,7 @@
                                     </ListItem>
                                     <ListItem>
                                         <Paragraph>
-                                            Dutch -<Bold>Martijn, Envyv</Bold>
+                                            Dutch -<Bold>Martijn, Alex Verbaas</Bold>
                                         </Paragraph>
                                     </ListItem>
                                     <ListItem>
