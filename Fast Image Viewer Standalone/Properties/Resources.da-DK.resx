@@ -328,4 +328,10 @@
   <data name="ThumbnailListColumnsInfo" xml:space="preserve">
     <value>Mængden af kolonner i thumbnail listen. (max 3)</value>
   </data>
+  <data name="FileType" xml:space="preserve">
+    <value>Filtype</value>
+  </data>
+  <data name="FileTypeInfo" xml:space="preserve">
+    <value>Vælg hvilke filtyper der indlæses i fremviseren.</value>
+  </data>
 </root>

@@ -1,5 +1,4 @@
-﻿using FFmpeg.AutoGen;
-using FIVStandard.Comparers;
+﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
 using FIVStandard.Views;
 using Gu.Localization;
@@ -21,6 +20,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ToastNotifications;
 using ToastNotifications.Lifetime;
@@ -82,9 +82,9 @@ namespace FIVStandard
         }
 
         #region Image Properties
-        private BitmapImage imageSource = null;
+        private BitmapSource imageSource = null;
 
-        public BitmapImage ImageSource
+        public BitmapSource ImageSource
         {
             get
             {
@@ -109,7 +109,7 @@ namespace FIVStandard
             {
                 imgWidth = value;
                 OnPropertyChanged();
-                OnPropertyChanged("ImgResolution");
+                OnPropertyChanged("ImgResStringFormat");
             }
         }
 
@@ -125,22 +125,37 @@ namespace FIVStandard
             {
                 imgHeight = value;
                 OnPropertyChanged();
-                OnPropertyChanged("ImgResolution");
+                OnPropertyChanged("ImgResStringFormat");
             }
         }
 
-        public string ImgResolution
+        private readonly string[] rnj = new string[] {
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "owo",
+                        "uwu",
+                        "ゴ ゴ ゴ ゴ",
+                        "( ͡° ͜ʖ ͡°)",
+                        "I am Lagnar",
+                        "Made by ねヴぁらん",
+        };
+
+        public string ImgResStringFormat
         {
             get
             {
                 if (ImgWidth == 0 || ImgHeight == 0)
-                    return "owo";
+                {
+                    return rnj[new Random().Next(0, rnj.Length)];//TODO: bring back the owo's
+                }
                 else
                     return $"{ImgWidth}x{ImgHeight}";
             }
         }
-
-        public Rotation ImageRotation { get; set; } = Rotation.Rotate0;
         #endregion
 
         private double totalMediaTime = 0;
@@ -158,7 +173,7 @@ namespace FIVStandard
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
         //private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"/*, ".tiff", ".svg", ".mp4", ".avi" */ };//TODO: doesnt work: tiff svg
-        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.ICO;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
+        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.TIFF;*.ICO;*.SVG;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
 
         private Button editingButton = null;//used for editing shortcuts
 
@@ -238,7 +253,11 @@ namespace FIVStandard
 
             InitializeComponent();
 
+            RenderOptions.SetBitmapScalingMode(PictureView, BitmapScalingMode.Fant);
+
             StartupPath = System.AppDomain.CurrentDomain.BaseDirectory;
+
+            ImageMagick.MagickAnyCPU.CacheDirectory = StartupPath;
 
             //Library.FFmpegLoadModeFlags = FFmpegLoadMode.MinimumFeatures;
             Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
@@ -451,7 +470,7 @@ namespace FIVStandard
                 };
                 ImagesData.Add(tt);
 
-                Task.Run(() => Tools.LoadSingleThumbnail(tt, e.FullPath, false));
+                Task.Run(() => Tools.LoadSingleThumbnailData(tt, e.FullPath, false));
 
                 //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
@@ -509,9 +528,7 @@ namespace FIVStandard
                         {
                             if (Tools.IsOfType(e.Name, Settings.FilterActiveArray))
                             {
-                                BitmapImage oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
-
-                                //ImagesData.RemoveAt(i);
+                                var oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
 
                                 ThumbnailItemData tt = new ThumbnailItemData
                                 {
@@ -520,13 +537,8 @@ namespace FIVStandard
 
                                     ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
                                 };
-                                //ImagesData.Add(tt);
 
                                 ImagesData[i] = tt;
-
-                                //ImagesData[i].ThumbnailName = e.Name;
-
-                                //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
 
                                 //if the viewed item is the changed one, update it
                                 if (ActiveFile == e.OldName)
@@ -611,8 +623,6 @@ namespace FIVStandard
                     ImagesData.Add(tt);
                 }
             }
-
-            //LoadAllThumbnailsAsync();//TODO: get rid when lazy loading is implemented
         }
 
         private void FindIndexInFiles(string openedFile)
@@ -723,7 +733,7 @@ namespace FIVStandard
                 MediaProgression.Visibility = Visibility.Hidden;
             }
 
-            if (ImageItem.IsAnimated || Path.GetExtension(ImageItem.ThumbnailName) == ".webp")
+            if (ImageItem.IsAnimated)
             {
                 borderImg.Visibility = Visibility.Hidden;
                 border.Visibility = Visibility.Visible;
@@ -732,8 +742,8 @@ namespace FIVStandard
 
                 //MediaSource = uri;
 
-                MediaView.Open(uri);
                 ImageSource = null;
+                MediaView.Open(uri);
 
                 border.Reset();
             }
@@ -744,16 +754,13 @@ namespace FIVStandard
 
                 if (ImagesData.Count > 0)
                 {
-                    var (iWidth, iHeight, iRotation) = Tools.GetImageInformation(ActivePath, ImageItem);
-                    ImgWidth = iWidth;
-                    ImgHeight = iHeight;
-                    ImageRotation = iRotation;
+                    Tools.GetImageInformation(ActivePath, ImageItem);
+                    ImgWidth = ImageItem.ImageWidth;
+                    ImgHeight = ImageItem.ImageHeight;
                 }
 
                 MediaView.Close();
-                //MediaSource = null;
-                ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight, ImageRotation);
-                //Tools.LoadImageDirect(path, PictureView);
+                ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight);
 
                 borderImg.Reset();
             }
@@ -772,7 +779,7 @@ namespace FIVStandard
         CancellationTokenSource allThumbnailTokenSource;
         CancellationToken ct;
 
-        public Task LoadAllThumbnailsAsync()
+        /*public Task LoadAllThumbnailsAsync()
         {
             allThumbnailTokenSource?.Cancel();
 
@@ -788,21 +795,12 @@ namespace FIVStandard
 
                     ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
 
-                    /*if (tid.IsAnimated)//TODO add option "Animate thumbnail gifs" check
-                    {
-                        //tid.ThumbnailMedia = new Uri(Path.Combine(ActiveFolder, tid.ThumbnailName));
-                    }
-                    else
-                    {
-                        //TODO put normal thumbnail load here
-                    }*/
-
                     if(tid.ThumbnailImage is null)//dont load the thumbnail if we already have one there
                         tid.ThumbnailImage = Tools.GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
 
             }, allThumbnailTokenSource.Token);
-        }
+        }*/
 
         public Task ReloadAllThumbnailsAsync()
         {
@@ -820,16 +818,7 @@ namespace FIVStandard
 
                     ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
 
-                    /*if (tid.IsAnimated)//TODO add option "Animate thumbnail gifs" check
-                    {
-                        //tid.ThumbnailMedia = new Uri(Path.Combine(ActiveFolder, tid.ThumbnailName));
-                    }
-                    else
-                    {
-                        //TODO put normal thumbnail load here
-                    }*/
-
-                    tid.ThumbnailImage = Tools.GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
+                    Tools.LoadThumbnailData(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
 
             }, allThumbnailTokenSource.Token);
@@ -882,16 +871,21 @@ namespace FIVStandard
 
         private void ImageCopyToClipboardCall()
         {
-            //ToClipboard.CopyToClipboard(ActivePath);
-            if (ImageItem is null || !File.Exists(ActivePath)) return;
+            string fileType = Path.GetExtension(ImageItem.ThumbnailName);
 
-            if (ImageItem.IsAnimated || Path.GetExtension(ImageItem.ThumbnailName) == ".webp")
+            //ToClipboard.CopyToClipboard(ActivePath);
+            if (ImageItem is null || !File.Exists(ActivePath) || fileType == ".webm") return;
+
+
+            if (ImageItem.IsAnimated || fileType == ".webp")
             {
                 //ToClipboard.GifCopyToClipboard(MediaSource);
                 ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaView.Source));
             }
             else
+            {
                 ToClipboard.ImageCopyToClipboard(ImageSource);
+            }
         }
 
         /*private void FileCopyToClipboardCall()
@@ -901,7 +895,7 @@ namespace FIVStandard
 
         private void FileCutToClipboardCall()
         {
-            if (ImageItem is null || !File.Exists(ActivePath)) return;
+            if (ImageItem is null || !File.Exists(ActivePath) || Path.GetExtension(ActivePath) == ".webm") return;
 
             ToClipboard.FileCutToClipBoard(ActivePath);
         }
@@ -931,10 +925,11 @@ namespace FIVStandard
         {
             if (ImagesData.Count > 0)
             {
-                //var (iWidth, iHeight, iRotation) = Tools.GetImageInformation(ActivePath, ImageItem);
                 ImgWidth = MediaView.NaturalVideoWidth;
                 ImgHeight = MediaView.NaturalVideoHeight;
-                ImageRotation = Rotation.Rotate0;
+
+                ImageItem.ImageWidth = ImgWidth;
+                ImageItem.ImageHeight = ImgHeight;
 
                 totalMediaTime = MediaView.NaturalDuration.Value.TotalMilliseconds;
             }
@@ -1124,8 +1119,6 @@ namespace FIVStandard
             {
                 //cancelled dialog
             }*/
-
-            //GC.Collect();
         }
 
         private void OnShortcutClick(object sender, RoutedEventArgs e)
@@ -1175,7 +1168,7 @@ namespace FIVStandard
         {
             int cp = ImagesDataView.CurrentPosition;
 
-            if (cp < 0)//dont do anything if not 0 or more aka nothing selected (-1)
+            if (cp < 0)//dont do anything if not 0 or less aka nothing selected (-1)
                 return;
 
             thumbnailList.ScrollIntoView(ImagesDataView.GetItemAt(cp));
@@ -1193,12 +1186,12 @@ namespace FIVStandard
         private void ThumbnailSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             ReloadAllThumbnailsAsync();
-            this.dragStarted = false;
+            dragStarted = false;
         }
 
         private void ThumbnailSlider_DragStarted(object sender, DragStartedEventArgs e)
         {
-            this.dragStarted = true;
+            dragStarted = true;
         }
 
         public void ThumbnailResSlider_ValueChanged()
@@ -1220,7 +1213,7 @@ namespace FIVStandard
             ListBoxItem lbi = sender as ListBoxItem;
             ThumbnailItemData dataItem = (ThumbnailItemData)lbi.Content;
 
-            Task.Run(() => Tools.LoadSingleThumbnail(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
+            Task.Run(() => Tools.LoadSingleThumbnailData(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -1228,19 +1221,7 @@ namespace FIVStandard
             ProcessStartInfo sInfo = new ProcessStartInfo(e.Uri.ToString());
             Process.Start(sInfo);
         }
-
-        /*private void ThumbnailMedia_OnClipEnded(object sender, RoutedEventArgs e)//used for list box's data template's media element control
-        {
-            MediaElement me = (MediaElement)sender;
-            me.Position = new TimeSpan(0, 0, 1);
-            me.Play();
-        }*/
         #endregion
-
-        /*private int ParseStringToOnlyInt(string input)
-        {
-            return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
-        }*/
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

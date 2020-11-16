@@ -61,7 +61,6 @@
     <!--  Window Bar Buttons  -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands
-            Focusable="False"
             IsTabStop="False"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
@@ -82,10 +81,7 @@
                 />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    <Grid
-        Focusable="False"
-        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-        >
+    <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
         <StackPanel
             Height="25"
             HorizontalAlignment="Right"
@@ -177,31 +173,32 @@
                 Header="{localized:Static p:Resources.General}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
-                <Grid
-                    Focusable="False"
-                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                    >
+                <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <!--  Context Menu | Window  -->
                     <Grid.ContextMenu>
                         <ContextMenu>
                             <MenuItem
                                 Click="OnOpenFileLocation"
+                                Focusable="False"
                                 Header="{localized:Static p:Resources.OpenFileLocation}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <MenuItem
                                 Click="OnCopyToClipboard"
+                                Focusable="False"
                                 Header="{localized:Static p:Resources.CopyImageToClipboard}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <MenuItem
                                 Click="OnCutToClipboard"
+                                Focusable="False"
                                 Header="{localized:Static p:Resources.CutFileToClipboard}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Separator />
                             <MenuItem
                                 Click="OnDeleteClick"
+                                Focusable="False"
                                 Header="{localized:Static p:Resources.Delete}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
@@ -220,14 +217,12 @@
                         Margin="2,2,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Focusable="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
                         <TextBlock
                             VerticalAlignment="Center"
-                            Focusable="False"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            Text="{Binding ImgResolution, Mode=OneWay}"
+                            Text="{Binding ImgResStringFormat, Mode=OneWay}"
                             TextWrapping="Wrap"
                             />
                     </Border>
@@ -279,7 +274,6 @@
                     <Grid
                         AllowDrop="True"
                         Drop="Media_Drop"
-                        Focusable="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
 
@@ -308,7 +302,6 @@
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel
                                         VerticalAlignment="Top"
-                                        Focusable="False"
                                         IsItemsHost="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
@@ -319,30 +312,27 @@
                                     <Border
                                         BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                                         BorderThickness="2"
-                                        Focusable="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         >
                                         <StackPanel
                                             Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                             Height="{Binding Settings.ThumbnailSizePlusText, Mode=OneWay}"
-                                            Focusable="False"
                                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             ToolTip="{Binding ThumbnailName, Mode=OneWay}"
                                             >
+
                                             <TextBlock
                                                 Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
-                                                Focusable="False"
                                                 FontSize="10"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Text="{Binding ThumbnailName, Mode=OneWay}"
                                                 TextAlignment="Center"
                                                 TextTrimming="CharacterEllipsis"
                                                 />
-
                                             <Image
                                                 Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 Height="{Binding Settings.ThumbnailSize, Mode=OneWay}"
-                                                Focusable="False"
+                                                RenderOptions.BitmapScalingMode="NearestNeighbor"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}"
                                                 />
@@ -353,7 +343,6 @@
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Bottom"
                                                 Background="#00000000"
-                                                Focusable="False"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 ToolTip="{localized:Static p:Resources.DownsizeOnTooltip}"
                                                 Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
@@ -362,7 +351,6 @@
                                                     VerticalAlignment="Top"
                                                     Data="M8.00684834,10 C6.34621185,10 5,11.3422643 5,12.9987856 L5,20.0012144 C5,21.6573979 6.33599155,23 8.00684834,23 L24.9931517,23 C26.6537881,23 28,21.6577357 28,20.0012144 L28,12.9987856 C28,11.3426021 26.6640085,10 24.9931517,10 L8.00684834,10 L8.00684834,10 Z M13,17 L13,19 L10.9998075,19 C10.4437166,19 10,18.5523709 10,18.0001925 L10,14.9998075 C10,14.4437166 10.4476291,14 10.9998075,14 L14,14 L14,13 L11.0048815,13 C9.89761602,13 9,13.8865548 9,15.0059191 L9,17.9940809 C9,19.1019194 9.8938998,20 11.0048815,20 L14,20 L14,19.25 L14,19.25 L14,17 L14,16 L11,16 L11,17 L13,17 L13,17 Z M16,14 L16,19 L15,19 L15,20 L18,20 L18,19 L17,19 L17,14 L18,14 L18,13 L15,13 L15,14 L16,14 L16,14 Z M20,16 L20,14 L24,14 L24,13 L19,13 L19,20 L20,20 L20,17 L23,17 L23,16 L20,16 L20,16 Z"
                                                     Fill="{DynamicResource MahApps.Brushes.Accent}"
-                                                    Focusable="False"
                                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                     Stretch="Uniform"
                                                     />-->
@@ -370,7 +358,6 @@
                                                     VerticalAlignment="Top"
                                                     Data="F1 M 21,25L 55,25C 56.1045,25 57,25.8955 57,27L 57,49C 57,50.1046 56.1045,51 55,51L 21,51C 19.8954,51 19,50.1046 19,49L 19,27C 19,25.8955 19.8954,25 21,25 Z M 26.7692,29C 25.2398,29 24,30.5111 24,32.375L 24,43.625C 24,45.489 25.2398,47 26.7692,47L 42.2307,47C 43.7601,47 45,45.489 45,43.625L 45,41L 51,46L 52,46L 52,30L 51,30L 45,35L 45,32.375C 45,30.5111 43.7601,29 42.2307,29L 26.7692,29 Z"
                                                     Fill="{DynamicResource MahApps.Brushes.Accent}"
-                                                    Focusable="False"
                                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                     Stretch="Uniform"
                                                     />
@@ -381,7 +368,6 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
-                        <!--  Media Control  -->
                         <ProgressBar
                             x:Name="MediaProgression"
                             Grid.Row="0"
@@ -390,6 +376,8 @@
                             Margin="0,0,0,0"
                             VerticalAlignment="Bottom"
                             />
+
+                        <!--  Media Control  -->
                         <utils:ZoomBorder
                             x:Name="border"
                             Grid.Column="1"
@@ -413,7 +401,6 @@
                                 x:Name="MediaView"
                                 Background="Transparent"
                                 IsMuted="True"
-                                IsTabStop="False"
                                 LoadedBehavior="Play"
                                 LoopingBehavior="Play"
                                 MediaClosed="MediaView_MediaClosed"
@@ -454,13 +441,11 @@
                     VerticalScrollBarVisibility="Auto"
                     >
                     <StackPanel
-                        Focusable="False"
                         Orientation="Vertical"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
 
                         <Grid
-                            Focusable="False"
                             Grid.IsSharedSizeScope="True"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
@@ -778,47 +763,6 @@
                                 Value="{Binding Settings.ThumbnailRes, Mode=TwoWay}"
                                 />
 
-                            <!--  Thumbnail List Columns  -->
-                            <!--<TextBlock
-                                Grid.Row="12"
-                                Margin="60,0,-20,0"
-                                VerticalAlignment="Center"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{localized:Static p:Resources.ThumbnailListColumns}"
-                                TextAlignment="Left"
-                                ToolTip="{localized:Static p:Resources.ThumbnailListColumnsInfo}"
-                                />
-                            <TextBlock
-                                Grid.Row="12"
-                                Margin="50,90,-20,0"
-                                VerticalAlignment="Center"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.ThumbnailListColumns, Mode=OneWay}"
-                                TextAlignment="Center"
-                                />
-                            -->
-                            <!--  Thumb.DragCompleted="ThumbnailSlider_DragCompleted"  -->
-                            <!--
-                            <Slider
-                                Grid.Row="12"
-                                Margin="60,60,-15,0"
-                                VerticalAlignment="Top"
-                                Focusable="False"
-                                IsEnabled="{Binding Settings.EnableThumbnailListToggle}"
-                                IsSnapToTickEnabled="True"
-                                IsTabStop="False"
-                                LargeChange="1"
-                                Maximum="3"
-                                Minimum="1"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                SmallChange="1"
-                                Thumb.DragStarted="ThumbnailSlider_DragStarted"
-                                TickFrequency="1"
-                                Value="{Binding Settings.ThumbnailListColumns, Mode=TwoWay}"
-                                />-->
-
                             <!--  File Type Checkbox  -->
                             <StackPanel
                                 Grid.Row="13"
@@ -879,9 +823,25 @@
                                     />
                                 <CheckBox
                                     Margin="0,5,5,0"
+                                    Content=".tiff"
+                                    Focusable="False"
+                                    IsChecked="{Binding Settings.FilterTiff, Mode=TwoWay}"
+                                    IsTabStop="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    />
+                                <CheckBox
+                                    Margin="0,5,5,0"
                                     Content=".ico"
                                     Focusable="False"
                                     IsChecked="{Binding Settings.FilterIco, Mode=TwoWay}"
+                                    IsTabStop="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    />
+                                <CheckBox
+                                    Margin="0,5,5,0"
+                                    Content=".svg"
+                                    Focusable="False"
+                                    IsChecked="{Binding Settings.FilterSvg, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -1038,7 +998,6 @@
                         <!--  Shortcuts  -->
                         <Grid
                             Margin="10,20,10,10"
-                            Focusable="False"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
                             <Grid.RowDefinitions>
@@ -1075,7 +1034,6 @@
                                 Grid.Row="1"
                                 Grid.Column="0"
                                 Margin="0,0,0,10"
-                                Focusable="False"
                                 FontSize="30"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.Shortcuts}"
@@ -1085,7 +1043,6 @@
                                 Grid.Row="2"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.PreviousImageShortcut}"
                                 />
@@ -1123,7 +1080,6 @@
                                 Grid.Row="3"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.NextImageShortcut}"
                                 />
@@ -1161,7 +1117,6 @@
                                 Grid.Row="4"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.PauseAnimationShortcut}"
                                 />
@@ -1199,7 +1154,6 @@
                                 Grid.Row="5"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.DeleteImageShortcut}"
                                 />
@@ -1237,7 +1191,6 @@
                                 Grid.Row="6"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.StretchImageShortcut}"
                                 />
@@ -1275,7 +1228,6 @@
                                 Grid.Row="7"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.DownsizeImageShortcut}"
                                 />
@@ -1313,7 +1265,6 @@
                                 Grid.Row="8"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ExploreImageLocationShortcut}"
                                 />
@@ -1351,7 +1302,6 @@
                                 Grid.Row="9"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.CopyImageToClipboard}"
                                 />
@@ -1389,7 +1339,6 @@
                                 Grid.Row="10"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.CutFileToClipboard}"
                                 />
@@ -1427,7 +1376,6 @@
                                 Grid.Row="11"
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
-                                Focusable="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{localized:Static p:Resources.ShowThumbnailList}"
                                 />
@@ -1480,7 +1428,6 @@
                     >
                     <Grid
                         Margin="10"
-                        Focusable="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
                         <Grid.RowDefinitions>
@@ -1510,7 +1457,6 @@
                                         Width="50"
                                         Height="50"
                                         Margin="0,0,30,0"
-                                        Focusable="False"
                                         Source="Resources/FIVIcon.ico"
                                         />
                                     <Run
@@ -1620,7 +1566,7 @@
                                     </ListItem>
                                     <ListItem>
                                         <Paragraph>
-                                            Dutch -<Bold>Martijn</Bold>
+                                            Dutch -<Bold>Martijn, Envyv</Bold>
                                         </Paragraph>
                                     </ListItem>
                                     <ListItem>
@@ -1654,7 +1600,6 @@
                     Focusable="False"
                     >
                     <StackPanel
-                        Focusable="False"
                         Orientation="Vertical"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
@@ -1666,10 +1611,7 @@
                             TextAlignment="Center"
                             />
 
-                        <Grid
-                            Focusable="False"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            >
+                        <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />

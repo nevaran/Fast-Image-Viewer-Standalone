@@ -505,6 +505,23 @@ namespace FIVStandard.Core
             }
         }
 
+        private bool filterTiff = true;
+
+        public bool FilterTiff
+        {
+            get
+            {
+                return filterTiff;
+            }
+            set
+            {
+                filterTiff = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
         private bool filterIco = true;
 
         public bool FilterIco
@@ -516,6 +533,23 @@ namespace FIVStandard.Core
             set
             {
                 filterIco = value;
+                OnPropertyChanged();
+
+                UpdateActiveFilterList();
+            }
+        }
+
+        private bool filterSvg = true;
+
+        public bool FilterSvg
+        {
+            get
+            {
+                return filterSvg;
+            }
+            set
+            {
+                filterSvg = value;
                 OnPropertyChanged();
 
                 UpdateActiveFilterList();
@@ -606,7 +640,9 @@ namespace FIVStandard.Core
             FilterPng = savs.FilterPng;
             FilterGif = savs.FilterGif;
             FilterBmp = savs.FilterBmp;
+            FilterTiff = savs.FilterTiff;
             FilterIco = savs.FilterIco;
+            FilterSvg = savs.FilterSvg;
             FilterWebp = savs.FilterWebp;
             FilterWebm = savs.FilterWebm;
         }
@@ -694,7 +730,9 @@ namespace FIVStandard.Core
             Properties.Settings.Default.DownsizeImage = DownsizeImageToggle;
 
             if (mainWindow.ImagesData.Count > 0)
-                mainWindow.ImageSource = Tools.LoadImage(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight, mainWindow.ImageRotation);//mainWindow.LoadImage(mainWindow.ActivePath);
+            {
+                mainWindow.ImageSource = Tools.LoadImage(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight);
+            }
         }
 
         private void OnZoomSensitivitySlider()
@@ -742,38 +780,26 @@ namespace FIVStandard.Core
         {
             ClearActiveFilterList();
 
-            if (filterJpg)
-            {
+            if (FilterJpg)
                 AddActiveFilter(".jpg");
-            }
-            if (filterJpeg)
-            {
+            if (FilterJpeg)
                 AddActiveFilter(".jpeg");
-            }
-            if (filterPng)
-            {
+            if (FilterPng)
                 AddActiveFilter(".png");
-            }
-            if (filterGif)
-            {
+            if (FilterGif)
                 AddActiveFilter(".gif");
-            }
-            if (filterBmp)
-            {
+            if (FilterBmp)
                 AddActiveFilter(".bmp");
-            }
-            if (filterIco)
-            {
+            if (FilterTiff)
+                AddActiveFilter(".tiff");
+            if (FilterIco)
                 AddActiveFilter(".ico");
-            }
-            if (filterWebp)
-            {
+            if (FilterSvg)
+                AddActiveFilter(".svg");
+            if (FilterWebp)
                 AddActiveFilter(".webp");
-            }
-            if (filterWebm)
-            {
+            if (FilterWebm)
                 AddActiveFilter(".webm");
-            }
 
             FilterActiveArray = FilterActiveList.ToArray();
 
@@ -793,7 +819,10 @@ namespace FIVStandard.Core
             savs.FilterPng = FilterPng;
             savs.FilterGif = FilterGif;
             savs.FilterBmp = FilterBmp;
+            savs.FilterTiff = FilterTiff;
             savs.FilterIco = FilterIco;
+            savs.FilterSvg = FilterSvg;
+            savs.FilterWebp = FilterWebp;
             savs.FilterWebm = FilterWebm;
         }
 

@@ -382,5 +382,29 @@ namespace FIVStandard.Properties {
                 this["FilterWebm"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterSvg {
+            get {
+                return ((bool)(this["FilterSvg"]));
+            }
+            set {
+                this["FilterSvg"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FilterTiff {
+            get {
+                return ((bool)(this["FilterTiff"]));
+            }
+            set {
+                this["FilterTiff"] = value;
+            }
+        }
     }
 }

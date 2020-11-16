@@ -328,4 +328,10 @@
   <data name="ThumbnailListColumnsInfo" xml:space="preserve">
     <value>Брой колони в списъка с миниатюри. (Макс. 3)</value>
   </data>
+  <data name="FileType" xml:space="preserve">
+    <value>Тип файл</value>
+  </data>
+  <data name="FileTypeInfo" xml:space="preserve">
+    <value>Изберете кои типове файлове да се отварят.</value>
+  </data>
 </root>

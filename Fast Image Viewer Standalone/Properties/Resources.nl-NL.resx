@@ -223,4 +223,7 @@
   <data name="AllWatcher" xml:space="preserve">
     <value>Alle wijzigingen</value>
   </data>
+  <data name="WhatsNew" xml:space="preserve">
+    <value>Wat is er nieuw</value>
+  </data>
 </root>

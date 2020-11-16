@@ -146,7 +146,7 @@
     <value>Deletar</value>
   </data>
   <data name="ShownLanguageInfo" xml:space="preserve">
-    <value>Mudar Idioma de Visualização</value>
+    <value>Altere o idioma exibido.</value>
   </data>
   <data name="DarkMode" xml:space="preserve">
     <value>Modo Dark</value>
@@ -222,5 +222,8 @@
   </data>
   <data name="ChangedWatcher" xml:space="preserve">
     <value>Alterado</value>
+  </data>
+  <data name="WhatsNew" xml:space="preserve">
+    <value>O que há de novo</value>
   </data>
 </root>

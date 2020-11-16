@@ -23,9 +23,9 @@ namespace FIVStandard.Views
             }
         }
 
-        private BitmapImage thumbnailImage;
+        private BitmapSource thumbnailImage;
 
-        public BitmapImage ThumbnailImage
+        public BitmapSource ThumbnailImage
         {
             get
             {
@@ -37,21 +37,6 @@ namespace FIVStandard.Views
                 OnPropertyChanged();
             }
         }
-
-        /*private Uri thumbnailMedia = null;
-
-        public Uri ThumbnailMedia
-        {
-            get
-            {
-                return thumbnailMedia;
-            }
-            set
-            {
-                thumbnailMedia = value;
-                OnPropertyChanged();
-            }
-        }*/
 
         private int imageWidth = 0;
 
@@ -94,21 +79,6 @@ namespace FIVStandard.Views
             set
             {
                 isAnimated = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Rotation? imageOrientation = null;//if null, it will be counted as if the orientation is not yet set up
-
-        public Rotation? ImageOrientation
-        {
-            get
-            {
-                return imageOrientation;
-            }
-            set
-            {
-                imageOrientation = value;
                 OnPropertyChanged();
             }
         }
