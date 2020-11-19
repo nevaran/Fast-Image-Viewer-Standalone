@@ -199,9 +199,6 @@
   <data name="FileNotFoundMsg" xml:space="preserve">
     <value>Bestand niet gevonden</value>
   </data>
-  <data name="ImgOrientationFailedMsg" xml:space="preserve">
-    <value>Kon de richting van de afbeelding niet vinden</value>
-  </data>
   <data name="StretchImageShortcut" xml:space="preserve">
     <value>Afbeelding uitvergroten</value>
   </data>

@@ -657,6 +657,14 @@ namespace FIVStandard
             ImgHeight = 0;
         }
 
+        private void ClearViewer()
+        {
+            CloseMedia();
+            ImageSource = null;
+            ImgWidth = 0;
+            ImgHeight = 0;
+        }
+
         private async void OpenMedia(Uri uri)
         {
             await MediaView.Open(uri);
@@ -888,7 +896,7 @@ namespace FIVStandard
             if (ImageItem is null || !File.Exists(ActivePath) || fileType == ".webm") return;
 
 
-            if (ImageItem.IsAnimated || fileType == ".webp")
+            if (ImageItem.IsAnimated)
             {
                 //ToClipboard.GifCopyToClipboard(MediaSource);
                 ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaView.Source));
@@ -906,7 +914,12 @@ namespace FIVStandard
 
         private void FileCutToClipboardCall()
         {
-            if (ImageItem is null || !File.Exists(ActivePath) || Path.GetExtension(ActivePath) == ".webm") return;
+            if (ImageItem is null || !File.Exists(ActivePath)) return;
+
+            if(Path.GetExtension(ActivePath) == ".gif"  || Path.GetExtension(ActivePath) == ".webm")//TODO: temp fix
+            {
+                ClearViewer();
+            }
 
             ToClipboard.FileCutToClipBoard(ActivePath);
         }

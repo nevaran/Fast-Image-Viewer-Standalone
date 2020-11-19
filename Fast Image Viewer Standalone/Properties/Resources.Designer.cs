@@ -395,15 +395,6 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not get image orientation.
-        /// </summary>
-        public static string ImgOrientationFailedMsg {
-            get {
-                return ResourceManager.GetString("ImgOrientationFailedMsg", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {

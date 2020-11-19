@@ -208,9 +208,6 @@
   <data name="FileNotFoundMsg" xml:space="preserve">
     <value>Файлът не е намерен</value>
   </data>
-  <data name="ImgOrientationFailedMsg" xml:space="preserve">
-    <value>Ориентацията на изображението не можа да се вземе</value>
-  </data>
   <data name="ChangedWatcher" xml:space="preserve">
     <value>Променен</value>
   </data>

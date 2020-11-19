@@ -205,9 +205,6 @@
   <data name="FileNotFoundMsg" xml:space="preserve">
     <value>Arquivo não encontrado</value>
   </data>
-  <data name="ImgOrientationFailedMsg" xml:space="preserve">
-    <value>Não foi possível obter orientação da imagem</value>
-  </data>
   <data name="AllWatcher" xml:space="preserve">
     <value>Todas as Mudanças</value>
   </data>

@@ -208,9 +208,6 @@
   <data name="FileNotFoundMsg" xml:space="preserve">
     <value>File not found</value>
   </data>
-  <data name="ImgOrientationFailedMsg" xml:space="preserve">
-    <value>Could not get image orientation</value>
-  </data>
   <data name="ChangedWatcher" xml:space="preserve">
     <value>Changed</value>
   </data>
