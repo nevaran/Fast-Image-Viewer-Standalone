@@ -1,8 +1,6 @@
 ﻿using FIVStandard.Views;
 using ImageMagick;
-using Microsoft.WindowsAPICodePack.Shell;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,27 +14,20 @@ namespace FIVStandard.Core
     {
         public static BitmapSource LoadImage(string path, int imgWidth, int imgHeight)
         {
-            try
+            using MagickImage image = new MagickImage(path);
+
+            if (Settings.DownsizeImageToggle)
             {
-                using MagickImage image = new MagickImage(path);
-
-                if (Settings.DownsizeImageToggle)
-                {
-                    Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
-                    if (imgWidth > r.Width || imgHeight > r.Height)
-                        image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
-                }
-                image.AutoOrient();
-
-                BitmapSource bms = image.ToBitmapSource();
-                bms.Freeze();
-
-                return bms;
+                Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+                if (imgWidth > r.Width || imgHeight > r.Height)
+                    image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
             }
-            catch
-            {
-                return null;
-            }
+            image.AutoOrient();
+
+            BitmapSource bms = image.ToBitmapSource();
+            bms.Freeze();
+
+            return bms;
         }
 
         /// <summary>
@@ -62,7 +53,7 @@ namespace FIVStandard.Core
         /// <summary>
         /// Load a single thumbnail image item data to the defined position (via ThumbnailItemData reference).
         /// </summary>
-        /// <param name="name"> The Name + Extension of the file</param>
+        /// <param name="tid"> Information of the file, including a thumbnail</param>
         /// <param name="fullPath"> Complete path to the file, including the name and extension</param>
         /// <param name="overrideThumbnail"> If true: replace the thumbnail even if there is already one generated</param>
         /// <returns></returns>
@@ -76,7 +67,7 @@ namespace FIVStandard.Core
         /// Gets a resized version of the image file, and gets it's original size (wdith and height)
         /// </summary>
         /// <param name="path">The full path to the file, including extension</param>
-        /// <param name="itemData">Used for saving the image width, and height in the given ThumbnailItemData</param>
+        /// <param name="tid">Used for saving the image width, and height in the given ThumbnailItemData</param>
         /// <returns></returns>
         public static void LoadThumbnailData(string path, ThumbnailItemData tid)
         {
@@ -109,8 +100,6 @@ namespace FIVStandard.Core
                 tid.ThumbnailImage = null;
             }
         }
-
-        
 
         /// <summary>
         /// Checks if the string has an extension of the given valid types
