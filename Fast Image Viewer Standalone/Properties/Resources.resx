@@ -174,9 +174,11 @@
   </data>
   <data name="On" xml:space="preserve">
     <value>On</value>
+    
   </data>
   <data name="Off" xml:space="preserve">
     <value>Off</value>
+    
   </data>
   <data name="PreviousImageShortcut" xml:space="preserve">
     <value>Previous image</value>
@@ -237,12 +239,16 @@
   </data>
   <data name="DarkModeOnTooltip" xml:space="preserve">
     <value>Dark Mode On</value>
+    
+    
   </data>
   <data name="StretchOnTooltip" xml:space="preserve">
     <value>Stretch On</value>
+    
   </data>
   <data name="DownsizeOnTooltip" xml:space="preserve">
     <value>Downsize On</value>
+    
   </data>
   <data name="DownloadLatest" xml:space="preserve">
     <value>Download Latest</value>
@@ -309,6 +315,7 @@
   </data>
   <data name="ThumbnailListOnTooltip" xml:space="preserve">
     <value>Thumbnail List On</value>
+    
   </data>
   <data name="AutoupdateToggle" xml:space="preserve">
     <value>Autoupdate</value>

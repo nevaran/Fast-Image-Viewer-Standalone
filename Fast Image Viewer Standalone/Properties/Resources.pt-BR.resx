@@ -223,4 +223,103 @@
   <data name="WhatsNew" xml:space="preserve">
     <value>O que há de novo</value>
   </data>
+  <data name="CopyImageToClipboard" xml:space="preserve">
+    <value>Copiar imagem para clipboard</value>
+  </data>
+  <data name="ResetSettingsButton" xml:space="preserve">
+    <value>Redefinir Tudo</value>
+  </data>
+  <data name="CutFileToClipboard" xml:space="preserve">
+    <value>Cortar para a área de transferência</value>
+  </data>
+  <data name="RemoveShortcut" xml:space="preserve">
+    <value>Remover Atalho</value>
+  </data>
+  <data name="DarkModeOnTooltip" xml:space="preserve">
+    <value>Modo escuro ligado</value>
+  </data>
+  <data name="StretchOnTooltip" xml:space="preserve">
+    <value>Estique</value>
+  </data>
+  <data name="DownsizeOnTooltip" xml:space="preserve">
+    <value>Reduza o tamanho</value>
+  </data>
+  <data name="DownloadLatest" xml:space="preserve">
+    <value>Baixar o mais recente</value>
+  </data>
+  <data name="DownloadLatestTooltip" xml:space="preserve">
+    <value>Baixe a configuração mais recente do programa</value>
+  </data>
+  <data name="NewVerAvailableInfo" xml:space="preserve">
+    <value>Nova versão disponível</value>
+  </data>
+  <data name="UpdatingInfo" xml:space="preserve">
+    <value>Atualizando...</value>
+  </data>
+  <data name="AlreadyOnLatestVerInfo" xml:space="preserve">
+    <value>Última versão já instalada</value>
+  </data>
+  <data name="CheckingForUpdatesInfo" xml:space="preserve">
+    <value>Verificando se há atualizações...</value>
+  </data>
+  <data name="NoInternetInfo" xml:space="preserve">
+    <value>Não há conexão com a internet</value>
+  </data>
+  <data name="DownloadingInfo" xml:space="preserve">
+    <value>Baixando</value>
+  </data>
+  <data name="DownloadFinsihedInfo" xml:space="preserve">
+    <value>Download concluído</value>
+  </data>
+  <data name="CheckForUpdatesStartToggleInfo" xml:space="preserve">
+    <value>Verifique se há novas atualizações quando o programa é iniciado pela primeira vez.</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Excluindo</value>
+  </data>
+  <data name="ThumbnailSizeInfo" xml:space="preserve">
+    <value>Altere o tamanho de cada item da lista de miniaturas. O padrão é 80. (40-240)</value>
+  </data>
+  <data name="ThumbnailResInfo" xml:space="preserve">
+    <value>A resolução (em pixels) de cada imagem em miniatura. Um número menor reduzirá o consumo de memória e aumentará a velocidade de carregamento de cada miniatura. O padrão é 80. (40-240)</value>
+  </data>
+  <data name="EnableThumbnailList" xml:space="preserve">
+    <value>miniatura</value>
+  </data>
+  <data name="EnableThumbnailListInfo" xml:space="preserve">
+    <value>Mostra uma lista de miniaturas de todas as imagens ao lado.</value>
+  </data>
+  <data name="ZoomSensitivity" xml:space="preserve">
+    <value>Sensibilidade do zoom</value>
+  </data>
+  <data name="ThumbnailSize" xml:space="preserve">
+    <value>Tamanho da Miniatura</value>
+  </data>
+  <data name="ThumbnailRes" xml:space="preserve">
+    <value>Resolução de miniaturas</value>
+  </data>
+  <data name="ThemeAccent" xml:space="preserve">
+    <value>Acento do tema</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="ShowThumbnailList" xml:space="preserve">
+    <value>Mostrar Miniaturas</value>
+  </data>
+  <data name="ThumbnailListOnTooltip" xml:space="preserve">
+    <value>Lista de miniaturas ativada</value>
+  </data>
+  <data name="AutoupdateToggle" xml:space="preserve">
+    <value>AtualizaçãoAutomática</value>
+  </data>
+  <data name="AutoupdateToggleInfo" xml:space="preserve">
+    <value>Baixe e instale automaticamente uma nova atualização.</value>
+  </data>
+  <data name="FileType" xml:space="preserve">
+    <value>Tipo de Arquivo</value>
+  </data>
+  <data name="FileTypeInfo" xml:space="preserve">
+    <value>Escolha quais tipos de arquivo são carregados no visualizador.</value>
+  </data>
 </root>

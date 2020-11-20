@@ -1159,7 +1159,7 @@ namespace FIVStandard
         {
             editingButton = (Button)sender;
 
-            editingButton.Tag = Key.None;
+            editingButton.Tag = Key.None;//set shortcut to none
 
             Settings.UpdateAllKeysProperties();
         }
