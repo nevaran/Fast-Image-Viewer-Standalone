@@ -170,6 +170,7 @@ namespace FIVStandard
         public string StartupPath;//program startup path
 
         private bool selectedNew = false;//used to avoid ListBox event to re-select the image, doubling the loading time
+        private bool dragStarted = true;//used for the ThumbnailSlider option to avoid glitching out
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
@@ -1204,8 +1205,6 @@ namespace FIVStandard
             var tid = (ListBoxItem)sender;
             ImageItem = (ThumbnailItemData)tid.Content;
         }
-
-        private bool dragStarted = true;
 
         private void ThumbnailSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
