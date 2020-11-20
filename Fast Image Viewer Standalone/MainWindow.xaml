@@ -17,6 +17,7 @@
     Height="600"
     MinWidth="600"
     MinHeight="480"
+    Closing="MainFIV_Closing"
     FontSize="16"
     Icon="Resources/FIVIcon.ico"
     IsTabStop="False"

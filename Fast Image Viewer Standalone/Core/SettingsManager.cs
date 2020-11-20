@@ -597,7 +597,7 @@ namespace FIVStandard.Core
         {
             mainWindow = mw;
 
-            Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
+            //Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
 
             if (Properties.Settings.Default.UpgradeRequired)
             {
@@ -675,7 +675,7 @@ namespace FIVStandard.Core
             Load();
         }
 
-        private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        /*private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Save();
         }
@@ -683,7 +683,7 @@ namespace FIVStandard.Core
         public void Unload()
         {
             Properties.Settings.Default.PropertyChanged -= Default_PropertyChanged;
-        }
+        }*/
 
         private void OnThemeSwitch()
         {

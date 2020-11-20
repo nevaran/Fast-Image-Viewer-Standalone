@@ -1258,6 +1258,16 @@ namespace FIVStandard
             ProcessStartInfo sInfo = new ProcessStartInfo(e.Uri.ToString());
             Process.Start(sInfo);
         }
+
+        private void MainFIV_Closing(object sender, CancelEventArgs e)
+        {
+            fsw.Created -= Fsw_Created;
+            fsw.Deleted -= Fsw_Deleted;
+            fsw.Renamed -= Fsw_Renamed;
+
+            ClearAllMedia();
+            Settings.Save();
+        }
         #endregion
 
         #region INotifyPropertyChanged
