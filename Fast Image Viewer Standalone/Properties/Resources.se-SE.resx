@@ -274,9 +274,6 @@
   <data name="CheckForUpdatesStartToggleInfo" xml:space="preserve">
     <value>Kolla efter uppdateringar när programmet startar.</value>
   </data>
-  <data name="CheckForUpdatesStartToggle" xml:space="preserve">
-    <value>Kolla efter uppdateringar</value>
-  </data>
   <data name="Deleting" xml:space="preserve">
     <value>Raderar</value>
   </data>

@@ -124,15 +124,6 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check for Updates.
-        /// </summary>
-        public static string CheckForUpdatesStartToggle {
-            get {
-                return ResourceManager.GetString("CheckForUpdatesStartToggle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check if there are new updates when the program first starts up..
         /// </summary>
         public static string CheckForUpdatesStartToggleInfo {

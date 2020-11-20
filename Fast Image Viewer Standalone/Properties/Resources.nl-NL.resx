@@ -274,9 +274,6 @@
   <data name="DownloadFinsihedInfo" xml:space="preserve">
     <value>Download afgerond</value>
   </data>
-  <data name="CheckForUpdatesStartToggle" xml:space="preserve">
-    <value>Controleer op updates</value>
-  </data>
   <data name="CheckForUpdatesStartToggleInfo" xml:space="preserve">
     <value>Controleer op updates wanneer het programma opstart.</value>
   </data>

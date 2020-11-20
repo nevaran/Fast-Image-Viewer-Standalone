@@ -168,13 +168,11 @@
     <Compile Include="Core\ISettings.cs" />
     <Compile Include="Core\Tools.cs" />
     <Compile Include="Core\SettingsStore.cs" />
-    <Compile Include="HackerTheme.xaml.cs">
-      <DependentUpon>HackerTheme.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Core\CopyFileToClipboard.cs" />
     <Compile Include="Core\SettingsManager.cs" />
     <Compile Include="Core\UpdateCheck.cs" />
     <Compile Include="Core\WpfScreen.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Resources.da-DK.Designer.cs">
       <DependentUpon>Resources.da-DK.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -207,9 +205,6 @@
     </Compile>
     <Compile Include="Views\ThumbnailItemData.cs" />
     <Compile Include="Core\ZoomBorder.cs" />
-    <Page Include="HackerTheme.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

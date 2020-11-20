@@ -270,7 +270,7 @@ namespace FIVStandard
 
             AppUpdater = new UpdateCheck(this);
             
-            // these lines shouldn't be in this class
+            // these lines shouldn't be in this class (maybe?)
             Settings = new SettingsManager(this);
             SettingsStore.InitSettingsStore(Settings);
             ThumbnailItemData.Settings = Settings;
@@ -283,9 +283,9 @@ namespace FIVStandard
             fsw.Deleted += Fsw_Deleted;
             fsw.Renamed += Fsw_Renamed;
 
-            DataContext = this;
-
             Settings.Load();
+
+            DataContext = this;
 
             dragStarted = false;//hack for avoiding reloading the images when you start the program
 

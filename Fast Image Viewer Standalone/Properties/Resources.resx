@@ -271,9 +271,6 @@
   <data name="DownloadFinsihedInfo" xml:space="preserve">
     <value>Download Finished</value>
   </data>
-  <data name="CheckForUpdatesStartToggle" xml:space="preserve">
-    <value>Check for Updates</value>
-  </data>
   <data name="CheckForUpdatesStartToggleInfo" xml:space="preserve">
     <value>Check if there are new updates when the program first starts up.</value>
   </data>

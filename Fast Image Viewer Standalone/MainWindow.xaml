@@ -28,6 +28,9 @@
     WindowState="Maximized"
     mc:Ignorable="d"
     >
+    <!--<Window.DataContext>
+        <local:MainWindow/>
+    </Window.DataContext>-->
 
     <Window.Resources>
         <converter:TextToColorConverter x:Key="TextToColorConverter" />
@@ -645,7 +648,7 @@
                                 VerticalAlignment="Center"
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
-                                Header="{localized:Static p:Resources.CheckForUpdatesStartToggle}"
+                                Header="{localized:Static p:Resources.CheckForUpdates}"
                                 IsOn="{Binding Settings.CheckForUpdatesStartToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{localized:Static p:Resources.Off}"

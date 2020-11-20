@@ -203,7 +203,7 @@
     <value>Преки пътища</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Провери за обновления</value>
+    <value>Провери за актуализации</value>
   </data>
   <data name="FileNotFoundMsg" xml:space="preserve">
     <value>Файлът не е намерен</value>
@@ -237,9 +237,6 @@
   </data>
   <data name="RemoveShortcut" xml:space="preserve">
     <value>Премахване на преките пътища</value>
-  </data>
-  <data name="CheckForUpdatesStartToggle" xml:space="preserve">
-    <value>Провери за актуализации</value>
   </data>
   <data name="Deleting" xml:space="preserve">
     <value>Изтриване</value>
