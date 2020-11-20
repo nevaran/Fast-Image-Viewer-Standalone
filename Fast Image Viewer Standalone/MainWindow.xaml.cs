@@ -1250,7 +1250,7 @@ namespace FIVStandard
                 }
             }
             else
-            Task.Run(() => Tools.LoadSingleThumbnailData(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
+                Task.Run(() => Tools.LoadSingleThumbnailData(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
