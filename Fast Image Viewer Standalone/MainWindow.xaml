@@ -386,7 +386,6 @@
                             x:Name="border"
                             Grid.Column="1"
                             Margin="0,44,0,6"
-                            Background="#FF2F3136"
                             ClipToBounds="True"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
@@ -403,7 +402,6 @@
                                 />-->
                             <ffme:MediaElement
                                 x:Name="MediaView"
-                                Background="Transparent"
                                 IsMuted="True"
                                 LoadedBehavior="Play"
                                 LoopingBehavior="Play"
@@ -421,7 +419,6 @@
                             x:Name="borderImg"
                             Grid.Column="1"
                             Margin="0,44,0,0"
-                            Background="#FF2F3136"
                             ClipToBounds="True"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
@@ -1478,6 +1475,7 @@
                                     <Run Text="Please consider" />
                                     <Bold>
                                         <Hyperlink
+                                            Foreground="{DynamicResource SuccessColorBrush}"
                                             NavigateUri="{Binding DonationLink, Mode=OneTime}"
                                             RequestNavigate="Hyperlink_RequestNavigate"
                                             >
@@ -1613,6 +1611,22 @@
                                         </Paragraph>
                                     </ListItem>
                                 </List>
+
+                                <Section />
+                                <Paragraph>
+                                    See a bug?
+                                </Paragraph>
+                                <Paragraph>
+                                    <Bold>
+                                        <Hyperlink
+                                            Foreground="{DynamicResource MahApps.Brushes.Accent}"
+                                            NavigateUri="https://github.com/nevaran/FIV/issues/new"
+                                            RequestNavigate="Hyperlink_RequestNavigate"
+                                            >
+                                            Report it here!
+                                        </Hyperlink>
+                                    </Bold>
+                                </Paragraph>
                             </FlowDocument>
                         </RichTextBox>
                     </Grid>

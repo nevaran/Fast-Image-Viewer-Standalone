@@ -1256,6 +1256,8 @@ namespace FIVStandard
 
         private void MainFIV_Closing(object sender, CancelEventArgs e)
         {
+            notifier.Dispose();
+
             fsw.Created -= Fsw_Created;
             fsw.Deleted -= Fsw_Deleted;
             fsw.Renamed -= Fsw_Renamed;
