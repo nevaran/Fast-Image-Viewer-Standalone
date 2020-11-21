@@ -220,6 +220,14 @@ namespace FIVStandard
         private string ActiveFolder { get; set; } = "";//directory
         public string ActivePath { get; set; } = "";//directory + file name + extension
 
+        public string DonationLink
+        {
+            get
+            {
+                return "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url";
+            }
+        }
+
         private readonly FileSystemWatcher fsw = new FileSystemWatcher()
         {
             NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite
@@ -947,7 +955,7 @@ namespace FIVStandard
 
         private void OnDonateClick(object sender, RoutedEventArgs e)
         {
-            OpenHyperlink("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
+            OpenHyperlink(DonationLink);
         }
 
         private void MediaView_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
@@ -982,7 +990,7 @@ namespace FIVStandard
                 DeleteToRecycleAsync(forDeletionMediaPath);
             }
 
-            GC.Collect();//clean up memory just in case
+            GC.Collect();//clean up memory (TODO: temp fix; fixes memory leak)
         }
 
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)

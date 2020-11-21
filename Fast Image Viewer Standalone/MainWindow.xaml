@@ -4,11 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:converter="clr-namespace:FIVStandard.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
-    xmlns:local="clr-namespace:FIVStandard"
     xmlns:localized="http://gu.se/Localization"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:p="clr-namespace:FIVStandard.Properties"
     xmlns:utils="clr-namespace:FIVStandard.Utils"
     x:Name="MainFIV"
@@ -27,8 +24,11 @@
     TitleCharacterCasing="Normal"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
-    mc:Ignorable="d"
     >
+    <!--  xmlns:local="clr-namespace:FIVStandard"  -->
+    <!--  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  -->
+    <!--  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  -->
+    <!--  mc:Ignorable="d"  -->
     <!--<Window.DataContext>
         <local:MainWindow/>
     </Window.DataContext>-->
