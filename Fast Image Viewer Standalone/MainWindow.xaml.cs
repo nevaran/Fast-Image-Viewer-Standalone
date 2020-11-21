@@ -914,8 +914,20 @@ namespace FIVStandard
 
         private void OpenHyperlink(string url)
         {
-            ProcessStartInfo sInfo = new ProcessStartInfo(url);
-            Process.Start(sInfo);
+            try
+            {
+                ProcessStartInfo sInfo = new ProcessStartInfo(url);
+                Process.Start(sInfo);
+            }
+            catch (Win32Exception noBrowser)
+            {
+                if (noBrowser.ErrorCode == -2147467259)
+                    notifier.ShowError(noBrowser.Message);
+            }
+            catch (Exception other)
+            {
+                notifier.ShowError(other.Message);
+            }
         }
 
         #region XAML events
@@ -1022,7 +1034,7 @@ namespace FIVStandard
 
             if (Settings.ShortcutButtonsOn == false)
             {
-                if (e.Key == Key.System || e.Key == Key.LWin || e.Key == Key.RWin) return;//blacklisted keys
+                if (e.Key == Key.System || e.Key == Key.LWin || e.Key == Key.RWin) return;//blacklisted keys (windows keys, system)
 
                 if(e.Key != Key.Escape)
                 {
