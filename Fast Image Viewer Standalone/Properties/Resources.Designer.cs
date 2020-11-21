@@ -142,6 +142,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copied to Clipboard.
+        /// </summary>
+        public static string CopiedToClipboard {
+            get {
+                return ResourceManager.GetString("CopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy Image to Clipboard.
         /// </summary>
         public static string CopyImageToClipboard {
@@ -165,6 +174,15 @@ namespace FIVStandard.Properties {
         public static string CutFileToClipboard {
             get {
                 return ResourceManager.GetString("CutFileToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut to Clipboard.
+        /// </summary>
+        public static string CutToClipboard {
+            get {
+                return ResourceManager.GetString("CutToClipboard", resourceCulture);
             }
         }
         

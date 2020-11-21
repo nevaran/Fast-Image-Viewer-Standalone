@@ -733,11 +733,6 @@ namespace FIVStandard
 
         private void NewUri(string path)
         {
-#if DEBUG
-            Stopwatch stopwatch = new Stopwatch();//DEBUG
-            stopwatch.Start();//DEBUG
-#endif
-
             if (!Tools.IsOfType(path, Settings.FilterActiveArray))
             {
                 ChangeImage(0, false);
@@ -786,11 +781,6 @@ namespace FIVStandard
             }
 
             selectedNew = false;
-
-#if DEBUG
-            stopwatch.Stop();//DEBUG
-            notifier.ShowError($"NewUri time: {stopwatch.ElapsedMilliseconds}ms");//DEBUG
-#endif
 
             ScrollToListView();
             GC.Collect();
@@ -891,11 +881,11 @@ namespace FIVStandard
 
         private void ImageCopyToClipboardCall()
         {
+            if (ImageItem is null) return;
+
             string fileType = Path.GetExtension(ImageItem.ThumbnailName);
 
-            //ToClipboard.CopyToClipboard(ActivePath);
-            if (ImageItem is null || !File.Exists(ActivePath) || fileType == ".webm") return;
-
+            if (!File.Exists(ActivePath) || fileType == ".webm") return;
 
             if (ImageItem.IsAnimated)
             {
@@ -906,6 +896,8 @@ namespace FIVStandard
             {
                 ToClipboard.ImageCopyToClipboard(ImageSource);
             }
+
+            notifier.ShowWarning($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CopiedToClipboard))}\n\"{ActivePath}\"");
         }
 
         /*private void FileCopyToClipboardCall()
@@ -917,12 +909,15 @@ namespace FIVStandard
         {
             if (ImageItem is null || !File.Exists(ActivePath)) return;
 
-            if(Path.GetExtension(ActivePath) == ".gif"  || Path.GetExtension(ActivePath) == ".webm")//TODO: temp fix
+            string fileType = Path.GetExtension(ImageItem.ThumbnailName);
+            if (fileType == ".gif"  || fileType == ".webm")//TODO: temp fix
             {
                 ClearViewer();
             }
 
             ToClipboard.FileCutToClipBoard(ActivePath);
+
+            notifier.ShowWarning($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CutToClipboard))}\n\"{ActivePath}\"");
         }
 
         #region XAML events
