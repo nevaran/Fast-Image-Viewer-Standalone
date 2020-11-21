@@ -220,14 +220,6 @@ namespace FIVStandard
         private string ActiveFolder { get; set; } = "";//directory
         public string ActivePath { get; set; } = "";//directory + file name + extension
 
-        public string DonationLink
-        {
-            get
-            {
-                return "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url";
-            }
-        }
-
         private readonly FileSystemWatcher fsw = new FileSystemWatcher()
         {
             NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite
@@ -920,6 +912,12 @@ namespace FIVStandard
             notifier.ShowWarning($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CutToClipboard))}\n\"{ActivePath}\"");
         }
 
+        private void OpenHyperlink(string url)
+        {
+            ProcessStartInfo sInfo = new ProcessStartInfo(url);
+            Process.Start(sInfo);
+        }
+
         #region XAML events
         private void Media_Drop(object sender, DragEventArgs e)
         {
@@ -937,8 +935,7 @@ namespace FIVStandard
 
         private void OnDonateClick(object sender, RoutedEventArgs e)
         {
-            ProcessStartInfo sInfo = new ProcessStartInfo(DonationLink);
-            Process.Start(sInfo);
+            OpenHyperlink("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url");
         }
 
         private void MediaView_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
@@ -1250,8 +1247,7 @@ namespace FIVStandard
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            ProcessStartInfo sInfo = new ProcessStartInfo(e.Uri.ToString());
-            Process.Start(sInfo);
+            OpenHyperlink(e.Uri.ToString());
         }
 
         private void MainFIV_Closing(object sender, CancelEventArgs e)
