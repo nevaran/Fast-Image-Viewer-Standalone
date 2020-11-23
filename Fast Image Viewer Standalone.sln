@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fast Image Viewer Standalone", "Fast Image Viewer Standalone\Fast Image Viewer Standalone.csproj", "{7EB0186E-384D-4FEB-A707-52F91DEA1910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fast Image Viewer Core", "Fast Image Viewer Standalone\Fast Image Viewer Core.csproj", "{7DBD7222-0CC4-491B-95A3-B801B60F4FB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7EB0186E-384D-4FEB-A707-52F91DEA1910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EB0186E-384D-4FEB-A707-52F91DEA1910}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EB0186E-384D-4FEB-A707-52F91DEA1910}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EB0186E-384D-4FEB-A707-52F91DEA1910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DBD7222-0CC4-491B-95A3-B801B60F4FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DBD7222-0CC4-491B-95A3-B801B60F4FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DBD7222-0CC4-491B-95A3-B801B60F4FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DBD7222-0CC4-491B-95A3-B801B60F4FB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

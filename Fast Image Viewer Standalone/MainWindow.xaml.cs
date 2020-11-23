@@ -1,11 +1,11 @@
 ﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
 using FIVStandard.Views;
-using Gu.Localization;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Shell;
+using Notifications.Wpf.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,10 +23,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ToastNotifications;
-using ToastNotifications.Lifetime;
-using ToastNotifications.Messages;
-using ToastNotifications.Position;
 using Unosquare.FFME;
 
 namespace FIVStandard
@@ -66,7 +62,7 @@ namespace FIVStandard
             {
                 if (isDeletingFile)
                 {
-                    return $"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.Deleting))} {ActiveFile}...";
+                    return $"{Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.Deleting), Localization.TranslationSource.Instance.CurrentCulture)} {ActiveFile}...";
                 }
                 else
                 {
@@ -220,7 +216,7 @@ namespace FIVStandard
         private string ActiveFolder { get; set; } = "";//directory
         public string ActivePath { get; set; } = "";//directory + file name + extension
 
-        public string DonationLink
+        public static string DonationLink
         {
             get
             {
@@ -234,20 +230,7 @@ namespace FIVStandard
             , IncludeSubdirectories = false
         };
 
-        public readonly Notifier notifier = new Notifier(cfg =>
-        {
-            cfg.PositionProvider = new WindowPositionProvider(
-                parentWindow: Application.Current.MainWindow,
-                corner: Corner.BottomRight,
-                offsetX: 10,
-                offsetY: 10);
-
-            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                notificationLifetime: TimeSpan.FromSeconds(5),
-                maximumNotificationCount: MaximumNotificationCount.FromCount(4));
-
-            cfg.Dispatcher = Application.Current.Dispatcher;
-        });
+        public NotificationManager notificationManager = new NotificationManager(Notifications.Wpf.Core.Controls.NotificationPosition.BottomRight);
 
         public MainWindow()
         {
@@ -482,7 +465,14 @@ namespace FIVStandard
 
                 OnPropertyChanged("TitleInformation");//update title information
 
-                notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CreatedWatcher))} \"{e.Name}\"");
+                var content = new NotificationContent
+                {
+                    Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CreatedWatcher), Localization.TranslationSource.Instance.CurrentCulture),
+                    Message = e.Name,
+                    Type = NotificationType.Information
+                };
+
+                notificationManager.ShowAsync(content);
             });
         }
 
@@ -514,7 +504,14 @@ namespace FIVStandard
 
                 //FindIndexInFiles(activeFile);
 
-                notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.DeletedWatcher))} \"{e.Name}\"");
+                var content = new NotificationContent
+                {
+                    Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture),
+                    Message = e.Name,
+                    Type = NotificationType.Information
+                };
+
+                notificationManager.ShowAsync(content);
             });
         }
 
@@ -553,7 +550,14 @@ namespace FIVStandard
                                     ChangeImage(0, false);
                                 }
 
-                                notifier.ShowInformation($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.RenamedWatcher))} \"{e.OldName}\" -> \"{e.Name}\"");
+                                var content = new NotificationContent
+                                {
+                                    Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture),
+                                    Message = e.Name,
+                                    Type = NotificationType.Information
+                                };
+
+                                notificationManager.ShowAsync(content);
                             }
                             else//file has been renamed to something with a non-valid extension - remove it from the list
                             {
@@ -870,7 +874,14 @@ namespace FIVStandard
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        notifier.ShowWarning($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.FileNotFoundMsg))}: {path}");
+                        var content = new NotificationContent
+                        {
+                            Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.FileNotFoundMsg), Localization.TranslationSource.Instance.CurrentCulture),
+                            Message = path,
+                            Type = NotificationType.Warning
+                        };
+
+                        notificationManager.ShowAsync(content);
                     });
                 }
 
@@ -897,7 +908,14 @@ namespace FIVStandard
                 ToClipboard.ImageCopyToClipboard(ImageSource);
             }
 
-            notifier.ShowWarning($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CopiedToClipboard))}\n\"{ActivePath}\"");
+            var content = new NotificationContent
+            {
+                Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CopiedToClipboard), Localization.TranslationSource.Instance.CurrentCulture),
+                Message = ActivePath,
+                Type = NotificationType.Success
+            };
+
+            notificationManager.ShowAsync(content);
         }
 
         /*private void FileCopyToClipboardCall()
@@ -917,7 +935,14 @@ namespace FIVStandard
 
             ToClipboard.FileCutToClipBoard(ActivePath);
 
-            notifier.ShowWarning($"{Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.CutToClipboard))}\n\"{ActivePath}\"");
+            var content = new NotificationContent
+            {
+                Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture),
+                Message = ActivePath,
+                Type = NotificationType.Success
+            };
+
+            notificationManager.ShowAsync(content);
         }
 
         private void OpenHyperlink(string url)
@@ -930,11 +955,27 @@ namespace FIVStandard
             catch (Win32Exception noBrowser)
             {
                 if (noBrowser.ErrorCode == -2147467259)
-                    notifier.ShowError(noBrowser.Message);
+                {
+                    var content = new NotificationContent
+                    {
+                        Title = "Hyperlink Error",
+                        Message = noBrowser.Message,
+                        Type = NotificationType.Success
+                    };
+
+                    notificationManager.ShowAsync(content);
+                }
             }
             catch (Exception other)
             {
-                notifier.ShowError(other.Message);
+                var content = new NotificationContent
+                {
+                    Title = "Hyperlink Error",
+                    Message = other.Message,
+                    Type = NotificationType.Success
+                };
+
+                notificationManager.ShowAsync(content);
             }
         }
 
@@ -1272,14 +1313,14 @@ namespace FIVStandard
 
         private void MainFIV_Closing(object sender, CancelEventArgs e)
         {
-            notifier.Dispose();
+            notificationManager.CloseAllAsync();
 
             fsw.Created -= Fsw_Created;
             fsw.Deleted -= Fsw_Deleted;
             fsw.Renamed -= Fsw_Renamed;
 
             ClearAllMedia();
-            Settings.Save();
+            SettingsManager.Save();
         }
         #endregion
 

@@ -1,5 +1,4 @@
 ﻿using ControlzEx.Theming;
-using Gu.Localization;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -647,7 +646,7 @@ namespace FIVStandard.Core
             FilterWebm = savs.FilterWebm;
         }
 
-        public void Save()
+        public static void Save()
         {
             Properties.Settings.Default.Save();
         }
@@ -708,7 +707,6 @@ namespace FIVStandard.Core
             else
             {
                 theme = "Light";
-                //ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(ThemeAccents[ThemeAccentDropIndex]), ThemeManager.GetAppTheme("BaseLight"));
             }
             ThemeManager.Current.ChangeTheme(mainWindow, $"{theme}.{ThemeAccents[ThemeAccentDropIndex]}");
         }
@@ -717,7 +715,7 @@ namespace FIVStandard.Core
         {
             Properties.Settings.Default.ShownLanguage = ShownLanguageDropIndex;
 
-            Translator.Culture = CultureInfo.GetCultureInfo(ShownLanguage[ShownLanguageDropIndex].tag);
+            Localization.TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo(ShownLanguage[ShownLanguageDropIndex].tag);
         }
 
         private void OnStretchSwitch()
