@@ -83,6 +83,7 @@
                 />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
+
     <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
         <StackPanel
             Height="25"

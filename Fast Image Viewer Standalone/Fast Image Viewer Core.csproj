@@ -28,10 +28,10 @@
       <Version>4.3.1</Version>
     </PackageReference>
     <PackageReference Include="Magick.NET-Q8-AnyCPU">
-      <Version>7.22.2.1</Version>
+      <Version>7.22.2.2</Version>
     </PackageReference>
     <PackageReference Include="Magick.NET.SystemWindowsMedia">
-      <Version>3.0.1</Version>
+      <Version>3.0.2</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
       <Version>2.3.4</Version>
