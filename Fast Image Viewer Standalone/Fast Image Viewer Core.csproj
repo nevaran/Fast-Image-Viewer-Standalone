@@ -12,6 +12,8 @@
     <ApplicationIcon>Resources\FIVIcon.ico</ApplicationIcon>
 
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
 
   <ItemGroup>
