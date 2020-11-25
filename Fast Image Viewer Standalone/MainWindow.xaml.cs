@@ -1239,6 +1239,15 @@ namespace FIVStandard
 
         private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            MetroTabControl tc = (MetroTabControl)sender;
+            if(tc.SelectedIndex == 0)
+            {
+                MediaView?.Play();
+            }
+            else
+            {
+                MediaView?.Pause();
+            }
             if (Settings.ReloadFolderFlag == false) return;//dont refresh if not flagged
 
             Settings.ReloadFolderFlag = false;

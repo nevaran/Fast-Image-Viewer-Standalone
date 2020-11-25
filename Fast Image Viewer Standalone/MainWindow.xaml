@@ -167,6 +167,7 @@
             Focusable="False"
             IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
             IsTabStop="False"
+            KeepVisualTreeInMemoryWhenChangingTabs="True"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             SelectionChanged="MetroTabControl_SelectionChanged"
             >
