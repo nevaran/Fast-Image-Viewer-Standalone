@@ -131,8 +131,6 @@ namespace FIVStandard.Core
         private const string setupURL = "https://github.com/nevaran/FIV/releases/latest/download/FIV.Setup.exe";
         private const string changelogURL = "https://github.com/nevaran/FIV/releases/latest/download/VersionControl.txt";
 
-        private readonly NotificationContent content = new NotificationContent();
-
         public UpdateCheck(MainWindow mw)
         {
             mainWindow = mw;
@@ -179,29 +177,29 @@ namespace FIVStandard.Core
 
         private async Task Download_Full()
         {
-            content.Title = "";
-            content.Message = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CheckingForUpdatesInfo), Localization.TranslationSource.Instance.CurrentCulture);
-            content.Type = NotificationType.Information;
-            await mainWindow.notificationManager.ShowAsync(content);
+            mainWindow.content.Title = "";
+            mainWindow.content.Message = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CheckingForUpdatesInfo), Localization.TranslationSource.Instance.CurrentCulture);
+            mainWindow.content.Type = NotificationType.Information;
+            _ = mainWindow.notificationManager.ShowAsync(mainWindow.content);
 
             await GetHttpChangelog();
 
             if (HasLaterVersion())
             {
-                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.AlreadyOnLatestVerInfo), Localization.TranslationSource.Instance.CurrentCulture);
-                content.Message = DownloadVersion.ToString();
-                content.Type = NotificationType.Success;
-                await mainWindow.notificationManager.ShowAsync(content);
+                mainWindow.content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.AlreadyOnLatestVerInfo), Localization.TranslationSource.Instance.CurrentCulture);
+                mainWindow.content.Message = DownloadVersion.ToString();
+                mainWindow.content.Type = NotificationType.Success;
+                _ = mainWindow.notificationManager.ShowAsync(mainWindow.content);
 
                 UpdaterMessage = "";
                 NotUpdating = true;
             }
             else
             {
-                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.NewVerAvailableInfo), Localization.TranslationSource.Instance.CurrentCulture);
-                content.Message = $"{Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.UpdatingInfo), Localization.TranslationSource.Instance.CurrentCulture)} ({DownloadVersion})";
-                content.Type = NotificationType.Success;
-                await mainWindow.notificationManager.ShowAsync(content);
+                mainWindow.content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.NewVerAvailableInfo), Localization.TranslationSource.Instance.CurrentCulture);
+                mainWindow.content.Message = $"{Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.UpdatingInfo), Localization.TranslationSource.Instance.CurrentCulture)} ({DownloadVersion})";
+                mainWindow.content.Type = NotificationType.Success;
+                _ = mainWindow.notificationManager.ShowAsync(mainWindow.content);
 
                 await DownloadNewAppVersion();
             }
@@ -209,17 +207,17 @@ namespace FIVStandard.Core
 
         private async Task Download_FullForced()
         {
-            content.Title = "";
-            content.Message = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CheckingForUpdatesInfo), Localization.TranslationSource.Instance.CurrentCulture);
-            content.Type = NotificationType.Information;
-            await mainWindow.notificationManager.ShowAsync(content);
+            mainWindow.content.Title = "";
+            mainWindow.content.Message = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CheckingForUpdatesInfo), Localization.TranslationSource.Instance.CurrentCulture);
+            mainWindow.content.Type = NotificationType.Information;
+            _ = mainWindow.notificationManager.ShowAsync(mainWindow.content);
 
             await GetHttpChangelog();
 
-            content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.UpdatingInfo), Localization.TranslationSource.Instance.CurrentCulture);
-            content.Message = DownloadVersion.ToString();
-            content.Type = NotificationType.Information;
-            await mainWindow.notificationManager.ShowAsync(content);
+            mainWindow.content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.UpdatingInfo), Localization.TranslationSource.Instance.CurrentCulture);
+            mainWindow.content.Message = DownloadVersion.ToString();
+            mainWindow.content.Type = NotificationType.Information;
+            _ = mainWindow.notificationManager.ShowAsync(mainWindow.content);
 
             await DownloadNewAppVersion();
         }
@@ -232,10 +230,10 @@ namespace FIVStandard.Core
             {
                 if (notifies)
                 {
-                    content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.AlreadyOnLatestVerInfo), Localization.TranslationSource.Instance.CurrentCulture);
-                    content.Message = DownloadVersion.ToString();
-                    content.Type = NotificationType.Information;
-                    await mainWindow.notificationManager.ShowAsync(content);
+                    mainWindow.content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.AlreadyOnLatestVerInfo), Localization.TranslationSource.Instance.CurrentCulture);
+                    mainWindow.content.Message = DownloadVersion.ToString();
+                    mainWindow.content.Type = NotificationType.Information;
+                    _ = mainWindow.notificationManager.ShowAsync(mainWindow.content);
                 }
 
                 UpdaterMessage = "";
@@ -245,10 +243,10 @@ namespace FIVStandard.Core
             {
                 if (notifies)
                 {
-                    content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.NewVerAvailableInfo), Localization.TranslationSource.Instance.CurrentCulture);
-                    content.Message = DownloadVersion.ToString();
-                    content.Type = NotificationType.Information;
-                    await mainWindow.notificationManager.ShowAsync(content);
+                    mainWindow.content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.NewVerAvailableInfo), Localization.TranslationSource.Instance.CurrentCulture);
+                    mainWindow.content.Message = DownloadVersion.ToString();
+                    mainWindow.content.Type = NotificationType.Information;
+                    _ = mainWindow.notificationManager.ShowAsync(mainWindow.content);
                 }
 
                 NotUpdating = true;

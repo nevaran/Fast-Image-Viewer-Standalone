@@ -14,6 +14,8 @@ namespace FIVStandard.Core
     {
         public static BitmapSource LoadImage(string path, int imgWidth, int imgHeight)
         {
+            if (!File.Exists(path)) return null;
+
             using MagickImage image = new MagickImage(path);
 
             if (Settings.DownsizeImageToggle)

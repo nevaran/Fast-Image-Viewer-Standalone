@@ -170,7 +170,6 @@ namespace FIVStandard
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        //private readonly string[] filters = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"/*, ".tiff", ".svg", ".mp4", ".avi" */ };//TODO: doesnt work: tiff svg
         private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.TIFF;*.ICO;*.SVG;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
 
         private Button editingButton = null;//used for editing shortcuts
@@ -231,6 +230,7 @@ namespace FIVStandard
         };
 
         public NotificationManager notificationManager = new NotificationManager(Notifications.Wpf.Core.Controls.NotificationPosition.BottomRight);
+        public readonly NotificationContent content = new NotificationContent();
 
         public MainWindow()
         {
@@ -403,11 +403,6 @@ namespace FIVStandard
                     OpenNewFile(args[1]);
                 }
             }
-
-            /*notifier.ShowInformation("");
-            notifier.ShowSuccess("");
-            notifier.ShowWarning("");
-            notifier.ShowError("");*/
         }
 
         /*private void Fsw_Updated(object sender, FileSystemEventArgs e)
@@ -465,13 +460,9 @@ namespace FIVStandard
 
                 OnPropertyChanged("TitleInformation");//update title information
 
-                var content = new NotificationContent
-                {
-                    Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CreatedWatcher), Localization.TranslationSource.Instance.CurrentCulture),
-                    Message = e.Name,
-                    Type = NotificationType.Information
-                };
-
+                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CreatedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                content.Message = e.Name;
+                content.Type = NotificationType.Information;
                 notificationManager.ShowAsync(content);
             });
         }
@@ -504,13 +495,9 @@ namespace FIVStandard
 
                 //FindIndexInFiles(activeFile);
 
-                var content = new NotificationContent
-                {
-                    Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture),
-                    Message = e.Name,
-                    Type = NotificationType.Information
-                };
-
+                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                content.Message = e.Name;
+                content.Type = NotificationType.Information;
                 notificationManager.ShowAsync(content);
             });
         }
@@ -550,13 +537,9 @@ namespace FIVStandard
                                     ChangeImage(0, false);
                                 }
 
-                                var content = new NotificationContent
-                                {
-                                    Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture),
-                                    Message = e.Name,
-                                    Type = NotificationType.Information
-                                };
-
+                                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                                content.Message = e.Name;
+                                content.Type = NotificationType.Information;
                                 notificationManager.ShowAsync(content);
                             }
                             else//file has been renamed to something with a non-valid extension - remove it from the list
@@ -724,10 +707,10 @@ namespace FIVStandard
 
             //keep moving onward until we find an existing file
             //TEMP REPLACEMENT (maybe)
-            if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition)).ThumbnailName)))
+            /*if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition)).ThumbnailName)))
             {
                 ChangeImage(jumpIndex, false);
-            }
+            }*/
 
             ActiveFile = ImageItem.ThumbnailName;
             ActivePath = Path.Combine(ActiveFolder, activeFile);
@@ -874,13 +857,9 @@ namespace FIVStandard
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        var content = new NotificationContent
-                        {
-                            Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.FileNotFoundMsg), Localization.TranslationSource.Instance.CurrentCulture),
-                            Message = path,
-                            Type = NotificationType.Warning
-                        };
-
+                        content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.FileNotFoundMsg), Localization.TranslationSource.Instance.CurrentCulture);
+                        content.Message = path;
+                        content.Type = NotificationType.Warning;
                         notificationManager.ShowAsync(content);
                     });
                 }
@@ -908,13 +887,9 @@ namespace FIVStandard
                 ToClipboard.ImageCopyToClipboard(ImageSource);
             }
 
-            var content = new NotificationContent
-            {
-                Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CopiedToClipboard), Localization.TranslationSource.Instance.CurrentCulture),
-                Message = ActivePath,
-                Type = NotificationType.Success
-            };
-
+            content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CopiedToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
+            content.Message = ActivePath;
+            content.Type = NotificationType.Success;
             notificationManager.ShowAsync(content);
         }
 
@@ -935,13 +910,9 @@ namespace FIVStandard
 
             ToClipboard.FileCutToClipBoard(ActivePath);
 
-            var content = new NotificationContent
-            {
-                Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture),
-                Message = ActivePath,
-                Type = NotificationType.Success
-            };
-
+            content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
+            content.Message = ActivePath;
+            content.Type = NotificationType.Success;
             notificationManager.ShowAsync(content);
         }
 
@@ -949,32 +920,24 @@ namespace FIVStandard
         {
             try
             {
-                ProcessStartInfo sInfo = new ProcessStartInfo(url);
+                ProcessStartInfo sInfo = new ProcessStartInfo(url) { UseShellExecute = true };
                 Process.Start(sInfo);
             }
             catch (Win32Exception noBrowser)
             {
                 if (noBrowser.ErrorCode == -2147467259)
                 {
-                    var content = new NotificationContent
-                    {
-                        Title = "Hyperlink Error",
-                        Message = noBrowser.Message,
-                        Type = NotificationType.Success
-                    };
-
+                    content.Title = "Hyperlink Error";
+                    content.Message = noBrowser.Message;
+                    content.Type = NotificationType.Success;
                     notificationManager.ShowAsync(content);
                 }
             }
             catch (Exception other)
             {
-                var content = new NotificationContent
-                {
-                    Title = "Hyperlink Error",
-                    Message = other.Message,
-                    Type = NotificationType.Success
-                };
-
+                content.Title = "Hyperlink Error";
+                content.Message = other.Message;
+                content.Type = NotificationType.Success;
                 notificationManager.ShowAsync(content);
             }
         }
@@ -1204,8 +1167,6 @@ namespace FIVStandard
             editingButton = (Button)sender;
 
             Settings.ShortcutButtonsOn = false;//disable the buttons until done editing
-
-            //TODO: put text when editing for user to know; save changed buttons
         }
 
         private void OnRemoveShortcutClick(object sender, RoutedEventArgs e)
