@@ -1245,7 +1245,8 @@ namespace FIVStandard
             {
                 MediaView?.Pause();
             }
-            if (Settings.ReloadFolderFlag == false) return;//dont refresh if not flagged
+
+            if (Settings.ReloadFolderFlag == false) return;//dont re-open folder with file if not flagged
 
             Settings.ReloadFolderFlag = false;
             OpenNewFile(ActivePath);
