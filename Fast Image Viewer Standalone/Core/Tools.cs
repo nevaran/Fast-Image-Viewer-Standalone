@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static FIVStandard.Core.SettingsStore;
 
@@ -132,6 +133,77 @@ namespace FIVStandard.Core
             _ => false,
         };
 
+        public static BitmapSource BitmapToBitmapSource(System.Drawing.Bitmap bitmap)
+        {
+            var bitmapData = bitmap.LockBits(
+                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            
+            var bitmapSource = BitmapSource.Create(
+                bitmapData.Width, bitmapData.Height,
+                bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                ConvertPixelFormat(bitmap.PixelFormat), null,
+                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+            bitmap.UnlockBits(bitmapData);
+
+            bitmap.Dispose();
+
+            return bitmapSource;
+        }
+
+        private static PixelFormat ConvertPixelFormat(System.Drawing.Imaging.PixelFormat sourceFormat)
+        {
+            switch (sourceFormat)
+            {
+                case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
+                    return PixelFormats.Bgr24;
+                case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
+                    return PixelFormats.Bgra32;
+                case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
+                    return PixelFormats.Bgr32;
+                case System.Drawing.Imaging.PixelFormat.Indexed:
+                    return PixelFormats.Bgr101010;
+                case System.Drawing.Imaging.PixelFormat.Format16bppRgb555:
+                    return PixelFormats.Bgr555;
+                case System.Drawing.Imaging.PixelFormat.Format16bppRgb565:
+                    return PixelFormats.Bgr565;
+                case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
+                    return PixelFormats.Indexed1;
+                case System.Drawing.Imaging.PixelFormat.Format4bppIndexed:
+                    return PixelFormats.Indexed4;
+                case System.Drawing.Imaging.PixelFormat.Format8bppIndexed:
+                    return PixelFormats.Indexed8;
+                case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
+                    return PixelFormats.Bgr32;
+                case System.Drawing.Imaging.PixelFormat.Format16bppGrayScale:
+                    return PixelFormats.Gray16;
+                case System.Drawing.Imaging.PixelFormat.Format48bppRgb:
+                    return PixelFormats.Rgb48;
+                case System.Drawing.Imaging.PixelFormat.Format64bppArgb:
+                    return PixelFormats.Prgba64;
+                case System.Drawing.Imaging.PixelFormat.Format64bppPArgb:
+                    return PixelFormats.Prgba64;//uncertain
+                case System.Drawing.Imaging.PixelFormat.Format16bppArgb1555:
+                    return PixelFormats.Bgr555;
+                case System.Drawing.Imaging.PixelFormat.DontCare:
+                    break;
+                case System.Drawing.Imaging.PixelFormat.Max:
+                    break;
+                case System.Drawing.Imaging.PixelFormat.Gdi:
+                    break;
+                case System.Drawing.Imaging.PixelFormat.Alpha:
+                    break;
+                case System.Drawing.Imaging.PixelFormat.PAlpha:
+                    break;
+                case System.Drawing.Imaging.PixelFormat.Extended:
+                    break;
+                case System.Drawing.Imaging.PixelFormat.Canonical:
+                    break;
+            }
+            return PixelFormats.Bgra32;
+        }
+
         /*public static BitmapImage WriteableBitmapToBitmapImage(WriteableBitmap wbm)
         {
             BitmapImage bmImage = new BitmapImage();
@@ -147,25 +219,6 @@ namespace FIVStandard.Core
                 bmImage.Freeze();
             }
             return bmImage;
-        }*/
-
-        /*public static BitmapSource BitmapToBitmapSource(System.Drawing.Bitmap bitmap)
-        {
-            var bitmapData = bitmap.LockBits(
-                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
-
-            var bitmapSource = BitmapSource.Create(
-                bitmapData.Width, bitmapData.Height,
-                bitmap.HorizontalResolution, bitmap.VerticalResolution,
-                PixelFormats.Bgr24, null,
-                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
-
-            bitmap.UnlockBits(bitmapData);
-
-            //bitmap.Dispose();
-
-            return bitmapSource;
         }*/
 
         /*public static BitmapImage LoadBitmapImage(string path, int imgWidth, int imgHeight)
@@ -190,7 +243,7 @@ namespace FIVStandard.Core
             }
         }*/
 
-        /*public static BitmapImage ToBitmapImage(byte[] array)
+        /*public static BitmapImage ByteArrayToBitmapImage(byte[] array)
         {
             using (var ms = new MemoryStream(array))
             {
@@ -204,7 +257,7 @@ namespace FIVStandard.Core
             }
         }*/
 
-        /*public static Rotation GetOrientationRotation(OrientationType ot) => ot switch
+        /*public static Rotation OrientationToRotation(OrientationType ot) => ot switch
         {
             OrientationType.TopLeft     => Rotation.Rotate0,
             OrientationType.TopRight    => Rotation.Rotate90,

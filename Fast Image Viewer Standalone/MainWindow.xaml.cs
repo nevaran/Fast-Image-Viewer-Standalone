@@ -133,12 +133,12 @@ namespace FIVStandard
                         "",
                         "",
                         "",
-                        "owo",
-                        "uwu",
-                        "ゴ ゴ ゴ ゴ",
-                        "( ͡° ͜ʖ ͡°)",
-                        "I am Lagnar",
-                        "Made by ねヴぁらん",
+                        @"owo",
+                        @"uwu",
+                        @"ゴ ゴ ゴ ゴ",
+                        @"I am Lagnar",
+                        @"Made by ねヴぁらん",
+                        @"¯\_(ツ)_/¯",
         };
 
         public string ImgResStringFormat
@@ -154,8 +154,6 @@ namespace FIVStandard
             }
         }
         #endregion
-
-        private double totalMediaTime = 0;
 
         public UpdateCheck AppUpdater { get; set; }
 
@@ -196,8 +194,10 @@ namespace FIVStandard
         }
 
         private string activeFile = "FIV";
-
-        public string ActiveFile//file name + extension
+        /// <summary>
+        /// file name + extension
+        /// </summary>
+        public string ActiveFile
         {
             get
             {
@@ -212,8 +212,15 @@ namespace FIVStandard
             }
         }
 
-        private string ActiveFolder { get; set; } = "";//directory
-        public string ActivePath { get; set; } = "";//directory + file name + extension
+        /// <summary>
+        /// Directory path only
+        /// </summary>
+        private string ActiveFolder { get; set; } = "";
+
+        /// <summary>
+        /// directory + file name + extension
+        /// </summary>
+        public string ActivePath { get; set; } = "";
 
         public static string DonationLink
         {
@@ -869,18 +876,19 @@ namespace FIVStandard
             });
         }
 
-        private void ImageCopyToClipboardCall()
+        private async void ImageCopyToClipboardCall()
         {
             if (ImageItem is null) return;
 
             string fileType = Path.GetExtension(ImageItem.ThumbnailName);
 
-            if (!File.Exists(ActivePath) || fileType == ".webm") return;
+            if (!File.Exists(ActivePath)) return;
 
             if (ImageItem.IsAnimated)
             {
-                //ToClipboard.GifCopyToClipboard(MediaSource);
-                ToClipboard.ImageCopyToClipboard(new BitmapImage(MediaView.Source));
+                System.Drawing.Bitmap bm = await MediaView.CaptureBitmapAsync();
+                ToClipboard.ImageCopyToClipboard(Tools.BitmapToBitmapSource(bm));
+                bm.Dispose();
             }
             else
             {
@@ -888,9 +896,9 @@ namespace FIVStandard
             }
 
             content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CopiedToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
-            content.Message = ActivePath;
+            content.Message = ActiveFile;
             content.Type = NotificationType.Success;
-            notificationManager.ShowAsync(content);
+            _ = notificationManager.ShowAsync(content);
         }
 
         /*private void FileCopyToClipboardCall()
@@ -911,7 +919,7 @@ namespace FIVStandard
             ToClipboard.FileCutToClipBoard(ActivePath);
 
             content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
-            content.Message = ActivePath;
+            content.Message = ActiveFile;
             content.Type = NotificationType.Success;
             notificationManager.ShowAsync(content);
         }
@@ -971,19 +979,8 @@ namespace FIVStandard
 
                 ImageItem.ImageWidth = ImgWidth;
                 ImageItem.ImageHeight = ImgHeight;
-
-                totalMediaTime = MediaView.NaturalDuration.Value.TotalMilliseconds;
             }
-        }
-
-        private void MediaView_PositionChanged(object sender, Unosquare.FFME.Common.PositionChangedEventArgs e)
-        {
-            double currentTime = e.Position.TotalMilliseconds;
-            
-            if (totalMediaTime == 0 || currentTime == 0)
-                MediaProgression.Value = 0;
-            else
-                MediaProgression.Value = (currentTime / totalMediaTime) * 100;
+            MediaProgression.Maximum = MediaView.NaturalDuration.Value.Ticks;
         }
 
         private void MediaView_MediaClosed(object sender, EventArgs e)
@@ -1278,7 +1275,7 @@ namespace FIVStandard
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            OpenHyperlink(e.Uri.ToString());
+            OpenHyperlink(e.Uri.OriginalString);
         }
 
         private void MainFIV_Closing(object sender, CancelEventArgs e)

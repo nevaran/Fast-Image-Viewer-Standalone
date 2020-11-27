@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:converter="clr-namespace:FIVStandard.Converters"
+    xmlns:core="clr-namespace:FIVStandard.Core"
     xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:FIVStandard.Localization"
     xmlns:utils="clr-namespace:FIVStandard.Utils"
     x:Name="MainFIV"
@@ -38,6 +40,7 @@
         <converter:BoolToVisibilityConverterReverse x:Key="BoolToVisibilityConverterReverse" />
         <converter:BoolFromAccentToGrayConverter x:Key="BoolFromAccentToGrayConverter" />
         <converter:BoolToStretchDirectionConverter x:Key="BoolToStretchDirectionConverter" />
+        <converter:TimeSpanTickConverter x:Key="TimeSpanTickConverter" />
 
         <Style
             x:Key="ListBoxItemStyle"
@@ -372,35 +375,34 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
-                        <ProgressBar
+                        <Slider
                             x:Name="MediaProgression"
                             Grid.Row="0"
                             Grid.Column="1"
-                            Height="10"
+                            Height="25"
+                            Margin="0,0,0,2"
                             VerticalAlignment="Bottom"
+                            Focusable="False"
+                            IsMoveToPointEnabled="True"
+                            IsTabStop="False"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             Visibility="Hidden"
-                            />
+                            Value="{Binding Path=Position, ElementName=MediaView, Converter={StaticResource TimeSpanTickConverter}, Mode=TwoWay}"
+                            >
+                            <i:Interaction.Behaviors>
+                                <core:FreeSlideBehavior />
+                            </i:Interaction.Behaviors>
+                        </Slider>
 
                         <!--  Media Control  -->
                         <utils:ZoomBorder
                             x:Name="border"
                             Grid.Column="1"
-                            Margin="0,44,0,10"
+                            Margin="0,44,0,29"
                             Background="Transparent"
                             ClipToBounds="True"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
-                            <!--<MediaElement
-                                Name="MediaView"
-                                Focusable="False"
-                                LoadedBehavior="Manual"
-                                MediaEnded="OnClipEnded"
-                                MediaOpened="OnClipOpened"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Source="{Binding MediaSource, Mode=OneWay, IsAsync=True}"
-                                StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
-                                UnloadedBehavior="Manual"
-                                />-->
                             <ffme:MediaElement
                                 x:Name="MediaView"
                                 IsMuted="True"
@@ -408,10 +410,10 @@
                                 LoopingBehavior="Play"
                                 MediaClosed="MediaView_MediaClosed"
                                 MediaOpened="MediaView_MediaOpened"
-                                PositionChanged="MediaView_PositionChanged"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                ScrubbingEnabled="True"
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
-                                UnloadedBehavior="Close"
+                                UnloadedBehavior="Manual"
                                 />
                         </utils:ZoomBorder>
 
