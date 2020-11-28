@@ -251,9 +251,10 @@ namespace FIVStandard
 
             ImageMagick.MagickAnyCPU.CacheDirectory = StartupPath;
 
-            //Library.FFmpegLoadModeFlags = FFmpegLoadMode.MinimumFeatures;
             Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
-            //Library.LoadFFmpeg();
+            //MediaView.IsMuted = true;
+            //MediaView.ScrubbingEnabled = true;
+            Library.FFmpegLoadModeFlags = FFmpeg.AutoGen.FFmpegLoadMode.MinimumFeatures;
 
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
             ImagesDataView.CustomSort = new NaturalOrderComparer(false);
@@ -411,37 +412,6 @@ namespace FIVStandard
                 }
             }
         }
-
-        /*private void Fsw_Updated(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                string cultureChangeType;
-                switch (e.ChangeType)
-                {
-                    case WatcherChangeTypes.Changed:
-                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.ChangedWatcher));
-                        break;
-                    default:
-                        cultureChangeType = Translator.Translate(Properties.Resources.ResourceManager, nameof(Properties.Resources.AllWatcher));
-                        break;
-                }
-                notifier.ShowInformation($"{cultureChangeType} \"{e.Name}\"");
-
-                GetDirectoryFiles(ActiveFolder);
-
-                if (ImagesData.Count < 1)
-                {
-                    ClearAllMedia();
-                    return;
-                }
-
-                FindIndexInFiles(ActiveFile);
-                //SetTitleInformation();
-
-                ChangeImage(0, false);
-            });
-        }*/
 
         private void Fsw_Created(object sender, FileSystemEventArgs e)
         {
@@ -678,11 +648,11 @@ namespace FIVStandard
             {
                 if (MediaView.IsPaused)
                 {
-                    MediaView.Play();
+                    MediaView?.Play();
                 }
                 else
                 {
-                    MediaView.Pause();
+                    MediaView?.Pause();
                 }
             }
         }

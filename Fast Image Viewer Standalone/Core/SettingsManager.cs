@@ -184,7 +184,7 @@ namespace FIVStandard.Core
         {
             ("en", "English (en)"),
             ("bg-BG", "Български (bg-BG)"),
-            ("nl-NL", "Nederlands (nl-BE/nl-NL)"),
+            ("nl-NL", "Nederlands (nl-NL)"),
             ("pt-BR", "Portuguesa (pt-BR)"),
             ("se-SE", "Svenska (se-SE)"),
             ("da-DK", "Dansk (da-DK)"),
