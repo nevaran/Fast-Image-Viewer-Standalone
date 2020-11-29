@@ -602,6 +602,7 @@ namespace FIVStandard.Core
             {
                 Properties.Settings.Default.Upgrade();
                 Properties.Settings.Default.UpgradeRequired = false;
+                Save();
             }
 
             //ThemeManager.AddAccent("HackerTheme", new Uri("pack://application:,,,/MahAppsMetroThemesSample;component/CustomAccents/HackerTheme.xaml"));

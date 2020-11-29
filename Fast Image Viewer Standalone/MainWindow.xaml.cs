@@ -907,7 +907,7 @@ namespace FIVStandard
                 {
                     content.Title = "Hyperlink Error";
                     content.Message = noBrowser.Message;
-                    content.Type = NotificationType.Success;
+                    content.Type = NotificationType.Error;
                     notificationManager.ShowAsync(content);
                 }
             }
@@ -915,7 +915,7 @@ namespace FIVStandard
             {
                 content.Title = "Hyperlink Error";
                 content.Message = other.Message;
-                content.Type = NotificationType.Success;
+                content.Type = NotificationType.Error;
                 notificationManager.ShowAsync(content);
             }
         }
