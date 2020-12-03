@@ -10,7 +10,7 @@
     xmlns:local="clr-namespace:FIVStandard.Localization"
     xmlns:utils="clr-namespace:FIVStandard.Utils"
     x:Name="MainFIV"
-    Title="{Binding TitleInformation, Mode=OneWay}"
+    Title="{Binding TitleInformation, Mode=OneWay, IsAsync=True}"
     Width="800"
     Height="600"
     MinWidth="600"
@@ -68,14 +68,16 @@
             >
             <Button
                 Click="OnDonateClick"
-                Content="{local:Loc Donate}"
+                Content="{local:Loc Donate,
+                                    IsAsync=True}"
                 Focusable="False"
                 IsTabStop="False"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 />
             <Button
                 Click="OnCheckUpdateClick"
-                Content="{local:Loc CheckForUpdates}"
+                Content="{local:Loc CheckForUpdates,
+                                    IsAsync=True}"
                 Focusable="False"
                 IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
                 IsTabStop="False"
@@ -100,7 +102,8 @@
                 VerticalAlignment="Center"
                 Background="#00000000"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                ToolTip="{local:Loc DarkModeOnTooltip}"
+                ToolTip="{local:Loc DarkModeOnTooltip,
+                                    IsAsync=True}"
                 Visibility="{Binding Settings.DarkModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 >
                 <!--  Data="M0 128v768h768V128H0zM64 832V192h640L64 832z"  -->
@@ -118,7 +121,8 @@
                 VerticalAlignment="Center"
                 Background="#00000000"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                ToolTip="{local:Loc StretchOnTooltip}"
+                ToolTip="{local:Loc StretchOnTooltip,
+                                    IsAsync=True}"
                 Visibility="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 >
                 <Path
@@ -135,7 +139,8 @@
                 VerticalAlignment="Center"
                 Background="#00000000"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                ToolTip="{local:Loc DownsizeOnTooltip}"
+                ToolTip="{local:Loc DownsizeOnTooltip,
+                                    IsAsync=True}"
                 Visibility="{Binding Settings.DownsizeImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 >
                 <Path
@@ -152,7 +157,8 @@
                 VerticalAlignment="Center"
                 Background="#00000000"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                ToolTip="{local:Loc ThumbnailListOnTooltip}"
+                ToolTip="{local:Loc ThumbnailListOnTooltip,
+                                    IsAsync=True}"
                 Visibility="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 >
                 <Path
@@ -174,7 +180,8 @@
 
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
-                Header="{local:Loc General}"
+                Header="{local:Loc General,
+                                   IsAsync=True}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
@@ -184,26 +191,30 @@
                             <MenuItem
                                 Click="OnOpenFileLocation"
                                 Focusable="False"
-                                Header="{local:Loc OpenFileLocation}"
+                                Header="{local:Loc OpenFileLocation,
+                                                   IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <MenuItem
                                 Click="OnCopyToClipboard"
                                 Focusable="False"
-                                Header="{local:Loc CopyImageToClipboard}"
+                                Header="{local:Loc CopyImageToClipboard,
+                                                   IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <MenuItem
                                 Click="OnCutToClipboard"
                                 Focusable="False"
-                                Header="{local:Loc CutFileToClipboard}"
+                                Header="{local:Loc CutFileToClipboard,
+                                                   IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Separator />
                             <MenuItem
                                 Click="OnDeleteClick"
                                 Focusable="False"
-                                Header="{local:Loc Delete}"
+                                Header="{local:Loc Delete,
+                                                   IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                         </ContextMenu>
@@ -268,7 +279,8 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="OnOpenBrowseImage"
-                        Content="{local:Loc Open}"
+                        Content="{local:Loc Open,
+                                            IsAsync=True}"
                         Focusable="False"
                         IsTabStop="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -348,7 +360,8 @@
                                                 VerticalAlignment="Bottom"
                                                 Background="#00000000"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                                ToolTip="{local:Loc DownsizeOnTooltip}"
+                                                ToolTip="{local:Loc DownsizeOnTooltip,
+                                                                    IsAsync=True}"
                                                 Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                                                 >
                                                 <!--<Path
@@ -435,7 +448,8 @@
             </Controls:MetroTabItem>
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
-                Header="{local:Loc Settings}"
+                Header="{local:Loc Settings,
+                                   IsAsync=True}"
                 >
                 <!--  Custom content here  -->
                 <ScrollViewer
@@ -491,7 +505,8 @@
                                 Margin="20,10,10,27"
                                 HorizontalAlignment="Left"
                                 Click="OnResetSettingsClick"
-                                Content="{local:Loc ResetSettingsButton}"
+                                Content="{local:Loc ResetSettingsButton,
+                                                    IsAsync=True}"
                                 Focusable="False"
                                 FontSize="14"
                                 IsTabStop="False"
@@ -505,9 +520,11 @@
                                 VerticalAlignment="Top"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc Language}"
+                                Text="{local:Loc Language,
+                                                 IsAsync=True}"
                                 TextAlignment="Left"
-                                ToolTip="{local:Loc ShownLanguageInfo}"
+                                ToolTip="{local:Loc ShownLanguageInfo,
+                                                    IsAsync=True}"
                                 />
                             <Controls:SplitButton
                                 x:Name="ShownLanguageDrop"
@@ -531,13 +548,17 @@
                                 VerticalAlignment="Center"
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
-                                Header="{local:Loc DarkMode}"
+                                Header="{local:Loc DarkMode,
+                                                   IsAsync=True}"
                                 IsOn="{Binding Settings.DarkModeToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffContent="{local:Loc Off}"
-                                OnContent="{local:Loc On}"
+                                OffContent="{local:Loc Off,
+                                                       IsAsync=True}"
+                                OnContent="{local:Loc On,
+                                                      IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc DarkModeInfo}"
+                                ToolTip="{local:Loc DarkModeInfo,
+                                                    IsAsync=True}"
                                 />
 
                             <!--  Theme Accent Dropdown  -->
@@ -547,9 +568,11 @@
                                 VerticalAlignment="Top"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ThemeAccent}"
+                                Text="{local:Loc ThemeAccent,
+                                                 IsAsync=True}"
                                 TextAlignment="Left"
-                                ToolTip="{local:Loc ThemeAccentInfo}"
+                                ToolTip="{local:Loc ThemeAccentInfo,
+                                                    IsAsync=True}"
                                 />
                             <Controls:SplitButton
                                 x:Name="ThemeAccentDrop"
@@ -580,13 +603,17 @@
                                 VerticalAlignment="Center"
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
-                                Header="{local:Loc StretchImage}"
+                                Header="{local:Loc StretchImage,
+                                                   IsAsync=True}"
                                 IsOn="{Binding Settings.StretchImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffContent="{local:Loc Off}"
-                                OnContent="{local:Loc On}"
+                                OffContent="{local:Loc Off,
+                                                       IsAsync=True}"
+                                OnContent="{local:Loc On,
+                                                      IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                ToolTip="{local:Loc StretchImageInfo}"
+                                ToolTip="{local:Loc StretchImageInfo,
+                                                    IsAsync=True}"
                                 />
 
                             <!--  Downsize Image  -->
@@ -596,13 +623,17 @@
                                 VerticalAlignment="Center"
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
-                                Header="{local:Loc DownsizeImage}"
+                                Header="{local:Loc DownsizeImage,
+                                                   IsAsync=True}"
                                 IsOn="{Binding Settings.DownsizeImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffContent="{local:Loc Off}"
-                                OnContent="{local:Loc On}"
+                                OffContent="{local:Loc Off,
+                                                       IsAsync=True}"
+                                OnContent="{local:Loc On,
+                                                      IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc DownsizeImageInfo}"
+                                ToolTip="{local:Loc DownsizeImageInfo,
+                                                    IsAsync=True}"
                                 />
 
                             <!--  Zoom Sensitivity  -->
@@ -612,9 +643,11 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ZoomSensitivity}"
+                                Text="{local:Loc ZoomSensitivity,
+                                                 IsAsync=True}"
                                 TextAlignment="Left"
-                                ToolTip="{local:Loc ZoomSensitivityInfo}"
+                                ToolTip="{local:Loc ZoomSensitivityInfo,
+                                                    IsAsync=True}"
                                 />
                             <TextBlock
                                 Grid.Row="6"
@@ -647,13 +680,17 @@
                                 VerticalAlignment="Center"
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
-                                Header="{local:Loc CheckForUpdates}"
+                                Header="{local:Loc CheckForUpdates,
+                                                   IsAsync=True}"
                                 IsOn="{Binding Settings.CheckForUpdatesStartToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffContent="{local:Loc Off}"
-                                OnContent="{local:Loc On}"
+                                OffContent="{local:Loc Off,
+                                                       IsAsync=True}"
+                                OnContent="{local:Loc On,
+                                                      IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc CheckForUpdatesStartToggleInfo}"
+                                ToolTip="{local:Loc CheckForUpdatesStartToggleInfo,
+                                                    IsAsync=True}"
                                 />
 
                             <!--  Autoupdate on Update Check  -->
@@ -663,14 +700,18 @@
                                 VerticalAlignment="Center"
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
-                                Header="{local:Loc AutoupdateToggle}"
+                                Header="{local:Loc AutoupdateToggle,
+                                                   IsAsync=True}"
                                 IsEnabled="{Binding Settings.CheckForUpdatesStartToggle}"
                                 IsOn="{Binding Settings.AutoupdateToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffContent="{local:Loc Off}"
-                                OnContent="{local:Loc On}"
+                                OffContent="{local:Loc Off,
+                                                       IsAsync=True}"
+                                OnContent="{local:Loc On,
+                                                      IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc AutoupdateToggleInfo}"
+                                ToolTip="{local:Loc AutoupdateToggleInfo,
+                                                    IsAsync=True}"
                                 />
 
                             <!--  Enable Thumbnail List Toggle  -->
@@ -680,11 +721,14 @@
                                 VerticalAlignment="Center"
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
-                                Header="{local:Loc EnableThumbnailList}"
+                                Header="{local:Loc EnableThumbnailList,
+                                                   IsAsync=True}"
                                 IsOn="{Binding Settings.EnableThumbnailListToggle, Mode=TwoWay}"
                                 IsTabStop="False"
-                                OffContent="{local:Loc Off}"
-                                OnContent="{local:Loc On}"
+                                OffContent="{local:Loc Off,
+                                                       IsAsync=True}"
+                                OnContent="{local:Loc On,
+                                                      IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{local:Loc EnableThumbnailListInfo}"
                                 />
@@ -696,9 +740,11 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ThumbnailSize}"
+                                Text="{local:Loc ThumbnailSize,
+                                                 IsAsync=True}"
                                 TextAlignment="Left"
-                                ToolTip="{local:Loc ThumbnailSizeInfo}"
+                                ToolTip="{local:Loc ThumbnailSizeInfo,
+                                                    IsAsync=True}"
                                 />
                             <TextBlock
                                 Grid.Row="10"
@@ -733,9 +779,11 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ThumbnailRes}"
+                                Text="{local:Loc ThumbnailRes,
+                                                 IsAsync=True}"
                                 TextAlignment="Left"
-                                ToolTip="{local:Loc ThumbnailResInfo}"
+                                ToolTip="{local:Loc ThumbnailResInfo,
+                                                    IsAsync=True}"
                                 />
                             <TextBlock
                                 Grid.Row="11"
@@ -774,9 +822,11 @@
                                 <TextBlock
                                     FontWeight="DemiBold"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    Text="{local:Loc FileType}"
+                                    Text="{local:Loc FileType,
+                                                     IsAsync=True}"
                                     TextAlignment="Left"
-                                    ToolTip="{local:Loc FileTypeInfo}"
+                                    ToolTip="{local:Loc FileTypeInfo,
+                                                        IsAsync=True}"
                                     />
                                 <!--<CheckBox
                                     Content="All Types"
@@ -1038,7 +1088,8 @@
                                 Margin="0,0,0,10"
                                 FontSize="30"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc Shortcuts}"
+                                Text="{local:Loc Shortcuts,
+                                                 IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1046,7 +1097,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc PreviousImageShortcut}"
+                                Text="{local:Loc PreviousImageShortcut,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="2"
@@ -1075,7 +1127,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1083,7 +1136,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc NextImageShortcut}"
+                                Text="{local:Loc NextImageShortcut,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="3"
@@ -1112,7 +1166,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1120,7 +1175,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc PauseAnimationShortcut}"
+                                Text="{local:Loc PauseAnimationShortcut,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="4"
@@ -1149,7 +1205,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1157,7 +1214,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc DeleteImageShortcut}"
+                                Text="{local:Loc DeleteImageShortcut,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="5"
@@ -1186,7 +1244,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1194,7 +1253,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc StretchImageShortcut}"
+                                Text="{local:Loc StretchImageShortcut,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="6"
@@ -1223,7 +1283,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1231,7 +1292,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc DownsizeImageShortcut}"
+                                Text="{local:Loc DownsizeImageShortcut,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="7"
@@ -1260,7 +1322,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1268,7 +1331,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ExploreImageLocationShortcut}"
+                                Text="{local:Loc ExploreImageLocationShortcut,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="8"
@@ -1297,7 +1361,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1305,7 +1370,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc CopyImageToClipboard}"
+                                Text="{local:Loc CopyImageToClipboard,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="9"
@@ -1334,7 +1400,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.CopyImageToClipboardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1342,7 +1409,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc CutFileToClipboard}"
+                                Text="{local:Loc CutFileToClipboard,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="10"
@@ -1371,7 +1439,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1379,7 +1448,8 @@
                                 Grid.Column="0"
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ShowThumbnailList}"
+                                Text="{local:Loc ShowThumbnailList,
+                                                 IsAsync=True}"
                                 />
                             <Button
                                 Grid.Row="11"
@@ -1408,7 +1478,8 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut}"
+                                ToolTip="{local:Loc RemoveShortcut,
+                                                    IsAsync=True}"
                                 />
 
                             <!--<Image Source="Resources/kblayoutkeys.png" />-->
@@ -1419,7 +1490,8 @@
             </Controls:MetroTabItem>
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
-                Header="{local:Loc About}"
+                Header="{local:Loc About,
+                                   IsAsync=True}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <ScrollViewer
@@ -1611,7 +1683,8 @@
             </Controls:MetroTabItem>
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
-                Header="{local:Loc WhatsNew}"
+                Header="{local:Loc WhatsNew,
+                                   IsAsync=True}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <ScrollViewer
@@ -1648,12 +1721,14 @@
                                 MinWidth="100"
                                 HorizontalAlignment="Right"
                                 Click="OnForceDownloadSetupClick"
-                                Content="{local:Loc DownloadLatest}"
+                                Content="{local:Loc DownloadLatest,
+                                                    IsAsync=True}"
                                 Focusable="False"
                                 IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc DownloadLatestTooltip}"
+                                ToolTip="{local:Loc DownloadLatestTooltip,
+                                                    IsAsync=True}"
                                 />
 
                             <TextBlock
@@ -1664,7 +1739,8 @@
                                 <TextBlock.Inlines>
                                     <Run
                                         FontSize="20"
-                                        Text="{local:Loc WhatsNew}"
+                                        Text="{local:Loc WhatsNew,
+                                                         IsAsync=True}"
                                         />
                                     <Run Text="{Binding AppUpdater.DownloadVersionString, Mode=OneWay}" />
                                 </TextBlock.Inlines>

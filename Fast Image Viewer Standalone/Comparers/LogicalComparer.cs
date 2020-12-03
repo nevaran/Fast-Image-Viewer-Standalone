@@ -10,7 +10,7 @@ namespace FIVStandard.Comparers
     public class LogicalComparer : IComparer
     {
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern int StrCmpLogicalW(string x, string y);
+        private static extern int StrCmpLogicalW(string x, string y);
 
         public int Compare(object x1, object y1)
         {
