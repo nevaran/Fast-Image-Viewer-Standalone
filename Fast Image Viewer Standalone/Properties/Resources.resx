@@ -167,7 +167,7 @@
     <value>Downsize Image</value>
   </data>
   <data name="DownsizeImageInfo" xml:space="preserve">
-    <value>Reduce image size to current window's. This reduces memory usage for images larger than screen's.</value>
+    <value>Reduce image size to current window's. This reduces memory usage for images larger than the screen's.</value>
   </data>
   <data name="ZoomSensitivityInfo" xml:space="preserve">
     <value>Change the zoom in and out sensitivity of the image. (Default is 1.00)</value>

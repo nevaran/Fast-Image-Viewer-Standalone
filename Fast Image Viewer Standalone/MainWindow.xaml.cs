@@ -1,6 +1,7 @@
 ﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
 using FIVStandard.Views;
+using ImageMagick;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
@@ -126,28 +127,13 @@ namespace FIVStandard
             }
         }
 
-        private readonly string[] rnj = new string[] {
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        @"owo",
-                        @"uwu",
-                        @"ゴ ゴ ゴ ゴ",
-                        @"I am Lagnar",
-                        @"Made by ねヴぁらん",
-                        @"¯\_(ツ)_/¯",
-        };
-
         public string ImgResStringFormat
         {
             get
             {
                 if (ImgWidth == 0 || ImgHeight == 0)
                 {
-                    return rnj[new Random().Next(0, rnj.Length)];//TODO: bring back the owo's
+                    return Tools.RnJesus();
                 }
                 else
                     return $"{ImgWidth}x{ImgHeight}";
@@ -164,7 +150,7 @@ namespace FIVStandard
         public string StartupPath;//program startup path
 
         private bool selectedNew = false;//used to avoid ListBox event to re-select the image, doubling the loading time
-        private bool dragStarted = true;//used for the ThumbnailSlider option to avoid glitching out
+        private bool dragStarted = false;//used for the ThumbnailSlider option to avoid glitching out
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
@@ -239,6 +225,8 @@ namespace FIVStandard
         public NotificationManager notificationManager = new NotificationManager(Notifications.Wpf.Core.Controls.NotificationPosition.BottomRight);
         public readonly NotificationContent content = new NotificationContent();
 
+        private readonly MagickImageInfo magickImageInfo = new MagickImageInfo();
+
         public MainWindow()
         {
             //SingleInstance();//TODO: find way to send argument between programs
@@ -257,8 +245,15 @@ namespace FIVStandard
             Library.FFmpegLoadModeFlags = FFmpeg.AutoGen.FFmpegLoadMode.MinimumFeatures;
 
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
-            ImagesDataView.CustomSort = new NaturalOrderComparer(false);
-            //ImagesDataView.SortDescriptions.Add(new SortDescription { PropertyName = "ThumbnailName", Direction = ListSortDirection.Ascending });
+            try
+            {
+                ImagesDataView.CustomSort = new LogicalComparer();
+
+            }
+            catch
+            {
+                ImagesDataView.CustomSort = new NaturalOrderComparer(false);
+            }
 
             AppUpdater = new UpdateCheck(this);
             
@@ -278,8 +273,6 @@ namespace FIVStandard
             Settings.Load();
 
             DataContext = this;
-
-            dragStarted = false;//hack for avoiding reloading the images when you start the program
 
             ProgramLoaded = true;
 
@@ -387,12 +380,12 @@ namespace FIVStandard
             }
         }*/
 
-        private async void OnAppLoaded(object sender, RoutedEventArgs e)
+        private void OnAppLoaded(object sender, RoutedEventArgs e)
         {
             if (Settings.CheckForUpdatesStartToggle)
-                await AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
+                _ = AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
             else
-                await AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+                _ = AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
 
             string[] args = Environment.GetCommandLineArgs();
 
@@ -733,7 +726,7 @@ namespace FIVStandard
 
                 if (ImagesData.Count > 0)
                 {
-                    Tools.GetImageInformation(ActivePath, ImageItem);
+                    Tools.GetImageInformation(ActivePath, ImageItem, magickImageInfo);
                     ImgWidth = ImageItem.ImageWidth;
                     ImgHeight = ImageItem.ImageHeight;
                 }
@@ -752,29 +745,6 @@ namespace FIVStandard
 
         CancellationTokenSource allThumbnailTokenSource;
         CancellationToken ct;
-
-        /*public Task LoadAllThumbnailsAsync()
-        {
-            allThumbnailTokenSource?.Cancel();
-
-            allThumbnailTokenSource = new CancellationTokenSource();
-            ct = allThumbnailTokenSource.Token;
-
-            return Task.Run(() =>
-            {
-                int c = ImagesDataView.Count;
-                for (int i = 0; i < c; i++)
-                {
-                    ct.ThrowIfCancellationRequested();
-
-                    ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
-
-                    if(tid.ThumbnailImage is null)//dont load the thumbnail if we already have one there
-                        tid.ThumbnailImage = Tools.GetThumbnail(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
-                }
-
-            }, allThumbnailTokenSource.Token);
-        }*/
 
         public Task ReloadAllThumbnailsAsync()
         {
@@ -961,7 +931,7 @@ namespace FIVStandard
                 DeleteToRecycleAsync(forDeletionMediaPath);
             }
 
-            GC.Collect();//clean up memory (TODO: temp fix; fixes memory leak)
+            GC.Collect();//clean up memory (TODO: temp fix; fixes inknown memory leak)
         }
 
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)
@@ -1256,6 +1226,7 @@ namespace FIVStandard
             fsw.Created -= Fsw_Created;
             fsw.Deleted -= Fsw_Deleted;
             fsw.Renamed -= Fsw_Renamed;
+            fsw.Dispose();
 
             ClearAllMedia();
             SettingsManager.Save();

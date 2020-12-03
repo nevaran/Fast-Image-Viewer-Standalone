@@ -26,16 +26,6 @@ using System.Windows;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.3.1.0")]//Version for updater
+[assembly: AssemblyVersion("0.3.2.0")]//Version for updater
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: NeutralResourcesLanguage("en")]

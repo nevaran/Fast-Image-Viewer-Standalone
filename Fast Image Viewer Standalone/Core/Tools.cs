@@ -36,7 +36,7 @@ namespace FIVStandard.Core
         /// <summary>
         /// Gets a thumbnail-sized image (if not already set), actual width and actual height of the image and assigns it to the given ThumbnailItemData.
         /// </summary>
-        public static void GetImageInformation(string path, ThumbnailItemData ImageItem)
+        public static void GetImageInformation(string path, ThumbnailItemData ImageItem, MagickImageInfo magickInfo)
         {
             if (ImageItem.ThumbnailImage is null)
             {
@@ -48,9 +48,9 @@ namespace FIVStandard.Core
                 return;
             }
 
-            MagickImageInfo image = new MagickImageInfo(path);
-            ImageItem.ImageWidth = image.Width;
-            ImageItem.ImageHeight = image.Height;
+            magickInfo.Read(path);
+            ImageItem.ImageWidth = magickInfo.Width;
+            ImageItem.ImageHeight = magickInfo.Height;
         }
 
         /// <summary>
@@ -83,12 +83,12 @@ namespace FIVStandard.Core
                     return;
                 }
 
-                var settings = new MagickReadSettings
+                /*var settings = new MagickReadSettings
                 {
                     Width = Settings.ThumbnailRes
-                };
+                };*/
 
-                using MagickImage image = new MagickImage(path, settings);
+                using MagickImage image = new MagickImage(path/*, settings*/);
                 image.AutoOrient();
 
                 image.Thumbnail(Settings.ThumbnailRes, 0);
@@ -152,6 +152,9 @@ namespace FIVStandard.Core
             return bitmapSource;
         }
 
+        /// <summary>
+        /// Used in method BitmapToBitmapSource; Can be used as standalone
+        /// </summary>
         private static PixelFormat ConvertPixelFormat(System.Drawing.Imaging.PixelFormat sourceFormat)
         {
             switch (sourceFormat)
@@ -201,7 +204,27 @@ namespace FIVStandard.Core
                 case System.Drawing.Imaging.PixelFormat.Canonical:
                     break;
             }
-            return PixelFormats.Bgra32;
+            return PixelFormats.Bgra32;//give a "default" format if we dont have the case set
+        }
+
+        public static string RnJesus()
+        {
+            Random rnd = new Random();
+            string[] rnj = new string[] {
+                        @"owo",
+                        @"uwu",
+                        @"ゴ ゴ ゴ ゴ",
+                        @"I am Lagnar",
+                        @"Made by ねヴぁらん",
+                        @"¯\_(ツ)_/¯",
+            };
+
+            if (rnd.Next(0, 10) == 0)
+            {
+                return rnj[rnd.Next(0, rnj.Length)];
+            }
+
+            return "";
         }
 
         /*public static BitmapImage WriteableBitmapToBitmapImage(WriteableBitmap wbm)
