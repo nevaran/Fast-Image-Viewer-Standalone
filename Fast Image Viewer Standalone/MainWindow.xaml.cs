@@ -237,6 +237,7 @@ namespace FIVStandard
             {
                 App.Current.Shutdown();
             }
+            fivMutex.ReleaseMutex();
 
             InitializeComponent();
 
@@ -1137,7 +1138,7 @@ namespace FIVStandard
             ClearAllMedia();
             SettingsManager.Save();
 
-            fivMutex.Close();
+            fivMutex?.Close();
         }
         #endregion
 
