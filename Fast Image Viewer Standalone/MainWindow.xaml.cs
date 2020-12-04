@@ -237,7 +237,12 @@ namespace FIVStandard
             {
                 App.Current.Shutdown();
             }
-            fivMutex.ReleaseMutex();
+            //fivMutex.ReleaseMutex();
+
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                MessageBox.Show("shift pressed");
+            }
 
             InitializeComponent();
 
