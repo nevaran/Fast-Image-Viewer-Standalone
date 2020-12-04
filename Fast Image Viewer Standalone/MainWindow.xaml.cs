@@ -227,22 +227,25 @@ namespace FIVStandard
 
         private readonly MagickImageInfo magickImageInfo = new MagickImageInfo();
 
-        private readonly Mutex fivMutex;
+        //private readonly Mutex fivMutex;
 
         public MainWindow()
         {
-            //TODO: find way to send argument between programs
-            fivMutex = new Mutex(true, "FastImageViewerCoreApplication", out bool aIsNewInstance);
+            /*fivMutex = new Mutex(true, "FastImageViewerCoreApplication", out bool aIsNewInstance);
             if (!aIsNewInstance)
             {
-                App.Current.Shutdown();
-            }
-            //fivMutex.ReleaseMutex();
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    string[] args = Environment.GetCommandLineArgs();
+                    if (args.Length > 1)
+                    {
+                        //fivClient.Send(args[1]);
+                    }
 
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-            {
-                MessageBox.Show("shift pressed");
-            }
+                    App.Current.Shutdown();
+                }
+                //fivMutex.ReleaseMutex();
+            }*/
 
             InitializeComponent();
 
@@ -1133,6 +1136,8 @@ namespace FIVStandard
 
         private void MainFIV_Closing(object sender, CancelEventArgs e)
         {
+            //fivMutex?.Close();
+
             notificationManager?.CloseAllAsync();
 
             fsw.Created -= Fsw_Created;
@@ -1142,8 +1147,6 @@ namespace FIVStandard
 
             ClearAllMedia();
             SettingsManager.Save();
-
-            fivMutex?.Close();
         }
         #endregion
 
