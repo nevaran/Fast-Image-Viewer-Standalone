@@ -1777,7 +1777,7 @@
                         <TextBlock
                             Padding="10,0"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            Text="{Binding AppUpdater.UpdaterMessage, Mode=OneWay, IsAsync=True}"
+                            Text="{Binding AppUpdater.UpdaterMessage, Mode=OneWay}"
                             TextAlignment="Center"
                             />
 
