@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace FIVStandard.Core
 {
-    public static class CopyFileToClipboard
+    static class ToClipboard
     {
         const string CFSTR_PERFORMEDDROPEFFECT = "Preferred DropEffect";
 

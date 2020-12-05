@@ -738,11 +738,11 @@ namespace FIVStandard
             if (ImageItem.IsAnimated)
             {
                 using System.Drawing.Bitmap bm = await MediaView.CaptureBitmapAsync();
-                CopyFileToClipboard.ImageCopyToClipboard(Tools.BitmapToBitmapSource(bm));
+                ToClipboard.ImageCopyToClipboard(Tools.BitmapToBitmapSource(bm));
             }
             else
             {
-                CopyFileToClipboard.ImageCopyToClipboard(ImageSource);
+                ToClipboard.ImageCopyToClipboard(ImageSource);
             }
 
             content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CopiedToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
@@ -766,7 +766,7 @@ namespace FIVStandard
                 ClearViewer();
             }
 
-            CopyFileToClipboard.FileCutToClipBoard(ActivePath);
+            ToClipboard.FileCutToClipBoard(ActivePath);
 
             content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
             content.Message = ActiveFile;

@@ -107,7 +107,6 @@ namespace FIVStandard.Core
         /// <summary>
         /// Checks if the string has an extension of the given valid types
         /// </summary>
-        /// <returns></returns>
         public static bool IsOfType(string file, string[] extensions)
         {
             string ext = Path.GetExtension(file.ToLower());
@@ -116,6 +115,14 @@ namespace FIVStandard.Core
             return false;
         }
 
+        /// <summary>
+        /// Returns a scale multiplier that can be used for resizing width and height of an image to the given required size while keeping aspect ratios
+        /// </summary>
+        /// <param name="w">Image width</param>
+        /// <param name="sw">Target width</param>
+        /// <param name="h">Image height</param>
+        /// <param name="sh">Target height</param>
+        /// <returns></returns>
         private static double ScaleToBox(double w, double sw, double h, double sh)
         {
             double scaleWidth = sw / w;
