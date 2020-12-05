@@ -32,7 +32,6 @@ drag from app to other apps(like discord) for sharing
 ***add support to copy to clipboard the current gif/animation frame viewed (example for use in discord)
 ***find a way to clear transparent background in gifs from glitching
 
------------------
 
 add window state save ( maximized, size, position(?) )
 

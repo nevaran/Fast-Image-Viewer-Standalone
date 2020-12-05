@@ -179,10 +179,10 @@
             Focusable="False"
             IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
             IsTabStop="False"
-            KeepVisualTreeInMemoryWhenChangingTabs="True"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             SelectionChanged="MetroTabControl_SelectionChanged"
             >
+            <!--  KeepVisualTreeInMemoryWhenChangingTabs="True"  -->
 
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
@@ -191,6 +191,7 @@
                                    IsAsync=True}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
+
                 <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <!--  Context Menu | Window  -->
                     <Grid.ContextMenu>
@@ -298,7 +299,7 @@
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         />
 
-                    <!--  MediaElement Control  -->
+                    <!--  Main Window Controls  -->
                     <Grid
                         AllowDrop="True"
                         Drop="Media_Drop"
@@ -310,6 +311,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
+                        <!--  Thumbnail List Control  -->
                         <ListBox
                             x:Name="thumbnailList"
                             Margin="0,44,0,0"
@@ -325,7 +327,7 @@
                             VirtualizingStackPanel.IsVirtualizing="True"
                             Visibility="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                             >
-                            <!--  VirtualizingStackPanel.VirtualizationMode="Recycling"  -->
+
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel
@@ -398,12 +400,13 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
+                        <!--  Progress Slider Control  -->
                         <Slider
                             x:Name="MediaProgression"
                             Grid.Row="0"
                             Grid.Column="1"
                             Height="25"
-                            Margin="0,0,0,2"
+                            Margin="10,0,10,2"
                             VerticalAlignment="Bottom"
                             Focusable="False"
                             IsMoveToPointEnabled="True"
@@ -837,7 +840,7 @@
                                 />
                             <TextBlock
                                 Grid.Row="11"
-                                Margin="50,90,-20,0"
+                                Margin="50,80,-20,0"
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
