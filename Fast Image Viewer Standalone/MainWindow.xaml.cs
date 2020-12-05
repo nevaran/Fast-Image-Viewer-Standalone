@@ -145,8 +145,6 @@ namespace FIVStandard
 
         public SettingsManager Settings { get; set; }
 
-        public CopyFileToClipboard ToClipboard { get; set; }
-
         public string StartupPath;//program startup path
 
         private bool selectedNew = false;//used to avoid ListBox event to re-select the image, doubling the loading time
@@ -277,8 +275,6 @@ namespace FIVStandard
             Settings = new SettingsManager(this);
             SettingsStore.InitSettingsStore(Settings);
             ThumbnailItemData.Settings = Settings;
-
-            ToClipboard = new CopyFileToClipboard();
 
             //create new watcher events for used directory
             //fsw.Changed += Fsw_Updated;
@@ -741,13 +737,12 @@ namespace FIVStandard
 
             if (ImageItem.IsAnimated)
             {
-                System.Drawing.Bitmap bm = await MediaView.CaptureBitmapAsync();
-                ToClipboard.ImageCopyToClipboard(Tools.BitmapToBitmapSource(bm));
-                bm.Dispose();
+                using System.Drawing.Bitmap bm = await MediaView.CaptureBitmapAsync();
+                CopyFileToClipboard.ImageCopyToClipboard(Tools.BitmapToBitmapSource(bm));
             }
             else
             {
-                ToClipboard.ImageCopyToClipboard(ImageSource);
+                CopyFileToClipboard.ImageCopyToClipboard(ImageSource);
             }
 
             content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CopiedToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
@@ -771,7 +766,7 @@ namespace FIVStandard
                 ClearViewer();
             }
 
-            ToClipboard.FileCutToClipBoard(ActivePath);
+            CopyFileToClipboard.FileCutToClipBoard(ActivePath);
 
             content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
             content.Message = ActiveFile;
