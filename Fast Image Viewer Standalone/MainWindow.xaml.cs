@@ -813,8 +813,7 @@ namespace FIVStandard
                 // Note that you can have more than one file.
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                // Assuming you have one file that you care about, pass it off to whatever
-                // handling code you have defined.
+                // Assuming you have one file that you care about, pass it off
                 if (files.Length >= 1)
                     OpenNewFile(files[0]);
             }
@@ -846,7 +845,7 @@ namespace FIVStandard
                 DeleteToRecycleAsync(forDeletionMediaPath);
             }
 
-            GC.Collect();//clean up memory (TODO: temp fix; fixes inknown memory leak)
+            GC.Collect();//clean up memory (TODO: temp fix; fixes unknown memory leak)
         }
 
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)
