@@ -619,7 +619,7 @@ namespace FIVStandard
             if (ImageItem.IsAnimated)
             {
                 borderImg.Visibility = Visibility.Hidden;
-                border.Visibility = Visibility.Visible;
+                borderMed.Visibility = Visibility.Visible;
 
                 Uri uri = new Uri(path, UriKind.Absolute);
 
@@ -628,12 +628,12 @@ namespace FIVStandard
                 ImageSource = null;
                 OpenMedia(uri);
 
-                border.Reset();
+                borderMed.Reset();
             }
             else
             {
                 borderImg.Visibility = Visibility.Visible;
-                border.Visibility = Visibility.Hidden;
+                borderMed.Visibility = Visibility.Hidden;
 
                 if (ImagesData.Count > 0)
                 {

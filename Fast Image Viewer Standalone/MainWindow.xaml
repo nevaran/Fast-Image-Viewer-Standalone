@@ -422,7 +422,7 @@
 
                         <!--  Media Control  -->
                         <utils:ZoomBorder
-                            x:Name="border"
+                            x:Name="borderMed"
                             Grid.Column="1"
                             Margin="0,44,0,29"
                             Background="Transparent"
