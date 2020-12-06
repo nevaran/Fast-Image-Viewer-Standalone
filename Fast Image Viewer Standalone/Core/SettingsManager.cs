@@ -395,7 +395,7 @@ namespace FIVStandard.Core
         {
             get
             {
-                return (int)((float)ThumbnailSize / 3.2);
+                return (int)((float)ThumbnailSize / 3);
             }
         }
 
@@ -590,13 +590,62 @@ namespace FIVStandard.Core
         }
 
         public bool ReloadFolderFlag = false;//flag for confirming if the list of images needs to be reloaded (ie from changing what types to be displayed)
+
+        private bool mediaMuted = false;
+
+        public bool MediaMuted
+        {
+            get
+            {
+                return mediaMuted;
+            }
+            set
+            {
+                mediaMuted = value;
+                OnPropertyChanged();
+                OnPropertyChanged("VolumeIcon");
+
+                OnMediaMuteChanged();
+            }
+        }
+
+        private double mediaVolume = 0.5;
+
+        public double MediaVolume
+        {
+            get
+            {
+                return mediaVolume;
+            }
+            set
+            {
+                mediaVolume = value;
+                OnPropertyChanged();
+                OnPropertyChanged("VolumeIcon");
+
+                OnMediaVolumeChanged();
+            }
+        }
+
+        public MahApps.Metro.IconPacks.PackIconBoxIconsKind VolumeIcon
+        {
+            get
+            {
+                if (MediaMuted) return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeMute;
+
+                if (MediaVolume > 0.8)
+                    return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeFull;
+                else if (MediaVolume > 0.0)
+                    return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeLow;
+
+                return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolume;
+            }
+        }
         #endregion
 
         public SettingsManager(MainWindow mw)
         {
             mainWindow = mw;
-
-            //Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
 
             if (Properties.Settings.Default.UpgradeRequired)
             {
@@ -605,7 +654,7 @@ namespace FIVStandard.Core
                 Save();
             }
 
-            //ThemeManager.AddAccent("HackerTheme", new Uri("pack://application:,,,/MahAppsMetroThemesSample;component/CustomAccents/HackerTheme.xaml"));
+            //Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
         }
 
         public void Load()
@@ -645,6 +694,9 @@ namespace FIVStandard.Core
             FilterSvg = savs.FilterSvg;
             FilterWebp = savs.FilterWebp;
             FilterWebm = savs.FilterWebm;
+
+            MediaMuted = savs.MediaMuted;
+            MediaVolume = savs.MediaVolume;
         }
 
         public static void Save()
@@ -728,7 +780,7 @@ namespace FIVStandard.Core
         {
             Properties.Settings.Default.DownsizeImage = DownsizeImageToggle;
 
-            if (mainWindow.ImagesData.Count > 0)
+            if (mainWindow.ImagesData.Count > 0 && !mainWindow.ImageItem.IsAnimated)
             {
                 mainWindow.ImageSource = Tools.LoadImage(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight);
             }
@@ -823,6 +875,17 @@ namespace FIVStandard.Core
             savs.FilterSvg = FilterSvg;
             savs.FilterWebp = FilterWebp;
             savs.FilterWebm = FilterWebm;
+        }
+
+        public void OnMediaMuteChanged()
+        {
+            Properties.Settings.Default.MediaMuted = MediaMuted;
+        }
+
+        public void OnMediaVolumeChanged()
+        {
+            Properties.Settings.Default.MediaVolume = MediaVolume;
+            //System.Diagnostics.Debug.WriteLine($"saved volume: {MediaVolume}");
         }
 
         #region INotifyPropertyChanged

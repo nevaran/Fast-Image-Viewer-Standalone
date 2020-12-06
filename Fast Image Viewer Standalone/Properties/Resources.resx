@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="FIVIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FIVIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -174,11 +174,9 @@
   </data>
   <data name="On" xml:space="preserve">
     <value>On</value>
-    
   </data>
   <data name="Off" xml:space="preserve">
     <value>Off</value>
-    
   </data>
   <data name="PreviousImageShortcut" xml:space="preserve">
     <value>Previous image</value>
@@ -239,16 +237,12 @@
   </data>
   <data name="DarkModeOnTooltip" xml:space="preserve">
     <value>Dark Mode On</value>
-    
-    
   </data>
   <data name="StretchOnTooltip" xml:space="preserve">
     <value>Stretch On</value>
-    
   </data>
   <data name="DownsizeOnTooltip" xml:space="preserve">
     <value>Downsize On</value>
-    
   </data>
   <data name="DownloadLatest" xml:space="preserve">
     <value>Download Latest</value>
@@ -315,7 +309,6 @@
   </data>
   <data name="ThumbnailListOnTooltip" xml:space="preserve">
     <value>Thumbnail List On</value>
-    
   </data>
   <data name="AutoupdateToggle" xml:space="preserve">
     <value>Autoupdate</value>

@@ -67,7 +67,7 @@ namespace FIVStandard
                 }
                 else
                 {
-                    if(ImageItem is null)//no image
+                    if (ImageItem is null)//no image
                     {
                         return "FIV";
                     }
@@ -610,10 +610,14 @@ namespace FIVStandard
             if (ImageItem.IsAnimated)
             {
                 MediaProgression.Visibility = Visibility.Visible;
+                VolumeProgression.Visibility = Visibility.Visible;
+                VolumeProgressionIcon.Visibility = Visibility.Visible;
             }
             else
             {
                 MediaProgression.Visibility = Visibility.Hidden;
+                VolumeProgression.Visibility = Visibility.Hidden;
+                VolumeProgressionIcon.Visibility = Visibility.Hidden;
             }
 
             if (ImageItem.IsAnimated)
@@ -1081,6 +1085,11 @@ namespace FIVStandard
         {
             if (!dragStarted)
                 ReloadAllThumbnailsAsync();
+        }
+
+        private void MediaVolumeIcon_Click(object sender, RoutedEventArgs e)
+        {
+            Settings.MediaMuted = !Settings.MediaMuted;
         }
 
         private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)

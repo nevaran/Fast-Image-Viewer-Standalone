@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace FIVStandard.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -301,7 +304,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reduce image size to current window&apos;s. This reduces memory usage for images larger than screen&apos;s..
+        ///   Looks up a localized string similar to Reduce image size to current window&apos;s. This reduces memory usage for images larger than the screen&apos;s..
         /// </summary>
         public static string DownsizeImageInfo {
             get {

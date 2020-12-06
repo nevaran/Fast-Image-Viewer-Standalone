@@ -39,6 +39,8 @@
     <PackageReference Include="MahApps.Metro">
       <Version>2.4.2</Version>
     </PackageReference>
+    <PackageReference Include="MahApps.Metro.IconPacks.BoxIcons" Version="4.8.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Unicons" Version="4.8.0" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell">
       <Version>1.1.4</Version>
     </PackageReference>
@@ -47,11 +49,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

@@ -406,5 +406,29 @@ namespace FIVStandard.Properties {
                 this["FilterTiff"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double MediaVolume {
+            get {
+                return ((double)(this["MediaVolume"]));
+            }
+            set {
+                this["MediaVolume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MediaMuted {
+            get {
+                return ((bool)(this["MediaMuted"]));
+            }
+            set {
+                this["MediaMuted"] = value;
+            }
+        }
     }
 }
