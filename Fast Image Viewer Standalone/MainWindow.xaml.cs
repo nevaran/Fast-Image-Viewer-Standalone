@@ -1121,12 +1121,10 @@ namespace FIVStandard
                 {
                     var shellFile = ShellObject.FromParsingName(Path.Combine(ActiveFolder, dataItem.ThumbnailName));
                     dataItem.ThumbnailImage = shellFile.Thumbnail.BitmapSource;
+
                     shellFile.Dispose();
                 }
-                catch
-                {
-
-                }
+                catch{}
             }
             else
                 Task.Run(() => Tools.LoadSingleThumbnailData(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
