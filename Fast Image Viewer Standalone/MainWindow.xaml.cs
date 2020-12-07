@@ -333,11 +333,8 @@ namespace FIVStandard
 
                 Task.Run(() => Tools.LoadSingleThumbnailData(tt, e.FullPath, false));
 
-                //ImagesData = ImagesData.OrderByAlphaNumeric((a) => a.ThumbnailName).ToList();//sort back changed list
-
-                //ChangeImage(0, false);
-
-                //FindIndexInFiles(activeFile);
+                if(ImageItem == null)
+                    ChangeImage(0, false);
 
                 OnPropertyChanged("TitleInformation");//update title information
 
@@ -373,8 +370,6 @@ namespace FIVStandard
                 }
 
                 OnPropertyChanged("TitleInformation");//update title information
-
-                //FindIndexInFiles(activeFile);
 
                 content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
                 content.Message = e.Name;
@@ -504,6 +499,8 @@ namespace FIVStandard
 
                     ActiveFile = currentIndexedName;
                     ActivePath = Path.Combine(ActiveFolder, activeFile);
+
+                    OnPropertyChanged("TitleInformation");//update title information
 
                     break;
                 }
