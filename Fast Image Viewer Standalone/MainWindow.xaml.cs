@@ -30,7 +30,7 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
-        private ThumbnailItemData imageItem;
+        private ThumbnailItemData imageItem = null;
 
         /// <summary>
         /// The class reference to the currently viewed image
@@ -455,8 +455,7 @@ namespace FIVStandard
 
             if (Settings.FilterActiveArray.Length == 0)
             {
-                ImagesData.Clear();
-                ChangeImage(0, false);
+                ClearAllMedia();
                 return;
             }
 
@@ -472,18 +471,15 @@ namespace FIVStandard
             ImagesData.Clear();
             List<string> filesFound = new List<string>();
 
-            //filesFound.AddRange(Directory.GetFiles(searchFolder, "*.*", SearchOption.TopDirectoryOnly));
-            //filesFound.AddRange(Directory.EnumerateFiles(searchFolder).OrderBy(filename => filename));
-            //filesFound.OrderBy(p => p.Substring(0)).ToList();//probably doesnt work
-            filesFound.AddRange(Directory.EnumerateFiles(searchFolder));
+            filesFound.AddRange(Directory.EnumerateFiles(searchFolder));//add all files of the folder to a list
 
             int c = filesFound.Count;
-            for (int i = 0; i < c; i++)
+            for (int i = 0; i < c; i++)//extract the files that are of valid type
             {
                 string ext = Path.GetExtension(filesFound[i].ToLower());
                 if (Settings.FilterActiveArray.Any(ext.Contains))
                 {
-                    filesFound[i] = Path.GetFileName(filesFound[i]);
+                    filesFound[i] = Path.GetFileName(filesFound[i]);//get just the file name + extension
 
                     ThumbnailItemData tt = new ThumbnailItemData
                     {
@@ -500,12 +496,13 @@ namespace FIVStandard
             int L = ImagesDataView.Count;
             for (int i = 0; i < L; i++)
             {
-                if(openedFile == ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName)
+                string currentIndexedName = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
+                if (openedFile == currentIndexedName)
                 {
+                    ImageItem = (ThumbnailItemData)ImagesDataView.GetItemAt(i);
                     ImagesDataView.MoveCurrentToPosition(i);
-                    //thumbnailList.SelectedIndex = ImagesDataView.CurrentPosition;
 
-                    ActiveFile = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
+                    ActiveFile = currentIndexedName;
                     ActivePath = Path.Combine(ActiveFolder, activeFile);
 
                     break;
@@ -571,11 +568,11 @@ namespace FIVStandard
 
             int jumpIndex = jump;
 
-            if (moveToIndex)//ghost function since its already handled by ListBox and collection
+            /*if (moveToIndex)//ghost function since its already handled by ListBox and collection
             {
                 //ImagesDataView.MoveCurrentToPosition(jumpIndex);
-            }
-            else
+            }*/
+            if (!moveToIndex)
             {
                 jumpIndex += ImagesDataView.CurrentPosition;
 
@@ -583,6 +580,7 @@ namespace FIVStandard
                 if (jumpIndex < 0) jumpIndex = ImagesDataView.Count - 1;
                 if (jumpIndex >= ImagesDataView.Count) jumpIndex = 0;
 
+                ImageItem = (ThumbnailItemData)ImagesDataView.GetItemAt(jumpIndex);//TODO: temporary hack fix since the binding to it doesnt load fast enough for the info check
                 ImagesDataView.MoveCurrentToPosition(jumpIndex);
             }
 
@@ -626,8 +624,6 @@ namespace FIVStandard
                 borderMed.Visibility = Visibility.Visible;
 
                 Uri uri = new Uri(path, UriKind.Absolute);
-
-                //MediaSource = uri;
 
                 ImageSource = null;
                 OpenMedia(uri);
@@ -1148,6 +1144,24 @@ namespace FIVStandard
 
             ClearAllMedia();
             SettingsManager.Save();
+        }
+
+        private readonly DebounceDispatcher ddMouseMove = new DebounceDispatcher();
+
+        private void MediaImageView_MouseMove(object sender, MouseEventArgs e)
+        {
+            MediaView.Cursor = null;
+            PictureView.Cursor = null;
+            ddMouseMove.Debounce(1000, DefaultMouseLook);
+        }
+
+        private void DefaultMouseLook()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MediaView.Cursor = Cursors.None;
+                PictureView.Cursor = Cursors.None;
+            });
         }
         #endregion
 

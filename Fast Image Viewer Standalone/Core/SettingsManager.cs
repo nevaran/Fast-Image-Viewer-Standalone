@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 
 namespace FIVStandard.Core
@@ -641,6 +642,58 @@ namespace FIVStandard.Core
                 return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolume;
             }
         }
+
+        private int windowWidth = 800;
+
+        public int WindowWidth
+        {
+            get
+            {
+                return windowWidth;
+            }
+            set
+            {
+                windowWidth = value;
+                OnPropertyChanged();
+
+                OnWindowWidthChanged();
+            }
+        }
+
+        private int windowHeight = 600;
+
+        public int WindowHeight
+        {
+            get
+            {
+                return windowHeight;
+            }
+            set
+            {
+                windowHeight = value;
+                OnPropertyChanged();
+
+                OnWindowHeightChanged();
+            }
+        }
+
+        private WindowState windowState = WindowState.Maximized;
+
+        public WindowState WindowState
+        {
+            get
+            {
+                return windowState;
+            }
+            set
+            {
+                windowState = value;
+                OnPropertyChanged();
+
+                OnWindowStateChanged();
+            }
+        }
+
         #endregion
 
         public SettingsManager(MainWindow mw)
@@ -697,6 +750,10 @@ namespace FIVStandard.Core
 
             MediaMuted = savs.MediaMuted;
             MediaVolume = savs.MediaVolume;
+
+            WindowWidth = savs.WindowWidth;
+            WindowHeight = savs.WindowHeight;
+            WindowState = (WindowState)savs.WindowState;
         }
 
         public static void Save()
@@ -886,6 +943,24 @@ namespace FIVStandard.Core
         {
             Properties.Settings.Default.MediaVolume = MediaVolume;
             //System.Diagnostics.Debug.WriteLine($"saved volume: {MediaVolume}");
+        }
+
+        public void OnWindowWidthChanged()
+        {
+            if (WindowState == WindowState.Normal)
+                Properties.Settings.Default.WindowWidth = WindowWidth;
+        }
+
+        public void OnWindowHeightChanged()
+        {
+            if (WindowState == WindowState.Normal)
+                Properties.Settings.Default.WindowHeight = WindowHeight;
+        }
+
+        public void OnWindowStateChanged()
+        {
+            if (WindowState != WindowState.Minimized)
+                Properties.Settings.Default.WindowState = (int)WindowState;
         }
 
         #region INotifyPropertyChanged

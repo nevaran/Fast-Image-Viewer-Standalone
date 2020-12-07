@@ -12,8 +12,8 @@
     xmlns:utils="clr-namespace:FIVStandard.Utils"
     x:Name="MainFIV"
     Title="{Binding TitleInformation, Mode=OneWay, IsAsync=True}"
-    Width="800"
-    Height="600"
+    Width="{Binding Settings.WindowWidth, Mode=TwoWay}"
+    Height="{Binding Settings.WindowHeight, Mode=TwoWay}"
     MinWidth="600"
     MinHeight="480"
     Closing="MainFIV_Closing"
@@ -25,7 +25,7 @@
     PreviewKeyDown="OnKeyDown"
     TitleCharacterCasing="Normal"
     WindowStartupLocation="CenterScreen"
-    WindowState="Maximized"
+    WindowState="{Binding Settings.WindowState, Mode=TwoWay}"
     >
     <!--  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  -->
     <!--  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  -->
@@ -488,6 +488,7 @@
                                 LoopingBehavior="Play"
                                 MediaClosed="MediaView_MediaClosed"
                                 MediaOpened="MediaView_MediaOpened"
+                                MouseMove="MediaImageView_MouseMove"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ScrubbingEnabled="True"
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
@@ -507,6 +508,7 @@
                             >
                             <Image
                                 Name="PictureView"
+                                MouseMove="MediaImageView_MouseMove"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Source="{Binding ImageSource, Mode=OneWay, IsAsync=True}"
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"
