@@ -14,14 +14,12 @@ namespace FIVStandard.Utils
 
         private static TranslateTransform GetTranslateTransform(UIElement element)
         {
-            return (TranslateTransform)((TransformGroup)element.RenderTransform)
-              .Children.First(tr => tr is TranslateTransform);
+            return (TranslateTransform)((TransformGroup)element.RenderTransform).Children.First(tr => tr is TranslateTransform);
         }
 
         private static ScaleTransform GetScaleTransform(UIElement element)
         {
-            return (ScaleTransform)((TransformGroup)element.RenderTransform)
-              .Children.First(tr => tr is ScaleTransform);
+            return (ScaleTransform)((TransformGroup)element.RenderTransform).Children.First(tr => tr is ScaleTransform);
         }
 
         public override UIElement Child
@@ -143,11 +141,6 @@ namespace FIVStandard.Utils
             }
         }
 
-        void Child_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Reset();
-        }
-
         private void Child_MouseMove(object sender, MouseEventArgs e)
         {
             if (child != null)
@@ -178,6 +171,11 @@ namespace FIVStandard.Utils
             }
         }
         #endregion
+
+        /*void Child_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.Reset();
+        }*/
 
         /*private void ClampPan(ref TranslateTransform tt, ref Rect r)//TODO: get proper coords
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Timers;
 
-namespace FIVStandard.Core
+namespace FIVStandard.Utils
 {
     public class DebounceDispatcher
     {

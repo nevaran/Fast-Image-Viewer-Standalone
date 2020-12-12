@@ -314,6 +314,7 @@
                     <Grid
                         AllowDrop="True"
                         Drop="Media_Drop"
+                        MouseMove="MediaImageView_MouseMove"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
 
@@ -488,9 +489,9 @@
                                 LoopingBehavior="Play"
                                 MediaClosed="MediaView_MediaClosed"
                                 MediaOpened="MediaView_MediaOpened"
-                                MouseMove="MediaImageView_MouseMove"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ScrubbingEnabled="True"
+                                SpeedRatio="1"
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
                                 UnloadedBehavior="Manual"
                                 Volume="{Binding Settings.MediaVolume, Mode=TwoWay}"
@@ -508,7 +509,6 @@
                             >
                             <Image
                                 Name="PictureView"
-                                MouseMove="MediaImageView_MouseMove"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Source="{Binding ImageSource, Mode=OneWay, IsAsync=True}"
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"

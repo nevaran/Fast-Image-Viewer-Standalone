@@ -1,5 +1,6 @@
 ﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
+using FIVStandard.Utils;
 using FIVStandard.Views;
 using ImageMagick;
 using MahApps.Metro.Controls;
@@ -1147,7 +1148,7 @@ namespace FIVStandard
 
         private void MediaImageView_MouseMove(object sender, MouseEventArgs e)
         {
-            MediaView.Cursor = null;
+            MediaView.Cursor = null;//TODO: make cursor change in ffme control work
             PictureView.Cursor = null;
             ddMouseMove.Debounce(1000, DefaultMouseLook);
         }
