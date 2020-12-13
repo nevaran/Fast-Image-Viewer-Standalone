@@ -49,8 +49,6 @@ namespace FIVStandard
                 imageItem = value;
                 OnPropertyChanged();
                 OnPropertyChanged("TitleInformation");
-
-                //ScrollToListView();
             }
         }
 
@@ -246,24 +244,21 @@ namespace FIVStandard
                 //fivMutex.ReleaseMutex();
             }*/
 
-            InitializeComponent();
+            StartupPath = AppDomain.CurrentDomain.BaseDirectory;
+            //StartupPath = Path.GetDirectoryName(args[0]);
 
-            RenderOptions.SetBitmapScalingMode(PictureView, BitmapScalingMode.Fant);
-
-            StartupPath = System.AppDomain.CurrentDomain.BaseDirectory;
-
-            ImageMagick.MagickAnyCPU.CacheDirectory = StartupPath;
+            MagickAnyCPU.CacheDirectory = StartupPath;
 
             Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
-            //MediaView.IsMuted = true;
-            //MediaView.ScrubbingEnabled = true;
             Library.FFmpegLoadModeFlags = FFmpeg.AutoGen.FFmpegLoadMode.MinimumFeatures;
+            Library.LoadFFmpeg();
 
+            InitializeComponent();
+            
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
             try
             {
                 ImagesDataView.CustomSort = new LogicalComparer();
-
             }
             catch
             {
@@ -276,6 +271,7 @@ namespace FIVStandard
             Settings = new SettingsManager(this);
             SettingsStore.InitSettingsStore(Settings);
             ThumbnailItemData.Settings = Settings;
+            Settings.Load();
 
             //create new watcher events for used directory
             //fsw.Changed += Fsw_Updated;
@@ -283,12 +279,10 @@ namespace FIVStandard
             fsw.Deleted += Fsw_Deleted;
             fsw.Renamed += Fsw_Renamed;
 
-            Settings.Load();
-
             DataContext = this;
 
             ProgramLoaded = true;
-
+            
             //AppWindow = this;//used for debugging ZoomBorder
         }
 
@@ -299,22 +293,16 @@ namespace FIVStandard
             else
                 _ = AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
 
-            string[] args = Environment.GetCommandLineArgs();
-
-            if (args.Length > 0)//get startup path
-            {
-                //StartupPath = Path.GetDirectoryName(args[0]);
-
 #if DEBUG
-                string path = @"D:\Google Drive\temp\alltypes\3.png";
+            string path = @"D:\Google Drive\temp\alltypes\10.webm";
 
-                OpenNewFile(path);
+            OpenNewFile(path);
 #endif
 
-                if (args.Length > 1)
-                {
-                    OpenNewFile(args[1]);
-                }
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+            {
+                OpenNewFile(args[1]);
             }
         }
 
@@ -328,14 +316,16 @@ namespace FIVStandard
                 {
                     ThumbnailName = e.Name,
                     IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name).ToLower()),
-                    //ThumbnailImage = GetThumbnail(e.FullPath)
                 };
                 ImagesData.Add(tt);
 
                 Task.Run(() => Tools.LoadSingleThumbnailData(tt, e.FullPath, false));
 
                 if(ImageItem == null)
+                {
+                    selectedNew = true;
                     ChangeImage(0, false);
+                }
 
                 OnPropertyChanged("TitleInformation");//update title information
 
@@ -367,6 +357,7 @@ namespace FIVStandard
 
                 if(ImageItem == null || ImageItem.ThumbnailName == e.Name)
                 {
+                    selectedNew = true;
                     ChangeImage(0, false);
                 }
 
@@ -411,6 +402,7 @@ namespace FIVStandard
 
                                 if (ImageItem.ThumbnailName == e.Name)
                                 {
+                                    selectedNew = true;
                                     ChangeImage(0, false);
                                 }
 
@@ -422,6 +414,7 @@ namespace FIVStandard
                             else//file has been renamed to something with a non-valid extension - remove it from the list
                             {
                                 ImagesData.RemoveAt(i);
+                                selectedNew = true;
                                 ChangeImage(0, false);
                             }
 
@@ -462,6 +455,10 @@ namespace FIVStandard
             NewUri(path);
         }
 
+        /// <summary>
+        /// Gets all files into a list and then creates another list containing custom class with only the files from the original list that are of valid type
+        /// </summary>
+        /// <param name="searchFolder">Target folder full path</param>
         private void GetDirectoryFiles(string searchFolder)
         {
             ImagesData.Clear();
@@ -495,7 +492,7 @@ namespace FIVStandard
                 string currentIndexedName = ((ThumbnailItemData)ImagesDataView.GetItemAt(i)).ThumbnailName;
                 if (openedFile == currentIndexedName)
                 {
-                    ImageItem = (ThumbnailItemData)ImagesDataView.GetItemAt(i);
+                    ImageItem = (ThumbnailItemData)ImagesDataView.GetItemAt(i);//TODO: temporary hack fix since the binding to it doesnt load fast enough for the info check
                     ImagesDataView.MoveCurrentToPosition(i);
 
                     ActiveFile = currentIndexedName;
@@ -514,7 +511,6 @@ namespace FIVStandard
         private void ClearAllMedia()
         {
             ImagesData.Clear();
-            //MediaSource = null;
             CloseMedia();
             ImageSource = null;
             ImgWidth = 0;
@@ -582,13 +578,6 @@ namespace FIVStandard
                 ImagesDataView.MoveCurrentToPosition(jumpIndex);
             }
 
-            //keep moving onward until we find an existing file
-            //TEMP REPLACEMENT (maybe)
-            /*if (!FileSystem.FileExists(Path.Combine(ActiveFolder, ((ThumbnailItemData)ImagesDataView.GetItemAt(ImagesDataView.CurrentPosition)).ThumbnailName)))
-            {
-                ChangeImage(jumpIndex, false);
-            }*/
-
             ActiveFile = ImageItem.ThumbnailName;
             ActivePath = Path.Combine(ActiveFolder, activeFile);
 
@@ -597,6 +586,7 @@ namespace FIVStandard
 
         private void NewUri(string path)
         {
+            Debug.WriteLine("NEW URI | selectedNew " + selectedNew);
             if (!Tools.IsOfType(path, Settings.FilterActiveArray))
             {
                 ChangeImage(0, false);
@@ -806,7 +796,7 @@ namespace FIVStandard
                 // Note that you can have more than one file.
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                // Assuming you have one file that you care about, pass it off
+                // Assuming you have one file that you care about, pass it off; if there are no valid files it will still open the folder but have an empty list
                 if (files.Length >= 1)
                     OpenNewFile(files[0]);
             }
@@ -1041,7 +1031,8 @@ namespace FIVStandard
         {
             if (ImagesDataView.CurrentPosition < 0) return;
 
-            if (!selectedNew)
+            Debug.WriteLine(@"SELECTION | selectedNew " + selectedNew);
+            if (!selectedNew)//this should be called only when selecting new image from the thumbnail list
             {
                 ChangeImage(0, true);
             }
@@ -1118,7 +1109,7 @@ namespace FIVStandard
 
                     shellFile.Dispose();
                 }
-                catch{}
+                catch { }
             }
             else
                 Task.Run(() => Tools.LoadSingleThumbnailData(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
@@ -1148,18 +1139,22 @@ namespace FIVStandard
 
         private void MediaImageView_MouseMove(object sender, MouseEventArgs e)
         {
-            MediaView.Cursor = null;//TODO: make cursor change in ffme control work
+            //MediaView.Cursor = null;//TODO: make cursor change in ffme control work
             PictureView.Cursor = null;
             ddMouseMove.Debounce(1000, DefaultMouseLook);
         }
 
         private void DefaultMouseLook()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            try
             {
-                MediaView.Cursor = Cursors.None;
-                PictureView.Cursor = Cursors.None;
-            });
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    //MediaView.Cursor = Cursors.None;
+                    PictureView.Cursor = Cursors.None;
+                });
+            }
+            catch { }
         }
         #endregion
 

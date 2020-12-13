@@ -509,6 +509,7 @@
                             >
                             <Image
                                 Name="PictureView"
+                                RenderOptions.BitmapScalingMode="Fant"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Source="{Binding ImageSource, Mode=OneWay, IsAsync=True}"
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"

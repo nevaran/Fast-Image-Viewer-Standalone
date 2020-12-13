@@ -753,6 +753,10 @@ namespace FIVStandard.Core
 
             WindowWidth = savs.WindowWidth;
             WindowHeight = savs.WindowHeight;
+            //TODO: temporary test code
+            //mainWindow.Width = WindowWidth;
+            //mainWindow.Height = WindowHeight;
+
             WindowState = (WindowState)savs.WindowState;
         }
 
