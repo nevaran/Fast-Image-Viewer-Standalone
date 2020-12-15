@@ -285,7 +285,7 @@ namespace FIVStandard
             //AppWindow = this;//used for debugging ZoomBorder
         }
 
-        private void OnAppLoaded(object sender, RoutedEventArgs e)
+        private async void OnAppLoaded(object sender, RoutedEventArgs e)
         {
             if (Settings.CheckForUpdatesStartToggle)
                 _ = AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
@@ -295,19 +295,19 @@ namespace FIVStandard
 #if DEBUG
             string path = @"D:\Google Drive\temp\alltypes\10.webm";
 
-            OpenNewFile(path);
+            await OpenNewFile(path);
 #endif
 
             string[] args = Environment.GetCommandLineArgs();
             if (args.Length > 1)
             {
-                OpenNewFile(args[1]);
+                await OpenNewFile(args[1]);
             }
         }
 
         private void Fsw_Created(object sender, FileSystemEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(async () =>
             {
                 if (!Tools.IsOfType(e.Name, Settings.FilterActiveArray)) return;//ignore if the file is not a valid type
 
@@ -318,12 +318,12 @@ namespace FIVStandard
                 };
                 ImagesData.Add(tt);
 
-                Task.Run(() => Tools.LoadSingleThumbnailData(tt, e.FullPath, false));
+                _ = Task.Run(() => Tools.LoadSingleThumbnailData(tt, e.FullPath, false));
 
                 if(ImageItem == null)
                 {
                     selectedNew = true;
-                    ChangeImage(0, false);
+                    await ChangeImage(0, false);
                 }
 
                 OnPropertyChanged("TitleInformation");//update title information
@@ -331,13 +331,13 @@ namespace FIVStandard
                 content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CreatedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
                 content.Message = e.Name;
                 content.Type = NotificationType.Information;
-                notificationManager.ShowAsync(content);
+                _ = notificationManager.ShowAsync(content);
             });
         }
 
         private void Fsw_Deleted(object sender, FileSystemEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(async () =>
             {
                 bool dirty = false;
 
@@ -357,7 +357,7 @@ namespace FIVStandard
                 if(ImageItem == null || ImageItem.ThumbnailName == e.Name)
                 {
                     selectedNew = true;
-                    ChangeImage(0, false);
+                    await ChangeImage(0, false);
                 }
 
                 OnPropertyChanged("TitleInformation");//update title information
@@ -365,13 +365,13 @@ namespace FIVStandard
                 content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
                 content.Message = e.Name;
                 content.Type = NotificationType.Information;
-                notificationManager.ShowAsync(content);
+                _ = notificationManager.ShowAsync(content);
             });
         }
 
         private void Fsw_Renamed(object sender, RenamedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(async () =>
             {
                 try
                 {
@@ -402,33 +402,30 @@ namespace FIVStandard
                                 if (ImageItem.ThumbnailName == e.Name)
                                 {
                                     selectedNew = true;
-                                    ChangeImage(0, false);
+                                    await ChangeImage(0, false);
                                 }
 
                                 content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
                                 content.Message = e.Name;
                                 content.Type = NotificationType.Information;
-                                notificationManager.ShowAsync(content);
+                                _ = notificationManager.ShowAsync(content);
                             }
                             else//file has been renamed to something with a non-valid extension - remove it from the list
                             {
                                 ImagesData.RemoveAt(i);
                                 selectedNew = true;
-                                ChangeImage(0, false);
+                                await ChangeImage(0, false);
                             }
 
                             break;
                         }
                     }
                 }
-                catch
-                {
-
-                }
+                catch { }
             });
         }
 
-        public void OpenNewFile(string path)
+        public async Task OpenNewFile(string path)
         {
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
@@ -443,7 +440,7 @@ namespace FIVStandard
 
             if (Settings.FilterActiveArray.Length == 0)
             {
-                ClearAllMedia();
+                await ClearAllMedia();
                 return;
             }
 
@@ -451,7 +448,7 @@ namespace FIVStandard
 
             FindIndexInFiles(activeFile);
 
-            NewUri(path);
+            await NewUri(path);
         }
 
         /// <summary>
@@ -507,29 +504,29 @@ namespace FIVStandard
         /// <summary>
         /// Clear all data (as if program is opened without opening an image)
         /// </summary>
-        private void ClearAllMedia()
+        private async Task ClearAllMedia()
         {
             ImagesData.Clear();
-            CloseMedia();
+            await CloseMedia();
             ImageSource = null;
             ImgWidth = 0;
             ImgHeight = 0;
         }
 
-        private void ClearViewer()
+        private async Task ClearViewer()
         {
-            CloseMedia();
+            await CloseMedia();
             ImageSource = null;
             ImgWidth = 0;
             ImgHeight = 0;
         }
 
-        private async void OpenMedia(Uri uri)
+        private async Task OpenMedia(Uri uri)
         {
             await MediaView.Open(uri);
         }
 
-        private async void CloseMedia()
+        private async Task CloseMedia()
         {
             await MediaView.Close();
         }
@@ -551,11 +548,11 @@ namespace FIVStandard
             }
         }
 
-        private void ChangeImage(int jump, bool moveToIndex)
+        private async Task ChangeImage(int jump, bool moveToIndex)
         {
             if (ImagesData.Count == 0)//no more images in the folder - go back to default null
             {
-                ClearAllMedia();
+                await ClearAllMedia();
                 return;
             }
 
@@ -580,14 +577,14 @@ namespace FIVStandard
             ActiveFile = ImageItem.ThumbnailName;
             ActivePath = Path.Combine(ActiveFolder, activeFile);
 
-            NewUri(ActivePath);
+            await NewUri(ActivePath);
         }
 
-        private void NewUri(string path)
+        private async Task NewUri(string path)
         {
             if (!Tools.IsOfType(path, Settings.FilterActiveArray))
             {
-                ChangeImage(0, false);
+                await ChangeImage(0, false);
                 return;
             }
 
@@ -612,7 +609,7 @@ namespace FIVStandard
                 Uri uri = new Uri(path, UriKind.Absolute);
 
                 ImageSource = null;
-                OpenMedia(uri);
+                await OpenMedia(uri);
 
                 borderMed.Reset();
             }
@@ -628,7 +625,7 @@ namespace FIVStandard
                     ImgHeight = ImageItem.ImageHeight;
                 }
 
-                CloseMedia();
+                await CloseMedia();
                 ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight);
 
                 borderImg.Reset();
@@ -742,14 +739,14 @@ namespace FIVStandard
             ToClipboard.FileCopyToClipboard(ActivePath);
         }*/
 
-        private void FileCutToClipboardCall()
+        private async Task FileCutToClipboardCall()
         {
             if (ImageItem is null || !File.Exists(ActivePath)) return;
 
             string fileType = Path.GetExtension(ImageItem.ThumbnailName);
             if (fileType == ".gif"  || fileType == ".webm")//TODO: temp fix
             {
-                ClearViewer();
+                await ClearViewer();
             }
 
             ToClipboard.FileCutToClipBoard(ActivePath);
@@ -757,7 +754,7 @@ namespace FIVStandard
             content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
             content.Message = ActiveFile;
             content.Type = NotificationType.Success;
-            notificationManager.ShowAsync(content);
+            _ = notificationManager.ShowAsync(content);
         }
 
         private void OpenHyperlink(string url)
@@ -787,7 +784,7 @@ namespace FIVStandard
         }
 
         #region XAML events
-        private void Media_Drop(object sender, DragEventArgs e)
+        private async void Media_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -796,7 +793,7 @@ namespace FIVStandard
 
                 // Assuming you have one file that you care about, pass it off; if there are no valid files it will still open the folder but have an empty list
                 if (files.Length >= 1)
-                    OpenNewFile(files[0]);
+                    await OpenNewFile(files[0]);
             }
         }
 
@@ -834,9 +831,9 @@ namespace FIVStandard
             ImageCopyToClipboardCall();
         }
 
-        private void OnCutToClipboard(object sender, RoutedEventArgs e)
+        private async void OnCutToClipboard(object sender, RoutedEventArgs e)
         {
-            FileCutToClipboardCall();
+            await FileCutToClipboardCall();
         }
 
         private void OnLanguageClick(object sender, RoutedEventArgs e)
@@ -871,7 +868,7 @@ namespace FIVStandard
             ExploreFile();
         }
 
-        private void OnKeyDown(object sender, KeyEventArgs e)
+        private async void OnKeyDown(object sender, KeyEventArgs e)
         {
             //IInputElement focusedControl = FocusManager.GetFocusedElement(this);
             //MessageBox.Show(focusedControl.ToString());
@@ -898,12 +895,12 @@ namespace FIVStandard
             if (e.Key == Settings.GoForwardKey)
             {
                 selectedNew = true;
-                ChangeImage(1, false);//go forward
+                await ChangeImage(1, false);//go forward
             }
             if (e.Key == Settings.GoBackwardKey)
             {
                 selectedNew = true;
-                ChangeImage(-1, false);//go back
+                await ChangeImage(-1, false);//go back
             }
 
             if (e.Key == Settings.PauseKey)
@@ -913,7 +910,7 @@ namespace FIVStandard
 
             if (e.Key == Settings.DeleteKey && ImagesData.Count > 0)
             {
-                DeleteToRecycleAsync(ActivePath);
+                await DeleteToRecycleAsync(ActivePath);
             }
 
             if (e.Key == Settings.StretchImageKey)
@@ -938,7 +935,7 @@ namespace FIVStandard
 
             if(e.Key == Settings.CutFileToClipboardKey)
             {
-                FileCutToClipboardCall();
+                await FileCutToClipboardCall();
             }
 
             if(e.Key == Settings.ThumbnailListKey)
@@ -947,46 +944,46 @@ namespace FIVStandard
             }
         }
 
-        private void OnClick_Prev(object sender, RoutedEventArgs e)
+        private async void OnClick_Prev(object sender, RoutedEventArgs e)
         {
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
-            ChangeImage(-1, false);//go back
+            await ChangeImage(-1, false);//go back
         }
 
-        private void OnClick_Next(object sender, RoutedEventArgs e)
+        private async void OnClick_Next(object sender, RoutedEventArgs e)
         {
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
-            ChangeImage(1, false);//go forward
+            await ChangeImage(1, false);//go forward
         }
 
-        private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             if (e.ChangedButton == MouseButton.XButton1)
             {
                 selectedNew = true;
-                ChangeImage(-1, false);//go back
+                await ChangeImage(-1, false);//go back
             }
             if (e.ChangedButton == MouseButton.XButton2)
             {
                 selectedNew = true;
-                ChangeImage(1, false);//go forward
+                await ChangeImage(1, false);//go forward
             }
         }
 
-        private void OnOpenBrowseImage(object sender, RoutedEventArgs e)
+        private async void OnOpenBrowseImage(object sender, RoutedEventArgs e)
         {
             if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
             {
-                OpenNewFile(openFileDialog.FileName);
+                await OpenNewFile(openFileDialog.FileName);
             }
             /*else
             {
@@ -1025,13 +1022,13 @@ namespace FIVStandard
             await AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdateForced);
         }
 
-        private void ThumbnailList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ThumbnailList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ImagesDataView.CurrentPosition < 0) return;
 
             if (!selectedNew)//this should be called only when selecting new image from the thumbnail list
             {
-                ChangeImage(0, true);
+                await ChangeImage(0, true);
             }
         }
 
@@ -1088,7 +1085,7 @@ namespace FIVStandard
             Settings.WindowState = WindowState;
         }
 
-        private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MetroTabControl tc = (MetroTabControl)sender;
             if(tc.SelectedIndex == 0)
@@ -1103,7 +1100,7 @@ namespace FIVStandard
             if (Settings.ReloadFolderFlag == false) return;//dont re-open folder with file if not flagged
 
             Settings.ReloadFolderFlag = false;
-            OpenNewFile(ActivePath);
+            await OpenNewFile(ActivePath);
         }
 
         private void OnThumbnailItemVisible(object sender, RoutedEventArgs e)
@@ -1142,7 +1139,7 @@ namespace FIVStandard
             fsw.Renamed -= Fsw_Renamed;
             fsw?.Dispose();
 
-            ClearAllMedia();
+            //ClearAllMedia();
             SettingsManager.Save();
         }
 
