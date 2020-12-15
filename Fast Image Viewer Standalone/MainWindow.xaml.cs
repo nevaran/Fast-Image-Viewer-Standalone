@@ -267,7 +267,6 @@ namespace FIVStandard
 
             AppUpdater = new UpdateCheck(this);
             
-            // these lines shouldn't be in this class (maybe?)
             Settings = new SettingsManager(this);
             SettingsStore.InitSettingsStore(Settings);
             ThumbnailItemData.Settings = Settings;
@@ -282,7 +281,7 @@ namespace FIVStandard
             DataContext = this;
 
             ProgramLoaded = true;
-            
+
             //AppWindow = this;//used for debugging ZoomBorder
         }
 
@@ -586,7 +585,6 @@ namespace FIVStandard
 
         private void NewUri(string path)
         {
-            Debug.WriteLine("NEW URI | selectedNew " + selectedNew);
             if (!Tools.IsOfType(path, Settings.FilterActiveArray))
             {
                 ChangeImage(0, false);
@@ -1031,7 +1029,6 @@ namespace FIVStandard
         {
             if (ImagesDataView.CurrentPosition < 0) return;
 
-            Debug.WriteLine(@"SELECTION | selectedNew " + selectedNew);
             if (!selectedNew)//this should be called only when selecting new image from the thumbnail list
             {
                 ChangeImage(0, true);
@@ -1075,6 +1072,20 @@ namespace FIVStandard
         private void MediaVolumeIcon_Click(object sender, RoutedEventArgs e)
         {
             Settings.MediaMuted = !Settings.MediaMuted;
+        }
+
+        private void MainFIV_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if(WindowState == WindowState.Normal)
+            {
+                Settings.WindowWidth = (int)Width;
+                Settings.WindowHeight = (int)Height;
+            }
+        }
+
+        private void MainFIV_StateChanged(object sender, EventArgs e)
+        {
+            Settings.WindowState = WindowState;
         }
 
         private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1146,15 +1157,11 @@ namespace FIVStandard
 
         private void DefaultMouseLook()
         {
-            try
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    //MediaView.Cursor = Cursors.None;
-                    PictureView.Cursor = Cursors.None;
-                });
-            }
-            catch { }
+                //MediaView.Cursor = Cursors.None;
+                PictureView.Cursor = Cursors.None;
+            });
         }
         #endregion
 

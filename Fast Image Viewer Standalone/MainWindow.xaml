@@ -23,9 +23,11 @@
     Loaded="OnAppLoaded"
     MouseDown="OnMouseDown"
     PreviewKeyDown="OnKeyDown"
+    SizeChanged="MainFIV_SizeChanged"
+    StateChanged="MainFIV_StateChanged"
     TitleCharacterCasing="Normal"
     WindowStartupLocation="CenterScreen"
-    WindowState="{Binding Settings.WindowState, Mode=TwoWay}"
+    WindowState="Maximized"
     >
     <!--  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  -->
     <!--  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  -->

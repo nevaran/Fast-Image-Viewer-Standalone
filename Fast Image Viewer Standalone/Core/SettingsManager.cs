@@ -654,7 +654,7 @@ namespace FIVStandard.Core
             set
             {
                 windowWidth = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
 
                 OnWindowWidthChanged();
             }
@@ -671,7 +671,7 @@ namespace FIVStandard.Core
             set
             {
                 windowHeight = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
 
                 OnWindowHeightChanged();
             }
@@ -688,7 +688,7 @@ namespace FIVStandard.Core
             set
             {
                 windowState = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
 
                 OnWindowStateChanged();
             }
@@ -698,6 +698,7 @@ namespace FIVStandard.Core
 
         public SettingsManager(MainWindow mw)
         {
+            //var appdataPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);//TODO: for when saving manually a settings file (json)
             mainWindow = mw;
 
             if (Properties.Settings.Default.UpgradeRequired)
@@ -758,6 +759,7 @@ namespace FIVStandard.Core
             mainWindow.Height = WindowHeight;
 
             WindowState = (WindowState)savs.WindowState;
+            mainWindow.WindowState = WindowState;
         }
 
         public static void Save()
@@ -946,19 +948,16 @@ namespace FIVStandard.Core
         public void OnMediaVolumeChanged()
         {
             Properties.Settings.Default.MediaVolume = MediaVolume;
-            //System.Diagnostics.Debug.WriteLine($"saved volume: {MediaVolume}");
         }
 
         public void OnWindowWidthChanged()
         {
-            if (WindowState == WindowState.Normal)
-                Properties.Settings.Default.WindowWidth = WindowWidth;
+            Properties.Settings.Default.WindowWidth = WindowWidth;
         }
 
         public void OnWindowHeightChanged()
         {
-            if (WindowState == WindowState.Normal)
-                Properties.Settings.Default.WindowHeight = WindowHeight;
+            Properties.Settings.Default.WindowHeight = WindowHeight;
         }
 
         public void OnWindowStateChanged()
