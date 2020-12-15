@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 
-namespace FIVStandard.Views
+namespace FIVStandard.ViewModel
 {
     public partial class ThumbnailItemData : INotifyPropertyChanged
     {

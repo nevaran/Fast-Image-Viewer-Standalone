@@ -1,7 +1,7 @@
 ﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
 using FIVStandard.Utils;
-using FIVStandard.Views;
+using FIVStandard.ViewModel;
 using ImageMagick;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
@@ -23,7 +23,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Unosquare.FFME;
 
@@ -291,7 +290,7 @@ namespace FIVStandard
                 _ = AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
 
 #if DEBUG
-            string path = @"D:\Google Drive\temp\alltypes\10.webm";
+            string path = @"D:\Google Drive\temp\alltypes\3.png";
 
             await OpenNewFile(path);
 #endif
