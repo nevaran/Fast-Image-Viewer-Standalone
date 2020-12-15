@@ -489,7 +489,6 @@
                                 IsMuted="{Binding Settings.MediaMuted, Mode=TwoWay}"
                                 LoadedBehavior="Play"
                                 LoopingBehavior="Play"
-                                MediaClosed="MediaView_MediaClosed"
                                 MediaOpened="MediaView_MediaOpened"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ScrubbingEnabled="True"

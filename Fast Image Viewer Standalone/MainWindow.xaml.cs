@@ -802,11 +802,6 @@ namespace FIVStandard
             MediaProgression.Maximum = MediaView.NaturalDuration.Value.Ticks;
         }
 
-        private async void MediaView_MediaClosed(object sender, EventArgs e)
-        {
-            GC.Collect();//clean up memory (TODO: temp fix; fixes unknown memory leak)
-        }
-
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)
         {
             ImageCopyToClipboardCall();
