@@ -671,7 +671,7 @@ namespace FIVStandard
             }
         }
 
-        private Task DeleteToRecycleAsync(string path)
+        private async Task<Task> DeleteToRecycleAsync(string path)
         {
             if (!File.Exists(path)) return Task.CompletedTask;
 
@@ -681,7 +681,7 @@ namespace FIVStandard
 
                 forDeletionMediaPath = ActivePath;
                 forDeletiionMediaFlag = true;
-                CloseMedia();
+                await CloseMedia();
             }
 
             if (forDeletiionMediaFlag == true) return Task.CompletedTask;
@@ -815,12 +815,12 @@ namespace FIVStandard
             MediaProgression.Maximum = MediaView.NaturalDuration.Value.Ticks;
         }
 
-        private void MediaView_MediaClosed(object sender, EventArgs e)
+        private async void MediaView_MediaClosed(object sender, EventArgs e)
         {
             if (forDeletiionMediaFlag == true)
             {
                 forDeletiionMediaFlag = false;
-                DeleteToRecycleAsync(forDeletionMediaPath);
+                await DeleteToRecycleAsync(forDeletionMediaPath);
             }
 
             GC.Collect();//clean up memory (TODO: temp fix; fixes unknown memory leak)
@@ -856,11 +856,11 @@ namespace FIVStandard
             ThemeAccentDrop.SelectedIndex = Settings.ThemeAccentDropIndex;
         }
 
-        private void OnDeleteClick(object sender, RoutedEventArgs e)
+        private async void OnDeleteClick(object sender, RoutedEventArgs e)
         {
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
-            DeleteToRecycleAsync(ActivePath);
+            await DeleteToRecycleAsync(ActivePath);
         }
 
         private void OnOpenFileLocation(object sender, RoutedEventArgs e)
