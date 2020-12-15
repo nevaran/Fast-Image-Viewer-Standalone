@@ -156,8 +156,6 @@ namespace FIVStandard
         private Button editingButton = null;//used for editing shortcuts
 
         private bool isDeletingFile;
-        private bool forDeletiionMediaFlag = false;
-        private string forDeletionMediaPath = "";
 
         public bool ProgramLoaded = false;
 
@@ -671,43 +669,32 @@ namespace FIVStandard
             }
         }
 
-        private async Task<Task> DeleteToRecycleAsync(string path)
+        private async Task DeleteToRecycleAsync(string path)
         {
-            if (!File.Exists(path)) return Task.CompletedTask;
+            if (!File.Exists(path)) return;
 
-            if(MediaView.HasVideo && forDeletiionMediaFlag == false)
+            if(MediaView.HasVideo)
             {
                 IsDeletingFile = true;
 
-                forDeletionMediaPath = ActivePath;
-                forDeletiionMediaFlag = true;
                 await CloseMedia();
             }
 
-            if (forDeletiionMediaFlag == true) return Task.CompletedTask;
+            IsDeletingFile = true;
 
-            return Task.Run(() =>
+            if (FileSystem.FileExists(path))
             {
-                IsDeletingFile = true;
+                FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
+            }
+            else
+            {
+                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.FileNotFoundMsg), Localization.TranslationSource.Instance.CurrentCulture);
+                content.Message = path;
+                content.Type = NotificationType.Warning;
+                _ = notificationManager.ShowAsync(content);
+            }
 
-                if (FileSystem.FileExists(path))
-                {
-                    FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.FileNotFoundMsg), Localization.TranslationSource.Instance.CurrentCulture);
-                        content.Message = path;
-                        content.Type = NotificationType.Warning;
-                        notificationManager.ShowAsync(content);
-                    });
-                }
-
-                IsDeletingFile = false;
-                forDeletiionMediaFlag = false;
-            });
+            IsDeletingFile = false;
         }
 
         private async void ImageCopyToClipboardCall()
@@ -817,12 +804,6 @@ namespace FIVStandard
 
         private async void MediaView_MediaClosed(object sender, EventArgs e)
         {
-            if (forDeletiionMediaFlag == true)
-            {
-                forDeletiionMediaFlag = false;
-                await DeleteToRecycleAsync(forDeletionMediaPath);
-            }
-
             GC.Collect();//clean up memory (TODO: temp fix; fixes unknown memory leak)
         }
 
