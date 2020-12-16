@@ -49,6 +49,8 @@ namespace FIVStandard.Utils
                 this.MouseLeftButtonDown += Child_MouseLeftButtonDown;
                 this.MouseLeftButtonUp += Child_MouseLeftButtonUp;
                 this.MouseMove += Child_MouseMove;
+
+                this.SizeChanged += ZoomBorder_SizeChanged;
                 //this.PreviewMouseRightButtonDown += Child_PreviewMouseRightButtonDown;
             }
         }
@@ -116,6 +118,8 @@ namespace FIVStandard.Utils
 
                     //var windowBorder = new Rect(child.RenderSize);
                     //ClampPan(ref tt, ref windowBorder);
+                    Rect r = new Rect(this.RenderSize);
+                    ClampPan(ref tt, r, st.ScaleX, st.ScaleX);
                 }
             }
         }
@@ -147,47 +151,54 @@ namespace FIVStandard.Utils
             {
                 if (child.IsMouseCaptured)
                 {
+                    var st = GetScaleTransform(child);
                     var tt = GetTranslateTransform(child);
                     Vector v = start - e.GetPosition(this);
 
-                    var st = GetScaleTransform(child);
-                    if(st.ScaleX == 1.0 && st.ScaleY == 1.0)
-                    {
-                        tt.X = 0.0;
-                        tt.Y = 0.0;
-                    }
-                    else
-                    {
-                        tt.X = origin.X - v.X;
-                        tt.Y = origin.Y - v.Y;
+                    tt.X = origin.X - v.X;
+                    tt.Y = origin.Y - v.Y;
 
-                        //var windowBorder = new Rect(child.RenderSize);
-
-                        //ClampPan(ref tt, ref windowBorder);
-
-                        //MainWindow.AppWindow.Title = $"{tt.Y.ToString("F0")} --- {windowBorder.Top.ToString("F0")} | {windowBorder.Bottom.ToString("F0")}";//DEBUG
-                    }
+                    //var windowBorder = new Rect(child.RenderSize);
+                    Rect r = new Rect(child.RenderSize);
+                    ClampPan(ref tt, r, st.ScaleX, st.ScaleX);
                 }
             }
         }
+
+        private void ZoomBorder_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var st = GetScaleTransform(child);
+            var tt = GetTranslateTransform(child);
+
+            Rect r = new Rect(this.RenderSize);
+            ClampPan(ref tt, r, st.ScaleX, st.ScaleX);
+            System.Diagnostics.Debug.WriteLine($"SIZE CHANGE");
+        }
         #endregion
+
+        private static void ClampPan(ref TranslateTransform tt, Rect r, double scaleX, double scaleY)
+        {
+            double leftLimit = r.Width / 2;
+            double rightLimit = -r.Width * scaleX / 2;
+            double topLimit = r.Height / 2;
+            double botLimit = -r.Height * scaleY / 2;
+
+            if (tt.X > leftLimit)//left
+                tt.X = leftLimit;
+            if (tt.X < rightLimit)//right
+                tt.X = rightLimit;
+
+            if (tt.Y > topLimit)//top
+                tt.Y = topLimit;
+            if (tt.Y < botLimit)//bottom
+                tt.Y = botLimit;
+
+            //System.Diagnostics.Debug.WriteLine($"{leftLimit:F1} | {rightLimit:F1} | {topLimit:F1} | {botLimit:F1}\n{tt.X:F1} | {tt.Y:F1}\nX {scaleX:F1} Y {scaleY:F1} :{System.DateTime.Now}");
+        }
 
         /*void Child_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Reset();
-        }*/
-
-        /*private void ClampPan(ref TranslateTransform tt, ref Rect r)//TODO: get proper coords
-        {
-            if ((tt.X) > r.Right / 2)//left
-                tt.X = r.Right / 2;
-            if (tt.X < -r.Right)//right
-                tt.X = -r.Right;
-
-            if ((tt.Y) > r.Bottom / 2)//top
-                tt.Y = r.Bottom / 2;
-            if (tt.Y < -r.Bottom)//bottom
-                tt.Y = -r.Bottom;
         }*/
     }
 }

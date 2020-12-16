@@ -1,4 +1,4 @@
-legend - *** completed; ^^ - deprecated/abandoned; (?) - possibly good idea/optional
+legend: *** completed; ^^ - deprecated/abandoned; (?) - possibly good idea/optional
 
 -----------------OPTIONS
 
@@ -13,9 +13,9 @@ legend - *** completed; ^^ - deprecated/abandoned; (?) - possibly good idea/opti
 ***ListBox + with UniformGrid set as its ItemsPanel Gallery on the left side (MAYBE ItemsControl). bind an ObservableCollection to the ListBox.ItemsSource property
 example: https://www.wpftutorial.net/ListBoxItemsArrange.html
 
-update mode option (silent, very silent, full)
+(?)update mode option (silent, very silent, full)
 
-rotate image buttons
+(?)rotate image buttons
 
 drag from app to other apps(like discord) for sharing
 
@@ -33,7 +33,7 @@ drag from app to other apps(like discord) for sharing
 ***find a way to clear transparent background in gifs from glitching
 ***add window state save ( maximized, size, position(?) )
 
-switch to json saving of settings(?)
+(?)switch to json saving of settings
 
 fix installer (inno setup) not associating program with file types fully
 
