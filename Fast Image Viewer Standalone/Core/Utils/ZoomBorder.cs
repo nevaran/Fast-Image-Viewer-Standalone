@@ -116,10 +116,7 @@ namespace FIVStandard.Utils
                     tt.X = abosuluteX - relative.X * st.ScaleX;
                     tt.Y = abosuluteY - relative.Y * st.ScaleY;
 
-                    //var windowBorder = new Rect(child.RenderSize);
-                    //ClampPan(ref tt, ref windowBorder);
-                    Rect r = new Rect(this.RenderSize);
-                    ClampPan(ref tt, r, st.ScaleX, st.ScaleX);
+                    OnClamp();
                 }
             }
         }
@@ -151,37 +148,38 @@ namespace FIVStandard.Utils
             {
                 if (child.IsMouseCaptured)
                 {
-                    var st = GetScaleTransform(child);
                     var tt = GetTranslateTransform(child);
                     Vector v = start - e.GetPosition(this);
 
                     tt.X = origin.X - v.X;
                     tt.Y = origin.Y - v.Y;
 
-                    //var windowBorder = new Rect(child.RenderSize);
-                    Rect r = new Rect(child.RenderSize);
-                    ClampPan(ref tt, r, st.ScaleX, st.ScaleX);
+                    OnClamp();
                 }
             }
         }
 
         private void ZoomBorder_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var st = GetScaleTransform(child);
-            var tt = GetTranslateTransform(child);
-
-            Rect r = new Rect(this.RenderSize);
-            ClampPan(ref tt, r, st.ScaleX, st.ScaleX);
-            System.Diagnostics.Debug.WriteLine($"SIZE CHANGE");
+            OnClamp();
         }
         #endregion
 
-        private static void ClampPan(ref TranslateTransform tt, Rect r, double scaleX, double scaleY)
+        private void OnClamp()
+        {
+            var st = GetScaleTransform(child);
+            var tt = GetTranslateTransform(child);
+
+            Rect r = new Rect(child.RenderSize);
+            ClampPan(ref tt, r, st.ScaleX);
+        }
+
+        private static void ClampPan(ref TranslateTransform tt, Rect r, double scale)
         {
             double leftLimit = r.Width / 2;
-            double rightLimit = -r.Width * scaleX / 2;
+            double rightLimit = -(r.Width * scale - (r.Width * 0.5));
             double topLimit = r.Height / 2;
-            double botLimit = -r.Height * scaleY / 2;
+            double botLimit = -(r.Height * scale - (r.Height * 0.5));
 
             if (tt.X > leftLimit)//left
                 tt.X = leftLimit;
