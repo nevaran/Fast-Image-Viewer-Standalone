@@ -748,7 +748,7 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.ZoomSensitivityString, Mode=OneWay, IsAsync=True}"
+                                Text="{Binding Settings.ZoomSensitivityString, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
@@ -860,7 +860,7 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.ThumbnailSize, Mode=OneWay, IsAsync=True}"
+                                Text="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
@@ -901,7 +901,7 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.ThumbnailRes, Mode=OneWay, IsAsync=True}"
+                                Text="{Binding Settings.ThumbnailRes, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider

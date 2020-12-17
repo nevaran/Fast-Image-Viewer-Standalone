@@ -632,7 +632,16 @@ namespace FIVStandard
 
             ScrollToListView();
             GC.Collect();
+            //ddGcCollect.Debounce(100, GcCollectNormal);
         }
+
+        //private readonly DebounceDispatcher ddGcCollect = new DebounceDispatcher();
+
+        //private void GcCollectNormal()
+        //{
+        //    GC.Collect();
+        //    Debug.WriteLine($"MEM {GC.GetTotalMemory(false) / 1024 / 1024}mb");
+        //}
 
         CancellationTokenSource allThumbnailTokenSource;
         CancellationToken ct;

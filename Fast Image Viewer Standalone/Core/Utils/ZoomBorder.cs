@@ -159,19 +159,24 @@ namespace FIVStandard.Utils
             }
         }
 
+        private readonly DebounceDispatcher ddClamp = new DebounceDispatcher();
+
         private void ZoomBorder_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            OnClamp();
+            ddClamp.Debounce(100, OnClamp);
         }
         #endregion
 
         private void OnClamp()
         {
-            var st = GetScaleTransform(child);
-            var tt = GetTranslateTransform(child);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var st = GetScaleTransform(child);
+                var tt = GetTranslateTransform(child);
 
-            Rect r = new Rect(child.RenderSize);
-            ClampPan(ref tt, r, st.ScaleX);
+                Rect r = new Rect(child.RenderSize);
+                ClampPan(ref tt, r, st.ScaleX);
+            });
         }
 
         private static void ClampPan(ref TranslateTransform tt, Rect r, double scale)

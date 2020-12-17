@@ -215,7 +215,7 @@ namespace FIVStandard.Core
             return PixelFormats.Bgra32;//give a "default" format if we dont have the case set
         }
 
-        public static string RnJesus()
+        public static string RnJesus()//meme thing
         {
             Random rnd = new Random();
             string[] rnj = new string[] {
@@ -227,7 +227,7 @@ namespace FIVStandard.Core
                         @"¯\_(ツ)_/¯",
             };
 
-            if (rnd.Next(0, 10) == 0)
+            if (rnd.Next(0, 10) == 0)//10% chance to show meme
             {
                 return rnj[rnd.Next(0, rnj.Length)];
             }
