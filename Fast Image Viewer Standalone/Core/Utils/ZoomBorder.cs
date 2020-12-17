@@ -12,6 +12,8 @@ namespace FIVStandard.Utils
         private Point origin;
         private Point start;
 
+        private readonly DebounceDispatcher ddClamp = new DebounceDispatcher();
+
         private static TranslateTransform GetTranslateTransform(UIElement element)
         {
             return (TranslateTransform)((TransformGroup)element.RenderTransform).Children.First(tr => tr is TranslateTransform);
@@ -159,8 +161,6 @@ namespace FIVStandard.Utils
             }
         }
 
-        private readonly DebounceDispatcher ddClamp = new DebounceDispatcher();
-
         private void ZoomBorder_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ddClamp.Debounce(100, OnClamp);
@@ -181,9 +181,9 @@ namespace FIVStandard.Utils
 
         private static void ClampPan(ref TranslateTransform tt, Rect r, double scale)
         {
-            double leftLimit = r.Width / 2;
+            double leftLimit = r.Width * 0.5;
             double rightLimit = -(r.Width * scale - (r.Width * 0.5));
-            double topLimit = r.Height / 2;
+            double topLimit = r.Height * 0.5;
             double botLimit = -(r.Height * scale - (r.Height * 0.5));
 
             if (tt.X > leftLimit)//left
