@@ -75,15 +75,10 @@ namespace FIVStandard.Core
         /// <returns></returns>
         public static void LoadThumbnailData(string path, ThumbnailItemData tid)
         {
-            if (!File.Exists(path)) return;
+            if (Path.GetExtension(path) == ".webm" || !File.Exists(path)) return;
 
             try
             {
-                if(Path.GetExtension(path) == ".webm")
-                {
-                    return;
-                }
-
                 /*var settings = new MagickReadSettings
                 {
                     Width = Settings.ThumbnailRes
