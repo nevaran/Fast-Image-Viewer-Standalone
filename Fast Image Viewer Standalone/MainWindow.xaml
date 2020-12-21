@@ -483,6 +483,7 @@
                             Background="Transparent"
                             ClipToBounds="True"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ZoomSensitivity="{Binding Settings.JSettings.ZoomSensitivity, Mode=OneWay}"
                             >
                             <ffme:MediaElement
                                 x:Name="MediaView"
@@ -507,6 +508,7 @@
                             Background="Transparent"
                             ClipToBounds="True"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ZoomSensitivity="{Binding Settings.JSettings.ZoomSensitivity, Mode=OneWay}"
                             >
                             <Image
                                 Name="PictureView"

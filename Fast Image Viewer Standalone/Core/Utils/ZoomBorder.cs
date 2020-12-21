@@ -12,6 +12,16 @@ namespace FIVStandard.Utils
         private Point origin;
         private Point start;
 
+        public double ZoomSensitivity
+        {
+            get { return (double)GetValue(ZoomSensitivityProperty); }
+            set { SetValue(ZoomSensitivityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ZoomSensitivity.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ZoomSensitivityProperty =
+            DependencyProperty.Register("ZoomSensitivity", typeof(double), typeof(ZoomBorder), new PropertyMetadata(0.3));
+
         private readonly DebounceDispatcher ddClamp = new DebounceDispatcher();
 
         private static TranslateTransform GetTranslateTransform(UIElement element)
@@ -81,7 +91,7 @@ namespace FIVStandard.Utils
                 var st = GetScaleTransform(child);
                 var tt = GetTranslateTransform(child);
 
-                double zoom = e.Delta > 0 ? Properties.Settings.Default.ZoomSensitivity : -Properties.Settings.Default.ZoomSensitivity;
+                double zoom = e.Delta > 0 ? ZoomSensitivity : -ZoomSensitivity;
                 if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
                     return;
 
