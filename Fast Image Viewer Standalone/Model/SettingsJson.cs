@@ -1,7 +1,9 @@
 ﻿using FIVStandard.Core;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,6 +11,51 @@ namespace FIVStandard.Model
 {
     public class SettingsJson : INotifyPropertyChanged, ISettings
     {
+        #region Unsaved Properties
+        public readonly List<(string tag, string lang)> ShownLanguage = new List<(string tag, string lang)>()
+        {
+            ("en", "English (en)"),
+            ("bg-BG", "Български (bg-BG)"),
+            ("nl-NL", "Nederlands (nl-NL)"),
+            ("pt-BR", "Portuguesa (pt-BR)"),
+            ("se-SE", "Svenska (se-SE)"),
+            ("da-DK", "Dansk (da-DK)"),
+        };
+
+        [JsonIgnore]
+        public string[] GetLanguageString
+        {
+            get
+            {
+                return ShownLanguage.Select(x => x.lang).ToArray();
+            }
+        }
+
+        [JsonIgnore]
+        public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
+
+        [JsonIgnore]
+        public List<string> FilterActiveList { get; set; } = new List<string>();//".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"
+        [JsonIgnore]
+        public string[] FilterActiveArray { get; set; } = null;
+
+        private bool shortcutButtonsOn = true;
+
+        [JsonIgnore]
+        public bool ShortcutButtonsOn
+        {
+            get
+            {
+                return shortcutButtonsOn;
+            }
+            set
+            {
+                shortcutButtonsOn = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
         #region Settings Properties
         private int shownLanguageDropIndex = 0;
 
@@ -40,10 +87,7 @@ namespace FIVStandard.Model
             }
         }
 
-        //required to be here because of ISettings
-        public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
-
-        private int themeAccentDropIndex = 0;
+        private int themeAccentDropIndex = 4;
 
         public int ThemeAccentDropIndex
         {
@@ -106,6 +150,7 @@ namespace FIVStandard.Model
             }
         }
 
+        [JsonIgnore]
         public string ZoomSensitivityString
         {
             get
@@ -159,7 +204,7 @@ namespace FIVStandard.Model
             }
         }
 
-        private int thumbnailSize = 80;
+        private int thumbnailSize = 120;
 
         public int ThumbnailSize
         {
@@ -176,6 +221,7 @@ namespace FIVStandard.Model
             }
         }
 
+        [JsonIgnore]
         public int ThumbnailSizePlusText
         {
             get
@@ -184,6 +230,7 @@ namespace FIVStandard.Model
             }
         }
 
+        [JsonIgnore]
         public int ThumbnailSizeGifTag
         {
             get
@@ -192,7 +239,7 @@ namespace FIVStandard.Model
             }
         }
 
-        private int thumbnailRes = 80;
+        private int thumbnailRes = 120;
 
         public int ThumbnailRes
         {
@@ -391,6 +438,7 @@ namespace FIVStandard.Model
             }
         }
 
+        [JsonIgnore]
         public MahApps.Metro.IconPacks.PackIconBoxIconsKind VolumeIcon
         {
             get

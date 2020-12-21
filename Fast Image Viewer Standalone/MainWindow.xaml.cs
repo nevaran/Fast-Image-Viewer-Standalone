@@ -306,7 +306,7 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(async () =>
             {
-                if (!Tools.IsOfType(e.Name, Settings.FilterActiveArray)) return;//ignore if the file is not a valid type
+                if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray)) return;//ignore if the file is not a valid type
 
                 ThumbnailItemData tt = new ThumbnailItemData
                 {
@@ -349,7 +349,7 @@ namespace FIVStandard
                     }
                 }
 
-                if (!Tools.IsOfType(e.Name, Settings.FilterActiveArray) && !dirty) return;//dont send a message if its not one of our files
+                if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray) && !dirty) return;//dont send a message if its not one of our files
 
                 if(ImageItem == null || ImageItem.ThumbnailName == e.Name)
                 {
@@ -376,7 +376,7 @@ namespace FIVStandard
                     {
                         if (e.OldName == ImagesData[i].ThumbnailName)
                         {
-                            if (Tools.IsOfType(e.Name, Settings.FilterActiveArray))
+                            if (Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray))
                             {
                                 var oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
 
@@ -424,7 +424,7 @@ namespace FIVStandard
 
         public async Task OpenNewFile(string path)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
 
@@ -435,7 +435,7 @@ namespace FIVStandard
             fsw.Path = ActiveFolder;
             fsw.EnableRaisingEvents = true;//File Watcher is enabled/disabled
 
-            if (Settings.FilterActiveArray.Length == 0)
+            if (Settings.JSettings.FilterActiveArray.Length == 0)
             {
                 await ClearAllMedia();
                 return;
@@ -463,7 +463,7 @@ namespace FIVStandard
             for (int i = 0; i < c; i++)//extract the files that are of valid type
             {
                 string ext = Path.GetExtension(filesFound[i].ToLower());
-                if (Settings.FilterActiveArray.Any(ext.Contains))
+                if (Settings.JSettings.FilterActiveArray.Any(ext.Contains))
                 {
                     filesFound[i] = Path.GetFileName(filesFound[i]);//get just the file name + extension
 
@@ -579,7 +579,7 @@ namespace FIVStandard
 
         private async Task NewUri(string path)
         {
-            if (!Tools.IsOfType(path, Settings.FilterActiveArray))
+            if (!Tools.IsOfType(path, Settings.JSettings.FilterActiveArray))
             {
                 await ChangeImage(0, false);
                 return;
@@ -822,7 +822,7 @@ namespace FIVStandard
 
         private void OnLanguageClick(object sender, RoutedEventArgs e)
         {
-            if (Settings.JSettings.ShownLanguageDropIndex >= Settings.ShownLanguage.Count - 1)
+            if (Settings.JSettings.ShownLanguageDropIndex >= Settings.JSettings.ShownLanguage.Count - 1)
                 Settings.JSettings.ShownLanguageDropIndex = 0;
             else
                 Settings.JSettings.ShownLanguageDropIndex++;
@@ -842,7 +842,7 @@ namespace FIVStandard
 
         private async void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             await DeleteToRecycleAsync(ActivePath);
         }
@@ -857,7 +857,7 @@ namespace FIVStandard
             //IInputElement focusedControl = FocusManager.GetFocusedElement(this);
             //MessageBox.Show(focusedControl.ToString());
 
-            if (Settings.ShortcutButtonsOn == false)
+            if (Settings.JSettings.ShortcutButtonsOn == false)
             {
                 if (e.Key == Key.System || e.Key == Key.LWin || e.Key == Key.RWin) return;//blacklisted keys (windows keys, system)
 
@@ -867,12 +867,12 @@ namespace FIVStandard
                     //MessageBox.Show(((int)e.Key).ToString());
                 }
 
-                Settings.ShortcutButtonsOn = true;
+                Settings.JSettings.ShortcutButtonsOn = true;
 
                 return;
             }
 
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             if (e.Key == Settings.JSettings.GoForwardKey)
             {
@@ -928,7 +928,7 @@ namespace FIVStandard
 
         private async void OnClick_Prev(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
             await ChangeImage(-1, false);//go back
@@ -936,7 +936,7 @@ namespace FIVStandard
 
         private async void OnClick_Next(object sender, RoutedEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
             await ChangeImage(1, false);//go forward
@@ -944,7 +944,7 @@ namespace FIVStandard
 
         private async void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             if (e.ChangedButton == MouseButton.XButton1)
             {
@@ -960,7 +960,7 @@ namespace FIVStandard
 
         private async void OnOpenBrowseImage(object sender, RoutedEventArgs e)
         {
-            if (isDeletingFile || Settings.ShortcutButtonsOn == false) return;
+            if (isDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             Nullable<bool> result = openFileDialog.ShowDialog();
             if (result == true)
@@ -977,7 +977,7 @@ namespace FIVStandard
         {
             editingButton = (Button)sender;
 
-            Settings.ShortcutButtonsOn = false;//disable the buttons until done editing
+            Settings.JSettings.ShortcutButtonsOn = false;//disable the buttons until done editing
         }
 
         private void OnRemoveShortcutClick(object sender, RoutedEventArgs e)

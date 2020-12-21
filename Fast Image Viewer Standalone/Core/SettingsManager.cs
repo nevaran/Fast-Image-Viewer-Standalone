@@ -1,10 +1,8 @@
 ﻿using ControlzEx.Theming;
 using FIVStandard.Model;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Windows;
@@ -16,45 +14,7 @@ namespace FIVStandard.Core
     {
         public readonly MainWindow mainWindow;
 
-#region Unsaved Properties
-        public readonly List<(string tag, string lang)> ShownLanguage = new List<(string tag, string lang)>()
-        {
-            ("en", "English (en)"),
-            ("bg-BG", "Български (bg-BG)"),
-            ("nl-NL", "Nederlands (nl-NL)"),
-            ("pt-BR", "Portuguesa (pt-BR)"),
-            ("se-SE", "Svenska (se-SE)"),
-            ("da-DK", "Dansk (da-DK)"),
-        };
-
-        public string[] GetLanguageString
-        {
-            get
-            {
-                return ShownLanguage.Select(x => x.lang).ToArray();
-            }
-        }
-
-        public List<string> FilterActiveList { get; set; } = new List<string>();//".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"
-        public string[] FilterActiveArray { get; set; } = null;
-
-        private bool shortcutButtonsOn = true;
-
-        public bool ShortcutButtonsOn
-        {
-            get
-            {
-                return shortcutButtonsOn;
-            }
-            set
-            {
-                shortcutButtonsOn = value;
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        public SettingsJson JSettings { get; set; } = new SettingsJson();
+        public SettingsJson JSettings { get; set; }
 
         public bool ReloadFolderFlag = false;//flag for confirming if the list of images needs to be reloaded (ie from changing what types of files are to be displayed)
 
@@ -80,6 +40,7 @@ namespace FIVStandard.Core
             }
             else
             {
+                JSettings = new SettingsJson();
             }
 
             //Call all essential methods connected to the properties in the JSettings class
@@ -97,7 +58,11 @@ namespace FIVStandard.Core
         {
             if (JSettings is null) return;
 
-            string jsonString = JsonSerializer.Serialize(JSettings);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = false,
+            };
+            string jsonString = JsonSerializer.Serialize(JSettings, options);
             File.WriteAllText(settingsPath, jsonString);
 
             //Properties.Settings.Default.Save();
@@ -109,15 +74,15 @@ namespace FIVStandard.Core
 
             JSettings.ShownLanguageDropIndex = 0;
             JSettings.DarkModeToggle = true;
-            JSettings.ThemeAccentDropIndex = 0;
+            JSettings.ThemeAccentDropIndex = 4;
             JSettings.StretchImageToggle = true;
             JSettings.DownsizeImageToggle = false;
             JSettings.ZoomSensitivity = 0.3;
             JSettings.CheckForUpdatesStartToggle = true;
             JSettings.AutoupdateToggle = false;
             JSettings.EnableThumbnailListToggle = true;
-            JSettings.ThumbnailSize = 80;
-            JSettings.ThumbnailRes = 80;
+            JSettings.ThumbnailSize = 120;
+            JSettings.ThumbnailRes = 120;
 
             JSettings.GoForwardKey = Key.Right;
             JSettings.GoBackwardKey = Key.Left;
@@ -179,7 +144,7 @@ namespace FIVStandard.Core
 
         private void OnLanguageChanged()
         {
-            Localization.TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo(ShownLanguage[JSettings.ShownLanguageDropIndex].tag);
+            Localization.TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo(JSettings.ShownLanguage[JSettings.ShownLanguageDropIndex].tag);
         }
 
         private void OnDownsizeSwitch()
@@ -197,12 +162,12 @@ namespace FIVStandard.Core
 
         public void ClearActiveFilterList()
         {
-            FilterActiveList.Clear();
+            JSettings.FilterActiveList.Clear();
         }
 
         public void AddActiveFilter(string newFilterElement)
         {
-            FilterActiveList.Add(newFilterElement);
+            JSettings.FilterActiveList.Add(newFilterElement);
         }
 
         public void UpdateActiveFilterList()
@@ -230,7 +195,7 @@ namespace FIVStandard.Core
             if (JSettings.FilterWebm)
                 AddActiveFilter(".webm");
 
-            FilterActiveArray = FilterActiveList.ToArray();
+            JSettings.FilterActiveArray = JSettings.FilterActiveList.ToArray();
 
             if (mainWindow.ProgramLoaded == false) return;//fixes crash
 

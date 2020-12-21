@@ -176,7 +176,7 @@
         </StackPanel>
         <Controls:MetroTabControl
             Focusable="False"
-            IsEnabled="{Binding Settings.ShortcutButtonsOn, Mode=OneWay}"
+            IsEnabled="{Binding Settings.JSettings.ShortcutButtonsOn, Mode=OneWay}"
             IsTabStop="False"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
             SelectionChanged="MetroTabControl_SelectionChanged"
@@ -359,14 +359,14 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         >
                                         <StackPanel
-                                            Width="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
-                                            Height="{Binding Settings.JSettings.ThumbnailSizePlusText, Mode=OneWay}"
+                                            Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
+                                            Height="{Binding Settings.ThumbnailSizePlusText, Mode=OneWay}"
                                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             ToolTip="{Binding ThumbnailName, Mode=OneWay, IsAsync=True}"
                                             >
 
                                             <TextBlock
-                                                Width="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
+                                                Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 FontSize="10"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Text="{Binding ThumbnailName, Mode=OneWay, IsAsync=True}"
@@ -374,16 +374,16 @@
                                                 TextTrimming="CharacterEllipsis"
                                                 />
                                             <Image
-                                                Width="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
-                                                Height="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
+                                                Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
+                                                Height="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 RenderOptions.BitmapScalingMode="NearestNeighbor"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}"
                                                 />
 
                                             <iconPacks:PackIconBoxIcons
-                                                Width="{Binding Settings.JSettings.ThumbnailSizeGifTag, Mode=OneWay}"
-                                                Height="{Binding Settings.JSettings.ThumbnailSizeGifTag, Mode=OneWay}"
+                                                Width="{Binding Settings.ThumbnailSizeGifTag, Mode=OneWay}"
+                                                Height="{Binding Settings.ThumbnailSizeGifTag, Mode=OneWay}"
                                                 Margin="0,-70,0,0"
                                                 Padding="5"
                                                 HorizontalAlignment="Right"
