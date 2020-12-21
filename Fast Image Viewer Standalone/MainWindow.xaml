@@ -494,7 +494,7 @@
                                 ScrubbingEnabled="True"
                                 SpeedRatio="1"
                                 StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
-                                UnloadedBehavior="Manual"
+                                UnloadedBehavior="Close"
                                 Volume="{Binding Settings.MediaVolume, Mode=TwoWay}"
                                 />
                         </utils:ZoomBorder>
