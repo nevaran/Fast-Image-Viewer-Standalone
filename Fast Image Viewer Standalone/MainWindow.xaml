@@ -126,7 +126,7 @@
                 ToolTip="{local:Loc DarkModeOnTooltip,
                                     Mode=OneWay,
                                     IsAsync=True}"
-                Visibility="{Binding Settings.DarkModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
+                Visibility="{Binding Settings.JSettings.DarkModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
             <iconPacks:PackIconBoxIcons
                 Width="15"
@@ -141,7 +141,7 @@
                 ToolTip="{local:Loc StretchOnTooltip,
                                     Mode=OneWay,
                                     IsAsync=True}"
-                Visibility="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
+                Visibility="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
             <iconPacks:PackIconUnicons
                 Width="15"
@@ -156,7 +156,7 @@
                 ToolTip="{local:Loc DownsizeOnTooltip,
                                     Mode=OneWay,
                                     IsAsync=True}"
-                Visibility="{Binding Settings.DownsizeImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
+                Visibility="{Binding Settings.JSettings.DownsizeImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
             <iconPacks:PackIconBoxIcons
                 Width="15"
@@ -171,7 +171,7 @@
                 ToolTip="{local:Loc ThumbnailListOnTooltip,
                                     Mode=OneWay,
                                     IsAsync=True}"
-                Visibility="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
+                Visibility="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
         </StackPanel>
         <Controls:MetroTabControl
@@ -339,7 +339,7 @@
                             SelectedItem="{Binding ImageItem, Mode=TwoWay}"
                             SelectionChanged="ThumbnailList_SelectionChanged"
                             VirtualizingStackPanel.IsVirtualizing="True"
-                            Visibility="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                            Visibility="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                             >
 
                             <ListBox.ItemsPanel>
@@ -359,14 +359,14 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         >
                                         <StackPanel
-                                            Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
-                                            Height="{Binding Settings.ThumbnailSizePlusText, Mode=OneWay}"
+                                            Width="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
+                                            Height="{Binding Settings.JSettings.ThumbnailSizePlusText, Mode=OneWay}"
                                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             ToolTip="{Binding ThumbnailName, Mode=OneWay, IsAsync=True}"
                                             >
 
                                             <TextBlock
-                                                Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
+                                                Width="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
                                                 FontSize="10"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Text="{Binding ThumbnailName, Mode=OneWay, IsAsync=True}"
@@ -374,16 +374,16 @@
                                                 TextTrimming="CharacterEllipsis"
                                                 />
                                             <Image
-                                                Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
-                                                Height="{Binding Settings.ThumbnailSize, Mode=OneWay}"
+                                                Width="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
+                                                Height="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
                                                 RenderOptions.BitmapScalingMode="NearestNeighbor"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}"
                                                 />
 
                                             <iconPacks:PackIconBoxIcons
-                                                Width="{Binding Settings.ThumbnailSizeGifTag, Mode=OneWay}"
-                                                Height="{Binding Settings.ThumbnailSizeGifTag, Mode=OneWay}"
+                                                Width="{Binding Settings.JSettings.ThumbnailSizeGifTag, Mode=OneWay}"
+                                                Height="{Binding Settings.JSettings.ThumbnailSizeGifTag, Mode=OneWay}"
                                                 Margin="0,-70,0,0"
                                                 Padding="5"
                                                 HorizontalAlignment="Right"
@@ -445,7 +445,7 @@
                                 x:Name="VolumeIcon"
                                 Foreground="{DynamicResource MahApps.Brushes.Accent}"
                                 IsTabStop="False"
-                                Kind="{Binding Settings.VolumeIcon, Mode=OneWay}"
+                                Kind="{Binding Settings.JSettings.VolumeIcon, Mode=OneWay}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                         </Button>
@@ -468,7 +468,7 @@
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             SmallChange="0.01"
                             Visibility="Hidden"
-                            Value="{Binding Settings.MediaVolume, Mode=TwoWay}"
+                            Value="{Binding Settings.JSettings.MediaVolume, Mode=TwoWay}"
                             >
                             <i:Interaction.Behaviors>
                                 <core:FreeSlideBehavior />
@@ -486,16 +486,16 @@
                             >
                             <ffme:MediaElement
                                 x:Name="MediaView"
-                                IsMuted="{Binding Settings.MediaMuted, Mode=TwoWay}"
+                                IsMuted="{Binding Settings.JSettings.MediaMuted, Mode=TwoWay}"
                                 LoadedBehavior="Play"
                                 LoopingBehavior="Play"
                                 MediaOpened="MediaView_MediaOpened"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ScrubbingEnabled="True"
                                 SpeedRatio="1"
-                                StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
+                                StretchDirection="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
                                 UnloadedBehavior="Close"
-                                Volume="{Binding Settings.MediaVolume, Mode=TwoWay}"
+                                Volume="{Binding Settings.JSettings.MediaVolume, Mode=TwoWay}"
                                 />
                         </utils:ZoomBorder>
 
@@ -513,7 +513,7 @@
                                 RenderOptions.BitmapScalingMode="Fant"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Source="{Binding ImageSource, Mode=OneWay, IsAsync=True}"
-                                StretchDirection="{Binding Settings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"
+                                StretchDirection="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"
                                 />
                         </utils:ZoomBorder>
                     </Grid>
@@ -612,10 +612,10 @@
                                 Click="OnLanguageClick"
                                 Focusable="False"
                                 IsTabStop="False"
-                                ItemsSource="{Binding Settings.GetLanguageString, Mode=OneTime}"
+                                ItemsSource="{Binding Settings.JSettings.GetLanguageString, Mode=OneTime}"
                                 Orientation="Vertical"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                SelectedIndex="{Binding Settings.ShownLanguageDropIndex, Mode=TwoWay}"
+                                SelectedIndex="{Binding Settings.JSettings.ShownLanguageDropIndex, Mode=TwoWay}"
                                 />
 
                             <!--  Dark Mode Toggle  -->
@@ -628,7 +628,7 @@
                                 Header="{local:Loc DarkMode,
                                                    Mode=OneWay,
                                                    IsAsync=True}"
-                                IsOn="{Binding Settings.DarkModeToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.JSettings.DarkModeToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
                                                        Mode=OneWay,
@@ -666,10 +666,10 @@
                                 Click="OnAccentClick"
                                 Focusable="False"
                                 IsTabStop="False"
-                                ItemsSource="{Binding Settings.ThemeAccents, Mode=OneWay}"
+                                ItemsSource="{Binding Settings.JSettings.ThemeAccents, Mode=OneWay}"
                                 Orientation="Vertical"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                SelectedIndex="{Binding Settings.ThemeAccentDropIndex, Mode=TwoWay}"
+                                SelectedIndex="{Binding Settings.JSettings.ThemeAccentDropIndex, Mode=TwoWay}"
                                 >
                                 <Controls:SplitButton.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
@@ -689,7 +689,7 @@
                                 Header="{local:Loc StretchImage,
                                                    Mode=OneWay,
                                                    IsAsync=True}"
-                                IsOn="{Binding Settings.StretchImageToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.JSettings.StretchImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
                                                        Mode=OneWay,
@@ -713,7 +713,7 @@
                                 Header="{local:Loc DownsizeImage,
                                                    Mode=OneWay,
                                                    IsAsync=True}"
-                                IsOn="{Binding Settings.DownsizeImageToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.JSettings.DownsizeImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
                                                        Mode=OneWay,
@@ -748,7 +748,7 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.ZoomSensitivityString, Mode=OneWay}"
+                                Text="{Binding Settings.JSettings.ZoomSensitivityString, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
@@ -763,7 +763,7 @@
                                 Minimum="0.1"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 TickFrequency="0.05"
-                                Value="{Binding Settings.ZoomSensitivity, Mode=TwoWay}"
+                                Value="{Binding Settings.JSettings.ZoomSensitivity, Mode=TwoWay}"
                                 />
 
                             <!--  Check for Updates at Startup  -->
@@ -776,7 +776,7 @@
                                 Header="{local:Loc CheckForUpdates,
                                                    Mode=OneWay,
                                                    IsAsync=True}"
-                                IsOn="{Binding Settings.CheckForUpdatesStartToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
                                                        Mode=OneWay,
@@ -800,8 +800,8 @@
                                 Header="{local:Loc AutoupdateToggle,
                                                    Mode=OneWay,
                                                    IsAsync=True}"
-                                IsEnabled="{Binding Settings.CheckForUpdatesStartToggle}"
-                                IsOn="{Binding Settings.AutoupdateToggle, Mode=TwoWay}"
+                                IsEnabled="{Binding Settings.JSettings.CheckForUpdatesStartToggle}"
+                                IsOn="{Binding Settings.JSettings.AutoupdateToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
                                                        Mode=OneWay,
@@ -825,7 +825,7 @@
                                 Header="{local:Loc EnableThumbnailList,
                                                    Mode=OneWay,
                                                    IsAsync=True}"
-                                IsOn="{Binding Settings.EnableThumbnailListToggle, Mode=TwoWay}"
+                                IsOn="{Binding Settings.JSettings.EnableThumbnailListToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
                                                        Mode=OneWay,
@@ -860,7 +860,7 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.ThumbnailSize, Mode=OneWay}"
+                                Text="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
@@ -868,7 +868,7 @@
                                 Margin="60,60,-15,0"
                                 VerticalAlignment="Top"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.EnableThumbnailListToggle}"
+                                IsEnabled="{Binding Settings.JSettings.EnableThumbnailListToggle}"
                                 IsSnapToTickEnabled="True"
                                 IsTabStop="False"
                                 LargeChange="5"
@@ -877,7 +877,7 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SmallChange="5"
                                 TickFrequency="5"
-                                Value="{Binding Settings.ThumbnailSize, Mode=TwoWay}"
+                                Value="{Binding Settings.JSettings.ThumbnailSize, Mode=TwoWay}"
                                 />
 
                             <!--  Thumbnail Resolution  -->
@@ -901,7 +901,7 @@
                                 VerticalAlignment="Center"
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.ThumbnailRes, Mode=OneWay}"
+                                Text="{Binding Settings.JSettings.ThumbnailRes, Mode=OneWay}"
                                 TextAlignment="Center"
                                 />
                             <Slider
@@ -909,7 +909,7 @@
                                 Margin="60,60,-15,0"
                                 VerticalAlignment="Top"
                                 Focusable="False"
-                                IsEnabled="{Binding Settings.EnableThumbnailListToggle, Mode=OneWay}"
+                                IsEnabled="{Binding Settings.JSettings.EnableThumbnailListToggle, Mode=OneWay}"
                                 IsSnapToTickEnabled="True"
                                 IsTabStop="False"
                                 LargeChange="5"
@@ -920,7 +920,7 @@
                                 Thumb.DragCompleted="ThumbnailSlider_DragCompleted"
                                 Thumb.DragStarted="ThumbnailSlider_DragStarted"
                                 TickFrequency="5"
-                                Value="{Binding Settings.ThumbnailRes, Mode=TwoWay}"
+                                Value="{Binding Settings.JSettings.ThumbnailRes, Mode=TwoWay}"
                                 />
 
                             <!--  File Type Checkbox  -->
@@ -950,7 +950,7 @@
                                     Margin="0,5,5,0"
                                     Content=".jpg"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterJpg, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterJpg, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -958,7 +958,7 @@
                                     Margin="0,5,5,0"
                                     Content=".jpeg"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterJpeg, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterJpeg, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -966,14 +966,14 @@
                                     Margin="0,5,5,0"
                                     Content=".png"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterPng, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterPng, Mode=TwoWay}"
                                     IsTabStop="False"
                                     />
                                 <CheckBox
                                     Margin="0,5,5,0"
                                     Content=".gif"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterGif, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterGif, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -981,7 +981,7 @@
                                     Margin="0,5,5,0"
                                     Content=".bmp"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterBmp, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterBmp, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -989,7 +989,7 @@
                                     Margin="0,5,5,0"
                                     Content=".tiff"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterTiff, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterTiff, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -997,7 +997,7 @@
                                     Margin="0,5,5,0"
                                     Content=".ico"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterIco, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterIco, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -1005,7 +1005,7 @@
                                     Margin="0,5,5,0"
                                     Content=".svg"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterSvg, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterSvg, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -1013,7 +1013,7 @@
                                     Margin="0,5,5,0"
                                     Content=".webp"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterWebp, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterWebp, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -1021,7 +1021,7 @@
                                     Margin="0,5,5,0"
                                     Content=".webm"
                                     Focusable="False"
-                                    IsChecked="{Binding Settings.FilterWebm, Mode=TwoWay}"
+                                    IsChecked="{Binding Settings.JSettings.FilterWebm, Mode=TwoWay}"
                                     IsTabStop="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
@@ -1100,7 +1100,7 @@
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Background="{Binding Settings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                Background="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -1110,7 +1110,7 @@
                                 Width="2"
                                 Margin="50,40,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{Binding Settings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                Background="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
@@ -1131,7 +1131,7 @@
                                 Margin="10,40,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Background="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Border
@@ -1141,7 +1141,7 @@
                                 Width="2"
                                 Margin="50,40,0,0"
                                 HorizontalAlignment="Left"
-                                Background="{Binding Settings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
 
@@ -1221,11 +1221,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="2"
@@ -1240,7 +1240,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.GoBackwardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1262,11 +1262,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="3"
@@ -1281,7 +1281,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.GoForwardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1303,11 +1303,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="4"
@@ -1322,7 +1322,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.PauseKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1344,11 +1344,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="5"
@@ -1363,7 +1363,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.DeleteKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1385,11 +1385,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="6"
@@ -1404,7 +1404,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.StretchImageKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1426,11 +1426,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="7"
@@ -1445,7 +1445,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.DownsizeImageKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1467,11 +1467,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="8"
@@ -1486,7 +1486,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.ExploreFileKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1508,11 +1508,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.CopyImageToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.CopyImageToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.CopyImageToClipboardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="9"
@@ -1527,7 +1527,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.CopyImageToClipboardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1549,11 +1549,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.CutFileToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.CutFileToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="10"
@@ -1568,7 +1568,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"
@@ -1590,11 +1590,11 @@
                                 Margin="5,0,0,5"
                                 HorizontalAlignment="Left"
                                 Click="OnShortcutClick"
-                                Content="{Binding Settings.ThumbnailListKey, Converter={StaticResource KeyToStringConverter}}"
+                                Content="{Binding Settings.JSettings.ThumbnailListKey, Converter={StaticResource KeyToStringConverter}}"
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.ThumbnailListKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.ThumbnailListKey, Mode=TwoWay}"
                                 />
                             <Button
                                 Grid.Row="11"
@@ -1609,7 +1609,7 @@
                                 Focusable="False"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.CutFileToClipboardKey, Mode=TwoWay}"
+                                Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
                                                     Mode=OneWay,
                                                     IsAsync=True}"

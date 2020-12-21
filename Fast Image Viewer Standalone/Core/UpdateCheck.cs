@@ -251,7 +251,8 @@ namespace FIVStandard.Core
 
                 NotUpdating = true;
 
-                if (mainWindow.Settings.CheckForUpdatesStartToggle && mainWindow.Settings.AutoupdateToggle)
+                if (mainWindow.Settings.JSettings.CheckForUpdatesStartToggle 
+                    && mainWindow.Settings.JSettings.AutoupdateToggle)
                 {
                     await DownloadNewAppVersion();
                 }
@@ -315,7 +316,7 @@ namespace FIVStandard.Core
             NotUpdating = true;
         }
 
-        private async Task GetHttpChangelog()
+        private async Task GetHttpChangelog()//TODO: update to the custom http
         {
             //txt file containing version and update notes
             HttpClient httpClient = new HttpClient();

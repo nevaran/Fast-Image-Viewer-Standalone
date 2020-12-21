@@ -265,9 +265,9 @@ namespace FIVStandard
             AppUpdater = new UpdateCheck(this);
             
             Settings = new SettingsManager(this);
-            SettingsStore.InitSettingsStore(Settings);
-            ThumbnailItemData.Settings = Settings;
-            Settings.Load();
+            SettingsStore.InitSettingsStore(Settings.JSettings);
+            ThumbnailItemData.Settings = Settings.JSettings;
+            //Settings.Load();
 
             //create new watcher events for used directory
             //fsw.Changed += Fsw_Updated;
@@ -284,7 +284,7 @@ namespace FIVStandard
 
         private async void OnAppLoaded(object sender, RoutedEventArgs e)
         {
-            if (Settings.CheckForUpdatesStartToggle)
+            if (Settings.JSettings.CheckForUpdatesStartToggle)
                 _ = AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
             else
                 _ = AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
@@ -822,22 +822,22 @@ namespace FIVStandard
 
         private void OnLanguageClick(object sender, RoutedEventArgs e)
         {
-            if (Settings.ShownLanguageDropIndex >= Settings.ShownLanguage.Count - 1)
-                Settings.ShownLanguageDropIndex = 0;
+            if (Settings.JSettings.ShownLanguageDropIndex >= Settings.ShownLanguage.Count - 1)
+                Settings.JSettings.ShownLanguageDropIndex = 0;
             else
-                Settings.ShownLanguageDropIndex++;
+                Settings.JSettings.ShownLanguageDropIndex++;
 
-            ShownLanguageDrop.SelectedIndex = Settings.ShownLanguageDropIndex;
+            ShownLanguageDrop.SelectedIndex = Settings.JSettings.ShownLanguageDropIndex;
         }
 
         private void OnAccentClick(object sender, RoutedEventArgs e)
         {
-            if (Settings.ThemeAccentDropIndex >= Settings.ThemeAccents.Count - 1)
-                Settings.ThemeAccentDropIndex = 0;
+            if (Settings.JSettings.ThemeAccentDropIndex >= Settings.JSettings.ThemeAccents.Count - 1)
+                Settings.JSettings.ThemeAccentDropIndex = 0;
             else
-                Settings.ThemeAccentDropIndex++;
+                Settings.JSettings.ThemeAccentDropIndex++;
 
-            ThemeAccentDrop.SelectedIndex = Settings.ThemeAccentDropIndex;
+            ThemeAccentDrop.SelectedIndex = Settings.JSettings.ThemeAccentDropIndex;
         }
 
         private async void OnDeleteClick(object sender, RoutedEventArgs e)
@@ -865,8 +865,6 @@ namespace FIVStandard
                 {
                     editingButton.Tag = e.Key;
                     //MessageBox.Show(((int)e.Key).ToString());
-
-                    Settings.UpdateAllKeysProperties();
                 }
 
                 Settings.ShortcutButtonsOn = true;
@@ -876,55 +874,55 @@ namespace FIVStandard
 
             if (IsDeletingFile || Settings.ShortcutButtonsOn == false) return;
 
-            if (e.Key == Settings.GoForwardKey)
+            if (e.Key == Settings.JSettings.GoForwardKey)
             {
                 selectedNew = true;
                 await ChangeImage(1, false);//go forward
             }
-            if (e.Key == Settings.GoBackwardKey)
+            if (e.Key == Settings.JSettings.GoBackwardKey)
             {
                 selectedNew = true;
                 await ChangeImage(-1, false);//go back
             }
 
-            if (e.Key == Settings.PauseKey)
+            if (e.Key == Settings.JSettings.PauseKey)
             {
                 TogglePause();
             }
 
-            if (e.Key == Settings.DeleteKey && ImagesData.Count > 0)
+            if (e.Key == Settings.JSettings.DeleteKey && ImagesData.Count > 0)
             {
                 await DeleteToRecycleAsync(ActivePath);
             }
 
-            if (e.Key == Settings.StretchImageKey)
+            if (e.Key == Settings.JSettings.StretchImageKey)
             {
-                Settings.StretchImageToggle = !Settings.StretchImageToggle;
+                Settings.JSettings.StretchImageToggle = !Settings.JSettings.StretchImageToggle;
             }
 
-            if (e.Key == Settings.DownsizeImageKey)
+            if (e.Key == Settings.JSettings.DownsizeImageKey)
             {
-                Settings.DownsizeImageToggle = !Settings.DownsizeImageToggle;
+                Settings.JSettings.DownsizeImageToggle = !Settings.JSettings.DownsizeImageToggle;
             }
 
-            if (e.Key == Settings.ExploreFileKey)
+            if (e.Key == Settings.JSettings.ExploreFileKey)
             {
                 ExploreFile();
             }
 
-            if(e.Key == Settings.CopyImageToClipboardKey)
+            if(e.Key == Settings.JSettings.CopyImageToClipboardKey)
             {
                 ImageCopyToClipboardCall();
             }
 
-            if(e.Key == Settings.CutFileToClipboardKey)
+            if(e.Key == Settings.JSettings.CutFileToClipboardKey)
             {
                 await FileCutToClipboardCall();
             }
 
-            if(e.Key == Settings.ThumbnailListKey)
+            if(e.Key == Settings.JSettings.ThumbnailListKey)
             {
-                Settings.EnableThumbnailListToggle = !Settings.EnableThumbnailListToggle;
+                Settings.JSettings.EnableThumbnailListToggle = !Settings.JSettings.EnableThumbnailListToggle;
             }
         }
 
@@ -987,8 +985,6 @@ namespace FIVStandard
             editingButton = (Button)sender;
 
             editingButton.Tag = Key.None;//set shortcut to none
-
-            Settings.UpdateAllKeysProperties();
         }
 
         private void OnResetSettingsClick(object sender, RoutedEventArgs e)
@@ -1052,21 +1048,21 @@ namespace FIVStandard
 
         private void MediaVolumeIcon_Click(object sender, RoutedEventArgs e)
         {
-            Settings.MediaMuted = !Settings.MediaMuted;
+            Settings.JSettings.MediaMuted = !Settings.JSettings.MediaMuted;
         }
 
         private void MainFIV_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if(WindowState == WindowState.Normal)
             {
-                Settings.WindowWidth = (int)Width;
-                Settings.WindowHeight = (int)Height;
+                Settings.JSettings.WindowWidth = (int)Width;
+                Settings.JSettings.WindowHeight = (int)Height;
             }
         }
 
         private void MainFIV_StateChanged(object sender, EventArgs e)
         {
-            Settings.WindowState = WindowState;
+            Settings.JSettings.WindowState = WindowState;
         }
 
         private async void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1124,7 +1120,7 @@ namespace FIVStandard
             fsw?.Dispose();
 
             //ClearAllMedia();
-            SettingsManager.Save();
+            Settings.Save();
         }
 
         private readonly DebounceDispatcher ddMouseMove = new DebounceDispatcher();
