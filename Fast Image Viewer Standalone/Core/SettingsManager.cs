@@ -139,7 +139,7 @@ namespace FIVStandard.Core
             {
                 theme = "Light";
             }
-            ThemeManager.Current.ChangeTheme(mainWindow, $"{theme}.{JSettings.ThemeAccents[JSettings.ThemeAccentDropIndex]}");
+            ThemeManager.Current.ChangeTheme(Application.Current, $"{theme}.{JSettings.ThemeAccents[JSettings.ThemeAccentDropIndex]}");
         }
 
         private void OnLanguageChanged()

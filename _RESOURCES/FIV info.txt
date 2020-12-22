@@ -32,8 +32,7 @@ drag from app to other apps(like discord) for sharing
 ***add support to copy to clipboard the current gif/animation frame viewed (example for use in discord)
 ***find a way to clear transparent background in gifs from glitching
 ***add window state save ( maximized, size, position(?) )
-
-(?)switch to json saving of settings
+***switch to json saving of settings
 
 fix installer (inno setup) not associating program with file types fully
 fix installer permission (admin run) on certain folders (or run as admin when user is installing)

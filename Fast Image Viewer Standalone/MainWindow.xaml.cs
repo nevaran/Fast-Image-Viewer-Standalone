@@ -51,7 +51,7 @@ namespace FIVStandard
             }
         }
 
-        public ListCollectionView ImagesDataView { get; }//sorted list - use this
+        public ListCollectionView ImagesDataView { get; private set; }//sorted list - use this
 
         public ObservableCollection<ThumbnailItemData> ImagesData { get; } = new ObservableCollection<ThumbnailItemData>();
 
@@ -221,11 +221,10 @@ namespace FIVStandard
 
         private readonly MagickImageInfo magickImageInfo = new MagickImageInfo();
 
+        #region Unused Unfinished Mutex
         //private readonly Mutex fivMutex;
 
-        public MainWindow()
-        {
-            /*fivMutex = new Mutex(true, "FastImageViewerCoreApplication", out bool aIsNewInstance);
+        /*fivMutex = new Mutex(true, "FastImageViewerCoreApplication", out bool aIsNewInstance);
             if (!aIsNewInstance)
             {
                 if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
@@ -240,7 +239,10 @@ namespace FIVStandard
                 }
                 //fivMutex.ReleaseMutex();
             }*/
+        #endregion
 
+        public MainWindow()
+        {
             StartupPath = AppDomain.CurrentDomain.BaseDirectory;
             //StartupPath = Path.GetDirectoryName(args[0]);
 
@@ -250,30 +252,29 @@ namespace FIVStandard
             Library.FFmpegLoadModeFlags = FFmpeg.AutoGen.FFmpegLoadMode.MinimumFeatures;
             Library.LoadFFmpeg();
 
-            InitializeComponent();
-            
+            Settings = new SettingsManager(this);
+            SettingsStore.InitSettingsStore(Settings.JSettings);
+            ThumbnailItemData.Settings = Settings.JSettings;
+
             ImagesDataView = CollectionViewSource.GetDefaultView(ImagesData) as ListCollectionView;
             try
             {
                 ImagesDataView.CustomSort = new LogicalComparer();
             }
-            catch
+            catch//in case shlwapi.dll is missing, use a safer but more inaccurate comparer
             {
                 ImagesDataView.CustomSort = new NaturalOrderComparer(false);
             }
 
             AppUpdater = new UpdateCheck(this);
-            
-            Settings = new SettingsManager(this);
-            SettingsStore.InitSettingsStore(Settings.JSettings);
-            ThumbnailItemData.Settings = Settings.JSettings;
-            //Settings.Load();
 
             //create new watcher events for used directory
             //fsw.Changed += Fsw_Updated;
             fsw.Created += Fsw_Created;
             fsw.Deleted += Fsw_Deleted;
             fsw.Renamed += Fsw_Renamed;
+
+            InitializeComponent();
 
             DataContext = this;
 
