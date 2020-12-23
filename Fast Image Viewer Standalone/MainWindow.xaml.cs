@@ -33,7 +33,7 @@ namespace FIVStandard
         private ThumbnailItemData imageItem = null;
 
         /// <summary>
-        /// The class reference to the currently viewed image
+        /// The class is always the currently viewed image
         /// </summary>
         public ThumbnailItemData ImageItem
         {
@@ -51,7 +51,7 @@ namespace FIVStandard
             }
         }
 
-        public ListCollectionView ImagesDataView { get; private set; }//sorted list - use this
+        public ListCollectionView ImagesDataView { get; }//sorted list - use this
 
         public ObservableCollection<ThumbnailItemData> ImagesData { get; } = new ObservableCollection<ThumbnailItemData>();
 
