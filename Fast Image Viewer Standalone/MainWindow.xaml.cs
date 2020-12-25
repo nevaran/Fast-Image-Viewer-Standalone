@@ -154,9 +154,9 @@ namespace FIVStandard
 
         private Button editingButton = null;//used for editing shortcuts
 
-        private bool isDeletingFile;
-
         public bool ProgramLoaded = false;
+
+        private bool isDeletingFile;
 
         public bool IsDeletingFile
         {
@@ -526,7 +526,8 @@ namespace FIVStandard
 
         private async Task CloseMedia()
         {
-            await MediaView.Close();
+            if(!MediaView.IsClosing)
+                await MediaView.Close();
         }
 
         private void TogglePause()
