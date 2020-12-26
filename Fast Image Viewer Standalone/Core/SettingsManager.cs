@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -147,11 +148,12 @@ namespace FIVStandard.Core
             Localization.TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo(JSettings.ShownLanguage[JSettings.ShownLanguageDropIndex].tag);
         }
 
-        private void OnDownsizeSwitch()
+        private async Task OnDownsizeSwitch()
         {
             if (mainWindow.ImagesData.Count > 0 && !mainWindow.ImageItem.IsAnimated)
             {
-                mainWindow.ImageSource = Tools.LoadImage(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight);
+                //mainWindow.ImageSource = await Tools.LoadImage(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight, mainWindow);
+                await mainWindow.ChangeImage(0, false, false);
             }
         }
 
@@ -205,7 +207,7 @@ namespace FIVStandard.Core
         /// <summary>
         /// Use this if there is any method needing to be called in this class when a property from the SettingsJson is changed
         /// </summary>
-        private void SettingsJson_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void SettingsJson_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -219,7 +221,7 @@ namespace FIVStandard.Core
                     OnAccentChanged();
                     break;
                 case nameof(JSettings.DownsizeImageToggle):
-                    OnDownsizeSwitch();
+                    await OnDownsizeSwitch();
                     break;
                 case nameof(JSettings.ThumbnailRes):
                     OnThumbnailResChanged();

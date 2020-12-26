@@ -10,6 +10,7 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:FIVStandard.Localization"
     xmlns:utils="clr-namespace:FIVStandard.Utils"
+    xmlns:view="clr-namespace:FIVStandard.View"
     x:Name="MainFIV"
     Title="{Binding TitleInformation, Mode=OneWay, IsAsync=True}"
     Width="800"
@@ -518,6 +519,14 @@
                                 StretchDirection="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"
                                 />
                         </utils:ZoomBorder>
+
+                        <view:LoadingSpinner
+                            Grid.Column="1"
+                            IsHitTestVisible="False"
+                            IsTabStop="False"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                            />
                     </Grid>
                 </Grid>
             </Controls:MetroTabItem>

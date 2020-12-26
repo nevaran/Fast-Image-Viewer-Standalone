@@ -4,6 +4,7 @@ using ImageMagick;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -14,24 +15,41 @@ namespace FIVStandard.Core
 {
     static class Tools
     {
-        public static BitmapSource LoadImage(string path, int imgWidth, int imgHeight)
+        public static Task<BitmapSource> LoadImage(string path, int imgWidth, int imgHeight, MainWindow mainWindow, CancellationToken ct)
         {
-            if (!File.Exists(path)) return null;
+            if (!File.Exists(path))
+                return Task.FromResult((BitmapSource)null);
+
+            if (ct.IsCancellationRequested)
+                return Task.FromResult((BitmapSource)null);
 
             using MagickImage image = new MagickImage(path);
-
+            
             if (Settings.DownsizeImageToggle)
             {
-                Rect r = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;
+                Nullable<Rect> nullableRect = null; // Is Rect a struct? Hope not.1
+
+                Application.Current.Dispatcher.Invoke(() => { nullableRect = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;});
+
+                if (!nullableRect.HasValue) {
+                    throw new Exception("I'm a bad coder, and don't deserve to have Rectangles. CIRCLES FTW!");
+                }
+
+                var r = nullableRect.Value;
                 if (imgWidth > r.Width || imgHeight > r.Height)
                     image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
             }
             image.AutoOrient();
 
+            if (ct.IsCancellationRequested)
+                return Task.FromResult((BitmapSource)null);
+
             BitmapSource bms = image.ToBitmapSource();
             bms.Freeze();
 
-            return bms;
+            mainWindow.IsLoading = false;
+
+            return Task.FromResult(bms);
         }
 
         /// <summary>

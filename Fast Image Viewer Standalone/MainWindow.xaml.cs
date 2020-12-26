@@ -26,6 +26,8 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Unosquare.FFME;
 
+#pragma warning disable CA1416
+
 namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
@@ -155,6 +157,21 @@ namespace FIVStandard
         private Button editingButton = null;//used for editing shortcuts
 
         public bool ProgramLoaded = false;
+
+        private bool isLoading = false;
+
+        public bool IsLoading
+        {
+            get
+            {
+                return isLoading;
+            }
+            set
+            {
+                isLoading = value;
+                OnPropertyChanged();
+            }
+        }
 
         private bool isDeletingFile;
 
@@ -446,7 +463,7 @@ namespace FIVStandard
 
             FindIndexInFiles(activeFile);
 
-            await NewUri(path);
+            await NewUri(path, true);
         }
 
         /// <summary>
@@ -522,6 +539,8 @@ namespace FIVStandard
         private async Task OpenMedia(Uri uri)
         {
             await MediaView.Open(uri);
+
+            IsLoading = false;
         }
 
         private async Task CloseMedia()
@@ -547,7 +566,7 @@ namespace FIVStandard
             }
         }
 
-        private async Task ChangeImage(int jump, bool moveToIndex)
+        public async Task ChangeImage(int jump, bool moveToIndex, bool resetZoom = true)
         {
             if (ImagesData.Count == 0)//no more images in the folder - go back to default null
             {
@@ -576,16 +595,20 @@ namespace FIVStandard
             ActiveFile = ImageItem.ThumbnailName;
             ActivePath = Path.Combine(ActiveFolder, activeFile);
 
-            await NewUri(ActivePath);
+            await NewUri(ActivePath, resetZoom);
         }
 
-        private async Task NewUri(string path)
+        CancellationTokenSource loadImageTokenSource = new CancellationTokenSource();
+
+        private async Task NewUri(string path, bool resetZoom)
         {
             if (!Tools.IsOfType(path, Settings.JSettings.FilterActiveArray))
             {
                 await ChangeImage(0, false);
                 return;
             }
+
+            IsLoading = true;
 
             if (ImageItem.IsAnimated)
             {
@@ -610,10 +633,20 @@ namespace FIVStandard
                 ImageSource = null;
                 await OpenMedia(uri);
 
-                borderMed.Reset();
+                if(resetZoom)
+                    borderMed.Reset();
             }
             else
             {
+                if (loadImageTokenSource != null)
+                {
+                    loadImageTokenSource.Cancel();
+                    loadImageTokenSource.Dispose();
+                }
+
+                loadImageTokenSource = new CancellationTokenSource();
+                var ctLoadImage = loadImageTokenSource.Token;
+
                 borderImg.Visibility = Visibility.Visible;
                 borderMed.Visibility = Visibility.Hidden;
 
@@ -625,9 +658,25 @@ namespace FIVStandard
                 }
 
                 await CloseMedia();
-                ImageSource = Tools.LoadImage(path, ImgWidth, ImgHeight);
 
-                borderImg.Reset();
+                // check to see if the token has been cancelled
+                /*if (ctLoadImage.IsCancellationRequested) {
+                    // handle early exit.
+                }*/
+
+                // load the image
+                ImageSource = null;
+                BitmapSource bitmapSource = await Task.Run(() => Tools.LoadImage(path, ImgWidth, ImgHeight, this, ctLoadImage));
+
+                // repeat the token check
+                if (!ctLoadImage.IsCancellationRequested)
+                {
+                    // apply the image
+                    ImageSource = bitmapSource;
+
+                    if(resetZoom)
+                        borderImg.Reset();
+                }
             }
 
             selectedNew = false;

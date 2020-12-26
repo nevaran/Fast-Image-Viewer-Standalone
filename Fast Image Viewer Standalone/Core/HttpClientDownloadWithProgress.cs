@@ -97,6 +97,7 @@ namespace FIVStandard.Core
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             _httpClient?.Dispose();
         }
     }
