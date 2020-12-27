@@ -154,7 +154,7 @@ namespace FIVStandard
 
         private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.TIFF;*.ICO;*.SVG;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
 
-        private Button editingButton = null;//used for editing shortcuts
+        private Button editingButton = null;//current button control being edited - used for editing shortcuts
 
         public bool ProgramLoaded = false;
 
@@ -905,8 +905,17 @@ namespace FIVStandard
 
         private async void OnKeyDown(object sender, KeyEventArgs e)
         {
-            //IInputElement focusedControl = FocusManager.GetFocusedElement(this);
-            //MessageBox.Show(focusedControl.ToString());
+            /*if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                ProcessStartInfo pinfo = new ProcessStartInfo
+                {
+                    FileName = Path.Combine(StartupPath, "Fast Image Viewer.exe"),
+                    Arguments = "/SILENT /CLOSEAPPLICATIONS",//TODO add working /RESTARTAPPLICATIONS /LOG
+                    Verb = "runas",
+                    UseShellExecute = true,
+                };
+                Process.Start(pinfo);
+            }*/
 
             if (Settings.JSettings.ShortcutButtonsOn == false)
             {

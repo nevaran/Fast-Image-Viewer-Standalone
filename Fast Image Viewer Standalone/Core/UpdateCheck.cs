@@ -293,9 +293,14 @@ namespace FIVStandard.Core
             {
                 //TODO: add valid argument of opened file/image
                 //RegisterApplicationRestart("", 2);
-
-                //TODO check if it installs where the already installed one is
-                Process.Start(Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"), "/SILENT /CLOSEAPPLICATIONS");//TODO add working /RESTARTAPPLICATIONS /LOG
+                ProcessStartInfo pinfo = new ProcessStartInfo
+                {
+                    FileName = Path.Combine(mainWindow.StartupPath, "FIV Setup.exe"),
+                    Arguments = "/SILENT /CLOSEAPPLICATIONS",//TODO add working /RESTARTAPPLICATIONS /LOG
+                    //Verb = "runas",
+                    //UseShellExecute = true,
+                };
+                Process.Start(pinfo);
 
                 /*var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
                 foreach (Process proc in processes)
@@ -316,7 +321,7 @@ namespace FIVStandard.Core
             NotUpdating = true;
         }
 
-        private async Task GetHttpChangelog()//TODO: update to the custom http
+        private async Task GetHttpChangelog()
         {
             //txt file containing version and update notes
             HttpClient httpClient = new HttpClient();
