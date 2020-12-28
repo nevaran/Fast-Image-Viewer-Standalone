@@ -335,7 +335,7 @@ namespace FIVStandard
 
                 _ = Task.Run(() => Tools.LoadSingleThumbnailData(tt, e.FullPath, false));
 
-                if(ImageItem == null)
+                if(ImageItem is null)
                 {
                     selectedNew = true;
                     await ChangeImage(0, false);
@@ -369,7 +369,7 @@ namespace FIVStandard
 
                 if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray) && !dirty) return;//dont send a message if its not one of our files
 
-                if(ImageItem == null || ImageItem.ThumbnailName == e.Name)
+                if(ImageItem is null || ImageItem.ThumbnailName == e.Name)
                 {
                     selectedNew = true;
                     await ChangeImage(0, false);
@@ -631,14 +631,15 @@ namespace FIVStandard
                 Uri uri = new Uri(path, UriKind.Absolute);
 
                 ImageSource = null;
+                await CloseMedia();
                 await OpenMedia(uri);
 
-                if(resetZoom)
+                if (resetZoom)
                     borderMed.Reset();
             }
             else
             {
-                if (loadImageTokenSource != null)
+                if (loadImageTokenSource is not null)
                 {
                     loadImageTokenSource.Cancel();
                     loadImageTokenSource.Dispose();
@@ -1174,9 +1175,9 @@ namespace FIVStandard
 
             notificationManager?.CloseAllAsync();
 
-            fsw.Created -= Fsw_Created;
-            fsw.Deleted -= Fsw_Deleted;
-            fsw.Renamed -= Fsw_Renamed;
+            //fsw.Created -= Fsw_Created;
+            //fsw.Deleted -= Fsw_Deleted;
+            //fsw.Renamed -= Fsw_Renamed;
             fsw?.Dispose();
 
             //ClearAllMedia();

@@ -77,7 +77,7 @@ namespace FIVStandard.Core
 
         private void TriggerProgressChanged(long? totalDownloadSize, long totalBytesRead)
         {
-            if (ProgressChanged == null)
+            if (ProgressChanged is null)
                 return;
 
             double? progressPercentage = null;
@@ -89,7 +89,7 @@ namespace FIVStandard.Core
 
         private void TriggerDownloadComplete()
         {
-            if (DownloadComplete == null)
+            if (DownloadComplete is null)
                 return;
 
             DownloadComplete();
