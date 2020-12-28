@@ -26,6 +26,6 @@ using System.Windows;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: AssemblyVersion("0.5.3.0")]//Version for updater
+[assembly: AssemblyVersion("0.5.4.0")]//Version for updater
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: NeutralResourcesLanguage("en")]
