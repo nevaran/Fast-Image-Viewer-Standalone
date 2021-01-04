@@ -149,29 +149,6 @@ namespace FIVStandard
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private OpenFileDialog _openFileWindow;
-
-        public OpenFileDialog OpenFileWindow
-        {
-            get
-            {
-                if(_openFileWindow == null)
-                {
-                    _openFileWindow = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.TIFF;*.ICO;*.SVG;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
-#if DEBUG
-                    Debug.WriteLine("FILE DIALOG CREATED");
-#endif
-                }
-
-                return _openFileWindow;
-            }
-            set
-            {
-                _openFileWindow = value;
-            }
-        }
-
-
         private Button editingButton = null;//current button control being edited - used for editing shortcuts
 
         public bool ProgramLoaded = false;
@@ -251,6 +228,28 @@ namespace FIVStandard
             , IncludeSubdirectories = false
         };
 
+        private OpenFileDialog _openFileWindow;
+
+        public OpenFileDialog OpenFileWindow
+        {
+            get
+            {
+                if (_openFileWindow == null)
+                {
+                    _openFileWindow = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.TIFF;*.ICO;*.SVG;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
+#if DEBUG
+                    Debug.WriteLine("FILE DIALOG CREATED");
+#endif
+                }
+
+                return _openFileWindow;
+            }
+            set
+            {
+                _openFileWindow = value;
+            }
+        }
+
         private NotificationManager _notificationManager;
 
         public NotificationManager NotificationManager
@@ -319,9 +318,6 @@ namespace FIVStandard
 
         public MainWindow()
         {
-            //StartupPath = Path.GetDirectoryName(args[0]);
-            //Library.LoadFFmpeg();
-
             Settings = new SettingsManager(this);
             SettingsStore.InitSettingsStore(Settings.JSettings);
             ThumbnailItemData.Settings = Settings.JSettings;
@@ -712,13 +708,12 @@ namespace FIVStandard
                     ImgHeight = ImageItem.ImageHeight;
                 }
 
-                await CloseMedia();
-
                 // check to see if the token has been cancelled
                 /*if (ctLoadImage.IsCancellationRequested) {
                     // handle early exit.
                 }*/
 
+                await CloseMedia();
                 // load the image
                 ImageSource = null;
                 BitmapSource bitmapSource = await Task.Run(() => Tools.LoadImage(path, ImgWidth, ImgHeight, this, ctLoadImage));

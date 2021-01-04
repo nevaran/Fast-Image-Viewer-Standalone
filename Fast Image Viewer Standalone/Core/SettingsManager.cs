@@ -1,5 +1,6 @@
 ﻿using ControlzEx.Theming;
 using FIVStandard.Model;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -25,7 +26,7 @@ namespace FIVStandard.Core
         {
             mainWindow = mw;
 
-            settingsPath = @$"{App.StartupPath}\settings.json";
+            settingsPath = @$"{AppDomain.CurrentDomain.BaseDirectory}\settings.json";
 
             Load();
 

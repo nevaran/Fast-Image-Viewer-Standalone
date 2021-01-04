@@ -265,7 +265,7 @@ namespace FIVStandard.Core
             {
                 UpdaterMessage = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.UpdatingInfo), Localization.TranslationSource.Instance.CurrentCulture);
 
-                using var client = new HttpClientDownloadWithProgress(setupURL, Path.Combine(App.StartupPath, "FIV Setup.exe"));
+                using var client = new HttpClientDownloadWithProgress(setupURL, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FIV Setup.exe"));
                 client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
                 {
                     string info = $"{totalBytesDownloaded / 1048576}/{(totalFileSize / 1048576)}MB\n{progressPercentage}%";
@@ -289,13 +289,13 @@ namespace FIVStandard.Core
             UpdaterMessage = $"{Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DownloadFinsihedInfo), Localization.TranslationSource.Instance.CurrentCulture)}!";
             //Thread.Sleep(500);
 
-            if (File.Exists(Path.Combine(App.StartupPath, "FIV Setup.exe")))
+            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FIV Setup.exe")))
             {
                 //TODO: add valid argument of opened file/image
                 //RegisterApplicationRestart("", 2);
                 ProcessStartInfo pinfo = new ProcessStartInfo
                 {
-                    FileName = Path.Combine(App.StartupPath, "FIV Setup.exe"),
+                    FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FIV Setup.exe"),
                     Arguments = "/SILENT /CLOSEAPPLICATIONS",//TODO add working /RESTARTAPPLICATIONS /LOG
                     //Verb = "runas",
                     //UseShellExecute = true,
