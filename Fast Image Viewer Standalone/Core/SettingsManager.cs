@@ -25,7 +25,7 @@ namespace FIVStandard.Core
         {
             mainWindow = mw;
 
-            settingsPath = @$"{mainWindow.StartupPath}\settings.json";
+            settingsPath = @$"{App.StartupPath}\settings.json";
 
             Load();
 

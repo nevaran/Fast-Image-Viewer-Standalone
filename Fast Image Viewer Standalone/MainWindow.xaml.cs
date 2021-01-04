@@ -24,7 +24,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Unosquare.FFME;
 
 #pragma warning disable CA1416
 
@@ -145,14 +144,33 @@ namespace FIVStandard
 
         public SettingsManager Settings { get; set; }
 
-        public string StartupPath;//program startup path
-
         private bool selectedNew = false;//used to avoid ListBox event to re-select the image, doubling the loading time
         private bool dragStarted = false;//used for the ThumbnailSlider option to avoid glitching out
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private readonly OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.TIFF;*.ICO;*.SVG;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
+        private OpenFileDialog _openFileWindow;
+
+        public OpenFileDialog OpenFileWindow
+        {
+            get
+            {
+                if(_openFileWindow == null)
+                {
+                    _openFileWindow = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.TIFF;*.ICO;*.SVG;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
+#if DEBUG
+                    Debug.WriteLine("FILE DIALOG CREATED");
+#endif
+                }
+
+                return _openFileWindow;
+            }
+            set
+            {
+                _openFileWindow = value;
+            }
+        }
+
 
         private Button editingButton = null;//current button control being edited - used for editing shortcuts
 
@@ -233,8 +251,49 @@ namespace FIVStandard
             , IncludeSubdirectories = false
         };
 
-        public NotificationManager notificationManager = new NotificationManager(Notifications.Wpf.Core.Controls.NotificationPosition.BottomRight);
-        public readonly NotificationContent content = new NotificationContent();
+        private NotificationManager _notificationManager;
+
+        public NotificationManager NotificationManager
+        {
+            get
+            {
+                if(_notificationManager == null)
+                {
+                    _notificationManager = new NotificationManager(Notifications.Wpf.Core.Controls.NotificationPosition.BottomRight);
+#if DEBUG
+                    Debug.WriteLine("NOTIF MANAGER CREATED");
+#endif
+                }
+
+                return _notificationManager;
+            }
+            set
+            {
+                _notificationManager = value;
+            }
+        }
+
+        private NotificationContent _notificationContent;
+
+        public NotificationContent NotificationContent
+        {
+            get
+            {
+                if(_notificationContent == null)
+                {
+                    _notificationContent = new NotificationContent();
+#if DEBUG
+                    Debug.WriteLine("NOTIF CONTENT CREATED");
+#endif
+                }
+
+                return _notificationContent;
+            }
+            set
+            {
+                _notificationContent = value;
+            }
+        }
 
         private readonly MagickImageInfo magickImageInfo = new MagickImageInfo();
 
@@ -260,14 +319,8 @@ namespace FIVStandard
 
         public MainWindow()
         {
-            StartupPath = AppDomain.CurrentDomain.BaseDirectory;
             //StartupPath = Path.GetDirectoryName(args[0]);
-
-            MagickAnyCPU.CacheDirectory = StartupPath;
-
-            Library.FFmpegDirectory = @$"{StartupPath}\ffmpeg\bin";
-            Library.FFmpegLoadModeFlags = FFmpeg.AutoGen.FFmpegLoadMode.MinimumFeatures;
-            Library.LoadFFmpeg();
+            //Library.LoadFFmpeg();
 
             Settings = new SettingsManager(this);
             SettingsStore.InitSettingsStore(Settings.JSettings);
@@ -344,10 +397,10 @@ namespace FIVStandard
 
                 OnPropertyChanged("TitleInformation");//update title information
 
-                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CreatedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
-                content.Message = e.Name;
-                content.Type = NotificationType.Information;
-                _ = notificationManager.ShowAsync(content);
+                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CreatedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                NotificationContent.Message = e.Name;
+                NotificationContent.Type = NotificationType.Information;
+                _ = NotificationManager.ShowAsync(NotificationContent);
             });
         }
 
@@ -378,10 +431,10 @@ namespace FIVStandard
 
                 OnPropertyChanged("TitleInformation");//update title information
 
-                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
-                content.Message = e.Name;
-                content.Type = NotificationType.Information;
-                _ = notificationManager.ShowAsync(content);
+                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                NotificationContent.Message = e.Name;
+                NotificationContent.Type = NotificationType.Information;
+                _ = NotificationManager.ShowAsync(NotificationContent);
             });
         }
 
@@ -421,10 +474,10 @@ namespace FIVStandard
                                     await ChangeImage(0, false);
                                 }
 
-                                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
-                                content.Message = e.Name;
-                                content.Type = NotificationType.Information;
-                                _ = notificationManager.ShowAsync(content);
+                                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                                NotificationContent.Message = e.Name;
+                                NotificationContent.Type = NotificationType.Information;
+                                _ = NotificationManager.ShowAsync(NotificationContent);
                             }
                             else//file has been renamed to something with a non-valid extension - remove it from the list
                             {
@@ -749,10 +802,10 @@ namespace FIVStandard
             }
             else
             {
-                content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.FileNotFoundMsg), Localization.TranslationSource.Instance.CurrentCulture);
-                content.Message = path;
-                content.Type = NotificationType.Warning;
-                _ = notificationManager.ShowAsync(content);
+                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.FileNotFoundMsg), Localization.TranslationSource.Instance.CurrentCulture);
+                NotificationContent.Message = path;
+                NotificationContent.Type = NotificationType.Warning;
+                _ = NotificationManager.ShowAsync(NotificationContent);
             }
 
             IsDeletingFile = false;
@@ -776,10 +829,10 @@ namespace FIVStandard
                 ToClipboard.ImageCopyToClipboard(ImageSource);
             }
 
-            content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CopiedToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
-            content.Message = ActiveFile;
-            content.Type = NotificationType.Success;
-            _ = notificationManager.ShowAsync(content);
+            NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CopiedToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
+            NotificationContent.Message = ActiveFile;
+            NotificationContent.Type = NotificationType.Success;
+            _ = NotificationManager.ShowAsync(NotificationContent);
         }
 
         /*private void FileCopyToClipboardCall()
@@ -799,10 +852,10 @@ namespace FIVStandard
 
             ToClipboard.FileCutToClipBoard(ActivePath);
 
-            content.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
-            content.Message = ActiveFile;
-            content.Type = NotificationType.Success;
-            _ = notificationManager.ShowAsync(content);
+            NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CutToClipboard), Localization.TranslationSource.Instance.CurrentCulture);
+            NotificationContent.Message = ActiveFile;
+            NotificationContent.Type = NotificationType.Success;
+            _ = NotificationManager.ShowAsync(NotificationContent);
         }
 
         private void OpenHyperlink(string url)
@@ -816,18 +869,18 @@ namespace FIVStandard
             {
                 if (noBrowser.ErrorCode == -2147467259)
                 {
-                    content.Title = "Hyperlink Error";
-                    content.Message = noBrowser.Message;
-                    content.Type = NotificationType.Error;
-                    notificationManager.ShowAsync(content);
+                    NotificationContent.Title = "Hyperlink Error";
+                    NotificationContent.Message = noBrowser.Message;
+                    NotificationContent.Type = NotificationType.Error;
+                    NotificationManager.ShowAsync(NotificationContent);
                 }
             }
             catch (Exception other)
             {
-                content.Title = "Hyperlink Error";
-                content.Message = other.Message;
-                content.Type = NotificationType.Error;
-                notificationManager.ShowAsync(content);
+                NotificationContent.Title = "Hyperlink Error";
+                NotificationContent.Message = other.Message;
+                NotificationContent.Type = NotificationType.Error;
+                NotificationManager.ShowAsync(NotificationContent);
             }
         }
 
@@ -911,7 +964,7 @@ namespace FIVStandard
             {
                 ProcessStartInfo pinfo = new ProcessStartInfo
                 {
-                    FileName = Path.Combine(StartupPath, "Fast Image Viewer.exe"),
+                    FileName = Path.Combine(App.StartupPath, "Fast Image Viewer.exe"),
                     Arguments = "/SILENT /CLOSEAPPLICATIONS",//TODO add working /RESTARTAPPLICATIONS /LOG
                     Verb = "runas",
                     UseShellExecute = true,
@@ -1024,10 +1077,10 @@ namespace FIVStandard
         {
             if (isDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
-            Nullable<bool> result = openFileDialog.ShowDialog();
+            Nullable<bool> result = OpenFileWindow.ShowDialog();
             if (result == true)
             {
-                await OpenNewFile(openFileDialog.FileName);
+                await OpenNewFile(OpenFileWindow.FileName);
             }
             /*else
             {
@@ -1174,7 +1227,7 @@ namespace FIVStandard
         {
             //fivMutex?.Close();
 
-            notificationManager?.CloseAllAsync();
+            NotificationManager?.CloseAllAsync();
 
             //fsw.Created -= Fsw_Created;
             //fsw.Deleted -= Fsw_Deleted;
