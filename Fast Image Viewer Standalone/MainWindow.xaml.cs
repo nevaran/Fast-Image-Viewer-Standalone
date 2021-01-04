@@ -1191,7 +1191,7 @@ namespace FIVStandard
         {
             //MediaView.Cursor = null;//TODO: make cursor change in ffme control work
             PictureView.Cursor = null;
-            ddMouseMove.Debounce(1000, DefaultMouseLook);
+            ddMouseMove.Debounce(3000, DefaultMouseLook);
         }
 
         private void DefaultMouseLook()

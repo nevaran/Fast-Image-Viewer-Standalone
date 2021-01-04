@@ -8,7 +8,6 @@ namespace FIVStandard.Converters
 {
     class BoolFromAccentToGrayConverter : IValueConverter
     {
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Color c;
