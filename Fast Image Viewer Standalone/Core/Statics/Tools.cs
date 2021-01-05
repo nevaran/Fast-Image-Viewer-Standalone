@@ -17,23 +17,16 @@ namespace FIVStandard.Core
     {
         public static Task<BitmapSource> LoadImage(string path, int imgWidth, int imgHeight, MainWindow mainWindow, CancellationToken ct)
         {
-            if (!File.Exists(path))
-                return Task.FromResult((BitmapSource)null);
-
-            if (ct.IsCancellationRequested)
+            if (!File.Exists(path) || ct.IsCancellationRequested)
                 return Task.FromResult((BitmapSource)null);
 
             using MagickImage image = new MagickImage(path);
             
             if (Settings.DownsizeImageToggle)
             {
-                Nullable<Rect> nullableRect = null; // Is Rect a struct? Hope not.1
+                Nullable<Rect> nullableRect = null;
 
                 Application.Current.Dispatcher.Invoke(() => { nullableRect = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;});
-
-                if (!nullableRect.HasValue) {
-                    throw new Exception("I'm a bad coder, and don't deserve to have Rectangles. CIRCLES FTW!");
-                }
 
                 var r = nullableRect.Value;
                 if (imgWidth > r.Width || imgHeight > r.Height)
