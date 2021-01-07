@@ -241,6 +241,11 @@ namespace FIVStandard.Core
             return "";
         }
 
+        public static string GetAfter(this string s, char c)//returns the striing after a selected char
+        {
+            return s.Substring(s.IndexOf(c) + 1);
+        }
+
         /*public static BitmapImage WriteableBitmapToBitmapImage(WriteableBitmap wbm)
         {
             BitmapImage bmImage = new BitmapImage();

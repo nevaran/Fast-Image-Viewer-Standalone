@@ -214,13 +214,9 @@ namespace FIVStandard
         /// </summary>
         public string ActivePath { get; set; } = "";
 
-        public static string DonationLink
-        {
-            get
-            {
-                return "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url";
-            }
-        }
+        int TabControlSelectedTab = 0;
+
+        public static string DonationLink { get => "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url"; }
 
         private readonly FileSystemWatcher fsw = new FileSystemWatcher()
         {
@@ -229,7 +225,6 @@ namespace FIVStandard
         };
 
         private OpenFileDialog _openFileWindow;
-
         public OpenFileDialog OpenFileWindow
         {
             get
@@ -251,7 +246,6 @@ namespace FIVStandard
         }
 
         private NotificationManager _notificationManager;
-
         public NotificationManager NotificationManager
         {
             get
@@ -273,7 +267,6 @@ namespace FIVStandard
         }
 
         private NotificationContent _notificationContent;
-
         public NotificationContent NotificationContent
         {
             get
@@ -984,25 +977,28 @@ namespace FIVStandard
 
             if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
-            if (e.Key == Settings.JSettings.GoForwardKey)
+            if(TabControlSelectedTab == 0)
             {
-                selectedNew = true;
-                await ChangeImage(1, false);//go forward
-            }
-            if (e.Key == Settings.JSettings.GoBackwardKey)
-            {
-                selectedNew = true;
-                await ChangeImage(-1, false);//go back
-            }
+                if (e.Key == Settings.JSettings.GoForwardKey)
+                {
+                    selectedNew = true;
+                    await ChangeImage(1, false);//go forward
+                }
+                if (e.Key == Settings.JSettings.GoBackwardKey)
+                {
+                    selectedNew = true;
+                    await ChangeImage(-1, false);//go back
+                }
 
-            if (e.Key == Settings.JSettings.PauseKey)
-            {
-                TogglePause();
-            }
+                if (e.Key == Settings.JSettings.PauseKey)
+                {
+                    TogglePause();
+                }
 
-            if (e.Key == Settings.JSettings.DeleteKey && ImagesData.Count > 0)
-            {
-                await DeleteToRecycleAsync(ActivePath);
+                if (e.Key == Settings.JSettings.DeleteKey && ImagesData.Count > 0)
+                {
+                    await DeleteToRecycleAsync(ActivePath);
+                }
             }
 
             if (e.Key == Settings.JSettings.StretchImageKey)
@@ -1178,7 +1174,8 @@ namespace FIVStandard
         private async void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MetroTabControl tc = (MetroTabControl)sender;
-            if(tc.SelectedIndex == 0)
+            TabControlSelectedTab = tc.SelectedIndex;
+            if (TabControlSelectedTab == 0)
             {
                 MediaView?.Play();
             }

@@ -537,6 +537,7 @@
                     </Grid>
                 </Grid>
             </Controls:MetroTabItem>
+
             <!--  Settings Tab  -->
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
@@ -634,7 +635,13 @@
                                 Orientation="Vertical"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SelectedIndex="{Binding Settings.JSettings.ShownLanguageDropIndex, Mode=TwoWay}"
-                                />
+                                >
+                                <Controls:SplitButton.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                    </Style>
+                                </Controls:SplitButton.ItemContainerStyle>
+                            </Controls:SplitButton>
 
                             <!--  Dark Mode Toggle  -->
                             <Controls:ToggleSwitch
@@ -692,6 +699,7 @@
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="BorderBrush" Value="{Binding Converter={StaticResource TextToColorConverter}}" />
                                         <Setter Property="BorderThickness" Value="20,0,0,0" />
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                                     </Style>
                                 </Controls:SplitButton.ItemContainerStyle>
                             </Controls:SplitButton>
@@ -1391,9 +1399,9 @@
                                 Background="{DynamicResource MahApps.Brushes.Accent}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
-
-                            <!--  End Settings Grid  -->
                         </Grid>
+                        <!--  End Settings Grid  -->
+
 
                         <!--  Shortcuts  -->
                         <Grid
@@ -1857,6 +1865,7 @@
 
                 </ScrollViewer>
             </Controls:MetroTabItem>
+
             <!--  About Tab  -->
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
@@ -2052,6 +2061,7 @@
                     </Grid>
                 </ScrollViewer>
             </Controls:MetroTabItem>
+
             <!--  Whats New Tab / Update Notes Tab / Release Notes Tab  -->
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"

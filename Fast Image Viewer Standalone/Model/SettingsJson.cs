@@ -32,7 +32,7 @@ namespace FIVStandard.Model
         }
 
         [JsonIgnore]
-        public string[] ThemeAccents => ControlzEx.Theming.ThemeManager.Current.ColorSchemes.OrderBy(w => w).ToArray();
+        public string[] ThemeAccents { get => ControlzEx.Theming.ThemeManager.Current.ColorSchemes.OrderBy(w => w).ToArray(); }
         //public List<string> ThemeAccents { get; } = new List<string> { 
         //    "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", 
         //    "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", 

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using ControlzEx.Theming;
+using FIVStandard.Core;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -7,71 +11,39 @@ namespace FIVStandard.Converters
 {
     public class TextToColorConverter : IValueConverter
     {
+        private class ThemeItem
+        {
+            public string Name { get; set; }
+            public Color PrimaryAccent { get; set; }
+        }
+
+        private readonly List<ThemeItem> ThemeItemList = new List<ThemeItem>();
+
+        public TextToColorConverter()
+        {
+            ReadOnlyObservableCollection<Theme> ThemeList = ThemeManager.Current.Themes;
+            for (int i = 0; i < ThemeList.Count; i++)
+            {
+                ThemeItemList.Add(new ThemeItem()
+                {
+                    Name = ThemeList[i].Name.GetAfter('.'),
+                    PrimaryAccent = ThemeList[i].PrimaryAccentColor,
+                });
+                //System.Diagnostics.Debug.WriteLine(ThemeItemList[i].Name);
+            }
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var color = (string)value;
-            var c = new Color
+            for (int i = 0; i < ThemeItemList.Count; i++)
             {
-                A = 255
-            };
-            if (color == "Emerald")
-            {
-                c.R = 7;
-                c.G = 117;
-                c.B = 7;
-                SolidColorBrush brush = new SolidColorBrush(c);
+                if (string.Equals(ThemeItemList[i].Name, (string)value))
+                {
+                    return new SolidColorBrush(ThemeItemList[i].PrimaryAccent);
+                }
+            }
 
-                return brush;
-            }
-            else if (color == "Cobalt")
-            {
-                c.R = 7;
-                c.G = 71;
-                c.B = 198;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Amber")
-            {
-                c.R = 199;
-                c.G = 137;
-                c.B = 15;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Steel")
-            {
-                c.R = 87;
-                c.G = 101;
-                c.B = 115;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Mauve")
-            {
-                c.R = 101;
-                c.G = 84;
-                c.B = 117;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else if (color == "Taupe")
-            {
-                c.R = 115;
-                c.G = 104;
-                c.B = 69;
-                SolidColorBrush brush = new SolidColorBrush(c);
-
-                return brush;
-            }
-            else
-            {
-                return (SolidColorBrush)new BrushConverter().ConvertFromString(color);
-            }
+            return null;//something went wrong
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
