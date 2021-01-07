@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 namespace FIVStandard.Core
 {
     public sealed class FreeSlideBehavior : Behavior<Slider>

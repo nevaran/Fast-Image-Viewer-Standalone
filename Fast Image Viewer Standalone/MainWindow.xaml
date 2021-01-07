@@ -105,6 +105,7 @@
     </Controls:MetroWindow.RightWindowCommands>
 
     <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        <!--  Toggled Options Indicator Icons  -->
         <StackPanel
             Height="25"
             HorizontalAlignment="Right"
@@ -174,6 +175,7 @@
                 Visibility="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
         </StackPanel>
+
         <Controls:MetroTabControl
             Focusable="False"
             IsEnabled="{Binding Settings.JSettings.ShortcutButtonsOn, Mode=OneWay}"
@@ -183,6 +185,7 @@
             >
             <!--  KeepVisualTreeInMemoryWhenChangingTabs="True"  -->
 
+            <!--  General Tab  -->
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc General,
@@ -253,6 +256,7 @@
                             />
                     </Border>
 
+                    <!--  Previous Button  -->
                     <Button
                         x:Name="Btn_Prev"
                         Width="60"
@@ -275,6 +279,7 @@
                             />
                     </Button>
 
+                    <!--  Next Button  -->
                     <Button
                         x:Name="Btn_Next"
                         Width="60"
@@ -297,6 +302,7 @@
                             />
                     </Button>
 
+                    <!--  Open File Dialog Button  -->
                     <Button
                         Width="75"
                         Margin="0,10,10,0"
@@ -420,7 +426,7 @@
                             </i:Interaction.Behaviors>
                         </Slider>
 
-                        <!--  Volume Slider Control  -->
+                        <!--  Mute Button Control  -->
                         <Button
                             x:Name="VolumeProgressionIcon"
                             Grid.Row="0"
@@ -449,6 +455,7 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                         </Button>
+                        <!--  Volume Slider Control  -->
                         <Slider
                             x:Name="VolumeProgression"
                             Grid.Row="0"
@@ -519,6 +526,7 @@
                                 />
                         </utils:ZoomBorder>
 
+                        <!--  Loading Spinner  -->
                         <view:LoadingSpinner
                             Grid.Column="1"
                             IsHitTestVisible="False"
@@ -529,13 +537,14 @@
                     </Grid>
                 </Grid>
             </Controls:MetroTabItem>
+            <!--  Settings Tab  -->
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc Settings,
                                    Mode=OneWay,
                                    IsAsync=True}"
                 >
-                <!--  Custom content here  -->
+
                 <ScrollViewer
                     Focusable="False"
                     VerticalScrollBarVisibility="Auto"
@@ -571,7 +580,6 @@
                                     Width="Auto"
                                     SharedSizeGroup="A"
                                     />
-                                <!--<ColumnDefinition Width="Auto" />-->
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
@@ -1849,6 +1857,7 @@
 
                 </ScrollViewer>
             </Controls:MetroTabItem>
+            <!--  About Tab  -->
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc About,
@@ -2043,6 +2052,7 @@
                     </Grid>
                 </ScrollViewer>
             </Controls:MetroTabItem>
+            <!--  Whats New Tab / Update Notes Tab / Release Notes Tab  -->
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc WhatsNew,

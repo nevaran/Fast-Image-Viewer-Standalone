@@ -933,7 +933,7 @@ namespace FIVStandard
 
         private void OnAccentClick(object sender, RoutedEventArgs e)
         {
-            if (Settings.JSettings.ThemeAccentDropIndex >= Settings.JSettings.ThemeAccents.Count - 1)
+            if (Settings.JSettings.ThemeAccentDropIndex >= Settings.JSettings.ThemeAccents.Length - 1)
                 Settings.JSettings.ThemeAccentDropIndex = 0;
             else
                 Settings.JSettings.ThemeAccentDropIndex++;

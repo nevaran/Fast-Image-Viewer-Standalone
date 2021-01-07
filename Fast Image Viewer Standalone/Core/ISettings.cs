@@ -9,7 +9,7 @@ namespace FIVStandard.Core
 
         int ThumbnailRes { get; }
 
-        List<string> ThemeAccents { get; }
+        string[] ThemeAccents { get; }
 
         int ThemeAccentDropIndex { get; }
     }
