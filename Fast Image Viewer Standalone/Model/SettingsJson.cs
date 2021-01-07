@@ -32,7 +32,19 @@ namespace FIVStandard.Model
         }
 
         [JsonIgnore]
-        public List<string> ThemeAccents { get; } = new List<string> { "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
+        public List<string> ThemeAccents
+        {
+            get
+            {
+                List<string> temp = ControlzEx.Theming.ThemeManager.Current.ColorSchemes.ToList();
+                temp.Sort();
+                return temp;
+            }
+        }
+        //public List<string> ThemeAccents { get; } = new List<string> { 
+        //    "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", 
+        //    "Teal", "Cyan", "Cobalt", "Indigo", "Violet", "Pink", "Magenta", 
+        //    "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna" };
 
         [JsonIgnore]
         public List<string> FilterActiveList { get; set; } = new List<string>();//".jpg", ".jpeg", ".png", ".gif", ".bmp", ".ico", ".webp"
@@ -87,7 +99,7 @@ namespace FIVStandard.Model
             }
         }
 
-        private int themeAccentDropIndex = 4;
+        private int themeAccentDropIndex = 13;
 
         public int ThemeAccentDropIndex
         {

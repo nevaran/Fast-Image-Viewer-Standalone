@@ -88,6 +88,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Associate file type with the program.
+        /// </summary>
+        public static string AssociateTypeTooltip {
+            get {
+                return ResourceManager.GetString("AssociateTypeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Autoupdate.
         /// </summary>
         public static string AutoupdateToggle {

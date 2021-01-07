@@ -84,7 +84,6 @@
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         />
                 </StackPanel>
-
             </Button>
             <Button
                 Click="OnCheckUpdateClick"
@@ -679,7 +678,6 @@
                                 IsTabStop="False"
                                 ItemsSource="{Binding Settings.JSettings.ThemeAccents, Mode=OneWay}"
                                 Orientation="Vertical"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SelectedIndex="{Binding Settings.JSettings.ThemeAccentDropIndex, Mode=TwoWay}"
                                 >
                                 <Controls:SplitButton.ItemContainerStyle>
@@ -957,85 +955,304 @@
                                     IsTabStop="False"
                                     IsThreeState="True"
                                     />-->
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".jpg"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterJpg, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".jpeg"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterJpeg, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".png"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterPng, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".gif"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterGif, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".bmp"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterBmp, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".tiff"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterTiff, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".ico"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterIco, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".svg"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterSvg, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".webp"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterWebp, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
-                                <CheckBox
-                                    Margin="0,5,5,0"
-                                    Content=".webm"
-                                    Focusable="False"
-                                    IsChecked="{Binding Settings.JSettings.FilterWebm, Mode=TwoWay}"
-                                    IsTabStop="False"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    />
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".jpg"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterJpg, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".jpg"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".jpeg"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterJpeg, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".jpeg"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".png"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterPng, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".png"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".gif"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterGif, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".gif"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".bmp"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterBmp, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".bmp"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".tiff"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterTiff, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".tiff"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".ico"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterIco, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".ico"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".svg"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterSvg, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".svg"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".webp"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterWebp, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".webp"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox
+                                        Width="60"
+                                        Margin="0,5,5,0"
+                                        HorizontalAlignment="Left"
+                                        Content=".webm"
+                                        Focusable="False"
+                                        IsChecked="{Binding Settings.JSettings.FilterWebm, Mode=TwoWay}"
+                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Button
+                                        Click="OnAssociateFileButton_Click"
+                                        Focusable="False"
+                                        IsTabStop="False"
+                                        Loaded="OnAssociateFileButtonShown"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Tag=".webm"
+                                        ToolTip="{local:Loc AssociateTypeTooltip,
+                                                            Mode=OneWay,
+                                                            IsAsync=True}"
+                                        >
+                                        <iconPacks:PackIconUnicons
+                                            IsTabStop="False"
+                                            Kind="FileExclamation"
+                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                            />
+                                    </Button>
+                                </StackPanel>
                             </StackPanel>
 
                             <!--  TREE BRANCHING LINES  -->

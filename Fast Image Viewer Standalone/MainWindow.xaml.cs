@@ -1218,19 +1218,25 @@ namespace FIVStandard
             OpenHyperlink(e.Uri.OriginalString);
         }
 
-        private void MainFIV_Closing(object sender, CancelEventArgs e)
+        private void OnAssociateFileButton_Click(object sender, RoutedEventArgs e)
         {
-            //fivMutex?.Close();
+            FileAssociations.EnsureAssociationsSet(
+                new FileAssociation
+                {
+                    Extension = (string)(((Button)sender).Tag),
+                    ProgId = "Fast Image Viewer",
+                    FileTypeDescription = "Image viewer for efficient viewing",
+                    ExecutableFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fast Image Viewer.exe")
+                });
 
-            NotificationManager?.CloseAllAsync();
+            bool assoc = FileAssociations.GetAssociation((string)(((Button)sender).Tag));
+            ((Button)sender).Visibility = assoc ? Visibility.Visible : Visibility.Collapsed;
+        }
 
-            //fsw.Created -= Fsw_Created;
-            //fsw.Deleted -= Fsw_Deleted;
-            //fsw.Renamed -= Fsw_Renamed;
-            fsw?.Dispose();
-
-            //ClearAllMedia();
-            Settings.Save();
+        private void OnAssociateFileButtonShown(object sender, RoutedEventArgs e)
+        {
+            bool assoc = FileAssociations.GetAssociation((string)(((Button)sender).Tag));
+            ((Button)sender).Visibility = assoc ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private readonly DebounceDispatcher ddMouseMove = new DebounceDispatcher();
@@ -1249,6 +1255,22 @@ namespace FIVStandard
                 //MediaView.Cursor = Cursors.None;
                 PictureView.Cursor = Cursors.None;
             });
+        }
+
+        private void MainFIV_Closing(object sender, CancelEventArgs e)
+        {
+            //fivMutex?.Close();
+
+            if (_notificationManager is not null)
+                NotificationManager.CloseAllAsync();
+
+            //fsw.Created -= Fsw_Created;
+            //fsw.Deleted -= Fsw_Deleted;
+            //fsw.Renamed -= Fsw_Renamed;
+            fsw?.Dispose();
+
+            //ClearAllMedia();
+            Settings.Save();
         }
         #endregion
 
