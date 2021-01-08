@@ -706,9 +706,20 @@ namespace FIVStandard
                     // handle early exit.
                 }*/
 
+                //Binding imageBinding = BindingOperations.GetBinding(PictureView, Image.SourceProperty);
+                /*BindingOperations.ClearBinding(PictureView, Image.SourceProperty);
+                Binding imageBinding = new Binding();
+                imageBinding.Source = this;
+                imageBinding.Path = new PropertyPath("ImageSource");
+                imageBinding.Mode = BindingMode.OneWay;
+                imageBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                imageBinding.IsAsync = true;
+                BindingOperations.SetBinding(PictureView, Image.SourceProperty, imageBinding);*/
+
                 await CloseMedia();
+
                 // load the image
-                ImageSource = null;
+                //ImageSource = null;
                 BitmapSource bitmapSource = await Task.Run(() => Tools.LoadImage(path, ImgWidth, ImgHeight, this, ctLoadImage));
 
                 // repeat the token check

@@ -77,7 +77,7 @@
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{local:Loc Donate, Mode=OneWay, IsAsync=True}" />
+                    <TextBlock Text="{local:Loc Donate, IsAsync=True}" />
                     <iconPacks:PackIconBoxIcons
                         IsTabStop="False"
                         Kind="LogosPaypal"
@@ -93,7 +93,7 @@
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{local:Loc CheckForUpdates, Mode=OneWay, IsAsync=True}" />
+                    <TextBlock Text="{local:Loc CheckForUpdates, IsAsync=True}" />
                     <iconPacks:PackIconUnicons
                         IsTabStop="False"
                         Kind="Sync"
@@ -125,7 +125,6 @@
                 Kind="SolidMoon"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{local:Loc DarkModeOnTooltip,
-                                    Mode=OneWay,
                                     IsAsync=True}"
                 Visibility="{Binding Settings.JSettings.DarkModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
@@ -140,7 +139,6 @@
                 Kind="RegularExpand"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{local:Loc StretchOnTooltip,
-                                    Mode=OneWay,
                                     IsAsync=True}"
                 Visibility="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
@@ -155,7 +153,6 @@
                 Kind="ImageResizeSquare"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{local:Loc DownsizeOnTooltip,
-                                    Mode=OneWay,
                                     IsAsync=True}"
                 Visibility="{Binding Settings.JSettings.DownsizeImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
@@ -170,7 +167,6 @@
                 Kind="RegularListUl"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{local:Loc ThumbnailListOnTooltip,
-                                    Mode=OneWay,
                                     IsAsync=True}"
                 Visibility="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
                 />
@@ -189,7 +185,6 @@
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc General,
-                                   Mode=OneWay,
                                    IsAsync=True}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
@@ -202,7 +197,6 @@
                                 Click="OnOpenFileLocation"
                                 Focusable="False"
                                 Header="{local:Loc OpenFileLocation,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
@@ -210,7 +204,6 @@
                                 Click="OnCopyToClipboard"
                                 Focusable="False"
                                 Header="{local:Loc CopyImageToClipboard,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
@@ -218,7 +211,6 @@
                                 Click="OnCutToClipboard"
                                 Focusable="False"
                                 Header="{local:Loc CutFileToClipboard,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
@@ -227,7 +219,6 @@
                                 Click="OnDeleteClick"
                                 Focusable="False"
                                 Header="{local:Loc Delete,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
@@ -311,7 +302,6 @@
                         VerticalAlignment="Top"
                         Click="OnOpenBrowseImage"
                         Content="{local:Loc Open,
-                                            Mode=OneWay,
                                             IsAsync=True}"
                         Focusable="False"
                         IsTabStop="False"
@@ -521,7 +511,7 @@
                                 Name="PictureView"
                                 RenderOptions.BitmapScalingMode="Fant"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Source="{Binding ImageSource, Mode=OneWay, IsAsync=True}"
+                                Source="{Binding ImageSource, Mode=OneWay}"
                                 StretchDirection="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"
                                 />
                         </utils:ZoomBorder>
@@ -542,7 +532,6 @@
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc Settings,
-                                   Mode=OneWay,
                                    IsAsync=True}"
                 >
 
@@ -599,7 +588,6 @@
                                 HorizontalAlignment="Left"
                                 Click="OnResetSettingsClick"
                                 Content="{local:Loc ResetSettingsButton,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 Focusable="False"
                                 FontSize="14"
@@ -615,11 +603,9 @@
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc Language,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 TextAlignment="Left"
                                 ToolTip="{local:Loc ShownLanguageInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
                             <Controls:SplitButton
@@ -651,19 +637,15 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{local:Loc DarkMode,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 IsOn="{Binding Settings.JSettings.DarkModeToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
-                                                       Mode=OneWay,
                                                        IsAsync=True}"
                                 OnContent="{local:Loc On,
-                                                      Mode=OneWay,
                                                       IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{local:Loc DarkModeInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -675,11 +657,9 @@
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc ThemeAccent,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 TextAlignment="Left"
                                 ToolTip="{local:Loc ThemeAccentInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
                             <Controls:SplitButton
@@ -712,19 +692,15 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{local:Loc StretchImage,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 IsOn="{Binding Settings.JSettings.StretchImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
-                                                       Mode=OneWay,
                                                        IsAsync=True}"
                                 OnContent="{local:Loc On,
-                                                      Mode=OneWay,
                                                       IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 ToolTip="{local:Loc StretchImageInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -736,19 +712,15 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{local:Loc DownsizeImage,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 IsOn="{Binding Settings.JSettings.DownsizeImageToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
-                                                       Mode=OneWay,
                                                        IsAsync=True}"
                                 OnContent="{local:Loc On,
-                                                      Mode=OneWay,
                                                       IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{local:Loc DownsizeImageInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -760,11 +732,9 @@
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc ZoomSensitivity,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 TextAlignment="Left"
                                 ToolTip="{local:Loc ZoomSensitivityInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
                             <TextBlock
@@ -799,19 +769,15 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{local:Loc CheckForUpdates,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 IsOn="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
-                                                       Mode=OneWay,
                                                        IsAsync=True}"
                                 OnContent="{local:Loc On,
-                                                      Mode=OneWay,
                                                       IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{local:Loc CheckForUpdatesStartToggleInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -823,20 +789,16 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{local:Loc AutoupdateToggle,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 IsEnabled="{Binding Settings.JSettings.CheckForUpdatesStartToggle}"
                                 IsOn="{Binding Settings.JSettings.AutoupdateToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
-                                                       Mode=OneWay,
                                                        IsAsync=True}"
                                 OnContent="{local:Loc On,
-                                                      Mode=OneWay,
                                                       IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{local:Loc AutoupdateToggleInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -848,19 +810,15 @@
                                 ContentDirection="RightToLeft"
                                 Focusable="False"
                                 Header="{local:Loc EnableThumbnailList,
-                                                   Mode=OneWay,
                                                    IsAsync=True}"
                                 IsOn="{Binding Settings.JSettings.EnableThumbnailListToggle, Mode=TwoWay}"
                                 IsTabStop="False"
                                 OffContent="{local:Loc Off,
-                                                       Mode=OneWay,
                                                        IsAsync=True}"
                                 OnContent="{local:Loc On,
-                                                      Mode=OneWay,
                                                       IsAsync=True}"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{local:Loc EnableThumbnailListInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -872,11 +830,9 @@
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc ThumbnailSize,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 TextAlignment="Left"
                                 ToolTip="{local:Loc ThumbnailSizeInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
                             <TextBlock
@@ -913,11 +869,9 @@
                                 FontWeight="DemiBold"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc ThumbnailRes,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 TextAlignment="Left"
                                 ToolTip="{local:Loc ThumbnailResInfo,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
                             <TextBlock
@@ -958,11 +912,9 @@
                                     FontWeight="DemiBold"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc FileType,
-                                                     Mode=OneWay,
                                                      IsAsync=True}"
                                     TextAlignment="Left"
                                     ToolTip="{local:Loc FileTypeInfo,
-                                                        Mode=OneWay,
                                                         IsAsync=True}"
                                     />
                                 <!--<CheckBox
@@ -990,7 +942,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".jpg"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1020,7 +971,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".jpeg"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1049,7 +999,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".png"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1079,7 +1028,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".gif"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1109,7 +1057,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".bmp"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1139,7 +1086,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".tiff"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1169,7 +1115,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".ico"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1199,7 +1144,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".svg"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1229,7 +1173,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".webp"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1259,7 +1202,6 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".webm"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
-                                                            Mode=OneWay,
                                                             IsAsync=True}"
                                         >
                                         <iconPacks:PackIconUnicons
@@ -1445,7 +1387,6 @@
                                 FontSize="30"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc Shortcuts,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
 
@@ -1455,7 +1396,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc PreviousImageShortcut,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1486,7 +1426,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1496,7 +1435,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc NextImageShortcut,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1527,7 +1465,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1537,7 +1474,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc PauseAnimationShortcut,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1568,7 +1504,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1578,7 +1513,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc DeleteImageShortcut,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1609,7 +1543,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1619,7 +1552,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc StretchImageShortcut,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1650,7 +1582,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1660,7 +1591,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc DownsizeImageShortcut,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1691,7 +1621,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1701,7 +1630,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc ExploreImageLocationShortcut,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1732,7 +1660,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1742,7 +1669,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc CopyImageToClipboard,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1773,7 +1699,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1783,7 +1708,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc CutFileToClipboard,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1814,7 +1738,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1824,7 +1747,6 @@
                                 Margin="30,0,0,0"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{local:Loc ShowThumbnailList,
-                                                 Mode=OneWay,
                                                  IsAsync=True}"
                                 />
                             <Button
@@ -1855,7 +1777,6 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
                                 ToolTip="{local:Loc RemoveShortcut,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 />
 
@@ -1870,7 +1791,6 @@
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc About,
-                                   Mode=OneWay,
                                    IsAsync=True}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
@@ -2066,7 +1986,6 @@
             <Controls:MetroTabItem
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc WhatsNew,
-                                   Mode=OneWay,
                                    IsAsync=True}"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
@@ -2109,7 +2028,6 @@
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{local:Loc DownloadLatestTooltip,
-                                                    Mode=OneWay,
                                                     IsAsync=True}"
                                 >
                                 <StackPanel Orientation="Horizontal">
@@ -2117,7 +2035,6 @@
                                         VerticalAlignment="Center"
                                         FontSize="14"
                                         Text="{local:Loc DownloadLatest,
-                                                         Mode=OneWay,
                                                          IsAsync=True}"
                                         />
                                     <iconPacks:PackIconBoxIcons
@@ -2141,7 +2058,6 @@
                                     <Run
                                         FontSize="20"
                                         Text="{local:Loc WhatsNew,
-                                                         Mode=OneWay,
                                                          IsAsync=True}"
                                         />
                                     <Run Text="{Binding AppUpdater.DownloadVersionString, Mode=OneWay, IsAsync=True}" />

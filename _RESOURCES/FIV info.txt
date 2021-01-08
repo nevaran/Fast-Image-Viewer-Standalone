@@ -34,9 +34,8 @@ drag from app to other apps(like discord) for sharing
 ***add window state save ( maximized, size, position(?) )
 ***switch to json saving of settings
 
-HttpClient to HttpClientFactory change
+improve key shortcuts to detect eachother
 
-fix installer (inno setup) not associating program with file types fully
-fix installer permission (admin run) on certain folders (or run as admin when user is installing)
+shortcut keys to support modifiers
 
 -----------------
