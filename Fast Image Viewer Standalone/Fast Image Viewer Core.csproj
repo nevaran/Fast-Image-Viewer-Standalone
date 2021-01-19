@@ -23,8 +23,8 @@
   <ItemGroup>
     <PackageReference Include="FFME.Windows" Version="4.3.340" />
     <PackageReference Include="FFmpeg.AutoGen" Version="4.3.1" />
-    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.22.3" />
-    <PackageReference Include="Magick.NET.SystemWindowsMedia" Version="3.0.3" />
+    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.23.0" />
+    <PackageReference Include="Magick.NET.SystemWindowsMedia" Version="3.0.4" />
     <PackageReference Include="MahApps.Metro" Version="2.4.3" />
     <PackageReference Include="MahApps.Metro.IconPacks.BoxIcons" Version="4.8.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Unicons" Version="4.8.0" />
