@@ -46,69 +46,70 @@ namespace FIVStandard.Core
         }
 
         /// <summary>
-        /// Gets a thumbnail-sized image (if not already set), actual width and actual height of the image and assigns it to the given ThumbnailItemData.
-        /// </summary>
-        public static void GetImageInformation(string path, ThumbnailItemData ImageItem, MagickImageInfo magickInfo)
-        {
-            if (ImageItem.ThumbnailImage is null)
-            {
-                Task.Run(() => LoadSingleThumbnailData(ImageItem, path, false));
-            }
-
-            if (ImageItem.ImageWidth != 0)//if we already have a set width in the item data, use it instead
-            {
-                return;
-            }
-
-            magickInfo.Read(path);
-            ImageItem.ImageWidth = magickInfo.Width;
-            ImageItem.ImageHeight = magickInfo.Height;
-        }
-
-        /// <summary>
         /// Load a single thumbnail image item data to the defined position (via ThumbnailItemData reference).
         /// </summary>
-        /// <param name="tid"> Information of the file, including a thumbnail</param>
         /// <param name="fullPath"> Complete path to the file, including the name and extension</param>
+        /// <param name="tid"> Information of the file, including a thumbnail</param>
         /// <param name="overrideThumbnail"> If true: replace the thumbnail even if there is already one generated</param>
         /// <returns></returns>
-        public static void LoadSingleThumbnailData(ThumbnailItemData tid, string fullPath, bool overrideThumbnail)
+        public static void LoadSingleThumbnailData(string fullPath, ThumbnailItemData tid, bool overrideThumbnail = false)
         {
             if (overrideThumbnail || tid.ThumbnailImage is null)//load thumbnail only if its set for override or is empty
                 LoadThumbnailData(fullPath, tid);
         }
 
-        /// <summary>
-        /// Gets a resized version of the image file, and gets it's original size (wdith and height)
-        /// </summary>
-        /// <param name="path">The full path to the file, including extension</param>
-        /// <param name="tid">Used for saving the image width, and height in the given ThumbnailItemData</param>
-        /// <returns></returns>
-        public static void LoadThumbnailData(string path, ThumbnailItemData tid)
+        private static void LoadThumbnailData(string path, ThumbnailItemData tid)
         {
             if (Path.GetExtension(path) == ".webm" || !File.Exists(path)) return;
 
             try
             {
-                /*var settings = new MagickReadSettings
-                {
-                    Width = Settings.ThumbnailRes
-                };*/
-
-                using MagickImage image = new MagickImage(path/*, settings*/);
+                using MagickImage image = new MagickImage(path);
                 image.AutoOrient();
 
                 image.Thumbnail(Settings.ThumbnailRes, 0);
 
-                tid.ImageWidth = image.BaseWidth;
-                tid.ImageHeight = image.BaseHeight;
                 tid.ThumbnailImage = image.ToBitmapSource();
                 tid.ThumbnailImage.Freeze();
+
+                GetImageInformation(path, tid);
             }
             catch
             {
                 tid.ThumbnailImage = null;
             }
+        }
+
+        /// <summary>
+        /// Gets a thumbnail-sized image (if not already set), actual width and actual height of the image and assigns it to the given ThumbnailItemData,
+        /// and checks if the image is not animated(gif).
+        /// </summary>
+        public static void GetImageInformation(string path, ThumbnailItemData ImageItem)
+        {
+            if (ImageItem.ThumbnailImage is null)
+            {
+                Task.Run(() => LoadSingleThumbnailData(path, ImageItem));
+            }
+
+            if (ImageItem.ImageWidth != 0)//we already have a set width in the item data
+            {
+                return;
+            }
+
+            var collection = MagickImageInfo.ReadCollection(path);
+            if (collection.Count() > 1)//check if the image is not secretly a gif or other animated image magick.net supports detecting
+            {
+                ImageItem.IsAnimated = true;
+            }
+
+            var first = collection.First();
+
+            ImageItem.ImageWidth = first.Width;
+            ImageItem.ImageHeight = first.Height;
+
+            /*magickInfo.Read(path);
+            ImageItem.ImageWidth = magickInfo.Width;
+            ImageItem.ImageHeight = magickInfo.Height;*/
         }
 
         /// <summary>
@@ -243,7 +244,8 @@ namespace FIVStandard.Core
 
         public static string GetAfter(this string s, char c)//returns the striing after a selected char
         {
-            return s.Substring(s.IndexOf(c) + 1);
+            return s[(s.IndexOf(c) + 1)..];
+            //return s.Substring(s.IndexOf(c) + 1);
         }
 
         /*public static BitmapImage WriteableBitmapToBitmapImage(WriteableBitmap wbm)

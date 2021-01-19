@@ -2,7 +2,6 @@
 using FIVStandard.Core;
 using FIVStandard.Utils;
 using FIVStandard.ViewModel;
-using ImageMagick;
 using MahApps.Metro.Controls;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
@@ -287,8 +286,6 @@ namespace FIVStandard
             }
         }
 
-        private readonly MagickImageInfo magickImageInfo = new MagickImageInfo();
-
         #region Unused Unfinished Mutex
         //private readonly Mutex fivMutex;
 
@@ -376,7 +373,7 @@ namespace FIVStandard
                 };
                 ImagesData.Add(tt);
 
-                _ = Task.Run(() => Tools.LoadSingleThumbnailData(tt, e.FullPath, false));
+                _ = Task.Run(() => Tools.LoadSingleThumbnailData(e.FullPath, tt));
 
                 if(ImageItem is null)
                 {
@@ -696,9 +693,14 @@ namespace FIVStandard
 
                 if (ImagesData.Count > 0)
                 {
-                    Tools.GetImageInformation(ActivePath, ImageItem, magickImageInfo);
+                    Tools.GetImageInformation(ActivePath, ImageItem);
                     ImgWidth = ImageItem.ImageWidth;
                     ImgHeight = ImageItem.ImageHeight;
+                }
+                if (ImageItem.IsAnimated)//the image is animated, try to load it via ffm instead
+                {
+                    await NewUri(ActivePath, resetZoom);
+                    return;
                 }
 
                 // check to see if the token has been cancelled
@@ -767,7 +769,7 @@ namespace FIVStandard
 
                     ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
 
-                    Tools.LoadThumbnailData(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
+                    Tools.LoadSingleThumbnailData(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
 
             }, allThumbnailTokenSource.Token);
@@ -1206,7 +1208,7 @@ namespace FIVStandard
             ListBoxItem lbi = sender as ListBoxItem;
             ThumbnailItemData dataItem = (ThumbnailItemData)lbi.Content;
 
-            if (Path.GetExtension(dataItem.ThumbnailName) == ".webm")
+            if (Path.GetExtension(dataItem.ThumbnailName) == ".webm")//load a shell thumbnail if we are dealing with video types
             {
                 try
                 {
@@ -1218,7 +1220,7 @@ namespace FIVStandard
                 catch { }
             }
             else
-                Task.Run(() => Tools.LoadSingleThumbnailData(dataItem, Path.Combine(ActiveFolder, dataItem.ThumbnailName), false));
+                Task.Run(() => Tools.LoadSingleThumbnailData(Path.Combine(ActiveFolder, dataItem.ThumbnailName), dataItem));
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
