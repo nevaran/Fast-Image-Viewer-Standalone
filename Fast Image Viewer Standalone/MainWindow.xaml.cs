@@ -1253,7 +1253,7 @@ namespace FIVStandard
 
         private void MediaImageView_MouseMove(object sender, MouseEventArgs e)
         {
-            //MediaView.Cursor = null;//TODO: make cursor change in ffme control work
+            MediaView.Cursor = null;//TODO: make cursor change in ffme control work
             PictureView.Cursor = null;
             ddMouseMove.Debounce(3000, DefaultMouseLook);
         }
@@ -1262,7 +1262,7 @@ namespace FIVStandard
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                //MediaView.Cursor = Cursors.None;
+                MediaView.Cursor = Cursors.None;
                 PictureView.Cursor = Cursors.None;
             });
         }
