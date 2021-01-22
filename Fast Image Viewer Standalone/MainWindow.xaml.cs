@@ -727,7 +727,7 @@ namespace FIVStandard
                 // repeat the token check
                 if (!ctLoadImage.IsCancellationRequested)
                 {
-                    // apply the image
+                    // apply the image to the control's property
                     ImageSource = bitmapSource;
 
                     if(resetZoom)
