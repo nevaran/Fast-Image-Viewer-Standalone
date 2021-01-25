@@ -329,6 +329,18 @@
     <value>Copied to Clipboard</value>
   </data>
   <data name="AssociateTypeTooltip" xml:space="preserve">
-    <value>Associate file type with the program</value>
+    <value>Associate file type with FIV</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="ProgramSettings" xml:space="preserve">
+    <value>Program</value>
   </data>
 </root>

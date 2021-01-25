@@ -45,7 +45,7 @@
 
         <Style
             x:Key="ListBoxItemStyle"
-            BasedOn="{StaticResource {x:Type ListBoxItem}}"
+            BasedOn="{StaticResource MahApps.Styles.ListBoxItem}"
             TargetType="ListBoxItem"
             >
 
@@ -540,404 +540,499 @@
                     VerticalScrollBarVisibility="Auto"
                     >
                     <StackPanel
-                        Orientation="Vertical"
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Left"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
+                        <Separator ScrollViewer.VerticalScrollBarVisibility="Disabled" />
 
-                        <Grid
-                            Grid.IsSharedSizeScope="True"
+                        <!--  Reset Settings Button  -->
+                        <Button
+                            MinWidth="100"
+                            Margin="20,10,10,0"
+                            HorizontalAlignment="Left"
+                            Click="OnResetSettingsClick"
+                            Content="{local:Loc ResetSettingsButton,
+                                                IsAsync=True}"
+                            FontSize="14"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            />
+
+                        <!--  Window Settings  -->
+                        <GroupBox
+                            MinWidth="250"
+                            Margin="20,10,0,0"
+                            Padding="10"
+                            HorizontalAlignment="Left"
                             >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="Auto"
-                                    SharedSizeGroup="A"
-                                    />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <Separator
-                                Grid.ColumnSpan="3"
-                                VerticalAlignment="Top"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-
-                            <!--  Reset Settings Button  -->
-                            <Button
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                MinWidth="100"
-                                Margin="20,10,10,27"
-                                HorizontalAlignment="Left"
-                                Click="OnResetSettingsClick"
-                                Content="{local:Loc ResetSettingsButton,
-                                                    IsAsync=True}"
-                                Focusable="False"
-                                FontSize="14"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-
-                            <!--  Language Dropdown  -->
-                            <TextBlock
-                                Grid.Row="1"
-                                Margin="20,0,0,0"
-                                VerticalAlignment="Top"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc Language,
-                                                 IsAsync=True}"
-                                TextAlignment="Left"
-                                ToolTip="{local:Loc ShownLanguageInfo,
-                                                    IsAsync=True}"
-                                />
-                            <Controls:SplitButton
-                                x:Name="ShownLanguageDrop"
-                                Grid.Row="1"
-                                Height="60"
-                                Margin="20,25,5,0"
-                                VerticalAlignment="Top"
-                                Click="OnLanguageClick"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ItemsSource="{Binding Settings.JSettings.GetLanguageString, Mode=OneTime}"
-                                Orientation="Vertical"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                SelectedIndex="{Binding Settings.JSettings.ShownLanguageDropIndex, Mode=TwoWay}"
-                                >
-                                <Controls:SplitButton.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                    </Style>
-                                </Controls:SplitButton.ItemContainerStyle>
-                            </Controls:SplitButton>
-
-                            <!--  Dark Mode Toggle  -->
-                            <Controls:ToggleSwitch
-                                Grid.Row="2"
-                                Padding="20,40,0,0"
-                                VerticalAlignment="Center"
-                                ContentDirection="RightToLeft"
-                                Focusable="False"
-                                Header="{local:Loc DarkMode,
-                                                   IsAsync=True}"
-                                IsOn="{Binding Settings.JSettings.DarkModeToggle, Mode=TwoWay}"
-                                IsTabStop="False"
-                                OffContent="{local:Loc Off,
-                                                       IsAsync=True}"
-                                OnContent="{local:Loc On,
-                                                      IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc DarkModeInfo,
-                                                    IsAsync=True}"
-                                />
-
-                            <!--  Theme Accent Dropdown  -->
-                            <TextBlock
-                                Grid.Row="3"
-                                Margin="20,40,0,0"
-                                VerticalAlignment="Top"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ThemeAccent,
-                                                 IsAsync=True}"
-                                TextAlignment="Left"
-                                ToolTip="{local:Loc ThemeAccentInfo,
-                                                    IsAsync=True}"
-                                />
-                            <Controls:SplitButton
-                                x:Name="ThemeAccentDrop"
-                                Grid.Row="3"
-                                Height="60"
-                                Margin="20,65,5,0"
-                                VerticalAlignment="Center"
-                                Click="OnAccentClick"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ItemsSource="{Binding Settings.JSettings.ThemeAccents, Mode=OneWay}"
-                                Orientation="Vertical"
-                                SelectedIndex="{Binding Settings.JSettings.ThemeAccentDropIndex, Mode=TwoWay}"
-                                >
-                                <Controls:SplitButton.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <Setter Property="BorderBrush" Value="{Binding Converter={StaticResource TextToColorConverter}}" />
-                                        <Setter Property="BorderThickness" Value="20,0,0,0" />
-                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                    </Style>
-                                </Controls:SplitButton.ItemContainerStyle>
-                            </Controls:SplitButton>
-
-                            <!--  Stretch Image Toggle  -->
-                            <Controls:ToggleSwitch
-                                Grid.Row="4"
-                                Padding="20,40,0,0"
-                                VerticalAlignment="Center"
-                                ContentDirection="RightToLeft"
-                                Focusable="False"
-                                Header="{local:Loc StretchImage,
-                                                   IsAsync=True}"
-                                IsOn="{Binding Settings.JSettings.StretchImageToggle, Mode=TwoWay}"
-                                IsTabStop="False"
-                                OffContent="{local:Loc Off,
-                                                       IsAsync=True}"
-                                OnContent="{local:Loc On,
-                                                      IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                ToolTip="{local:Loc StretchImageInfo,
-                                                    IsAsync=True}"
-                                />
-
-                            <!--  Downsize Image  -->
-                            <Controls:ToggleSwitch
-                                Grid.Row="5"
-                                Padding="20,40,0,0"
-                                VerticalAlignment="Center"
-                                ContentDirection="RightToLeft"
-                                Focusable="False"
-                                Header="{local:Loc DownsizeImage,
-                                                   IsAsync=True}"
-                                IsOn="{Binding Settings.JSettings.DownsizeImageToggle, Mode=TwoWay}"
-                                IsTabStop="False"
-                                OffContent="{local:Loc Off,
-                                                       IsAsync=True}"
-                                OnContent="{local:Loc On,
-                                                      IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc DownsizeImageInfo,
-                                                    IsAsync=True}"
-                                />
-
-                            <!--  Zoom Sensitivity  -->
-                            <TextBlock
-                                Grid.Row="6"
-                                Margin="20,0,0,0"
-                                VerticalAlignment="Center"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ZoomSensitivity,
-                                                 IsAsync=True}"
-                                TextAlignment="Left"
-                                ToolTip="{local:Loc ZoomSensitivityInfo,
-                                                    IsAsync=True}"
-                                />
-                            <TextBlock
-                                Grid.Row="6"
-                                Margin="10,80,0,0"
-                                VerticalAlignment="Center"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.JSettings.ZoomSensitivityString, Mode=OneWay}"
-                                TextAlignment="Center"
-                                />
-                            <Slider
-                                Grid.Row="6"
-                                Margin="20,60,5,0"
-                                VerticalAlignment="Top"
-                                Focusable="False"
-                                IsSnapToTickEnabled="True"
-                                IsTabStop="False"
-                                LargeChange="0.05"
-                                Maximum="2"
-                                Minimum="0.1"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                TickFrequency="0.05"
-                                Value="{Binding Settings.JSettings.ZoomSensitivity, Mode=TwoWay}"
-                                />
-
-                            <!--  Check for Updates at Startup  -->
-                            <Controls:ToggleSwitch
-                                Grid.Row="7"
-                                Padding="20,40,0,0"
-                                VerticalAlignment="Center"
-                                ContentDirection="RightToLeft"
-                                Focusable="False"
-                                Header="{local:Loc CheckForUpdates,
-                                                   IsAsync=True}"
-                                IsOn="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Mode=TwoWay}"
-                                IsTabStop="False"
-                                OffContent="{local:Loc Off,
-                                                       IsAsync=True}"
-                                OnContent="{local:Loc On,
-                                                      IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc CheckForUpdatesStartToggleInfo,
-                                                    IsAsync=True}"
-                                />
-
-                            <!--  Autoupdate on Update Check  -->
-                            <Controls:ToggleSwitch
-                                Grid.Row="8"
-                                Padding="60,40,0,0"
-                                VerticalAlignment="Center"
-                                ContentDirection="RightToLeft"
-                                Focusable="False"
-                                Header="{local:Loc AutoupdateToggle,
-                                                   IsAsync=True}"
-                                IsEnabled="{Binding Settings.JSettings.CheckForUpdatesStartToggle}"
-                                IsOn="{Binding Settings.JSettings.AutoupdateToggle, Mode=TwoWay}"
-                                IsTabStop="False"
-                                OffContent="{local:Loc Off,
-                                                       IsAsync=True}"
-                                OnContent="{local:Loc On,
-                                                      IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc AutoupdateToggleInfo,
-                                                    IsAsync=True}"
-                                />
-
-                            <!--  Enable Thumbnail List Toggle  -->
-                            <Controls:ToggleSwitch
-                                Grid.Row="9"
-                                Padding="20,40,0,0"
-                                VerticalAlignment="Center"
-                                ContentDirection="RightToLeft"
-                                Focusable="False"
-                                Header="{local:Loc EnableThumbnailList,
-                                                   IsAsync=True}"
-                                IsOn="{Binding Settings.JSettings.EnableThumbnailListToggle, Mode=TwoWay}"
-                                IsTabStop="False"
-                                OffContent="{local:Loc Off,
-                                                       IsAsync=True}"
-                                OnContent="{local:Loc On,
-                                                      IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ToolTip="{local:Loc EnableThumbnailListInfo,
-                                                    IsAsync=True}"
-                                />
-
-                            <!--  Thumbnail Size  -->
-                            <TextBlock
-                                Grid.Row="10"
-                                Margin="60,0,-20,0"
-                                VerticalAlignment="Center"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ThumbnailSize,
-                                                 IsAsync=True}"
-                                TextAlignment="Left"
-                                ToolTip="{local:Loc ThumbnailSizeInfo,
-                                                    IsAsync=True}"
-                                />
-                            <TextBlock
-                                Grid.Row="10"
-                                Margin="50,80,-20,0"
-                                VerticalAlignment="Center"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
-                                TextAlignment="Center"
-                                />
-                            <Slider
-                                Grid.Row="10"
-                                Margin="60,60,-15,0"
-                                VerticalAlignment="Top"
-                                Focusable="False"
-                                IsEnabled="{Binding Settings.JSettings.EnableThumbnailListToggle}"
-                                IsSnapToTickEnabled="True"
-                                IsTabStop="False"
-                                LargeChange="5"
-                                Maximum="240"
-                                Minimum="40"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                SmallChange="5"
-                                TickFrequency="5"
-                                Value="{Binding Settings.JSettings.ThumbnailSize, Mode=TwoWay}"
-                                />
-
-                            <!--  Thumbnail Resolution  -->
-                            <TextBlock
-                                Grid.Row="11"
-                                Margin="60,0,-20,0"
-                                VerticalAlignment="Center"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ThumbnailRes,
-                                                 IsAsync=True}"
-                                TextAlignment="Left"
-                                ToolTip="{local:Loc ThumbnailResInfo,
-                                                    IsAsync=True}"
-                                />
-                            <TextBlock
-                                Grid.Row="11"
-                                Margin="50,80,-20,0"
-                                VerticalAlignment="Center"
-                                FontWeight="DemiBold"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{Binding Settings.JSettings.ThumbnailRes, Mode=OneWay}"
-                                TextAlignment="Center"
-                                />
-                            <Slider
-                                Grid.Row="11"
-                                Margin="60,60,-15,0"
-                                VerticalAlignment="Top"
-                                Focusable="False"
-                                IsEnabled="{Binding Settings.JSettings.EnableThumbnailListToggle, Mode=OneWay}"
-                                IsSnapToTickEnabled="True"
-                                IsTabStop="False"
-                                LargeChange="5"
-                                Maximum="240"
-                                Minimum="40"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                SmallChange="5"
-                                Thumb.DragCompleted="ThumbnailSlider_DragCompleted"
-                                Thumb.DragStarted="ThumbnailSlider_DragStarted"
-                                TickFrequency="5"
-                                Value="{Binding Settings.JSettings.ThumbnailRes, Mode=TwoWay}"
-                                />
-
-                            <!--  File Type Checkbox  -->
-                            <StackPanel
-                                Grid.Row="13"
-                                Margin="20,40,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                >
-                                <TextBlock
-                                    FontWeight="DemiBold"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    Text="{local:Loc FileType,
-                                                     IsAsync=True}"
-                                    TextAlignment="Left"
-                                    ToolTip="{local:Loc FileTypeInfo,
-                                                        IsAsync=True}"
-                                    />
-                                <!--<CheckBox
-                                    Content="All Types"
-                                    Focusable="False"
-                                    IsTabStop="False"
-                                    IsThreeState="True"
-                                    />-->
+                            <GroupBox.Header>
                                 <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconUnicons
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        IsTabStop="False"
+                                        Kind="WindowGrid"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <TextBlock
+                                        FontSize="16"
+                                        Text="{local:Loc ProgramSettings,
+                                                         IsAsync=True}"
+                                        />
+                                </StackPanel>
+                            </GroupBox.Header>
+
+                            <StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <!--  Language Dropdown  -->
+                                <DockPanel>
+                                    <TextBlock
+                                        VerticalAlignment="Top"
+                                        DockPanel.Dock="Top"
+                                        FontWeight="DemiBold"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Text="{local:Loc Language,
+                                                         IsAsync=True}"
+                                        TextAlignment="Left"
+                                        ToolTip="{local:Loc ShownLanguageInfo,
+                                                            IsAsync=True}"
+                                        />
+                                    <Controls:SplitButton
+                                        x:Name="ShownLanguageDrop"
+                                        Height="60"
+                                        Margin="0,5,0,0"
+                                        VerticalAlignment="Top"
+                                        Click="OnLanguageClick"
+                                        DockPanel.Dock="Bottom"
+                                        ItemsSource="{Binding Settings.JSettings.GetLanguageString, Mode=OneTime}"
+                                        Orientation="Vertical"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        SelectedIndex="{Binding Settings.JSettings.ShownLanguageDropIndex, Mode=TwoWay}"
+                                        >
+                                        <Controls:SplitButton.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                            </Style>
+                                        </Controls:SplitButton.ItemContainerStyle>
+                                    </Controls:SplitButton>
+                                </DockPanel>
+
+                                <!--  Dark Mode Toggle  -->
+                                <DockPanel Margin="0,10,0,0">
+                                    <Controls:ToggleSwitch
+                                        VerticalAlignment="Center"
+                                        ContentDirection="RightToLeft"
+                                        DockPanel.Dock="Left"
+                                        Header="{local:Loc DarkMode,
+                                                           IsAsync=True}"
+                                        IsOn="{Binding Settings.JSettings.DarkModeToggle, Mode=TwoWay}"
+                                        OffContent="{local:Loc Off,
+                                                               IsAsync=True}"
+                                        OnContent="{local:Loc On,
+                                                              IsAsync=True}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        ToolTip="{local:Loc DarkModeInfo,
+                                                            IsAsync=True}"
+                                        />
+                                </DockPanel>
+
+                                <!--  Theme Accent Dropdown  -->
+                                <DockPanel Margin="0,10,0,0">
+                                    <TextBlock
+                                        VerticalAlignment="Top"
+                                        DockPanel.Dock="Top"
+                                        FontWeight="DemiBold"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Text="{local:Loc ThemeAccent,
+                                                         IsAsync=True}"
+                                        TextAlignment="Left"
+                                        ToolTip="{local:Loc ThemeAccentInfo,
+                                                            IsAsync=True}"
+                                        />
+                                    <Controls:SplitButton
+                                        x:Name="ThemeAccentDrop"
+                                        Height="60"
+                                        Margin="0,5,0,0"
+                                        VerticalAlignment="Center"
+                                        Click="OnAccentClick"
+                                        DockPanel.Dock="Bottom"
+                                        ItemsSource="{Binding Settings.JSettings.ThemeAccents, Mode=OneWay}"
+                                        Orientation="Vertical"
+                                        SelectedIndex="{Binding Settings.JSettings.ThemeAccentDropIndex, Mode=TwoWay}"
+                                        >
+                                        <Controls:SplitButton.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="BorderBrush" Value="{Binding Converter={StaticResource TextToColorConverter}}" />
+                                                <Setter Property="BorderThickness" Value="20,0,0,0" />
+                                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                            </Style>
+                                        </Controls:SplitButton.ItemContainerStyle>
+                                    </Controls:SplitButton>
+                                </DockPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!--  General Settings  -->
+                        <GroupBox
+                            MinWidth="250"
+                            Margin="20,10,0,0"
+                            Padding="10"
+                            HorizontalAlignment="Left"
+                            >
+                            <GroupBox.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconUnicons
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        IsTabStop="False"
+                                        Kind="Image"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <TextBlock
+                                        FontSize="16"
+                                        Text="{local:Loc GeneralSettings,
+                                                         IsAsync=True}"
+                                        />
+                                </StackPanel>
+                            </GroupBox.Header>
+
+                            <StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <!--  Stretch Image Toggle  -->
+                                <DockPanel>
+                                    <Controls:ToggleSwitch
+                                        VerticalAlignment="Center"
+                                        ContentDirection="RightToLeft"
+                                        DockPanel.Dock="Left"
+                                        Header="{local:Loc StretchImage,
+                                                           IsAsync=True}"
+                                        IsOn="{Binding Settings.JSettings.StretchImageToggle, Mode=TwoWay}"
+                                        OffContent="{local:Loc Off,
+                                                               IsAsync=True}"
+                                        OnContent="{local:Loc On,
+                                                              IsAsync=True}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                        ToolTip="{local:Loc StretchImageInfo,
+                                                            IsAsync=True}"
+                                        />
+                                </DockPanel>
+
+                                <!--  Downsize Image  -->
+                                <DockPanel Margin="0,10,0,0">
+                                    <Controls:ToggleSwitch
+                                        VerticalAlignment="Center"
+                                        ContentDirection="RightToLeft"
+                                        DockPanel.Dock="Left"
+                                        Header="{local:Loc DownsizeImage,
+                                                           IsAsync=True}"
+                                        IsOn="{Binding Settings.JSettings.DownsizeImageToggle, Mode=TwoWay}"
+                                        OffContent="{local:Loc Off,
+                                                               IsAsync=True}"
+                                        OnContent="{local:Loc On,
+                                                              IsAsync=True}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        ToolTip="{local:Loc DownsizeImageInfo,
+                                                            IsAsync=True}"
+                                        />
+                                </DockPanel>
+
+                                <!--  Zoom Sensitivity  -->
+                                <DockPanel Margin="0,10,0,0">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Top"
+                                        FontWeight="DemiBold"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Text="{local:Loc ZoomSensitivity,
+                                                         IsAsync=True}"
+                                        TextAlignment="Left"
+                                        ToolTip="{local:Loc ZoomSensitivityInfo,
+                                                            IsAsync=True}"
+                                        />
+                                    <TextBlock
+                                        Margin="0,-5,0,0"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Bottom"
+                                        FontWeight="DemiBold"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Text="{Binding Settings.JSettings.ZoomSensitivityString, Mode=OneWay}"
+                                        TextAlignment="Center"
+                                        />
+                                    <Slider
+                                        Margin="0,0,0,0"
+                                        VerticalAlignment="Top"
+                                        DockPanel.Dock="Bottom"
+                                        IsSnapToTickEnabled="True"
+                                        LargeChange="0.05"
+                                        Maximum="2"
+                                        Minimum="0.1"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        TickFrequency="0.05"
+                                        Value="{Binding Settings.JSettings.ZoomSensitivity, Mode=TwoWay}"
+                                        />
+                                </DockPanel>
+
+                                <!--  Enable Thumbnail List Toggle  -->
+                                <DockPanel Margin="0,10,0,0">
+                                    <Border
+                                        Width="42"
+                                        Height="2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                        DockPanel.Dock="Bottom"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Controls:ToggleSwitch
+                                        VerticalAlignment="Center"
+                                        ContentDirection="RightToLeft"
+                                        DockPanel.Dock="Left"
+                                        Header="{local:Loc EnableThumbnailList,
+                                                           IsAsync=True}"
+                                        IsOn="{Binding Settings.JSettings.EnableThumbnailListToggle, Mode=TwoWay}"
+                                        OffContent="{local:Loc Off,
+                                                               IsAsync=True}"
+                                        OnContent="{local:Loc On,
+                                                              IsAsync=True}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        ToolTip="{local:Loc EnableThumbnailListInfo,
+                                                            IsAsync=True}"
+                                        />
+                                </DockPanel>
+
+                                <!--  Thumbnail Size  -->
+                                <DockPanel>
+                                    <Border
+                                        Width="2"
+                                        Margin="40,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                        DockPanel.Dock="Left"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <TextBlock
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Top"
+                                        FontWeight="DemiBold"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Text="{local:Loc ThumbnailSize,
+                                                         IsAsync=True}"
+                                        TextAlignment="Left"
+                                        ToolTip="{local:Loc ThumbnailSizeInfo,
+                                                            IsAsync=True}"
+                                        />
+                                    <TextBlock
+                                        Margin="10,-5,0,10"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Bottom"
+                                        FontWeight="DemiBold"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Text="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
+                                        TextAlignment="Center"
+                                        />
+                                    <Slider
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Top"
+                                        DockPanel.Dock="Bottom"
+                                        IsEnabled="{Binding Settings.JSettings.EnableThumbnailListToggle}"
+                                        IsSnapToTickEnabled="True"
+                                        LargeChange="5"
+                                        Maximum="240"
+                                        Minimum="40"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        SmallChange="5"
+                                        TickFrequency="5"
+                                        Value="{Binding Settings.JSettings.ThumbnailSize, Mode=TwoWay}"
+                                        />
+                                </DockPanel>
+
+                                <!--  Thumbnail Resolution  -->
+                                <DockPanel>
+                                    <Border
+                                        Width="2"
+                                        Margin="40,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                        DockPanel.Dock="Left"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <TextBlock
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Top"
+                                        FontWeight="DemiBold"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Text="{local:Loc ThumbnailRes,
+                                                         IsAsync=True}"
+                                        TextAlignment="Left"
+                                        ToolTip="{local:Loc ThumbnailResInfo,
+                                                            IsAsync=True}"
+                                        />
+                                    <TextBlock
+                                        Margin="10,-5,0,0"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Bottom"
+                                        FontWeight="DemiBold"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        Text="{Binding Settings.JSettings.ThumbnailRes, Mode=OneWay}"
+                                        TextAlignment="Center"
+                                        />
+                                    <Slider
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Top"
+                                        DockPanel.Dock="Bottom"
+                                        IsEnabled="{Binding Settings.JSettings.EnableThumbnailListToggle, Mode=OneWay}"
+                                        IsSnapToTickEnabled="True"
+                                        LargeChange="5"
+                                        Maximum="240"
+                                        Minimum="40"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        SmallChange="5"
+                                        Thumb.DragCompleted="ThumbnailSlider_DragCompleted"
+                                        Thumb.DragStarted="ThumbnailSlider_DragStarted"
+                                        TickFrequency="5"
+                                        Value="{Binding Settings.JSettings.ThumbnailRes, Mode=TwoWay}"
+                                        />
+                                </DockPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!--  Updates  -->
+                        <GroupBox
+                            MinWidth="250"
+                            Margin="20,10,0,0"
+                            Padding="10"
+                            HorizontalAlignment="Left"
+                            >
+                            <GroupBox.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconUnicons
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        IsTabStop="False"
+                                        Kind="DownloadAlt"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <TextBlock
+                                        FontSize="16"
+                                        Text="{local:Loc Updates,
+                                                         IsAsync=True}"
+                                        />
+                                </StackPanel>
+                            </GroupBox.Header>
+
+                            <StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <!--  Check for Updates at Startup  -->
+                                <DockPanel>
+                                    <Border
+                                        Width="42"
+                                        Height="2"
+                                        Margin="0,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        Background="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                        DockPanel.Dock="Bottom"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Controls:ToggleSwitch
+                                        Padding="0,0,0,0"
+                                        VerticalAlignment="Center"
+                                        ContentDirection="RightToLeft"
+                                        DockPanel.Dock="Left"
+                                        Header="{local:Loc CheckForUpdates,
+                                                           IsAsync=True}"
+                                        IsOn="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Mode=TwoWay}"
+                                        OffContent="{local:Loc Off,
+                                                               IsAsync=True}"
+                                        OnContent="{local:Loc On,
+                                                              IsAsync=True}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        ToolTip="{local:Loc CheckForUpdatesStartToggleInfo,
+                                                            IsAsync=True}"
+                                        />
+                                </DockPanel>
+
+                                <!--  Autoupdate on Update Check  -->
+                                <DockPanel>
+                                    <Border
+                                        Width="2"
+                                        Margin="40,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        Background="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
+                                        DockPanel.Dock="Left"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <Controls:ToggleSwitch
+                                        Padding="10,0,0,0"
+                                        VerticalAlignment="Center"
+                                        ContentDirection="RightToLeft"
+                                        DockPanel.Dock="Left"
+                                        Header="{local:Loc AutoupdateToggle,
+                                                           IsAsync=True}"
+                                        IsEnabled="{Binding Settings.JSettings.CheckForUpdatesStartToggle}"
+                                        IsOn="{Binding Settings.JSettings.AutoupdateToggle, Mode=TwoWay}"
+                                        OffContent="{local:Loc Off,
+                                                               IsAsync=True}"
+                                        OnContent="{local:Loc On,
+                                                              IsAsync=True}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        ToolTip="{local:Loc AutoupdateToggleInfo,
+                                                            IsAsync=True}"
+                                        />
+                                </DockPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!--  File Type Checkbox  -->
+                        <GroupBox
+                            MinWidth="125"
+                            Margin="20,10,0,0"
+                            Padding="10"
+                            HorizontalAlignment="Left"
+                            >
+                            <GroupBox.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconUnicons
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        IsTabStop="False"
+                                        Kind="FileExclamation"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <TextBlock
+                                        FontSize="16"
+                                        Text="{local:Loc FileType,
+                                                         IsAsync=True}"
+                                        ToolTip="{local:Loc FileTypeInfo,
+                                                            IsAsync=True}"
+                                        />
+                                </StackPanel>
+                            </GroupBox.Header>
+
+                            <StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <CheckBox
+                                    Height="25"
+                                    Click="OnAllTypeCheckBox_Changed"
+                                    Content="{local:Loc All,
+                                                        IsAsync=True}"
+                                    IsChecked="{Binding Settings.JSettings.FilterAll, Mode=TwoWay}"
+                                    />
+
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
-                                        HorizontalAlignment="Left"
+                                        Height="25"
                                         Content=".jpg"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterJpg, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".jpg"
@@ -952,21 +1047,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".jpeg"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterJpeg, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".jpeg"
@@ -981,20 +1079,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".png"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterPng, Mode=TwoWay}"
-                                        IsTabStop="False"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".png"
@@ -1009,21 +1111,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".gif"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterGif, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".gif"
@@ -1038,21 +1143,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".bmp"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterBmp, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".bmp"
@@ -1067,21 +1175,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".tiff"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterTiff, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".tiff"
@@ -1096,21 +1207,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".ico"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterIco, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".ico"
@@ -1125,21 +1239,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".svg"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterSvg, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".svg"
@@ -1154,21 +1271,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".webp"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterWebp, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".webp"
@@ -1183,21 +1303,24 @@
                                     </Button>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel
+                                    Margin="25,0,0,0"
+                                    Orientation="Horizontal"
+                                    >
                                     <CheckBox
                                         Width="60"
-                                        Margin="0,5,5,0"
+                                        Height="25"
                                         HorizontalAlignment="Left"
                                         Content=".webm"
-                                        Focusable="False"
                                         IsChecked="{Binding Settings.JSettings.FilterWebm, Mode=TwoWay}"
-                                        IsTabStop="False"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
+                                        Width="20"
+                                        Height="20"
+                                        MinHeight="0"
+                                        Padding="0"
                                         Click="OnAssociateFileButton_Click"
-                                        Focusable="False"
-                                        IsTabStop="False"
                                         Loaded="OnAssociateFileButtonShown"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".webm"
@@ -1212,577 +1335,394 @@
                                     </Button>
                                 </StackPanel>
                             </StackPanel>
+                        </GroupBox>
 
-                            <!--  TREE BRANCHING LINES  -->
-                            <Border
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,0,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,40,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="3"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,40,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="4"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,40,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="5"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,40,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="6"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,40,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-
-                            <Border
-                                Grid.Row="7"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,40,0,-40"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="8"
-                                Grid.Column="0"
-                                Width="40"
-                                Height="2"
-                                Margin="10,40,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Background="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="8"
-                                Grid.RowSpan="1"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="50,40,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-
-                            <Border
-                                Grid.Row="9"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,40,0,-40"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="10"
-                                Grid.Column="0"
-                                Width="40"
-                                Height="2"
-                                Margin="10,40,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                            <Border
-                                Grid.Row="10"
-                                Grid.RowSpan="3"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="50,40,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-
-                            <Border
-                                Grid.Row="13"
-                                Grid.RowSpan="3"
-                                Grid.Column="0"
-                                Width="2"
-                                Margin="10,40,0,0"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
-                        </Grid>
-                        <!--  End Settings Grid  -->
-
-                        <!--  Shortcuts  -->
-                        <Grid
-                            Margin="10,20,10,10"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        <!--  Shortcut Buttons  -->
+                        <GroupBox
+                            Margin="20,10,0,0"
+                            Padding="10"
+                            HorizontalAlignment="Left"
                             >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                            <GroupBox.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconUnicons
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Center"
+                                        IsTabStop="False"
+                                        Kind="Keyboard"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        />
+                                    <TextBlock
+                                        FontSize="16"
+                                        Text="{local:Loc Shortcuts,
+                                                         IsAsync=True}"
+                                        />
+                                </StackPanel>
+                            </GroupBox.Header>
 
-                            <Border
-                                Grid.Row="2"
-                                Grid.RowSpan="19"
-                                Grid.Column="0"
-                                Width="2"
-                                HorizontalAlignment="Left"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                />
+                            <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="0,0,0,10"
-                                FontSize="30"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc Shortcuts,
-                                                 IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc PreviousImageShortcut,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="2"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc PreviousImageShortcut,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="2"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc NextImageShortcut,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="3"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="3"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc NextImageShortcut,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="3"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="3"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc PauseAnimationShortcut,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="4"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="4"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc PauseAnimationShortcut,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="4"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="4"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc DeleteImageShortcut,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="5"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="5"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="5"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc DeleteImageShortcut,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="5"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="5"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="6"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc StretchImageShortcut,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="6"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="6"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="6"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc StretchImageShortcut,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="6"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="6"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="7"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc DownsizeImageShortcut,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="7"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="7"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="7"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc DownsizeImageShortcut,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="7"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="7"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="8"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc ExploreImageLocationShortcut,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="8"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="8"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="8"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ExploreImageLocationShortcut,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="8"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="8"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="9"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc CopyImageToClipboard,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="9"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.CopyImageToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="9"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="9"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc CopyImageToClipboard,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="9"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.CopyImageToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="9"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
+                                <TextBlock
+                                    Grid.Row="10"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc CutFileToClipboard,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="10"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.CutFileToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="10"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
 
-                            <TextBlock
-                                Grid.Row="10"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc CutFileToClipboard,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="10"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.CutFileToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="10"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
-
-                            <TextBlock
-                                Grid.Row="11"
-                                Grid.Column="0"
-                                Margin="30,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Text="{local:Loc ShowThumbnailList,
-                                                 IsAsync=True}"
-                                />
-                            <Button
-                                Grid.Row="11"
-                                Grid.Column="1"
-                                MinWidth="80"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Click="OnShortcutClick"
-                                Content="{Binding Settings.JSettings.ThumbnailListKey, Converter={StaticResource KeyToStringConverter}}"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.ThumbnailListKey, Mode=TwoWay}"
-                                />
-                            <Button
-                                Grid.Row="11"
-                                Grid.Column="2"
-                                MinWidth="27"
-                                MinHeight="27"
-                                Margin="5,0,0,5"
-                                HorizontalAlignment="Left"
-                                Background="#D14B4B"
-                                Click="OnRemoveShortcutClick"
-                                Content="X"
-                                Focusable="False"
-                                IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
-                                ToolTip="{local:Loc RemoveShortcut,
-                                                    IsAsync=True}"
-                                />
-
-                            <!--<Image Source="Resources/kblayoutkeys.png" />-->
-                        </Grid>
+                                <TextBlock
+                                    Grid.Row="11"
+                                    Grid.Column="0"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Text="{local:Loc ShowThumbnailList,
+                                                     IsAsync=True}"
+                                    />
+                                <Button
+                                    Grid.Row="11"
+                                    Grid.Column="1"
+                                    MinWidth="80"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Click="OnShortcutClick"
+                                    Content="{Binding Settings.JSettings.ThumbnailListKey, Converter={StaticResource KeyToStringConverter}}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.ThumbnailListKey, Mode=TwoWay}"
+                                    />
+                                <Button
+                                    Grid.Row="11"
+                                    Grid.Column="2"
+                                    MinWidth="27"
+                                    MinHeight="27"
+                                    Margin="5,0,0,5"
+                                    HorizontalAlignment="Left"
+                                    Background="#D14B4B"
+                                    Click="OnRemoveShortcutClick"
+                                    Content="X"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
+                                    ToolTip="{local:Loc RemoveShortcut,
+                                                        IsAsync=True}"
+                                    />
+                            </Grid>
+                        </GroupBox>
                     </StackPanel>
-
                 </ScrollViewer>
             </Controls:MetroTabItem>
 

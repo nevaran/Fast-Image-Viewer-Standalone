@@ -1249,6 +1249,24 @@ namespace FIVStandard
             ((Button)sender).Visibility = assoc ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        private void OnAllTypeCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("ss");
+            var cb = (bool)((CheckBox)sender).IsChecked;
+
+            Settings.JSettings.FilterJpg = cb;
+            Settings.JSettings.FilterJpeg = cb;
+            Settings.JSettings.FilterPng = cb;
+            Settings.JSettings.FilterGif = cb;
+            Settings.JSettings.FilterBmp = cb;
+            Settings.JSettings.FilterTiff = cb;
+            Settings.JSettings.FilterIco = cb;
+            Settings.JSettings.FilterSvg = cb;
+            Settings.JSettings.FilterWebp = cb;
+            Settings.JSettings.FilterWebm = cb;
+            Settings.JSettings.FilterAll = cb;
+        }
+
         private readonly DebounceDispatcher ddMouseMove = new DebounceDispatcher();
 
         private void MediaImageView_MouseMove(object sender, MouseEventArgs e)

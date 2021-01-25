@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +11,7 @@ using System.Windows.Input;
 
 namespace FIVStandard.Core
 {
-    public class SettingsManager : INotifyPropertyChanged
+    public class SettingsManager
     {
         public readonly MainWindow mainWindow;
 
@@ -107,6 +106,7 @@ namespace FIVStandard.Core
             JSettings.FilterSvg = true;
             JSettings.FilterWebp = true;
             JSettings.FilterWebm = true;
+            JSettings.FilterAll = true;
 
             JSettings.MediaMuted = false;
             JSettings.MediaVolume = 0.5;
@@ -198,6 +198,20 @@ namespace FIVStandard.Core
             if (JSettings.FilterWebm)
                 AddActiveFilter(".webm");
 
+            if (!JSettings.FilterJpg || 
+                !JSettings.FilterJpeg || 
+                !JSettings.FilterPng || 
+                !JSettings.FilterGif || 
+                !JSettings.FilterBmp || 
+                !JSettings.FilterTiff || 
+                !JSettings.FilterIco || 
+                !JSettings.FilterSvg || 
+                !JSettings.FilterWebp || 
+                !JSettings.FilterWebm)
+                JSettings.FilterAll = false;
+            else
+                JSettings.FilterAll = true;
+
             JSettings.FilterActiveArray = JSettings.FilterActiveList.ToArray();
 
             if (mainWindow.ProgramLoaded == false) return;//fixes crash
@@ -259,14 +273,5 @@ namespace FIVStandard.Core
                     break;
             }
         }
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-        #endregion
     }
 }

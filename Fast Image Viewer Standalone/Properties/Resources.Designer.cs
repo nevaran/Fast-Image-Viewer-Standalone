@@ -70,6 +70,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Changes.
         /// </summary>
         public static string AllWatcher {
@@ -88,7 +97,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Associate file type with the program.
+        ///   Looks up a localized string similar to Associate file type with FIV.
         /// </summary>
         public static string AssociateTypeTooltip {
             get {
@@ -413,6 +422,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string GeneralSettings {
+            get {
+                return ResourceManager.GetString("GeneralSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string Language {
@@ -499,6 +517,15 @@ namespace FIVStandard.Properties {
         public static string PreviousImageShortcut {
             get {
                 return ResourceManager.GetString("PreviousImageShortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Program.
+        /// </summary>
+        public static string ProgramSettings {
+            get {
+                return ResourceManager.GetString("ProgramSettings", resourceCulture);
             }
         }
         
@@ -661,6 +688,15 @@ namespace FIVStandard.Properties {
         public static string ThumbnailSizeInfo {
             get {
                 return ResourceManager.GetString("ThumbnailSizeInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates.
+        /// </summary>
+        public static string Updates {
+            get {
+                return ResourceManager.GetString("Updates", resourceCulture);
             }
         }
         

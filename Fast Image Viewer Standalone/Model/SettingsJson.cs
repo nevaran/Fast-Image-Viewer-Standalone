@@ -58,6 +58,22 @@ namespace FIVStandard.Model
                 OnPropertyChanged();
             }
         }
+
+        private bool filterAll = true;
+
+        [JsonIgnore]
+        public bool FilterAll
+        {
+            get
+            {
+                return filterAll;
+            }
+            set
+            {
+                filterAll = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Settings Properties
@@ -258,6 +274,97 @@ namespace FIVStandard.Model
             }
         }
 
+        private bool mediaMuted = false;
+
+        public bool MediaMuted
+        {
+            get
+            {
+                return mediaMuted;
+            }
+            set
+            {
+                mediaMuted = value;
+                OnPropertyChanged();
+                OnPropertyChanged("VolumeIcon");
+            }
+        }
+
+        private double mediaVolume = 0.5;
+
+        public double MediaVolume
+        {
+            get
+            {
+                return mediaVolume;
+            }
+            set
+            {
+                mediaVolume = value;
+                OnPropertyChanged();
+                OnPropertyChanged("VolumeIcon");
+            }
+        }
+
+        [JsonIgnore]
+        public MahApps.Metro.IconPacks.PackIconBoxIconsKind VolumeIcon
+        {
+            get
+            {
+                if (MediaMuted) return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeMute;
+
+                if (MediaVolume > 0.8)
+                    return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeFull;
+                else if (MediaVolume > 0.0)
+                    return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeLow;
+
+                return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolume;
+            }
+        }
+
+        private int windowWidth = 800;
+
+        public int WindowWidth
+        {
+            get
+            {
+                return windowWidth;
+            }
+            set
+            {
+                windowWidth = value;
+            }
+        }
+
+        private int windowHeight = 600;
+
+        public int WindowHeight
+        {
+            get
+            {
+                return windowHeight;
+            }
+            set
+            {
+                windowHeight = value;
+            }
+        }
+
+        private WindowState windowState = WindowState.Maximized;
+
+        public WindowState WindowState
+        {
+            get
+            {
+                return windowState;
+            }
+            set
+            {
+                windowState = value;
+            }
+        }
+        #endregion
+
         #region File Types
         private bool filterJpg = true;
 
@@ -406,97 +513,6 @@ namespace FIVStandard.Model
             {
                 filterWebm = value;
                 OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        private bool mediaMuted = false;
-
-        public bool MediaMuted
-        {
-            get
-            {
-                return mediaMuted;
-            }
-            set
-            {
-                mediaMuted = value;
-                OnPropertyChanged();
-                OnPropertyChanged("VolumeIcon");
-            }
-        }
-
-        private double mediaVolume = 0.5;
-
-        public double MediaVolume
-        {
-            get
-            {
-                return mediaVolume;
-            }
-            set
-            {
-                mediaVolume = value;
-                OnPropertyChanged();
-                OnPropertyChanged("VolumeIcon");
-            }
-        }
-
-        [JsonIgnore]
-        public MahApps.Metro.IconPacks.PackIconBoxIconsKind VolumeIcon
-        {
-            get
-            {
-                if (MediaMuted) return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeMute;
-
-                if (MediaVolume > 0.8)
-                    return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeFull;
-                else if (MediaVolume > 0.0)
-                    return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolumeLow;
-
-                return MahApps.Metro.IconPacks.PackIconBoxIconsKind.RegularVolume;
-            }
-        }
-
-        private int windowWidth = 800;
-
-        public int WindowWidth
-        {
-            get
-            {
-                return windowWidth;
-            }
-            set
-            {
-                windowWidth = value;
-            }
-        }
-
-        private int windowHeight = 600;
-
-        public int WindowHeight
-        {
-            get
-            {
-                return windowHeight;
-            }
-            set
-            {
-                windowHeight = value;
-            }
-        }
-
-        private WindowState windowState = WindowState.Maximized;
-
-        public WindowState WindowState
-        {
-            get
-            {
-                return windowState;
-            }
-            set
-            {
-                windowState = value;
             }
         }
         #endregion

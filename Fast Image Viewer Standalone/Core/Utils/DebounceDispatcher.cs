@@ -3,7 +3,7 @@ using System.Timers;
 
 namespace FIVStandard.Utils
 {
-    public class DebounceDispatcher
+    public sealed class DebounceDispatcher
     {
         private Timer timer = null;
         private Action methodToExecute;
