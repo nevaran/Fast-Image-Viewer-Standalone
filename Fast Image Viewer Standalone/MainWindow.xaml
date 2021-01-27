@@ -1716,7 +1716,7 @@
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
+                                    Tag="{Binding Settings.JSettings.ThumbnailListKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
                                     />

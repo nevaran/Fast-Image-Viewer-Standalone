@@ -1251,7 +1251,6 @@ namespace FIVStandard
 
         private void OnAllTypeCheckBox_Changed(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("ss");
             var cb = (bool)((CheckBox)sender).IsChecked;
 
             Settings.JSettings.FilterJpg = cb;
