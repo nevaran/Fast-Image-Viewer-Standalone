@@ -36,17 +36,15 @@ namespace FIVStandard.Core
                 });
         }
 
-        public static void EnsureAssociationsSet(params FileAssociation[] associations)
+        public static void EnsureAssociationsSet(FileAssociation association)
         {
             bool madeChanges = false;
-            foreach (var association in associations)
-            {
-                madeChanges |= SetAssociation(
+
+            madeChanges |= SetAssociation(
                     association.Extension,
                     association.FileTypeDescription,
                     association.ExecutableFilePath,
                     association.ProgId);
-            }
 
             if (madeChanges)
             {

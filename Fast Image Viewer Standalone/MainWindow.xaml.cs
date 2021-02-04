@@ -71,7 +71,7 @@ namespace FIVStandard
                     }
                     else
                     {
-                        return $"[{ImagesDataView.CurrentPosition + 1}/{ImagesDataView.Count}] {activeFile}";
+                        return $"[{(ImagesDataView.CurrentPosition + 1).ToString()}/{(ImagesDataView.Count).ToString()}] {activeFile}";
                     }
                 }
             }
@@ -134,7 +134,7 @@ namespace FIVStandard
                     return Tools.RnJesus();
                 }
                 else
-                    return $"{ImgWidth}x{ImgHeight}";
+                    return $"{ImgWidth.ToString()}x{ImgHeight.ToString()}";
             }
         }
         #endregion
@@ -1270,7 +1270,7 @@ namespace FIVStandard
 
         private void MediaImageView_MouseMove(object sender, MouseEventArgs e)
         {
-            MediaView.Cursor = null;//TODO: make cursor change in ffme control work
+            MediaView.Cursor = null;
             PictureView.Cursor = null;
             ddMouseMove.Debounce(3000, DefaultMouseLook);
         }
