@@ -18,9 +18,22 @@ namespace FIVStandard.Utils
             set { SetValue(ZoomSensitivityProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ZoomSensitivity.  This enables animation, styling, binding, etc...
+        // Using a DependencyProperty as the backing store for ZoomSensitivity. This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ZoomSensitivityProperty =
             DependencyProperty.Register("ZoomSensitivity", typeof(double), typeof(ZoomBorder), new PropertyMetadata(0.3));
+
+        /// <summary>
+        /// Clamping distance limit multiplier. Value of 0.5 would be an extra half the image size's panning distance
+        /// </summary>
+        public double ClampLimitMultiplier
+        {
+            get { return (double)GetValue(ClampLimitMultiplierProperty); }
+            set { SetValue(ClampLimitMultiplierProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ClampLimitMultiplier. This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ClampLimitMultiplierProperty =
+            DependencyProperty.Register("ClampLimitMultiplier", typeof(double), typeof(ZoomBorder), new PropertyMetadata(1.0));
 
         private readonly DebounceDispatcher ddClamp = new DebounceDispatcher();
 
@@ -185,16 +198,16 @@ namespace FIVStandard.Utils
                 var tt = GetTranslateTransform(child);
 
                 Rect r = new Rect(child.RenderSize);
-                ClampPan(ref tt, r, st.ScaleX);
+                ClampPan(ref tt, r, st.ScaleX, ClampLimitMultiplier);
             });
         }
 
-        private static void ClampPan(ref TranslateTransform tt, Rect r, double scale)
+        private static void ClampPan(ref TranslateTransform tt, Rect r, double scale, double ClampLimitMultiplier)
         {
-            double leftLimit = r.Width * 0.5;
-            double rightLimit = -(r.Width * scale - (r.Width * 0.5));
-            double topLimit = r.Height * 0.5;
-            double botLimit = -(r.Height * scale - (r.Height * 0.5));
+            double leftLimit = r.Width * (1 - ClampLimitMultiplier);
+            double rightLimit = -(r.Width * scale - (r.Width * ClampLimitMultiplier));
+            double topLimit = r.Height * (1 - ClampLimitMultiplier);
+            double botLimit = -(r.Height * scale - (r.Height * ClampLimitMultiplier));
 
             if (tt.X > leftLimit)//left
                 tt.X = leftLimit;
