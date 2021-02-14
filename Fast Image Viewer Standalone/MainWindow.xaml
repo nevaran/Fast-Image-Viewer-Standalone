@@ -478,7 +478,7 @@
                             Grid.Column="1"
                             Margin="0,44,0,29"
                             Background="Transparent"
-                            ClampLimitMultiplier="-2"
+                            ClampLimitMultiplier="1"
                             ClipToBounds="True"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             ZoomSensitivity="{Binding Settings.JSettings.ZoomSensitivity, Mode=OneWay}"

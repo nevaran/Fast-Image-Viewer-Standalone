@@ -1200,7 +1200,8 @@ namespace FIVStandard
             if (Settings.ReloadFolderFlag == false) return;//dont re-open folder with file if not flagged
 
             Settings.ReloadFolderFlag = false;
-            await OpenNewFile(ActivePath);
+            if(File.Exists(ActivePath))
+                await OpenNewFile(ActivePath);
         }
 
         private void OnThumbnailItemVisible(object sender, RoutedEventArgs e)
