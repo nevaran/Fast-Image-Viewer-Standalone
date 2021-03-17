@@ -575,6 +575,24 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Donate Button.
+        /// </summary>
+        public static string ShowDonateButton {
+            get {
+                return ResourceManager.GetString("ShowDonateButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle visibility of the donate button on the program command window..
+        /// </summary>
+        public static string ShowDonateButtonInfo {
+            get {
+                return ResourceManager.GetString("ShowDonateButtonInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the displayed language..
         /// </summary>
         public static string ShownLanguageInfo {

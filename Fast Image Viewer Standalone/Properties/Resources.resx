@@ -343,4 +343,10 @@
   <data name="ProgramSettings" xml:space="preserve">
     <value>Program</value>
   </data>
+  <data name="ShowDonateButton" xml:space="preserve">
+    <value>Show Donate Button</value>
+  </data>
+  <data name="ShowDonateButtonInfo" xml:space="preserve">
+    <value>Toggle visibility of the donate button on the program command window.</value>
+  </data>
 </root>

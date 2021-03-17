@@ -76,7 +76,10 @@
                 IsTabStop="False"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
-                <StackPanel Orientation="Horizontal">
+                <StackPanel
+                    Orientation="Horizontal"
+                    Visibility="{Binding Settings.JSettings.ShowDonateButton, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
+                    >
                     <TextBlock Text="{local:Loc Donate, IsAsync=True}" />
                     <iconPacks:PackIconBoxIcons
                         IsTabStop="False"
@@ -669,6 +672,25 @@
                                             </Style>
                                         </Controls:SplitButton.ItemContainerStyle>
                                     </Controls:SplitButton>
+                                </DockPanel>
+
+                                <!--  Show Donate Button Toggle  -->
+                                <DockPanel Margin="0,10,0,0">
+                                    <Controls:ToggleSwitch
+                                        VerticalAlignment="Center"
+                                        ContentDirection="RightToLeft"
+                                        DockPanel.Dock="Left"
+                                        Header="{local:Loc ShowDonateButton,
+                                                           IsAsync=True}"
+                                        IsOn="{Binding Settings.JSettings.ShowDonateButton, Mode=TwoWay}"
+                                        OffContent="{local:Loc Off,
+                                                               IsAsync=True}"
+                                        OnContent="{local:Loc On,
+                                                              IsAsync=True}"
+                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                        ToolTip="{local:Loc ShowDonateButtonInfo,
+                                                            IsAsync=True}"
+                                        />
                                 </DockPanel>
                             </StackPanel>
                         </GroupBox>

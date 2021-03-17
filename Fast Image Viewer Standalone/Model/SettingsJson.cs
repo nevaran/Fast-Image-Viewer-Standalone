@@ -274,6 +274,21 @@ namespace FIVStandard.Model
             }
         }
 
+        private bool showDonateButton = true;
+
+        public bool ShowDonateButton
+        {
+            get
+            {
+                return showDonateButton;
+            }
+            set
+            {
+                showDonateButton = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool mediaMuted = false;
 
         public bool MediaMuted

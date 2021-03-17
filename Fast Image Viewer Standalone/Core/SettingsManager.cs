@@ -188,7 +188,10 @@ namespace FIVStandard.Core
             if (JSettings.FilterBmp)
                 AddActiveFilter(".bmp");
             if (JSettings.FilterTiff)
+            {
                 AddActiveFilter(".tiff");
+                AddActiveFilter(".tif");//include alternative name format
+            }
             if (JSettings.FilterIco)
                 AddActiveFilter(".ico");
             if (JSettings.FilterSvg)
