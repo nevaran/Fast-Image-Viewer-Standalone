@@ -80,7 +80,7 @@ namespace FIVStandard
         #region Image Properties
         private BitmapSource imageSource = null;
 
-        public BitmapSource ImageSource
+        public BitmapSource ImageSource//used only for non-animated files
         {
             get
             {
