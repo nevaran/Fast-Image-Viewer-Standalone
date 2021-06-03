@@ -24,8 +24,8 @@
     Loaded="OnAppLoaded"
     MouseDown="OnMouseDown"
     PreviewKeyDown="OnKeyDown"
-    SizeChanged="MainFIV_SizeChanged"
-    StateChanged="MainFIV_StateChanged"
+    SizeChanged="OnMainFIV_SizeChanged"
+    StateChanged="OnMainFIV_StateChanged"
     TitleCharacterCasing="Normal"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
@@ -55,7 +55,7 @@
             <Setter Property="Focusable" Value="False" />
             <EventSetter
                 Event="PreviewMouseDown"
-                Handler="ListBox_PreviewMouseDown"
+                Handler="OnListBox_PreviewMouseDown"
                 />
             <EventSetter
                 Event="Loaded"
@@ -180,7 +180,7 @@
             IsEnabled="{Binding Settings.JSettings.ShortcutButtonsOn, Mode=OneWay}"
             IsTabStop="False"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-            SelectionChanged="MetroTabControl_SelectionChanged"
+            SelectionChanged="OnMetroTabControl_SelectionChanged"
             >
             <!--  KeepVisualTreeInMemoryWhenChangingTabs="True"  -->
 
@@ -245,7 +245,7 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            Text="{Binding ImgResStringFormat, Mode=OneWay, IsAsync=True}"
+                            Text="{Binding ImageInfo.ImgResStringFormat, Mode=OneWay, IsAsync=True}"
                             TextWrapping="Wrap"
                             />
                     </Border>
@@ -314,7 +314,7 @@
                     <!--  Main Window Controls  -->
                     <Grid
                         AllowDrop="True"
-                        Drop="Media_Drop"
+                        Drop="OnMedia_Drop"
                         MouseMove="MediaImageView_MouseMove"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
@@ -336,7 +336,7 @@
                             ItemsSource="{Binding ImagesDataView, Mode=OneWay}"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             SelectedItem="{Binding ImageItem, Mode=TwoWay}"
-                            SelectionChanged="ThumbnailList_SelectionChanged"
+                            SelectionChanged="OnThumbnailList_SelectionChanged"
                             VirtualizingStackPanel.IsVirtualizing="True"
                             Visibility="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                             >
@@ -433,7 +433,7 @@
                             Background="{x:Null}"
                             BorderBrush="{x:Null}"
                             BorderThickness="0"
-                            Click="MediaVolumeIcon_Click"
+                            Click="OnMediaVolumeIcon_Click"
                             Focusable="False"
                             Foreground="{x:Null}"
                             IsTabStop="False"
@@ -491,7 +491,7 @@
                                 IsMuted="{Binding Settings.JSettings.MediaMuted, Mode=TwoWay}"
                                 LoadedBehavior="Play"
                                 LoopingBehavior="Play"
-                                MediaOpened="MediaView_MediaOpened"
+                                MediaOpened="OnMediaView_MediaOpened"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ScrubbingEnabled="True"
                                 SpeedRatio="1"
@@ -911,8 +911,8 @@
                                         Minimum="40"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         SmallChange="5"
-                                        Thumb.DragCompleted="ThumbnailSlider_DragCompleted"
-                                        Thumb.DragStarted="ThumbnailSlider_DragStarted"
+                                        Thumb.DragCompleted="OnThumbnailSlider_DragCompleted"
+                                        Thumb.DragStarted="OnThumbnailSlider_DragStarted"
                                         TickFrequency="5"
                                         Value="{Binding Settings.JSettings.ThumbnailRes, Mode=TwoWay}"
                                         />

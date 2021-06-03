@@ -46,7 +46,7 @@ namespace FIVStandard.Core
 
             //Call all essential methods connected to the properties in the JSettings class
             ChangeTheme();
-            OnLanguageChanged();
+            LanguageChanged();
             UpdateActiveFilterList();
 
             //TODO: temporary test code
@@ -120,12 +120,12 @@ namespace FIVStandard.Core
             mainWindow.WindowState = JSettings.WindowState;
         }
 
-        private void OnThemeSwitch()
+        private void ThemeSwitch()
         {
             ChangeTheme();
         }
 
-        private void OnAccentChanged()
+        private void AccentChanged()
         {
             ChangeTheme();//since theme also is rooted with accent
         }
@@ -144,12 +144,12 @@ namespace FIVStandard.Core
             ThemeManager.Current.ChangeTheme(Application.Current, $"{theme}.{JSettings.ThemeAccents[JSettings.ThemeAccentDropIndex]}");
         }
 
-        private void OnLanguageChanged()
+        private void LanguageChanged()
         {
             Localization.TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo(JSettings.ShownLanguage[JSettings.ShownLanguageDropIndex].tag);
         }
 
-        private async Task OnDownsizeSwitch()
+        private async Task DownsizeSwitch()
         {
             if (mainWindow.ImagesData.Count > 0 && !mainWindow.ImageItem.IsAnimated)
             {
@@ -158,9 +158,10 @@ namespace FIVStandard.Core
             }
         }
 
-        private void OnThumbnailResChanged()
+        private void ThumbnailResChanged()
         {
-            mainWindow.ThumbnailResSlider_ValueChanged();
+            if (!mainWindow.ThumbnailSlider_DragStarted)
+                mainWindow.ReloadAllThumbnailsAsync();
         }
 
         public void ClearActiveFilterList()
@@ -230,19 +231,19 @@ namespace FIVStandard.Core
             switch (e.PropertyName)
             {
                 case nameof(JSettings.ShownLanguageDropIndex):
-                    OnLanguageChanged();
+                    LanguageChanged();
                     break;
                 case nameof(JSettings.DarkModeToggle):
-                    OnThemeSwitch();
+                    ThemeSwitch();
                     break;
                 case nameof(JSettings.ThemeAccentDropIndex):
-                    OnAccentChanged();
+                    AccentChanged();
                     break;
                 case nameof(JSettings.DownsizeImageToggle):
-                    await OnDownsizeSwitch();
+                    await DownsizeSwitch();
                     break;
                 case nameof(JSettings.ThumbnailRes):
-                    OnThumbnailResChanged();
+                    ThumbnailResChanged();
                     break;
                 case nameof(JSettings.FilterJpg):
                     UpdateActiveFilterList();

@@ -6,7 +6,7 @@ namespace FIVStandard.ViewModel
 {
     public sealed class ThumbnailItemData : PropertyChangedBase
 	{
-        public static SettingsJson Settings { get; set; }
+        public static SettingsJson Settings { get; set; }//Easier access for the thumbnail data, since we will always have just one instance of this
 
 		private string _thumbnailName;
 		public string ThumbnailName

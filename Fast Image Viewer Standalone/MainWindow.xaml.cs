@@ -1,5 +1,6 @@
 ﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
+using FIVStandard.Model;
 using FIVStandard.Utils;
 using FIVStandard.ViewModel;
 using MahApps.Metro.Controls;
@@ -30,6 +31,7 @@ namespace FIVStandard
 {
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
+        #region Images
         private ThumbnailItemData imageItem = null;
 
         /// <summary>
@@ -76,8 +78,8 @@ namespace FIVStandard
                 }
             }
         }
+        #endregion
 
-        #region Image Properties
         private BitmapSource imageSource = null;
 
         public BitmapSource ImageSource//used only for non-animated files
@@ -93,68 +95,27 @@ namespace FIVStandard
             }
         }
 
-        private int imgWidth = 0;
-
-        public int ImgWidth
-        {
-            get
-            {
-                return imgWidth;
-            }
-            set
-            {
-                imgWidth = value;
-                OnPropertyChanged();
-                OnPropertyChanged("ImgResStringFormat");
-            }
-        }
-
-        private int imgHeight = 0;
-
-        public int ImgHeight
-        {
-            get
-            {
-                return imgHeight;
-            }
-            set
-            {
-                imgHeight = value;
-                OnPropertyChanged();
-                OnPropertyChanged("ImgResStringFormat");
-            }
-        }
-
-        public string ImgResStringFormat
-        {
-            get
-            {
-                if (ImgWidth == 0 || ImgHeight == 0)
-                {
-                    return Tools.RnJesus();
-                }
-                else
-                    return $"{ImgWidth.ToString()}x{ImgHeight.ToString()}";
-            }
-        }
-        #endregion
+        public ImageInformation ImageInfo { get; set; }
 
         public UpdateCheck AppUpdater { get; set; }
 
         public SettingsManager Settings { get; set; }
 
         private bool selectedNew = false;//used to avoid ListBox event to re-select the image, doubling the loading time
-        private bool dragStarted = false;//used for the ThumbnailSlider option to avoid glitching out
+
+        public bool ThumbnailSlider_DragStarted { get; private set; } = false;//used for the ThumbnailSlider option to avoid glitching out
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
         private Button editingButton = null;//current button control being edited - used for editing shortcuts
 
-        public bool ProgramLoaded = false;
+        private readonly DebounceDispatcher sharedDebouncer = new DebounceDispatcher();
+
+        public bool ProgramLoaded = false;//initial loading of the app is done with it's required modules loaded aswell
 
         private bool isLoading = false;
 
-        public bool IsLoading
+        public bool IsLoading//is the program loading an image/media - used for the loading spinner
         {
             get
             {
@@ -169,7 +130,7 @@ namespace FIVStandard
 
         private bool isDeletingFile;
 
-        public bool IsDeletingFile
+        public bool IsDeletingFile//used for locking certain controls while the application is deleting a file
         {
             get
             {
@@ -186,7 +147,7 @@ namespace FIVStandard
 
         private string activeFile = "FIV";
         /// <summary>
-        /// file name + extension
+        /// File name + extension
         /// </summary>
         public string ActiveFile
         {
@@ -209,11 +170,11 @@ namespace FIVStandard
         private string ActiveFolder { get; set; } = "";
 
         /// <summary>
-        /// directory + file name + extension
+        /// Directory + file name + extension
         /// </summary>
         public string ActivePath { get; set; } = "";
 
-        int TabControlSelectedTab = 0;
+        private int TabControlSelectedTab = 0;//used for checking if we are in the General tab or other. Disables certain features if not in General
 
         public static string DonationLink { get => "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url"; }
 
@@ -228,7 +189,7 @@ namespace FIVStandard
         {
             get
             {
-                if (_openFileWindow == null)
+                if (_openFileWindow == null)//initialize only if module is required to improve startup speed
                 {
                     _openFileWindow = new OpenFileDialog() { Filter = "Images|*.JPG;*.JPEG;*.PNG;*.GIF;*.BMP;*.TIFF;*.ICO;*.SVG;*.WEBP;*.WEBM"/* + "|All files (*.*)|*.*" */};
 #if DEBUG
@@ -249,7 +210,7 @@ namespace FIVStandard
         {
             get
             {
-                if(_notificationManager == null)
+                if(_notificationManager == null)//initialize only if module is required to improve startup speed
                 {
                     _notificationManager = new NotificationManager(Notifications.Wpf.Core.Controls.NotificationPosition.BottomRight);
 #if DEBUG
@@ -270,7 +231,7 @@ namespace FIVStandard
         {
             get
             {
-                if(_notificationContent == null)
+                if(_notificationContent == null)//initialize only if module is required to improve startup speed
                 {
                     _notificationContent = new NotificationContent();
 #if DEBUG
@@ -308,6 +269,8 @@ namespace FIVStandard
 
         public MainWindow()
         {
+            ImageInfo = new ImageInformation();
+
             Settings = new SettingsManager(this);
             SettingsStore.InitSettingsStore(Settings.JSettings);
             ThumbnailItemData.Settings = Settings.JSettings;
@@ -358,126 +321,6 @@ namespace FIVStandard
             {
                 await OpenNewFile(args[1]);
             }
-        }
-
-        private void Fsw_Created(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(async () =>
-            {
-                if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray)) return;//ignore if the file is not a valid type
-
-                ThumbnailItemData tt = new ThumbnailItemData
-                {
-                    ThumbnailName = e.Name,
-                    IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name).ToLower()),
-                };
-                ImagesData.Add(tt);
-
-                _ = Task.Run(() => Tools.LoadSingleThumbnailData(e.FullPath, tt));
-
-                if(ImageItem is null)
-                {
-                    selectedNew = true;
-                    await ChangeImage(0, false);
-                }
-
-                OnPropertyChanged("TitleInformation");//update title information
-
-                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CreatedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
-                NotificationContent.Message = e.Name;
-                NotificationContent.Type = NotificationType.Information;
-                _ = NotificationManager.ShowAsync(NotificationContent);
-            });
-        }
-
-        private void Fsw_Deleted(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(async () =>
-            {
-                bool dirty = false;
-
-                for (int i = 0; i < ImagesData.Count; i++)
-                {
-                    if (e.Name == ImagesData[i].ThumbnailName)
-                    {
-                        ImagesData.RemoveAt(i);
-                        dirty = true;
-
-                        break;
-                    }
-                }
-
-                if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray) && !dirty) return;//dont send a message if its not one of our files
-
-                if(ImageItem is null || ImageItem.ThumbnailName == e.Name)
-                {
-                    selectedNew = true;
-                    await ChangeImage(0, false);
-                }
-
-                OnPropertyChanged("TitleInformation");//update title information
-
-                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
-                NotificationContent.Message = e.Name;
-                NotificationContent.Type = NotificationType.Information;
-                _ = NotificationManager.ShowAsync(NotificationContent);
-            });
-        }
-
-        private void Fsw_Renamed(object sender, RenamedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(async () =>
-            {
-                try
-                {
-                    for (int i = 0; i < ImagesData.Count; i++)
-                    {
-                        if (e.OldName == ImagesData[i].ThumbnailName)
-                        {
-                            if (Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray))
-                            {
-                                var oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
-
-                                ThumbnailItemData tt = new ThumbnailItemData
-                                {
-                                    ThumbnailName = e.Name,
-                                    IsAnimated = ImagesData[i].IsAnimated,
-
-                                    ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
-                                };
-
-                                ImagesData[i] = tt;
-
-                                //if the viewed item is the changed one, update it
-                                if (ActiveFile == e.OldName)
-                                {
-                                    ActiveFile = ImagesData[i].ThumbnailName;
-                                }
-
-                                if (ImageItem.ThumbnailName == e.Name)
-                                {
-                                    selectedNew = true;
-                                    await ChangeImage(0, false);
-                                }
-
-                                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
-                                NotificationContent.Message = e.Name;
-                                NotificationContent.Type = NotificationType.Information;
-                                _ = NotificationManager.ShowAsync(NotificationContent);
-                            }
-                            else//file has been renamed to something with a non-valid extension - remove it from the list
-                            {
-                                ImagesData.RemoveAt(i);
-                                selectedNew = true;
-                                await ChangeImage(0, false);
-                            }
-
-                            break;
-                        }
-                    }
-                }
-                catch { }
-            });
         }
 
         public async Task OpenNewFile(string path)
@@ -564,16 +407,16 @@ namespace FIVStandard
             ImagesData.Clear();
             await CloseMedia();
             ImageSource = null;
-            ImgWidth = 0;
-            ImgHeight = 0;
+            ImageInfo.ImgWidth = 0;
+            ImageInfo.ImgHeight = 0;
         }
 
         private async Task ClearViewer()
         {
             await CloseMedia();
             ImageSource = null;
-            ImgWidth = 0;
-            ImgHeight = 0;
+            ImageInfo.ImgWidth = 0;
+            ImageInfo.ImgHeight = 0;
         }
 
         private async Task OpenMedia(Uri uri)
@@ -650,7 +493,7 @@ namespace FIVStandard
 
             IsLoading = true;
 
-            if (ImageItem.IsAnimated)
+            if (ImageItem.IsAnimated)//show different controls based on what type the file is
             {
                 MediaProgression.Visibility = Visibility.Visible;
                 VolumeProgression.Visibility = Visibility.Visible;
@@ -694,10 +537,10 @@ namespace FIVStandard
                 if (ImagesData.Count > 0)
                 {
                     Tools.GetImageInformation(ActivePath, ImageItem);
-                    ImgWidth = ImageItem.ImageWidth;
-                    ImgHeight = ImageItem.ImageHeight;
+                    ImageInfo.ImgWidth = ImageItem.ImageWidth;
+                    ImageInfo.ImgHeight = ImageItem.ImageHeight;
                 }
-                if (ImageItem.IsAnimated)//the image is animated, try to load it via ffm instead
+                if (ImageItem.IsAnimated)//the image is animated, try to load it via FFME instead
                 {
                     await NewUri(ActivePath, resetZoom);
                     return;
@@ -721,8 +564,7 @@ namespace FIVStandard
                 await CloseMedia();
 
                 // load the image
-                //ImageSource = null;
-                BitmapSource bitmapSource = await Task.Run(() => Tools.LoadImage(path, ImgWidth, ImgHeight, this, ctLoadImage));
+                BitmapSource bitmapSource = await Task.Run(() => Tools.LoadImage(path, ImageInfo.ImgWidth, ImageInfo.ImgHeight, this, ctLoadImage));
 
                 // repeat the token check
                 if (!ctLoadImage.IsCancellationRequested)
@@ -738,17 +580,28 @@ namespace FIVStandard
             selectedNew = false;
 
             ScrollToListView();
-            GC.Collect();
-            //ddGcCollect.Debounce(100, GcCollectNormal);
+
+            void ScrollToListView()//scroll to the newly selected item
+            {
+                int cp = ImagesDataView.CurrentPosition;
+
+                if (cp < 0)//dont do anything if not 0 or less aka nothing selected (-1)
+                    return;
+
+                thumbnailList.ScrollIntoView(ImagesDataView.GetItemAt(cp));
+            }
+
+            //GC.Collect();
+
+            //have a delayed garbage collection call to clean up BitmapSource that did not free up immediately after a new image has been loaded
+            sharedDebouncer.Debounce(500, GcCollectNormal);
         }
 
-        //private readonly DebounceDispatcher ddGcCollect = new DebounceDispatcher();
-
-        //private void GcCollectNormal()
-        //{
-        //    GC.Collect();
-        //    Debug.WriteLine($"MEM {GC.GetTotalMemory(false) / 1024 / 1024}mb");
-        //}
+        private void GcCollectNormal()
+        {
+            GC.Collect();
+            //Debug.WriteLine($"MEM {GC.GetTotalMemory(false) / 1024 / 1024}mb");
+        }
 
         CancellationTokenSource allThumbnailTokenSource;
         CancellationToken ct;
@@ -773,15 +626,6 @@ namespace FIVStandard
                 }
 
             }, allThumbnailTokenSource.Token);
-        }
-
-        public void ExploreFile()
-        {
-            if (File.Exists(ActivePath))
-            {
-                //Clean up file path so it can be navigated OK
-                Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Path.GetFullPath(ActivePath)));
-            }
         }
 
         private async Task DeleteToRecycleAsync(string path)
@@ -846,7 +690,7 @@ namespace FIVStandard
             if (ImageItem is null || !File.Exists(ActivePath)) return;
 
             string fileType = Path.GetExtension(ImageItem.ThumbnailName);
-            if (fileType == ".gif"  || fileType == ".webm")//TODO: temp fix
+            if (fileType == ".gif"  || fileType == ".webm")//if its a media, free up the file before cutting it to the clipboard
             {
                 await ClearViewer();
             }
@@ -859,60 +703,40 @@ namespace FIVStandard
             _ = NotificationManager.ShowAsync(NotificationContent);
         }
 
-        private void OpenHyperlink(string url)
+        #region XAML events
+        private async void OnMedia_Drop(object sender, DragEventArgs e)
         {
-            try
+            string draggedFileUrl = (string)e.Data.GetData(DataFormats.Html, false);
+            //Debug.WriteLine(Tools.GetUrlSourceImage(draggedFileUrl));
+
+            if (draggedFileUrl == null)//load normally
             {
-                ProcessStartInfo sInfo = new ProcessStartInfo(url) { UseShellExecute = true };
-                Process.Start(sInfo);
-            }
-            catch (Win32Exception noBrowser)
-            {
-                if (noBrowser.ErrorCode == -2147467259)
+                if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 {
-                    NotificationContent.Title = "Hyperlink Error";
-                    NotificationContent.Message = noBrowser.Message;
-                    NotificationContent.Type = NotificationType.Error;
-                    NotificationManager.ShowAsync(NotificationContent);
+                    // Note that you can have more than one file.
+                    string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                    // Assuming you have one file that you care about, pass it off; if there are no valid files it will still open the folder but have an empty list
+                    if (files.Length >= 1)
+                        await OpenNewFile(files[0]);
                 }
             }
-            catch (Exception other)
+            else//opened an image from a URL
             {
-                NotificationContent.Title = "Hyperlink Error";
-                NotificationContent.Message = other.Message;
-                NotificationContent.Type = NotificationType.Error;
-                NotificationManager.ShowAsync(NotificationContent);
+                //await OpenNewFile(Tools.GetUrlSourceImage(draggedFileUrl));
+                //ImageInfo.FromUrl = true;
             }
         }
 
-        #region XAML events
-        private async void Media_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                // Note that you can have more than one file.
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                // Assuming you have one file that you care about, pass it off; if there are no valid files it will still open the folder but have an empty list
-                if (files.Length >= 1)
-                    await OpenNewFile(files[0]);
-            }
-        }
-
-        private void OnDonateClick(object sender, RoutedEventArgs e)
-        {
-            OpenHyperlink(DonationLink);
-        }
-
-        private void MediaView_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
+        private void OnMediaView_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
         {
             if (ImagesData.Count > 0)
             {
-                ImgWidth = MediaView.NaturalVideoWidth;
-                ImgHeight = MediaView.NaturalVideoHeight;
+                ImageInfo.ImgWidth = MediaView.NaturalVideoWidth;
+                ImageInfo.ImgHeight = MediaView.NaturalVideoHeight;
 
-                ImageItem.ImageWidth = ImgWidth;
-                ImageItem.ImageHeight = ImgHeight;
+                ImageItem.ImageWidth = ImageInfo.ImgWidth;
+                ImageItem.ImageHeight = ImageInfo.ImgHeight;
             }
             MediaProgression.Maximum = MediaView.NaturalDuration.Value.Ticks;
         }
@@ -956,7 +780,7 @@ namespace FIVStandard
 
         private void OnOpenFileLocation(object sender, RoutedEventArgs e)
         {
-            ExploreFile();
+            Tools.ExploreFile(Path.GetFullPath(ActivePath));
         }
 
         private async void OnKeyDown(object sender, KeyEventArgs e)
@@ -1026,7 +850,7 @@ namespace FIVStandard
 
             if (e.Key == Settings.JSettings.ExploreFileKey)
             {
-                ExploreFile();
+                Tools.ExploreFile(Path.GetFullPath(ActivePath));
             }
 
             if(e.Key == Settings.JSettings.CopyImageToClipboardKey)
@@ -1121,7 +945,7 @@ namespace FIVStandard
             await AppUpdater.CheckForUpdates(UpdateCheckType.FullUpdateForced);
         }
 
-        private async void ThumbnailList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void OnThumbnailList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ImagesDataView.CurrentPosition < 0) return;
 
@@ -1131,46 +955,30 @@ namespace FIVStandard
             }
         }
 
-        private void ScrollToListView()
-        {
-            int cp = ImagesDataView.CurrentPosition;
-
-            if (cp < 0)//dont do anything if not 0 or less aka nothing selected (-1)
-                return;
-
-            thumbnailList.ScrollIntoView(ImagesDataView.GetItemAt(cp));
-        }
-
         //select event when using the mouse on the list box items
-        private void ListBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void OnListBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var tid = (ListBoxItem)sender;
             ImageItem = (ThumbnailItemData)tid.Content;
         }
 
-        private void ThumbnailSlider_DragCompleted(object sender, DragCompletedEventArgs e)
+        private void OnThumbnailSlider_DragStarted(object sender, DragStartedEventArgs e)
+        {
+            ThumbnailSlider_DragStarted = true;
+        }
+
+        private void OnThumbnailSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             ReloadAllThumbnailsAsync();
-            dragStarted = false;
+            ThumbnailSlider_DragStarted = false;
         }
 
-        private void ThumbnailSlider_DragStarted(object sender, DragStartedEventArgs e)
-        {
-            dragStarted = true;
-        }
-
-        public void ThumbnailResSlider_ValueChanged()
-        {
-            if (!dragStarted)
-                ReloadAllThumbnailsAsync();
-        }
-
-        private void MediaVolumeIcon_Click(object sender, RoutedEventArgs e)
+        private void OnMediaVolumeIcon_Click(object sender, RoutedEventArgs e)
         {
             Settings.JSettings.MediaMuted = !Settings.JSettings.MediaMuted;
         }
 
-        private void MainFIV_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void OnMainFIV_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if(WindowState == WindowState.Normal)
             {
@@ -1179,15 +987,16 @@ namespace FIVStandard
             }
         }
 
-        private void MainFIV_StateChanged(object sender, EventArgs e)
+        private void OnMainFIV_StateChanged(object sender, EventArgs e)
         {
             Settings.JSettings.WindowState = WindowState;
         }
 
-        private async void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void OnMetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MetroTabControl tc = (MetroTabControl)sender;
             TabControlSelectedTab = tc.SelectedIndex;
+
             if (TabControlSelectedTab == 0)
             {
                 MediaView?.Play();
@@ -1224,9 +1033,14 @@ namespace FIVStandard
                 Task.Run(() => Tools.LoadSingleThumbnailData(Path.Combine(ActiveFolder, dataItem.ThumbnailName), dataItem));
         }
 
+        private void OnDonateClick(object sender, RoutedEventArgs e)
+        {
+            Tools.OpenHyperlink(DonationLink, NotificationContent, NotificationManager);
+        }
+
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-            OpenHyperlink(e.Uri.OriginalString);
+            Tools.OpenHyperlink(e.Uri.OriginalString, NotificationContent, NotificationManager);
         }
 
         private void OnAssociateFileButton_Click(object sender, RoutedEventArgs e)
@@ -1267,21 +1081,139 @@ namespace FIVStandard
             Settings.JSettings.FilterAll = cb;
         }
 
-        private readonly DebounceDispatcher ddMouseMove = new DebounceDispatcher();
-
         private void MediaImageView_MouseMove(object sender, MouseEventArgs e)
         {
-            MediaView.Cursor = null;
+            //MediaView.Cursor = null;
             PictureView.Cursor = null;
-            ddMouseMove.Debounce(3000, DefaultMouseLook);
+            sharedDebouncer.Debounce(3000, DefaultMouseLook);//call to hide the mouse after X ms
+
+            void DefaultMouseLook()//hide the mouse
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    //MediaView.Cursor = Cursors.None;
+                    PictureView.Cursor = Cursors.None;
+                });
+            }
         }
 
-        private void DefaultMouseLook()
+        private void Fsw_Created(object sender, FileSystemEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(async () =>
             {
-                MediaView.Cursor = Cursors.None;
-                PictureView.Cursor = Cursors.None;
+                if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray)) return;//ignore if the file is not a valid type
+
+                ThumbnailItemData tt = new ThumbnailItemData
+                {
+                    ThumbnailName = e.Name,
+                    IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name).ToLower()),
+                };
+                ImagesData.Add(tt);
+
+                _ = Task.Run(() => Tools.LoadSingleThumbnailData(e.FullPath, tt));
+
+                if (ImageItem is null)
+                {
+                    selectedNew = true;
+                    await ChangeImage(0, false);
+                }
+
+                OnPropertyChanged("TitleInformation");//Force update title information
+
+                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.CreatedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                NotificationContent.Message = e.Name;
+                NotificationContent.Type = NotificationType.Information;
+                _ = NotificationManager.ShowAsync(NotificationContent);
+            });
+        }
+
+        private void Fsw_Deleted(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(async () =>
+            {
+                bool dirty = false;
+
+                for (int i = 0; i < ImagesData.Count; i++)
+                {
+                    if (e.Name == ImagesData[i].ThumbnailName)
+                    {
+                        ImagesData.RemoveAt(i);
+                        dirty = true;
+
+                        break;
+                    }
+                }
+
+                if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray) && !dirty) return;//dont send a message if its not one of our files
+
+                if (ImageItem is null || ImageItem.ThumbnailName == e.Name)
+                {
+                    selectedNew = true;
+                    await ChangeImage(0, false);
+                }
+
+                OnPropertyChanged("TitleInformation");//force update title information
+
+                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DeletedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                NotificationContent.Message = e.Name;
+                NotificationContent.Type = NotificationType.Information;
+                _ = NotificationManager.ShowAsync(NotificationContent);
+            });
+        }
+
+        private void Fsw_Renamed(object sender, RenamedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(async () =>
+            {
+                try
+                {
+                    for (int i = 0; i < ImagesData.Count; i++)
+                    {
+                        if (e.OldName == ImagesData[i].ThumbnailName)
+                        {
+                            if (Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray))
+                            {
+                                var oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
+
+                                ThumbnailItemData tt = new ThumbnailItemData
+                                {
+                                    ThumbnailName = e.Name,
+                                    IsAnimated = ImagesData[i].IsAnimated,
+
+                                    ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
+                                };
+
+                                ImagesData[i] = tt;
+
+                                //if the viewed item is the changed one, update it
+                                if (ActiveFile == e.OldName)
+                                {
+                                    ActiveFile = ImagesData[i].ThumbnailName;
+                                }
+
+                                if (ImageItem.ThumbnailName == e.Name)
+                                {
+                                    selectedNew = true;
+                                    await ChangeImage(0, false);
+                                }
+
+                                NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
+                                NotificationContent.Message = e.Name;
+                                NotificationContent.Type = NotificationType.Information;
+                                _ = NotificationManager.ShowAsync(NotificationContent);
+                            }
+                            else//file has been renamed to something with a non-valid extension - remove it from the list
+                            {
+                                ImagesData.RemoveAt(i);
+                                selectedNew = true;
+                                await ChangeImage(0, false);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+                catch { }
             });
         }
 

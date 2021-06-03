@@ -1,7 +1,10 @@
 ﻿using FIVStandard.Utils;
 using FIVStandard.ViewModel;
 using ImageMagick;
+using Notifications.Wpf.Core;
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -130,7 +133,6 @@ namespace FIVStandard.Core
         /// <param name="sw">Target width</param>
         /// <param name="h">Image height</param>
         /// <param name="sh">Target height</param>
-        /// <returns></returns>
         private static double ScaleToBox(double w, double sw, double h, double sh)
         {
             double scaleWidth = sw / w;
@@ -141,6 +143,9 @@ namespace FIVStandard.Core
             return scale;
         }
 
+        /// <summary>
+        /// Is the file type is of the supported animated type
+        /// </summary>
         public static bool IsAnimatedExtension(string ext) => ext switch
         {
             ".gif" => true,
@@ -246,6 +251,61 @@ namespace FIVStandard.Core
         {
             return s[(s.IndexOf(c) + 1)..];
             //return s.Substring(s.IndexOf(c) + 1);
+        }
+
+        /// <summary>
+        /// Opens windows explorer to the designated file.
+        /// To avoid crashes or bugs, use `Path.GetFullPath(path)`
+        /// </summary>
+        public static void ExploreFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                Process.Start("explorer.exe", string.Format("/select,\"{0}\"", path));
+            }
+        }
+
+        /// <summary>
+        /// Returns only the URL of a `DragEventHandle.Data.GetData(DataFormats.Html)`
+        /// </summary>
+        public static string GetUrlSourceImage(string str)
+        {
+            string finalString = string.Empty;
+            string firstString = "src=\"";
+            string lastString = "\"";
+
+            int startPos = str.IndexOf(firstString) + firstString.Length;
+            string modifiedString = str.Substring(startPos, str.Length - startPos);
+            int endPos = modifiedString.IndexOf(lastString);
+            finalString = modifiedString.Substring(0, endPos);
+
+            return finalString;
+        }
+
+        public static void OpenHyperlink(string url, NotificationContent content, NotificationManager manager)
+        {
+            try
+            {
+                ProcessStartInfo sInfo = new ProcessStartInfo(url) { UseShellExecute = true };
+                Process.Start(sInfo);
+            }
+            catch (Win32Exception noBrowser)
+            {
+                if (noBrowser.ErrorCode == -2147467259)
+                {
+                    content.Title = "Hyperlink Error";
+                    content.Message = noBrowser.Message;
+                    content.Type = NotificationType.Error;
+                    manager.ShowAsync(content);
+                }
+            }
+            catch (Exception other)
+            {
+                content.Title = "Hyperlink Error";
+                content.Message = other.Message;
+                content.Type = NotificationType.Error;
+                manager.ShowAsync(content);
+            }
         }
 
         /*public static BitmapImage WriteableBitmapToBitmapImage(WriteableBitmap wbm)
