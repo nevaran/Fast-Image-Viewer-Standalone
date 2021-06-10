@@ -55,7 +55,7 @@ namespace FIVStandard
 
         public ListCollectionView ImagesDataView { get; }//sorted list - use this
 
-        public ObservableCollection<ThumbnailItemData> ImagesData { get; } = new ObservableCollection<ThumbnailItemData>();
+        public ObservableCollection<ThumbnailItemData> ImagesData { get; } = new();
 
         public string TitleInformation
         {
@@ -73,7 +73,9 @@ namespace FIVStandard
                     }
                     else
                     {
+#pragma warning disable IDE0071 // Breaks the binding somehow last time it was simplified
                         return $"[{(ImagesDataView.CurrentPosition + 1).ToString()}/{(ImagesDataView.Count).ToString()}] {activeFile}";
+#pragma warning restore IDE0071 // Simplify interpolation
                     }
                 }
             }
@@ -109,7 +111,7 @@ namespace FIVStandard
 
         private Button editingButton = null;//current button control being edited - used for editing shortcuts
 
-        private readonly DebounceDispatcher sharedDebouncer = new DebounceDispatcher();
+        private readonly DebounceDispatcher sharedDebouncer = new();
 
         public bool ProgramLoaded = false;//initial loading of the app is done with it's required modules loaded aswell
 
@@ -178,7 +180,7 @@ namespace FIVStandard
 
         public static string DonationLink { get => "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url"; }
 
-        private readonly FileSystemWatcher fsw = new FileSystemWatcher()
+        private readonly FileSystemWatcher fsw = new()
         {
             NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite
             , IncludeSubdirectories = false
@@ -314,11 +316,13 @@ namespace FIVStandard
             //path = @"D:\FrapsVids\sharex\Screenshots\2020-12-28_03-19-28.webm";
 
             await OpenNewFile(path);
+            //await Task.Run(() => OpenNewFile(path));//TODO: figure out how to run in another thread so the main UI thread doesnt get held u
 #endif
 
             string[] args = Environment.GetCommandLineArgs();
             if (args.Length > 1)
             {
+                //_ = Task.Run(() => OpenNewFile(args[1]));
                 await OpenNewFile(args[1]);
             }
         }
@@ -356,7 +360,7 @@ namespace FIVStandard
         private void GetDirectoryFiles(string searchFolder)
         {
             ImagesData.Clear();
-            List<string> filesFound = new List<string>();
+            List<string> filesFound = new();
 
             filesFound.AddRange(Directory.EnumerateFiles(searchFolder));//add all files of the folder to a list
 
@@ -368,7 +372,7 @@ namespace FIVStandard
                 {
                     filesFound[i] = Path.GetFileName(filesFound[i]);//get just the file name + extension
 
-                    ThumbnailItemData tt = new ThumbnailItemData
+                    ThumbnailItemData tt = new()
                     {
                         ThumbnailName = filesFound[i],
                         IsAnimated = Tools.IsAnimatedExtension(ext),
@@ -481,7 +485,7 @@ namespace FIVStandard
             await NewUri(ActivePath, resetZoom);
         }
 
-        CancellationTokenSource loadImageTokenSource = new CancellationTokenSource();
+        CancellationTokenSource loadImageTokenSource = new();
 
         private async Task NewUri(string path, bool resetZoom)
         {
@@ -511,7 +515,7 @@ namespace FIVStandard
                 borderImg.Visibility = Visibility.Hidden;
                 borderMed.Visibility = Visibility.Visible;
 
-                Uri uri = new Uri(path, UriKind.Absolute);
+                Uri uri = new(path, UriKind.Absolute);
 
                 ImageSource = null;
                 await CloseMedia();
@@ -1103,7 +1107,7 @@ namespace FIVStandard
             {
                 if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray)) return;//ignore if the file is not a valid type
 
-                ThumbnailItemData tt = new ThumbnailItemData
+                ThumbnailItemData tt = new()
                 {
                     ThumbnailName = e.Name,
                     IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name).ToLower()),
@@ -1175,7 +1179,7 @@ namespace FIVStandard
                             {
                                 var oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
 
-                                ThumbnailItemData tt = new ThumbnailItemData
+                                ThumbnailItemData tt = new()
                                 {
                                     ThumbnailName = e.Name,
                                     IsAnimated = ImagesData[i].IsAnimated,

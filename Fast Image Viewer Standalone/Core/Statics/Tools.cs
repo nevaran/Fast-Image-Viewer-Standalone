@@ -23,7 +23,7 @@ namespace FIVStandard.Core
             if (!File.Exists(path) || ct.IsCancellationRequested)
                 return Task.FromResult((BitmapSource)null);
 
-            using MagickImage image = new MagickImage(path);
+            using MagickImage image = new(path);
             
             if (Settings.DownsizeImageToggle)
             {
@@ -67,7 +67,7 @@ namespace FIVStandard.Core
 
             try
             {
-                using MagickImage image = new MagickImage(path);
+                using MagickImage image = new(path);
                 image.AutoOrient();
 
                 image.Thumbnail(Settings.ThumbnailRes, 0);
@@ -229,7 +229,7 @@ namespace FIVStandard.Core
 
         public static string RnJesus()//meme thing
         {
-            Random rnd = new Random();
+            Random rnd = new();
             string[] rnj = new string[] {
                         @"owo",
                         @"uwu",
@@ -275,7 +275,7 @@ namespace FIVStandard.Core
             string lastString = "\"";
 
             int startPos = str.IndexOf(firstString) + firstString.Length;
-            string modifiedString = str.Substring(startPos, str.Length - startPos);
+            string modifiedString = str[startPos..];
             int endPos = modifiedString.IndexOf(lastString);
             finalString = modifiedString.Substring(0, endPos);
 
@@ -286,7 +286,7 @@ namespace FIVStandard.Core
         {
             try
             {
-                ProcessStartInfo sInfo = new ProcessStartInfo(url) { UseShellExecute = true };
+                ProcessStartInfo sInfo = new(url) { UseShellExecute = true };
                 Process.Start(sInfo);
             }
             catch (Win32Exception noBrowser)
