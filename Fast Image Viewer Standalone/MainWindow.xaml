@@ -237,13 +237,14 @@
                     <Border
                         Width="200"
                         Height="40"
-                        Margin="2,2,0,0"
+                        Margin="12,2,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
                         <TextBlock
                             VerticalAlignment="Center"
+                            FontSize="14"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             Text="{Binding ImageInfo.ImgResStringFormat, Mode=OneWay, IsAsync=True}"
                             TextWrapping="Wrap"
@@ -253,9 +254,9 @@
                     <!--  Previous Button  -->
                     <Button
                         x:Name="Btn_Prev"
-                        Width="60"
-                        Height="40"
-                        Margin="0,3,80,0"
+                        Width="50"
+                        Height="25"
+                        Margin="0,10,90,0"
                         Padding="0"
                         VerticalAlignment="Top"
                         Click="OnClick_Prev"
@@ -264,8 +265,8 @@
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
                         <iconPacks:PackIconBoxIcons
-                            Width="25"
-                            Height="25"
+                            Width="15"
+                            Height="15"
                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                             IsTabStop="False"
                             Kind="SolidLeftArrow"
@@ -273,12 +274,36 @@
                             />
                     </Button>
 
+                    <!--  Pause Button  -->
+                    <Button
+                        x:Name="Btn_Pause"
+                        Width="35"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Padding="0"
+                        VerticalAlignment="Top"
+                        Click="OnClick_Pause"
+                        Focusable="False"
+                        IsTabStop="False"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        Visibility="Collapsed"
+                        >
+                        <iconPacks:PackIconBoxIcons
+                            Width="20"
+                            Height="20"
+                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            IsTabStop="False"
+                            Kind="RegularPauseCircle"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            />
+                    </Button>
+
                     <!--  Next Button  -->
                     <Button
                         x:Name="Btn_Next"
-                        Width="60"
-                        Height="40"
-                        Margin="80,3,0,0"
+                        Width="50"
+                        Height="25"
+                        Margin="90,10,0,0"
                         Padding="0"
                         VerticalAlignment="Top"
                         Click="OnClick_Next"
@@ -287,8 +312,8 @@
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
                         <iconPacks:PackIconBoxIcons
-                            Width="25"
-                            Height="25"
+                            Width="15"
+                            Height="15"
                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                             IsTabStop="False"
                             Kind="SolidRightArrow"
@@ -299,17 +324,28 @@
                     <!--  Open File Dialog Button  -->
                     <Button
                         Width="75"
+                        Height="25"
                         Margin="0,10,10,0"
                         Padding="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="OnOpenBrowseImage"
-                        Content="{local:Loc Open,
-                                            IsAsync=True}"
                         Focusable="False"
+                        FontSize="12"
                         IsTabStop="False"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        />
+                        ToolTip="{local:Loc Open,
+                                            IsAsync=True}"
+                        >
+                        <iconPacks:PackIconUnicons
+                            Width="20"
+                            Height="20"
+                            Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                            IsTabStop="False"
+                            Kind="FolderOpen"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            />
+                    </Button>
 
                     <!--  Main Window Controls  -->
                     <Grid
@@ -399,81 +435,106 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
-                        <!--  Progress Slider Control  -->
-                        <Slider
-                            x:Name="MediaProgression"
-                            Grid.Row="0"
+                        <!--  Media Controls Grid  -->
+                        <Grid
                             Grid.Column="1"
-                            Height="25"
-                            Margin="10,0,150,2"
-                            VerticalAlignment="Bottom"
-                            Focusable="False"
-                            IsMoveToPointEnabled="True"
-                            IsTabStop="False"
+                            Margin="10,0,0,2"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            Visibility="Hidden"
-                            Value="{Binding Path=Position, ElementName=MediaView, Converter={StaticResource TimeSpanTickConverter}, Mode=TwoWay}"
                             >
-                            <i:Interaction.Behaviors>
-                                <core:FreeSlideBehavior />
-                            </i:Interaction.Behaviors>
-                        </Slider>
 
-                        <!--  Mute Button Control  -->
-                        <Button
-                            x:Name="VolumeProgressionIcon"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Width="25"
-                            Height="25"
-                            Margin="10,0,110,2"
-                            Padding="0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Background="{x:Null}"
-                            BorderBrush="{x:Null}"
-                            BorderThickness="0"
-                            Click="OnMediaVolumeIcon_Click"
-                            Focusable="False"
-                            Foreground="{x:Null}"
-                            IsTabStop="False"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            Visibility="Hidden"
-                            >
-                            <iconPacks:PackIconBoxIcons
-                                x:Name="VolumeIcon"
-                                Foreground="{DynamicResource MahApps.Brushes.Accent}"
-                                IsTabStop="False"
-                                Kind="{Binding Settings.JSettings.VolumeIcon, Mode=OneWay}"
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Media Time Elapsed Control  -->
+                            <TextBlock
+                                x:Name="MediaTime"
+                                Grid.Column="0"
+                                Height="25"
+                                Margin="10,0,10,0"
+                                VerticalAlignment="Bottom"
+                                FontSize="14"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                Text="{Binding MediaTimeElapsedFormat, Mode=OneWay}"
+                                TextAlignment="Center"
+                                Visibility="Collapsed"
                                 />
-                        </Button>
-                        <!--  Volume Slider Control  -->
-                        <Slider
-                            x:Name="VolumeProgression"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Width="100"
-                            Height="25"
-                            Margin="10,0,10,2"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            AutoToolTipPlacement="TopLeft"
-                            AutoToolTipPrecision="2"
-                            Focusable="False"
-                            IsMoveToPointEnabled="True"
-                            IsTabStop="False"
-                            Maximum="1"
-                            Minimum="0"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            SmallChange="0.01"
-                            Visibility="Hidden"
-                            Value="{Binding Settings.JSettings.MediaVolume, Mode=TwoWay}"
-                            >
-                            <i:Interaction.Behaviors>
-                                <core:FreeSlideBehavior />
-                            </i:Interaction.Behaviors>
-                        </Slider>
+
+                            <!--  Media Progress Slider Control  -->
+                            <Slider
+                                x:Name="MediaProgression"
+                                Grid.Column="1"
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Bottom"
+                                Focusable="False"
+                                IsMoveToPointEnabled="True"
+                                IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                ValueChanged="MediaProgression_ValueChanged"
+                                Visibility="Hidden"
+                                Value="{Binding Path=Position, ElementName=MediaView, Converter={StaticResource TimeSpanTickConverter}, Mode=TwoWay}"
+                                >
+                                <i:Interaction.Behaviors>
+                                    <core:FreeSlideBehavior />
+                                </i:Interaction.Behaviors>
+                            </Slider>
+
+                            <!--  Media Mute Button Control  -->
+                            <Button
+                                x:Name="VolumeProgressionIcon"
+                                Grid.Column="2"
+                                Width="25"
+                                Height="25"
+                                Padding="0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                BorderThickness="0"
+                                Click="OnMediaVolumeIcon_Click"
+                                Focusable="False"
+                                Foreground="{x:Null}"
+                                IsTabStop="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                Visibility="Hidden"
+                                >
+                                <iconPacks:PackIconBoxIcons
+                                    x:Name="VolumeIcon"
+                                    Foreground="{DynamicResource MahApps.Brushes.Accent}"
+                                    IsTabStop="False"
+                                    Kind="{Binding Settings.JSettings.VolumeIcon, Mode=OneWay}"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    />
+                            </Button>
+
+                            <!--  Media Volume Slider Control  -->
+                            <Slider
+                                x:Name="VolumeProgression"
+                                Grid.Column="3"
+                                Width="100"
+                                Height="25"
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Bottom"
+                                AutoToolTipPlacement="TopLeft"
+                                AutoToolTipPrecision="2"
+                                Focusable="False"
+                                IsMoveToPointEnabled="True"
+                                IsTabStop="False"
+                                Maximum="1"
+                                Minimum="0"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                SmallChange="0.01"
+                                Visibility="Collapsed"
+                                Value="{Binding Settings.JSettings.MediaVolume, Mode=TwoWay}"
+                                >
+                                <i:Interaction.Behaviors>
+                                    <core:FreeSlideBehavior />
+                                </i:Interaction.Behaviors>
+                            </Slider>
+                        </Grid>
 
                         <!--  Media Control  -->
                         <utils:ZoomBorder

@@ -13,7 +13,7 @@ namespace FIVStandard.Core
 {
     public class SettingsManager
     {
-        public readonly MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
 
         public SettingsJson JSettings { get; set; }
 
@@ -59,7 +59,7 @@ namespace FIVStandard.Core
         {
             if (JSettings is null) return;
 
-            var options = new JsonSerializerOptions
+            JsonSerializerOptions options = new()
             {
                 WriteIndented = false,
             };
@@ -132,16 +132,9 @@ namespace FIVStandard.Core
 
         private void ChangeTheme()
         {
-            string theme;
-            if (JSettings.DarkModeToggle)
-            {
-                theme = "Dark";
-            }
-            else
-            {
-                theme = "Light";
-            }
-            ThemeManager.Current.ChangeTheme(Application.Current, $"{theme}.{JSettings.ThemeAccents[JSettings.ThemeAccentDropIndex]}");
+            string theme = JSettings.DarkModeToggle ? "Dark" : "Light";
+
+            _ = ThemeManager.Current.ChangeTheme(Application.Current, $"{theme}.{JSettings.ThemeAccents[JSettings.ThemeAccentDropIndex]}");
         }
 
         private void LanguageChanged()
@@ -151,7 +144,7 @@ namespace FIVStandard.Core
 
         private async Task DownsizeSwitch()
         {
-            if (mainWindow.ImagesData.Count > 0 && !mainWindow.ImageItem.IsAnimated)
+            if (mainWindow.ImagesData.Count > 0 && mainWindow.ImageItem.FileType == FileMediaType.Image)//reload image if its supported by the downsize feature (not animated/media)
             {
                 //mainWindow.ImageSource = await Tools.LoadImage(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight, mainWindow);
                 await mainWindow.ChangeImage(0, false, false);
@@ -218,7 +211,7 @@ namespace FIVStandard.Core
 
             JSettings.FilterActiveArray = JSettings.FilterActiveList.ToArray();
 
-            if (mainWindow.ProgramLoaded == false) return;//fixes crash
+            if (mainWindow.programLoaded == false) return;//fixes crash
 
             ReloadFolderFlag = true;
         }

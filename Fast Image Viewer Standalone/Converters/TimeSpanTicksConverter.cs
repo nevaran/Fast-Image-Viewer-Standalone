@@ -9,13 +9,13 @@ namespace FIVStandard.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             TimeSpan ts = (TimeSpan)value;
-            return ts.Ticks;
+            return ts.TotalMilliseconds;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            long d = System.Convert.ToInt64(value);
-            return new TimeSpan(d);
+            double d = System.Convert.ToDouble(value);
+            return TimeSpan.FromMilliseconds(d);
         }
     }
 }

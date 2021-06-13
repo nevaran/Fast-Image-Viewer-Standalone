@@ -203,7 +203,7 @@
     <value>Shortcuts</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Check for Updates</value>
+    <value>Check for updates</value>
   </data>
   <data name="FileNotFoundMsg" xml:space="preserve">
     <value>File not found</value>
@@ -344,7 +344,7 @@
     <value>Program</value>
   </data>
   <data name="ShowDonateButton" xml:space="preserve">
-    <value>Show Donate Button</value>
+    <value>Show donate button</value>
   </data>
   <data name="ShowDonateButtonInfo" xml:space="preserve">
     <value>Toggle visibility of the donate button on the program command window.</value>

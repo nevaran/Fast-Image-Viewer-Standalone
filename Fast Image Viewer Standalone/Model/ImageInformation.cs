@@ -51,24 +51,6 @@ namespace FIVStandard.Model
             }
         }
 
-        private bool fromUrl = false;
-
-        /// <summary>
-        /// is the image loaded normally or from a url
-        /// </summary>
-        public bool FromUrl
-        {
-            get
-            {
-                return fromUrl;
-            }
-            set
-            {
-                fromUrl = value;
-            }
-        }
-
-
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 

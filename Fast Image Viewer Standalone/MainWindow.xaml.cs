@@ -32,17 +32,14 @@ namespace FIVStandard
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         #region Images
-        private ThumbnailItemData imageItem = null;
+        private ThumbnailItemData imageItem;
 
         /// <summary>
         /// The class is always the currently viewed image
         /// </summary>
         public ThumbnailItemData ImageItem
         {
-            get
-            {
-                return imageItem;
-            }
+            get => imageItem;
             set
             {
                 if (imageItem == value) return;
@@ -74,7 +71,7 @@ namespace FIVStandard
                     else
                     {
 #pragma warning disable IDE0071 // Breaks the binding somehow last time it was simplified
-                        return $"[{(ImagesDataView.CurrentPosition + 1).ToString()}/{(ImagesDataView.Count).ToString()}] {activeFile}";
+                        return $"[{(ImagesDataView.CurrentPosition + 1).ToString()}/{ImagesDataView.Count.ToString()}] {activeFile}";
 #pragma warning restore IDE0071 // Simplify interpolation
                     }
                 }
@@ -82,14 +79,11 @@ namespace FIVStandard
         }
         #endregion
 
-        private BitmapSource imageSource = null;
+        private BitmapSource imageSource;
 
         public BitmapSource ImageSource//used only for non-animated files
         {
-            get
-            {
-                return imageSource;
-            }
+            get => imageSource;
             set
             {
                 imageSource = value;
@@ -97,32 +91,57 @@ namespace FIVStandard
             }
         }
 
+        private TimeSpan mediaTimeElapsed;
+
+        public TimeSpan MediaTimeElapsed
+        {
+            get => mediaTimeElapsed;
+            set
+            {
+                mediaTimeElapsed = value;
+                OnPropertyChanged();
+                OnPropertyChanged("MediaTimeElapsedFormat");
+            }
+        }
+
+        private TimeSpan mediaTimeElapsedMax;//total time (as TimeSpan) of the current media
+
+        public TimeSpan MediaTimeElapsedMax
+        {
+            get => mediaTimeElapsedMax;
+            set
+            {
+                mediaTimeElapsedMax = value;
+                OnPropertyChanged();
+                OnPropertyChanged(MediaTimeElapsedFormat);
+            }
+        }
+
+        public string MediaTimeElapsedFormat => $"{MediaTimeElapsed:hh\\:mm\\:ss} / {MediaTimeElapsedMax:hh\\:mm\\:ss}";
+
         public ImageInformation ImageInfo { get; set; }
 
         public UpdateCheck AppUpdater { get; set; }
 
         public SettingsManager Settings { get; set; }
 
-        private bool selectedNew = false;//used to avoid ListBox event to re-select the image, doubling the loading time
-
         public bool ThumbnailSlider_DragStarted { get; private set; } = false;//used for the ThumbnailSlider option to avoid glitching out
 
         //public static MainWindow AppWindow;//used for debugging ZoomBorder
 
-        private Button editingButton = null;//current button control being edited - used for editing shortcuts
+        private Button editingButton;//current button control being edited - used for editing shortcuts
 
         private readonly DebounceDispatcher sharedDebouncer = new();
 
-        public bool ProgramLoaded = false;//initial loading of the app is done with it's required modules loaded aswell
+        public bool programLoaded = false;//initial loading of the app is done with it's required modules loaded aswell
+
+        private bool selectedNew = false;//used to avoid ListBox event to re-select the image, doubling the loading time
 
         private bool isLoading = false;
 
         public bool IsLoading//is the program loading an image/media - used for the loading spinner
         {
-            get
-            {
-                return isLoading;
-            }
+            get => isLoading;
             set
             {
                 isLoading = value;
@@ -134,10 +153,7 @@ namespace FIVStandard
 
         public bool IsDeletingFile//used for locking certain controls while the application is deleting a file
         {
-            get
-            {
-                return isDeletingFile;
-            }
+            get => isDeletingFile;
             set
             {
                 if (isDeletingFile == value) return;
@@ -153,10 +169,7 @@ namespace FIVStandard
         /// </summary>
         public string ActiveFile
         {
-            get
-            {
-                return activeFile;
-            }
+            get => activeFile;
             set
             {
                 if (activeFile == value) return;
@@ -176,14 +189,14 @@ namespace FIVStandard
         /// </summary>
         public string ActivePath { get; set; } = "";
 
-        private int TabControlSelectedTab = 0;//used for checking if we are in the General tab or other. Disables certain features if not in General
+        private int TabControlSelectedTab;//used for checking if we are in the General tab or other. Disables certain features if not in General
 
         public static string DonationLink { get => "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ZXTCHB3JXL4Q&source=url"; }
 
         private readonly FileSystemWatcher fsw = new()
         {
-            NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite
-            , IncludeSubdirectories = false
+            NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName | NotifyFilters.LastWrite,
+            IncludeSubdirectories = false
         };
 
         private OpenFileDialog _openFileWindow;
@@ -201,10 +214,7 @@ namespace FIVStandard
 
                 return _openFileWindow;
             }
-            set
-            {
-                _openFileWindow = value;
-            }
+            set => _openFileWindow = value;
         }
 
         private NotificationManager _notificationManager;
@@ -212,7 +222,7 @@ namespace FIVStandard
         {
             get
             {
-                if(_notificationManager == null)//initialize only if module is required to improve startup speed
+                if (_notificationManager == null)//initialize only if module is required to improve startup speed
                 {
                     _notificationManager = new NotificationManager(Notifications.Wpf.Core.Controls.NotificationPosition.BottomRight);
 #if DEBUG
@@ -222,10 +232,7 @@ namespace FIVStandard
 
                 return _notificationManager;
             }
-            set
-            {
-                _notificationManager = value;
-            }
+            set => _notificationManager = value;
         }
 
         private NotificationContent _notificationContent;
@@ -233,20 +240,14 @@ namespace FIVStandard
         {
             get
             {
-                if(_notificationContent == null)//initialize only if module is required to improve startup speed
+                if (_notificationContent == null)//initialize only if module is required to improve startup speed
                 {
                     _notificationContent = new NotificationContent();
-#if DEBUG
-                    Debug.WriteLine("NOTIF CONTENT CREATED");
-#endif
                 }
 
                 return _notificationContent;
             }
-            set
-            {
-                _notificationContent = value;
-            }
+            set => _notificationContent = value;
         }
 
         #region Unused Unfinished Mutex
@@ -299,30 +300,28 @@ namespace FIVStandard
 
             DataContext = this;
 
-            ProgramLoaded = true;
+            programLoaded = true;
 
             //AppWindow = this;//used for debugging ZoomBorder
         }
 
         private async void OnAppLoaded(object sender, RoutedEventArgs e)
         {
-            if (Settings.JSettings.CheckForUpdatesStartToggle)
-                _ = AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck);
-            else
-                _ = AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
+            _ = Settings.JSettings.CheckForUpdatesStartToggle
+                ? AppUpdater.CheckForUpdates(UpdateCheckType.ForcedVersionCheck)
+                : AppUpdater.CheckForUpdates(UpdateCheckType.SilentVersionCheck);
 
 #if DEBUG
             string path = @"D:\Google Drive\temp\alltypes\3.png";
             //path = @"D:\FrapsVids\sharex\Screenshots\2020-12-28_03-19-28.webm";
 
             await OpenNewFile(path);
-            //await Task.Run(() => OpenNewFile(path));//TODO: figure out how to run in another thread so the main UI thread doesnt get held u
+            //await Task.Run(() => OpenNewFile(path));//TODO: figure out how to run in another thread so the main UI thread doesnt get held up
 #endif
 
             string[] args = Environment.GetCommandLineArgs();
             if (args.Length > 1)
             {
-                //_ = Task.Run(() => OpenNewFile(args[1]));
                 await OpenNewFile(args[1]);
             }
         }
@@ -375,7 +374,7 @@ namespace FIVStandard
                     ThumbnailItemData tt = new()
                     {
                         ThumbnailName = filesFound[i],
-                        IsAnimated = Tools.IsAnimatedExtension(ext),
+                        FileType = Tools.IsAnimatedExtension(ext),
                     };
                     ImagesData.Add(tt);
                 }
@@ -391,7 +390,7 @@ namespace FIVStandard
                 if (openedFile == currentIndexedName)
                 {
                     ImageItem = (ThumbnailItemData)ImagesDataView.GetItemAt(i);//TODO: temporary hack fix since the binding to it doesnt load fast enough for the info check
-                    ImagesDataView.MoveCurrentToPosition(i);
+                    _ = ImagesDataView.MoveCurrentToPosition(i);
 
                     ActiveFile = currentIndexedName;
                     ActivePath = Path.Combine(ActiveFolder, activeFile);
@@ -425,31 +424,24 @@ namespace FIVStandard
 
         private async Task OpenMedia(Uri uri)
         {
-            await MediaView.Open(uri);
+            _ = await MediaView.Open(uri);
 
             IsLoading = false;
         }
 
         private async Task CloseMedia()
         {
-            if(!MediaView.IsClosing)
-                await MediaView.Close();
+            if (!MediaView.IsClosing)
+                _ = await MediaView.Close();
         }
 
         private void TogglePause()
         {
             if (ImageItem is null) return;
 
-            if (ImageItem.IsAnimated)
+            if (ImageItem.FileType != FileMediaType.Image)
             {
-                if (MediaView.IsPaused)
-                {
-                    MediaView?.Play();
-                }
-                else
-                {
-                    MediaView?.Pause();
-                }
+                _ = MediaView.IsPaused ? (MediaView?.Play()) : (MediaView?.Pause());
             }
         }
 
@@ -476,7 +468,7 @@ namespace FIVStandard
                 if (jumpIndex >= ImagesDataView.Count) jumpIndex = 0;
 
                 ImageItem = (ThumbnailItemData)ImagesDataView.GetItemAt(jumpIndex);//TODO: temporary hack fix since the binding to it doesnt load fast enough for the info check
-                ImagesDataView.MoveCurrentToPosition(jumpIndex);
+                _ = ImagesDataView.MoveCurrentToPosition(jumpIndex);
             }
 
             ActiveFile = ImageItem.ThumbnailName;
@@ -485,7 +477,7 @@ namespace FIVStandard
             await NewUri(ActivePath, resetZoom);
         }
 
-        CancellationTokenSource loadImageTokenSource = new();
+        private CancellationTokenSource loadImageTokenSource = new();
 
         private async Task NewUri(string path, bool resetZoom)
         {
@@ -497,24 +489,18 @@ namespace FIVStandard
 
             IsLoading = true;
 
-            if (ImageItem.IsAnimated)//show different controls based on what type the file is
-            {
-                MediaProgression.Visibility = Visibility.Visible;
-                VolumeProgression.Visibility = Visibility.Visible;
-                VolumeProgressionIcon.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                MediaProgression.Visibility = Visibility.Hidden;
-                VolumeProgression.Visibility = Visibility.Hidden;
-                VolumeProgressionIcon.Visibility = Visibility.Hidden;
-            }
+            //show different controls based on what type the file is
+            Btn_Pause.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
+            MediaTime.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
+            MediaProgression.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
+            VolumeProgression.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 1);
+            VolumeProgressionIcon.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 1);
 
-            if (ImageItem.IsAnimated)
-            {
-                borderImg.Visibility = Visibility.Hidden;
-                borderMed.Visibility = Visibility.Visible;
+            borderImg.Visibility = Tools.BoolToVisibility(ImageItem.FileType == FileMediaType.Image);
+            borderMed.Visibility = Tools.BoolToVisibility(ImageItem.FileType != FileMediaType.Image);
 
+            if (ImageItem.FileType != FileMediaType.Image)
+            {
                 Uri uri = new(path, UriKind.Absolute);
 
                 ImageSource = null;
@@ -533,10 +519,7 @@ namespace FIVStandard
                 }
 
                 loadImageTokenSource = new CancellationTokenSource();
-                var ctLoadImage = loadImageTokenSource.Token;
-
-                borderImg.Visibility = Visibility.Visible;
-                borderMed.Visibility = Visibility.Hidden;
+                CancellationToken ctLoadImage = loadImageTokenSource.Token;
 
                 if (ImagesData.Count > 0)
                 {
@@ -544,7 +527,7 @@ namespace FIVStandard
                     ImageInfo.ImgWidth = ImageItem.ImageWidth;
                     ImageInfo.ImgHeight = ImageItem.ImageHeight;
                 }
-                if (ImageItem.IsAnimated)//the image is animated, try to load it via FFME instead
+                if (ImageItem.FileType != FileMediaType.Image)//the image is animated, try to load it via FFME instead
                 {
                     await NewUri(ActivePath, resetZoom);
                     return;
@@ -576,7 +559,7 @@ namespace FIVStandard
                     // apply the image to the control's property
                     ImageSource = bitmapSource;
 
-                    if(resetZoom)
+                    if (resetZoom)
                         borderImg.Reset();
                 }
             }
@@ -607,8 +590,8 @@ namespace FIVStandard
             //Debug.WriteLine($"MEM {GC.GetTotalMemory(false) / 1024 / 1024}mb");
         }
 
-        CancellationTokenSource allThumbnailTokenSource;
-        CancellationToken ct;
+        private CancellationTokenSource allThumbnailTokenSource;
+        private CancellationToken ct;
 
         public Task ReloadAllThumbnailsAsync()
         {
@@ -624,7 +607,7 @@ namespace FIVStandard
                 {
                     ct.ThrowIfCancellationRequested();
 
-                    ThumbnailItemData tid = ((ThumbnailItemData)ImagesDataView.GetItemAt(i));
+                    ThumbnailItemData tid = (ThumbnailItemData)ImagesDataView.GetItemAt(i);
 
                     Tools.LoadSingleThumbnailData(Path.Combine(ActiveFolder, tid.ThumbnailName), tid);
                 }
@@ -636,7 +619,7 @@ namespace FIVStandard
         {
             if (!File.Exists(path)) return;
 
-            if(MediaView.HasVideo)
+            if (MediaView.HasVideo)
             {
                 IsDeletingFile = true;
 
@@ -668,12 +651,12 @@ namespace FIVStandard
 
             if (!File.Exists(ActivePath)) return;
 
-            if (ImageItem.IsAnimated)
+            if (ImageItem.FileType != FileMediaType.Image)//if its animated, grab the currently viewed frame instead
             {
                 using System.Drawing.Bitmap bm = await MediaView.CaptureBitmapAsync();
                 ToClipboard.ImageCopyToClipboard(Tools.BitmapToBitmapSource(bm));
             }
-            else
+            else//copy the image as a png (TODO: keep it the same file type and compression to keep the original size)
             {
                 ToClipboard.ImageCopyToClipboard(ImageSource);
             }
@@ -694,7 +677,7 @@ namespace FIVStandard
             if (ImageItem is null || !File.Exists(ActivePath)) return;
 
             string fileType = Path.GetExtension(ImageItem.ThumbnailName);
-            if (fileType == ".gif"  || fileType == ".webm")//if its a media, free up the file before cutting it to the clipboard
+            if (fileType is ".gif" or ".webm")//if its a media, free up the file before cutting it to the clipboard
             {
                 await ClearViewer();
             }
@@ -725,11 +708,11 @@ namespace FIVStandard
                         await OpenNewFile(files[0]);
                 }
             }
-            else//opened an image from a URL
+            /*else//opened an image from a URL
             {
                 //await OpenNewFile(Tools.GetUrlSourceImage(draggedFileUrl));
                 //ImageInfo.FromUrl = true;
-            }
+            }*/
         }
 
         private void OnMediaView_MediaOpened(object sender, Unosquare.FFME.Common.MediaOpenedEventArgs e)
@@ -742,7 +725,14 @@ namespace FIVStandard
                 ImageItem.ImageWidth = ImageInfo.ImgWidth;
                 ImageItem.ImageHeight = ImageInfo.ImgHeight;
             }
-            MediaProgression.Maximum = MediaView.NaturalDuration.Value.Ticks;
+
+            MediaTimeElapsedMax = MediaView.NaturalDuration.Value;
+            MediaProgression.Maximum = MediaTimeElapsedMax.TotalMilliseconds;
+        }
+
+        private void MediaProgression_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            MediaTimeElapsed = TimeSpan.FromMilliseconds(MediaProgression.Value);//convert to seconds TODO: find more efficient way of updating
         }
 
         private void OnCopyToClipboard(object sender, RoutedEventArgs e)
@@ -803,9 +793,9 @@ namespace FIVStandard
 
             if (Settings.JSettings.ShortcutButtonsOn == false)
             {
-                if (e.Key == Key.System || e.Key == Key.LWin || e.Key == Key.RWin) return;//blacklisted keys (windows keys, system)
+                if (e.Key is Key.System or Key.LWin or Key.RWin) return;//blacklisted keys (windows keys, system)
 
-                if(e.Key != Key.Escape)
+                if (e.Key != Key.Escape)
                 {
                     editingButton.Tag = e.Key;
                     //MessageBox.Show(((int)e.Key).ToString());
@@ -818,7 +808,7 @@ namespace FIVStandard
 
             if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
-            if(TabControlSelectedTab == 0)
+            if (TabControlSelectedTab == 0)
             {
                 if (e.Key == Settings.JSettings.GoForwardKey)
                 {
@@ -857,17 +847,17 @@ namespace FIVStandard
                 Tools.ExploreFile(Path.GetFullPath(ActivePath));
             }
 
-            if(e.Key == Settings.JSettings.CopyImageToClipboardKey)
+            if (e.Key == Settings.JSettings.CopyImageToClipboardKey)
             {
                 ImageCopyToClipboardCall();
             }
 
-            if(e.Key == Settings.JSettings.CutFileToClipboardKey)
+            if (e.Key == Settings.JSettings.CutFileToClipboardKey)
             {
                 await FileCutToClipboardCall();
             }
 
-            if(e.Key == Settings.JSettings.ThumbnailListKey)
+            if (e.Key == Settings.JSettings.ThumbnailListKey)
             {
                 Settings.JSettings.EnableThumbnailListToggle = !Settings.JSettings.EnableThumbnailListToggle;
             }
@@ -889,7 +879,14 @@ namespace FIVStandard
             await ChangeImage(1, false);//go forward
         }
 
-        private async void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void OnClick_Pause(object sender, RoutedEventArgs e)
+        {
+            if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
+
+            TogglePause();
+        }
+
+        private async void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
@@ -909,7 +906,7 @@ namespace FIVStandard
         {
             if (isDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
-            Nullable<bool> result = OpenFileWindow.ShowDialog();
+            bool? result = OpenFileWindow.ShowDialog();
             if (result == true)
             {
                 await OpenNewFile(OpenFileWindow.FileName);
@@ -962,7 +959,7 @@ namespace FIVStandard
         //select event when using the mouse on the list box items
         private void OnListBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var tid = (ListBoxItem)sender;
+            ListBoxItem tid = (ListBoxItem)sender;
             ImageItem = (ThumbnailItemData)tid.Content;
         }
 
@@ -973,7 +970,7 @@ namespace FIVStandard
 
         private void OnThumbnailSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            ReloadAllThumbnailsAsync();
+            _ = ReloadAllThumbnailsAsync();
             ThumbnailSlider_DragStarted = false;
         }
 
@@ -984,7 +981,7 @@ namespace FIVStandard
 
         private void OnMainFIV_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if(WindowState == WindowState.Normal)
+            if (WindowState == WindowState.Normal)
             {
                 Settings.JSettings.WindowWidth = (int)Width;
                 Settings.JSettings.WindowHeight = (int)Height;
@@ -1001,19 +998,12 @@ namespace FIVStandard
             MetroTabControl tc = (MetroTabControl)sender;
             TabControlSelectedTab = tc.SelectedIndex;
 
-            if (TabControlSelectedTab == 0)
-            {
-                MediaView?.Play();
-            }
-            else
-            {
-                MediaView?.Pause();
-            }
+            _ = TabControlSelectedTab == 0 ? (MediaView?.Play()) : (MediaView?.Pause());
 
             if (Settings.ReloadFolderFlag == false) return;//dont re-open folder with file if not flagged
 
             Settings.ReloadFolderFlag = false;
-            if(File.Exists(ActivePath))
+            if (File.Exists(ActivePath))
                 await OpenNewFile(ActivePath);
         }
 
@@ -1026,7 +1016,7 @@ namespace FIVStandard
             {
                 try
                 {
-                    var shellFile = ShellObject.FromParsingName(Path.Combine(ActiveFolder, dataItem.ThumbnailName));
+                    ShellObject shellFile = ShellObject.FromParsingName(Path.Combine(ActiveFolder, dataItem.ThumbnailName));
                     dataItem.ThumbnailImage = shellFile.Thumbnail.BitmapSource;
 
                     shellFile.Dispose();
@@ -1034,7 +1024,7 @@ namespace FIVStandard
                 catch { }
             }
             else
-                Task.Run(() => Tools.LoadSingleThumbnailData(Path.Combine(ActiveFolder, dataItem.ThumbnailName), dataItem));
+                _ = Task.Run(() => Tools.LoadSingleThumbnailData(Path.Combine(ActiveFolder, dataItem.ThumbnailName), dataItem));
         }
 
         private void OnDonateClick(object sender, RoutedEventArgs e)
@@ -1052,25 +1042,25 @@ namespace FIVStandard
             FileAssociations.EnsureAssociationsSet(
                 new FileAssociation
                 {
-                    Extension = (string)(((Button)sender).Tag),
+                    Extension = (string)((Button)sender).Tag,
                     ProgId = "Fast Image Viewer",
                     FileTypeDescription = "Image viewer for efficient viewing",
                     ExecutableFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fast Image Viewer.exe")
                 });
 
-            bool assoc = FileAssociations.GetAssociation((string)(((Button)sender).Tag));
+            bool assoc = FileAssociations.GetAssociation((string)((Button)sender).Tag);
             ((Button)sender).Visibility = assoc ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnAssociateFileButtonShown(object sender, RoutedEventArgs e)
         {
-            bool assoc = FileAssociations.GetAssociation((string)(((Button)sender).Tag));
+            bool assoc = FileAssociations.GetAssociation((string)((Button)sender).Tag);
             ((Button)sender).Visibility = assoc ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnAllTypeCheckBox_Changed(object sender, RoutedEventArgs e)
         {
-            var cb = (bool)((CheckBox)sender).IsChecked;
+            bool cb = (bool)((CheckBox)sender).IsChecked;
 
             Settings.JSettings.FilterJpg = cb;
             Settings.JSettings.FilterJpeg = cb;
@@ -1101,6 +1091,7 @@ namespace FIVStandard
             }
         }
 
+        #region FileSystemWatcher
         private void Fsw_Created(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(async () =>
@@ -1110,7 +1101,7 @@ namespace FIVStandard
                 ThumbnailItemData tt = new()
                 {
                     ThumbnailName = e.Name,
-                    IsAnimated = Tools.IsAnimatedExtension(Path.GetExtension(e.Name).ToLower()),
+                    FileType = Tools.IsAnimatedExtension(Path.GetExtension(e.Name).ToLower()),
                 };
                 ImagesData.Add(tt);
 
@@ -1182,7 +1173,7 @@ namespace FIVStandard
                                 ThumbnailItemData tt = new()
                                 {
                                     ThumbnailName = e.Name,
-                                    IsAnimated = ImagesData[i].IsAnimated,
+                                    FileType = ImagesData[i].FileType,
 
                                     ThumbnailImage = oldThumbnail//just replace with the old thumbnail to save performance
                                 };
@@ -1220,13 +1211,14 @@ namespace FIVStandard
                 catch { }
             });
         }
+        #endregion
 
         private void MainFIV_Closing(object sender, CancelEventArgs e)
         {
             //fivMutex?.Close();
 
             if (_notificationManager is not null)
-                NotificationManager.CloseAllAsync();
+                _ = NotificationManager.CloseAllAsync();
 
             //fsw.Created -= Fsw_Created;
             //fsw.Deleted -= Fsw_Deleted;

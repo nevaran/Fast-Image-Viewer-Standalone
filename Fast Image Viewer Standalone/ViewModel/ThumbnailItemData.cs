@@ -1,46 +1,80 @@
 ﻿using FIVStandard.Core;
 using FIVStandard.Model;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 
 namespace FIVStandard.ViewModel
 {
-    public sealed class ThumbnailItemData : PropertyChangedBase
-	{
+    public sealed class ThumbnailItemData : INotifyPropertyChanged
+    {
         public static SettingsJson Settings { get; set; }//Easier access for the thumbnail data, since we will always have just one instance of this
 
-		private string _thumbnailName;
-		public string ThumbnailName
-		{
-			get => _thumbnailName;
-			set => SetField(ref _thumbnailName, value);
-		}
+        private string _thumbnailName;
+        public string ThumbnailName
+        {
+            get => _thumbnailName;
+            set
+            {
+                _thumbnailName = value;
+                OnPropertyChanged();
+            }
+        }
 
-		private BitmapSource _thumbnailImage;
-		public BitmapSource ThumbnailImage
-		{
-			get => _thumbnailImage;
-			set => SetField(ref _thumbnailImage, value);
-		}
+        private BitmapSource _thumbnailImage;
+        public BitmapSource ThumbnailImage
+        {
+            get => _thumbnailImage;
+            set
+            {
+                _thumbnailImage = value;
+                OnPropertyChanged();
+            }
+        }
 
-		private int _imageWidth = 0;
-		public int ImageWidth
-		{
-			get => _imageWidth;
-			set => SetField(ref _imageWidth, value);
-		}
+        private int _imageWidth;
+        public int ImageWidth
+        {
+            get => _imageWidth;
+            set
+            {
+                _imageWidth = value;
+                OnPropertyChanged();
+            }
+        }
 
-		private int _imageHeight = 0;
-		public int ImageHeight
-		{
-			get => _imageHeight;
-			set => SetField(ref _imageHeight, value);
-		}
+        private int _imageHeight;
+        public int ImageHeight
+        {
+            get => _imageHeight;
+            set
+            {
+                _imageHeight = value;
+                OnPropertyChanged();
+            }
+        }
 
-		private bool _isAnimated = false;
-		public bool IsAnimated
-		{
-			get => _isAnimated;
-			set => SetField(ref _isAnimated, value);
-		}
+        private FileMediaType _fileType;
+        public FileMediaType FileType
+        {
+            get => _fileType;
+            set
+            {
+                _fileType = value;
+                OnPropertyChanged();
+                OnPropertyChanged("IsAnimated");
+            }
+        }
+
+        public bool IsAnimated => FileType != FileMediaType.Image;
+
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        #endregion
     }
 }

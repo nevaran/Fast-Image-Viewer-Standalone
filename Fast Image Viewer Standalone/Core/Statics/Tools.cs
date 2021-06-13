@@ -16,7 +16,7 @@ using static FIVStandard.Core.SettingsStore;
 
 namespace FIVStandard.Core
 {
-    static class Tools
+    internal static class Tools
     {
         public static Task<BitmapSource> LoadImage(string path, int imgWidth, int imgHeight, MainWindow mainWindow, CancellationToken ct)
         {
@@ -24,14 +24,14 @@ namespace FIVStandard.Core
                 return Task.FromResult((BitmapSource)null);
 
             using MagickImage image = new(path);
-            
+
             if (Settings.DownsizeImageToggle)
             {
-                Nullable<Rect> nullableRect = null;
+                Rect? nullableRect = null;
 
-                Application.Current.Dispatcher.Invoke(() => { nullableRect = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds;});
+                Application.Current.Dispatcher.Invoke(() => { nullableRect = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds; });
 
-                var r = nullableRect.Value;
+                Rect r = nullableRect.Value;
                 if (imgWidth > r.Width || imgHeight > r.Height)
                     image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
             }
@@ -91,7 +91,7 @@ namespace FIVStandard.Core
         {
             if (ImageItem.ThumbnailImage is null)
             {
-                Task.Run(() => LoadSingleThumbnailData(path, ImageItem));
+                _ = Task.Run(() => LoadSingleThumbnailData(path, ImageItem));
             }
 
             if (ImageItem.ImageWidth != 0)//we already have a set width in the item data
@@ -99,13 +99,13 @@ namespace FIVStandard.Core
                 return;
             }
 
-            var collection = MagickImageInfo.ReadCollection(path);
+            System.Collections.Generic.IEnumerable<IMagickImageInfo> collection = MagickImageInfo.ReadCollection(path);
             if (collection.Count() > 1)//check if the image is not secretly a gif or other animated image magick.net supports detecting
             {
-                ImageItem.IsAnimated = true;
+                ImageItem.FileType = FileMediaType.Gif;
             }
 
-            var first = collection.First();
+            IMagickImageInfo first = collection.First();
 
             ImageItem.ImageWidth = first.Width;
             ImageItem.ImageHeight = first.Height;
@@ -121,9 +121,8 @@ namespace FIVStandard.Core
         public static bool IsOfType(string file, string[] extensions)
         {
             string ext = Path.GetExtension(file.ToLower());
-            if (extensions.Any(ext.Contains)) return true;
 
-            return false;
+            return extensions.Any(ext.Contains);
         }
 
         /// <summary>
@@ -146,20 +145,23 @@ namespace FIVStandard.Core
         /// <summary>
         /// Is the file type is of the supported animated type
         /// </summary>
-        public static bool IsAnimatedExtension(string ext) => ext switch
+        public static FileMediaType IsAnimatedExtension(string ext)
         {
-            ".gif" => true,
-            ".webm" => true,
-            _ => false,
-        };
+            return ext switch
+            {
+                ".gif" => FileMediaType.Gif,
+                ".webm" => FileMediaType.Video,
+                _ => FileMediaType.Image,
+            };
+        }
 
         public static BitmapSource BitmapToBitmapSource(System.Drawing.Bitmap bitmap)
         {
-            var bitmapData = bitmap.LockBits(
+            System.Drawing.Imaging.BitmapData bitmapData = bitmap.LockBits(
                 new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
                 System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
-            
-            var bitmapSource = BitmapSource.Create(
+
+            BitmapSource bitmapSource = BitmapSource.Create(
                 bitmapData.Width, bitmapData.Height,
                 bitmap.HorizontalResolution, bitmap.VerticalResolution,
                 ConvertPixelFormat(bitmap.PixelFormat), null,
@@ -239,12 +241,8 @@ namespace FIVStandard.Core
                         @"¯\_(ツ)_/¯",
             };
 
-            if (rnd.Next(0, 10) == 0)//10% chance to show meme
-            {
-                return rnj[rnd.Next(0, rnj.Length)];
-            }
-
-            return "";
+            //10% chance to show meme
+            return rnd.Next(0, 11) == 0 ? rnj[rnd.Next(0, rnj.Length)] : string.Empty;
         }
 
         public static string GetAfter(this string s, char c)//returns the striing after a selected char
@@ -261,8 +259,13 @@ namespace FIVStandard.Core
         {
             if (File.Exists(path))
             {
-                Process.Start("explorer.exe", string.Format("/select,\"{0}\"", path));
+                _ = Process.Start("explorer.exe", $"/select,\"{path}\"");
             }
+        }
+
+        public static Visibility BoolToVisibility(bool b)
+        {
+            return b ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -287,7 +290,7 @@ namespace FIVStandard.Core
             try
             {
                 ProcessStartInfo sInfo = new(url) { UseShellExecute = true };
-                Process.Start(sInfo);
+                _ = Process.Start(sInfo);
             }
             catch (Win32Exception noBrowser)
             {
@@ -378,5 +381,15 @@ namespace FIVStandard.Core
         {
             return int.Parse(string.Join("", input.Where(x => char.IsDigit(x))));
         }*/
+    }
+
+    /// <summary>
+    /// Used to loosely label the type of file it is
+    /// </summary>
+    public enum FileMediaType
+    {
+        Image = 0,
+        Gif = 1,
+        Video = 2,
     }
 }

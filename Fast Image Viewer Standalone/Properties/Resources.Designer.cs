@@ -133,7 +133,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check for Updates.
+        ///   Looks up a localized string similar to Check for updates.
         /// </summary>
         public static string CheckForUpdates {
             get {
@@ -575,7 +575,7 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show Donate Button.
+        ///   Looks up a localized string similar to Show donate button.
         /// </summary>
         public static string ShowDonateButton {
             get {
