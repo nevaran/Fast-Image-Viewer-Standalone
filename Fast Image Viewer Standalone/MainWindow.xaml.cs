@@ -952,7 +952,9 @@ namespace FIVStandard
 
             if (!selectedNew)//this should be called only when selecting new image from the thumbnail list
             {
-                await ChangeImage(0, true);
+                try{
+                    await ChangeImage(0, true);
+                }catch {}
             }
         }
 

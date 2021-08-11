@@ -22,30 +22,34 @@ namespace FIVStandard.Core
         {
             if (!File.Exists(path) || ct.IsCancellationRequested)
                 return Task.FromResult((BitmapSource)null);
+            try {
+                using MagickImage image = new(path);
 
-            using MagickImage image = new(path);
+                if (Settings.DownsizeImageToggle)
+                {
+                    Rect? nullableRect = null;
 
-            if (Settings.DownsizeImageToggle)
-            {
-                Rect? nullableRect = null;
+                    Application.Current.Dispatcher.Invoke(() => { nullableRect = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds; });
 
-                Application.Current.Dispatcher.Invoke(() => { nullableRect = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds; });
+                    Rect r = nullableRect.Value;
+                    if (imgWidth > r.Width || imgHeight > r.Height)
+                        image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
+                }
+                image.AutoOrient();
 
-                Rect r = nullableRect.Value;
-                if (imgWidth > r.Width || imgHeight > r.Height)
-                    image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
-            }
-            image.AutoOrient();
+                if (ct.IsCancellationRequested)
+                    return Task.FromResult((BitmapSource)null);
 
-            if (ct.IsCancellationRequested)
+                BitmapSource bms = image.ToBitmapSource();
+                bms.Freeze();
+
+                mainWindow.IsLoading = false;
+
+                return Task.FromResult(bms);
+            }catch {
                 return Task.FromResult((BitmapSource)null);
-
-            BitmapSource bms = image.ToBitmapSource();
-            bms.Freeze();
-
-            mainWindow.IsLoading = false;
-
-            return Task.FromResult(bms);
+            }
+            
         }
 
         /// <summary>
