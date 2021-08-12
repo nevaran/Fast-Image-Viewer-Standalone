@@ -349,4 +349,7 @@
   <data name="ShowDonateButtonInfo" xml:space="preserve">
     <value>Toggle visibility of the donate button on the program command window.</value>
   </data>
+  <data name="ErrorLoadingImageCorrupt" xml:space="preserve">
+    <value>Could not load file. Image might be corrupted</value>
+  </data>
 </root>

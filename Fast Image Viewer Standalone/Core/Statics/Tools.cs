@@ -23,29 +23,43 @@ namespace FIVStandard.Core
             if (!File.Exists(path) || ct.IsCancellationRequested)
                 return Task.FromResult((BitmapSource)null);
 
-            using MagickImage image = new(path);
-
-            if (Settings.DownsizeImageToggle)
+            try
             {
-                Rect? nullableRect = null;
+                using MagickImage image = new(path);
 
-                Application.Current.Dispatcher.Invoke(() => { nullableRect = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds; });
+                if (Settings.DownsizeImageToggle)
+                {
+                    Rect? nullableRect = null;
 
-                Rect r = nullableRect.Value;
-                if (imgWidth > r.Width || imgHeight > r.Height)
-                    image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
+                    Application.Current.Dispatcher.Invoke(() => { nullableRect = WpfScreen.GetScreenFrom(Application.Current.MainWindow).ScreenBounds; });
+
+                    Rect r = nullableRect.Value;
+                    if (imgWidth > r.Width || imgHeight > r.Height)
+                        image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
+                }
+                image.AutoOrient();
+
+                if (ct.IsCancellationRequested)
+                    return Task.FromResult((BitmapSource)null);
+
+                BitmapSource bms = image.ToBitmapSource();
+                bms.Freeze();
+
+                mainWindow.IsLoading = false;
+
+                return Task.FromResult(bms);
             }
-            image.AutoOrient();
+            catch(MagickErrorException e)
+            {
+                mainWindow.IsLoading = false;
 
-            if (ct.IsCancellationRequested)
+                mainWindow.NotificationContent.Title = e.Message;
+                mainWindow.NotificationContent.Message = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.ErrorLoadingImageCorrupt), Localization.TranslationSource.Instance.CurrentCulture);
+                mainWindow.NotificationContent.Type = NotificationType.Error;
+                _ = mainWindow.NotificationManager.ShowAsync(mainWindow.NotificationContent);
+
                 return Task.FromResult((BitmapSource)null);
-
-            BitmapSource bms = image.ToBitmapSource();
-            bms.Freeze();
-
-            mainWindow.IsLoading = false;
-
-            return Task.FromResult(bms);
+            }
         }
 
         /// <summary>

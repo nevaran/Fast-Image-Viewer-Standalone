@@ -367,6 +367,15 @@ namespace FIVStandard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not load file. Image might be corrupted.
+        /// </summary>
+        public static string ErrorLoadingImageCorrupt {
+            get {
+                return ResourceManager.GetString("ErrorLoadingImageCorrupt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Explore image location.
         /// </summary>
         public static string ExploreImageLocationShortcut {

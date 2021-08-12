@@ -345,4 +345,7 @@
   <data name="ShowDonateButtonInfo" xml:space="preserve">
     <value>Превключване видимостта на бутона за дарение в командния прозорец на програмата.</value>
   </data>
+  <data name="ErrorLoadingImageCorrupt" xml:space="preserve">
+    <value>Файлът не може да се зареди. Изображението може да е повредено</value>
+  </data>
 </root>
