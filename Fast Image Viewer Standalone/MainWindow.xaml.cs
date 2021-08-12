@@ -967,7 +967,6 @@ namespace FIVStandard
             {
                 await ChangeImage(0, true);
             }
-            MessageBox.Show(selectedNew.ToString());
         }
 
         //select event when using the mouse on the list box items
