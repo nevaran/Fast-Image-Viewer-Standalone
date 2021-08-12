@@ -481,107 +481,120 @@ namespace FIVStandard
 
         private async Task NewUri(string path, bool resetZoom)
         {
-            if (!Tools.IsOfType(path, Settings.JSettings.FilterActiveArray))
+            try
             {
-                await ChangeImage(0, false);
-                return;
-            }
-
-            IsLoading = true;
-
-            //show different controls based on what type the file is
-            Btn_Pause.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
-            MediaTime.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
-            MediaProgression.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
-            VolumeProgression.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 1);
-            VolumeProgressionIcon.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 1);
-
-            borderImg.Visibility = Tools.BoolToVisibility(ImageItem.FileType == FileMediaType.Image);
-            borderMed.Visibility = Tools.BoolToVisibility(ImageItem.FileType != FileMediaType.Image);
-
-            if (ImageItem.FileType != FileMediaType.Image)
-            {
-                Uri uri = new(path, UriKind.Absolute);
-
-                ImageSource = null;
-                await CloseMedia();
-                await OpenMedia(uri);
-
-                if (resetZoom)
-                    borderMed.Reset();
-            }
-            else
-            {
-                if (loadImageTokenSource is not null)
+                if (!Tools.IsOfType(path, Settings.JSettings.FilterActiveArray))
                 {
-                    loadImageTokenSource.Cancel();
-                    loadImageTokenSource.Dispose();
-                }
-
-                loadImageTokenSource = new CancellationTokenSource();
-                CancellationToken ctLoadImage = loadImageTokenSource.Token;
-
-                if (ImagesData.Count > 0)
-                {
-                    Tools.GetImageInformation(ActivePath, ImageItem);
-                    ImageInfo.ImgWidth = ImageItem.ImageWidth;
-                    ImageInfo.ImgHeight = ImageItem.ImageHeight;
-                }
-                if (ImageItem.FileType != FileMediaType.Image)//the image is animated, try to load it via FFME instead
-                {
-                    await NewUri(ActivePath, resetZoom);
+                    await ChangeImage(0, false);
                     return;
                 }
 
-                // check to see if the token has been cancelled
-                /*if (ctLoadImage.IsCancellationRequested) {
-                    // handle early exit.
-                }*/
+                IsLoading = true;
 
-                //Binding imageBinding = BindingOperations.GetBinding(PictureView, Image.SourceProperty);
-                /*BindingOperations.ClearBinding(PictureView, Image.SourceProperty);
-                Binding imageBinding = new Binding();
-                imageBinding.Source = this;
-                imageBinding.Path = new PropertyPath("ImageSource");
-                imageBinding.Mode = BindingMode.OneWay;
-                imageBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-                imageBinding.IsAsync = true;
-                BindingOperations.SetBinding(PictureView, Image.SourceProperty, imageBinding);*/
+                //show different controls based on what type the file is
+                Btn_Pause.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
+                MediaTime.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
+                MediaProgression.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 0);
+                VolumeProgression.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 1);
+                VolumeProgressionIcon.Visibility = Tools.BoolToVisibility((int)ImageItem.FileType > 1);
 
-                await CloseMedia();
+                borderImg.Visibility = Tools.BoolToVisibility(ImageItem.FileType == FileMediaType.Image);
+                borderMed.Visibility = Tools.BoolToVisibility(ImageItem.FileType != FileMediaType.Image);
 
-                // load the image
-                BitmapSource bitmapSource = await Task.Run(() => Tools.LoadImage(path, ImageInfo.ImgWidth, ImageInfo.ImgHeight, this, ctLoadImage));
-
-                // repeat the token check
-                if (!ctLoadImage.IsCancellationRequested)
+                if (ImageItem.FileType != FileMediaType.Image)
                 {
-                    // apply the image to the control's property
-                    ImageSource = bitmapSource;
+                    Uri uri = new(path, UriKind.Absolute);
+
+                    ImageSource = null;
+                    await CloseMedia();
+                    await OpenMedia(uri);
 
                     if (resetZoom)
-                        borderImg.Reset();
+                        borderMed.Reset();
                 }
+                else
+                {
+                    if (loadImageTokenSource is not null)
+                    {
+                        loadImageTokenSource.Cancel();
+                        loadImageTokenSource.Dispose();
+                    }
+
+                    loadImageTokenSource = new CancellationTokenSource();
+                    CancellationToken ctLoadImage = loadImageTokenSource.Token;
+
+                    if (ImagesData.Count > 0)
+                    {
+                        Tools.GetImageInformation(ActivePath, ImageItem);
+                        ImageInfo.ImgWidth = ImageItem.ImageWidth;
+                        ImageInfo.ImgHeight = ImageItem.ImageHeight;
+                    }
+                    if (ImageItem.FileType != FileMediaType.Image)//the image is animated, try to load it via FFME instead
+                    {
+                        await NewUri(ActivePath, resetZoom);
+                        return;
+                    }
+
+                    // check to see if the token has been cancelled
+                    /*if (ctLoadImage.IsCancellationRequested) {
+                        // handle early exit.
+                    }*/
+
+                    //Binding imageBinding = BindingOperations.GetBinding(PictureView, Image.SourceProperty);
+                    /*BindingOperations.ClearBinding(PictureView, Image.SourceProperty);
+                    Binding imageBinding = new Binding();
+                    imageBinding.Source = this;
+                    imageBinding.Path = new PropertyPath("ImageSource");
+                    imageBinding.Mode = BindingMode.OneWay;
+                    imageBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                    imageBinding.IsAsync = true;
+                    BindingOperations.SetBinding(PictureView, Image.SourceProperty, imageBinding);*/
+
+                    await CloseMedia();
+
+                    // load the image
+                    BitmapSource bitmapSource = await Task.Run(() => Tools.LoadImage(path, ImageInfo.ImgWidth, ImageInfo.ImgHeight, this, ctLoadImage));
+
+                    // repeat the token check
+                    if (!ctLoadImage.IsCancellationRequested)
+                    {
+                        // apply the image to the control's property
+                        ImageSource = bitmapSource;
+
+                        if (resetZoom)
+                            borderImg.Reset();
+                    }
+                }
+
+                selectedNew = false;
+
+                ScrollToListView();
+
+                void ScrollToListView()//scroll to the newly selected item
+                {
+                    int cp = ImagesDataView.CurrentPosition;
+
+                    if (cp < 0)//dont do anything if not 0 or less aka nothing selected (-1)
+                        return;
+
+                    thumbnailList.ScrollIntoView(ImagesDataView.GetItemAt(cp));
+                }
+
+                //GC.Collect();
+
+                //have a delayed garbage collection call to clean up BitmapSource that did not free up immediately after a new image has been loaded
+                sharedDebouncer.Debounce(500, GcCollectNormal);
             }
-
-            selectedNew = false;
-
-            ScrollToListView();
-
-            void ScrollToListView()//scroll to the newly selected item
+            catch(Exception e)
             {
-                int cp = ImagesDataView.CurrentPosition;
+                selectedNew = false;
+                IsLoading = false;
 
-                if (cp < 0)//dont do anything if not 0 or less aka nothing selected (-1)
-                    return;
-
-                thumbnailList.ScrollIntoView(ImagesDataView.GetItemAt(cp));
+                NotificationContent.Title = e.Message;
+                NotificationContent.Message = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.ErrorLoadingImageCorrupt), Localization.TranslationSource.Instance.CurrentCulture);
+                NotificationContent.Type = NotificationType.Error;
+                _ = NotificationManager.ShowAsync(NotificationContent);
             }
-
-            //GC.Collect();
-
-            //have a delayed garbage collection call to clean up BitmapSource that did not free up immediately after a new image has been loaded
-            sharedDebouncer.Debounce(500, GcCollectNormal);
         }
 
         private void GcCollectNormal()
@@ -954,6 +967,7 @@ namespace FIVStandard
             {
                 await ChangeImage(0, true);
             }
+            MessageBox.Show(selectedNew.ToString());
         }
 
         //select event when using the mouse on the list box items
