@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace FIVStandard.Model
 {
-    public class SettingsJson : INotifyPropertyChanged, ISettings
+    public sealed class SettingsJson : INotifyPropertyChanged, ISettings
     {
         #region Unsaved Properties
         public readonly List<(string tag, string lang)> ShownLanguage = new List<(string tag, string lang)>()

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FIVStandard.Core
 {
-    public class HttpClientDownloadWithProgress : IDisposable
+    public sealed class HttpClientDownloadWithProgress : IDisposable
     {
         private readonly string _downloadUrl;
         private readonly string _destinationFilePath;

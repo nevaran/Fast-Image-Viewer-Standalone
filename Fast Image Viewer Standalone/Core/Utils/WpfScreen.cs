@@ -7,7 +7,7 @@ using System.Windows.Interop;
 
 namespace FIVStandard.Utils
 {
-    public class WpfScreen
+    public sealed class WpfScreen
     {
         public static IEnumerable<WpfScreen> AllScreens()
         {

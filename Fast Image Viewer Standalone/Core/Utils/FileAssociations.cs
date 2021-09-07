@@ -1,12 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Diagnostics;
 
 #pragma warning disable CA1416 // Validate platform compatibility
 
 namespace FIVStandard.Core
 {
-    public class FileAssociation
+    public sealed class FileAssociation
     {
         public string Extension { get; set; }
         public string ProgId { get; set; }
@@ -14,7 +13,7 @@ namespace FIVStandard.Core
         public string ExecutableFilePath { get; set; }
     }
 
-    class FileAssociations
+    sealed class FileAssociations
     {
         // needed so that Explorer windows get refreshed after the registry is updated
         [System.Runtime.InteropServices.DllImport("Shell32.dll")]
@@ -23,7 +22,8 @@ namespace FIVStandard.Core
         private const int SHCNE_ASSOCCHANGED = 0x8000000;
         private const int SHCNF_FLUSH = 0x1000;
 
-        public static void EnsureAssociationsSet()//DEFAULT TEMPLATE EXAMPLE
+        /*DEFAULT TEMPLATE EXAMPLE
+        public static void EnsureAssociationsSet()
         {
             var filePath = Process.GetCurrentProcess().MainModule.FileName;
             EnsureAssociationsSet(
@@ -35,6 +35,7 @@ namespace FIVStandard.Core
                     ExecutableFilePath = filePath
                 });
         }
+        */
 
         public static void EnsureAssociationsSet(FileAssociation association)
         {

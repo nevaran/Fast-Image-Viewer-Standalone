@@ -7,7 +7,7 @@ namespace FIVStandard.Comparers
     /// <summary>
     /// Orders like the Windows' "sort by name"
     /// </summary>
-    public class LogicalComparer : IComparer
+    public sealed class LogicalComparer : IComparer
     {
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         private static extern int StrCmpLogicalW(string x, string y);

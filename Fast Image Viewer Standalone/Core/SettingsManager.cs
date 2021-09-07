@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace FIVStandard.Core
 {
-    public class SettingsManager
+    public sealed class SettingsManager
     {
         private readonly MainWindow mainWindow;
 

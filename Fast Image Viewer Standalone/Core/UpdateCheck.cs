@@ -31,7 +31,7 @@ namespace FIVStandard.Core
         ForcedVersionCheck
     }
 
-    public class UpdateCheck : INotifyPropertyChanged
+    public sealed class UpdateCheck : INotifyPropertyChanged
     {
         /*[DllImport("kernel32.dll", SetLastError = true)]
         static extern int RegisterApplicationRestart([MarshalAs(UnmanagedType.LPWStr)] string commandLineArgs, int Flags);*/

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace FIVStandard.Model
 {
-    public class ImageInformation : INotifyPropertyChanged
+    public sealed class ImageInformation : INotifyPropertyChanged
     {
         private int imgWidth = 0;
 
