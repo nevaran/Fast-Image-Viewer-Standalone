@@ -7,12 +7,14 @@ using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Input;
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 namespace FIVStandard.Model
 {
     public sealed class SettingsJson : INotifyPropertyChanged, ISettings
     {
         #region Unsaved Properties
-        public readonly List<(string tag, string lang)> ShownLanguage = new List<(string tag, string lang)>()
+        public readonly List<(string tag, string lang)> ShownLanguage = new()
         {
             ("en", "English (en)"),
             ("bg-BG", "Български (bg-BG)"),

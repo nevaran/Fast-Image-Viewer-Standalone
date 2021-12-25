@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static FIVStandard.Core.SettingsStore;
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 namespace FIVStandard.Core
 {
     internal static class Tools
@@ -294,7 +296,7 @@ namespace FIVStandard.Core
             int startPos = str.IndexOf(firstString) + firstString.Length;
             string modifiedString = str[startPos..];
             int endPos = modifiedString.IndexOf(lastString);
-            finalString = modifiedString.Substring(0, endPos);
+            finalString = modifiedString[..endPos];
 
             return finalString;
         }

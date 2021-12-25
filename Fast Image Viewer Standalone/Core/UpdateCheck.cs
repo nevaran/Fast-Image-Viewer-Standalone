@@ -3,7 +3,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -53,8 +52,8 @@ namespace FIVStandard.Core
             }
         }
 
-        private Version _currentVersion = new Version("0.0.0.0");
-        
+        private Version _currentVersion = new("0.0.0.0");
+
         public Version CurrentVersion
         {
             get
@@ -68,7 +67,7 @@ namespace FIVStandard.Core
             }
         }
 
-        private Version _downloadVersion = new Version("0.0.0.0");
+        private Version _downloadVersion = new("0.0.0.0");
 
         public Version DownloadVersion
         {
@@ -92,7 +91,7 @@ namespace FIVStandard.Core
             }
         }
 
-        private readonly SemaphoreSlim _lock = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim _lock = new(1);
 
         private string _updaterMessage = "";
 
@@ -168,6 +167,7 @@ namespace FIVStandard.Core
                 //e.Message
                 //e.StackTrace
                 //Console.WriteLine(e.ToString());
+                NotUpdating = true;
             }
             finally
             {
@@ -251,7 +251,7 @@ namespace FIVStandard.Core
 
                 NotUpdating = true;
 
-                if (mainWindow.Settings.JSettings.CheckForUpdatesStartToggle 
+                if (mainWindow.Settings.JSettings.CheckForUpdatesStartToggle
                     && mainWindow.Settings.JSettings.AutoupdateToggle)
                 {
                     await DownloadNewAppVersion();
@@ -261,14 +261,14 @@ namespace FIVStandard.Core
 
         private async Task DownloadNewAppVersion()
         {
-            if (CheckForInternetConnection())
+            if (await HasInternetConnectionAsync())
             {
                 UpdaterMessage = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.UpdatingInfo), Localization.TranslationSource.Instance.CurrentCulture);
 
                 using var client = new HttpClientDownloadWithProgress(setupURL, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FIV Setup.exe"));
                 client.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
                 {
-                    string info = $"{(totalBytesDownloaded / 1048576).ToString()}/{(totalFileSize / 1048576).ToString()}MB\n{progressPercentage.ToString()}%";
+                    string info = $"{totalBytesDownloaded / 1048576}/{totalFileSize / 1048576}MB\n{progressPercentage}%";
                     //string info = $"{totalBytesDownloaded / 1024}kB";//1048576 = mB
                     UpdaterMessage = $"{Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.DownloadingInfo), Localization.TranslationSource.Instance.CurrentCulture)}: {info}";
                 };
@@ -276,7 +276,7 @@ namespace FIVStandard.Core
 
                 await client.StartDownload();
 
-                client.Dispose();
+                //client.Dispose();
             }
             else
             {
@@ -293,7 +293,9 @@ namespace FIVStandard.Core
             {
                 //TODO: add valid argument of opened file/image
                 //RegisterApplicationRestart("", 2);
-                ProcessStartInfo pinfo = new ProcessStartInfo
+
+#if !DEBUG
+                ProcessStartInfo pinfo = new()
                 {
                     FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FIV Setup.exe"),
                     Arguments = "/SILENT /CLOSEAPPLICATIONS",//TODO add working /RESTARTAPPLICATIONS /LOG
@@ -301,6 +303,7 @@ namespace FIVStandard.Core
                     //UseShellExecute = true,
                 };
                 Process.Start(pinfo);
+#endif
 
                 /*var processes = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
                 foreach (Process proc in processes)
@@ -324,20 +327,19 @@ namespace FIVStandard.Core
         private async Task GetHttpChangelog()
         {
             //txt file containing version and update notes
-            HttpClient httpClient = new HttpClient();
-
+            using var httpClient = new HttpClient();
             using var reader = new StreamReader(await httpClient.GetStreamAsync(changelogURL));
             DownloadVersion = new Version(reader.ReadLine().Trim(new Char[] { '•' }));
             reader.ReadLine();//empty line between version and notes
             DownloadedChangelog = reader.ReadToEnd();
         }
 
-        public static bool CheckForInternetConnection()
+        public static async Task<bool> HasInternetConnectionAsync()
         {
             try
             {
-                using var client = new WebClient();
-                using var stream = client.OpenRead("http://www.google.com");
+                using HttpClient httpClient = new();
+                using HttpResponseMessage result = await httpClient.GetAsync(changelogURL);
                 return true;
             }
             catch
@@ -345,6 +347,25 @@ namespace FIVStandard.Core
                 return false;
             }
         }
+
+        /*public static bool HasInternetConnectionPing()//not good since some public internets might block pinging
+        {
+            try
+            {
+                using Ping dlPing = new();
+                string host = "github.com";//alternatively ping 8.8.8.8
+                byte[] buffer = new byte[32];
+                int timeout = 3000;
+                PingOptions pingOptions = new();
+                PingReply reply = dlPing.Send(host, timeout, buffer, pingOptions);
+
+                return (reply.Status == IPStatus.Success);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }*/
 
         public bool HasLaterVersion()
         {

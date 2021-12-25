@@ -316,7 +316,6 @@ namespace FIVStandard
             //path = @"D:\FrapsVids\sharex\Screenshots\2020-12-28_03-19-28.webm";
 
             await OpenNewFile(path);
-            //await Task.Run(() => OpenNewFile(path));//TODO: figure out how to run in another thread so the main UI thread doesnt get held up
 #endif
 
             string[] args = Environment.GetCommandLineArgs();
