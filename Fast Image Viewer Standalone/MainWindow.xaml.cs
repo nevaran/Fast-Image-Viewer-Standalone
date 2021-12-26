@@ -315,17 +315,17 @@ namespace FIVStandard
             string path = @"D:\Google Drive\temp\alltypes\3.png";
             //path = @"D:\FrapsVids\sharex\Screenshots\2020-12-28_03-19-28.webm";
 
-            await OpenNewFile(path);
+            await OpenNewFileAsync(path);
 #endif
 
             string[] args = Environment.GetCommandLineArgs();
             if (args.Length > 1)
             {
-                await OpenNewFile(args[1]);
+                await OpenNewFileAsync(args[1]);
             }
         }
 
-        public async Task OpenNewFile(string path)
+        public async Task OpenNewFileAsync(string path)
         {
             if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
@@ -340,7 +340,7 @@ namespace FIVStandard
 
             if (Settings.JSettings.FilterActiveArray.Length == 0)
             {
-                await ClearAllMedia();
+                await ClearAllMediaAsync();
                 return;
             }
 
@@ -348,7 +348,7 @@ namespace FIVStandard
 
             FindIndexInFiles(activeFile);
 
-            await NewUri(path, true);
+            await NewUriAsync(path, true);
         }
 
         /// <summary>
@@ -404,31 +404,31 @@ namespace FIVStandard
         /// <summary>
         /// Clear all data (as if program is opened without opening an image)
         /// </summary>
-        private async Task ClearAllMedia()
+        private async Task ClearAllMediaAsync()
         {
             ImagesData.Clear();
-            await CloseMedia();
+            await CloseMediaAsync();
             ImageSource = null;
             ImageInfo.ImgWidth = 0;
             ImageInfo.ImgHeight = 0;
         }
 
-        private async Task ClearViewer()
+        private async Task ClearViewerAsync()
         {
-            await CloseMedia();
+            await CloseMediaAsync();
             ImageSource = null;
             ImageInfo.ImgWidth = 0;
             ImageInfo.ImgHeight = 0;
         }
 
-        private async Task OpenMedia(Uri uri)
+        private async Task OpenMediaAsync(Uri uri)
         {
             await MediaView.Open(uri);
 
             IsLoading = false;
         }
 
-        private async Task CloseMedia()
+        private async Task CloseMediaAsync()
         {
             if (!MediaView.IsClosing)
                 await MediaView.Close();
@@ -444,11 +444,11 @@ namespace FIVStandard
             }
         }
 
-        public async Task ChangeImage(int jump, bool moveToIndex, bool resetZoom = true)
+        public async Task ChangeImageAsync(int jump, bool moveToIndex, bool resetZoom = true)
         {
             if (ImagesData.Count == 0)//no more images in the folder - go back to default null
             {
-                await ClearAllMedia();
+                await ClearAllMediaAsync();
                 return;
             }
 
@@ -473,18 +473,18 @@ namespace FIVStandard
             ActiveFile = ImageItem.ThumbnailName;
             ActivePath = Path.Combine(ActiveFolder, activeFile);
 
-            await NewUri(ActivePath, resetZoom);
+            await NewUriAsync(ActivePath, resetZoom);
         }
 
         private CancellationTokenSource loadImageTokenSource = new();
 
-        private async Task NewUri(string path, bool resetZoom)
+        private async Task NewUriAsync(string path, bool resetZoom)
         {
             try
             {
                 if (!Tools.IsOfType(path, Settings.JSettings.FilterActiveArray))
                 {
-                    await ChangeImage(0, false);
+                    await ChangeImageAsync(0, false);
                     return;
                 }
 
@@ -505,19 +505,15 @@ namespace FIVStandard
                     Uri uri = new(path, UriKind.Absolute);
 
                     ImageSource = null;
-                    await CloseMedia();
-                    await OpenMedia(uri);
+                    await CloseMediaAsync();
+                    await OpenMediaAsync(uri);
 
                     if (resetZoom)
                         borderMed.Reset();
                 }
                 else
                 {
-                    if (loadImageTokenSource is not null)
-                    {
-                        loadImageTokenSource.Cancel();
-                        loadImageTokenSource.Dispose();
-                    }
+                    loadImageTokenSource?.Cancel();
 
                     loadImageTokenSource = new CancellationTokenSource();
                     CancellationToken ctLoadImage = loadImageTokenSource.Token;
@@ -530,7 +526,7 @@ namespace FIVStandard
                     }
                     if (ImageItem.FileType != FileMediaType.Image)//the image is animated, try to load it via FFME instead
                     {
-                        await NewUri(ActivePath, resetZoom);
+                        await NewUriAsync(ActivePath, resetZoom);
                         return;
                     }
 
@@ -549,7 +545,7 @@ namespace FIVStandard
                     imageBinding.IsAsync = true;
                     BindingOperations.SetBinding(PictureView, Image.SourceProperty, imageBinding);*/
 
-                    await CloseMedia();
+                    await CloseMediaAsync();
 
                     // load the image
                     BitmapSource bitmapSource = await Task.Run(() => Tools.LoadImage(path, ImageInfo.ImgWidth, ImageInfo.ImgHeight, this, ctLoadImage));
@@ -603,21 +599,20 @@ namespace FIVStandard
         }
 
         private CancellationTokenSource allThumbnailTokenSource;
-        private CancellationToken ct;
 
         public Task ReloadAllThumbnailsAsync()
         {
             allThumbnailTokenSource?.Cancel();
 
             allThumbnailTokenSource = new CancellationTokenSource();
-            ct = allThumbnailTokenSource.Token;
+            CancellationToken ctAllThumbnail = allThumbnailTokenSource.Token;
 
             return Task.Run(() =>
             {
                 int c = ImagesDataView.Count;
                 for (int i = 0; i < c; i++)
                 {
-                    ct.ThrowIfCancellationRequested();
+                    ctAllThumbnail.ThrowIfCancellationRequested();
 
                     ThumbnailItemData tid = (ThumbnailItemData)ImagesDataView.GetItemAt(i);
 
@@ -635,7 +630,7 @@ namespace FIVStandard
             {
                 IsDeletingFile = true;
 
-                await CloseMedia();
+                await CloseMediaAsync();
             }
 
             IsDeletingFile = true;
@@ -655,7 +650,7 @@ namespace FIVStandard
             IsDeletingFile = false;
         }
 
-        private async void ImageCopyToClipboardCall()
+        private async Task ImageCopyToClipboardCallAsync()
         {
             if (ImageItem is null) return;
 
@@ -684,14 +679,14 @@ namespace FIVStandard
             ToClipboard.FileCopyToClipboard(ActivePath);
         }*/
 
-        private async Task FileCutToClipboardCall()
+        private async Task FileCutToClipboardCallAsync()
         {
             if (ImageItem is null || !File.Exists(ActivePath)) return;
 
             string fileType = Path.GetExtension(ImageItem.ThumbnailName);
             if (fileType is ".gif" or ".webm")//if its a media, free up the file before cutting it to the clipboard
             {
-                await ClearViewer();
+                await ClearViewerAsync();
             }
 
             ToClipboard.FileCutToClipBoard(ActivePath);
@@ -717,7 +712,7 @@ namespace FIVStandard
 
                     // Assuming you have one file that you care about, pass it off; if there are no valid files it will still open the folder but have an empty list
                     if (files.Length >= 1)
-                        await OpenNewFile(files[0]);
+                        await OpenNewFileAsync(files[0]);
                 }
             }
             /*else//opened an image from a URL
@@ -742,19 +737,19 @@ namespace FIVStandard
             MediaProgression.Maximum = MediaTimeElapsedMax.TotalMilliseconds;
         }
 
-        private void MediaProgression_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void OnMediaProgression_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             MediaTimeElapsed = TimeSpan.FromMilliseconds(MediaProgression.Value);//convert to seconds TODO: find more efficient way of updating
         }
 
-        private void OnCopyToClipboard(object sender, RoutedEventArgs e)
+        private async void OnCopyToClipboard(object sender, RoutedEventArgs e)
         {
-            ImageCopyToClipboardCall();
+            await ImageCopyToClipboardCallAsync();
         }
 
         private async void OnCutToClipboard(object sender, RoutedEventArgs e)
         {
-            await FileCutToClipboardCall();
+            await FileCutToClipboardCallAsync();
         }
 
         private void OnLanguageClick(object sender, RoutedEventArgs e)
@@ -825,12 +820,12 @@ namespace FIVStandard
                 if (e.Key == Settings.JSettings.GoForwardKey)
                 {
                     selectedNew = true;
-                    await ChangeImage(1, false);//go forward
+                    await ChangeImageAsync(1, false);//go forward
                 }
                 if (e.Key == Settings.JSettings.GoBackwardKey)
                 {
                     selectedNew = true;
-                    await ChangeImage(-1, false);//go back
+                    await ChangeImageAsync(-1, false);//go back
                 }
 
                 if (e.Key == Settings.JSettings.PauseKey)
@@ -861,12 +856,12 @@ namespace FIVStandard
 
             if (e.Key == Settings.JSettings.CopyImageToClipboardKey)
             {
-                ImageCopyToClipboardCall();
+                await ImageCopyToClipboardCallAsync();
             }
 
             if (e.Key == Settings.JSettings.CutFileToClipboardKey)
             {
-                await FileCutToClipboardCall();
+                await FileCutToClipboardCallAsync();
             }
 
             if (e.Key == Settings.JSettings.ThumbnailListKey)
@@ -880,7 +875,7 @@ namespace FIVStandard
             if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
-            await ChangeImage(-1, false);//go back
+            await ChangeImageAsync(-1, false);//go back
         }
 
         private async void OnClick_Next(object sender, RoutedEventArgs e)
@@ -888,7 +883,7 @@ namespace FIVStandard
             if (IsDeletingFile || Settings.JSettings.ShortcutButtonsOn == false) return;
 
             selectedNew = true;
-            await ChangeImage(1, false);//go forward
+            await ChangeImageAsync(1, false);//go forward
         }
 
         private void OnClick_Pause(object sender, RoutedEventArgs e)
@@ -905,12 +900,12 @@ namespace FIVStandard
             if (e.ChangedButton == MouseButton.XButton1)
             {
                 selectedNew = true;
-                await ChangeImage(-1, false);//go back
+                await ChangeImageAsync(-1, false);//go back
             }
             if (e.ChangedButton == MouseButton.XButton2)
             {
                 selectedNew = true;
-                await ChangeImage(1, false);//go forward
+                await ChangeImageAsync(1, false);//go forward
             }
         }
 
@@ -921,12 +916,9 @@ namespace FIVStandard
             bool? result = OpenFileWindow.ShowDialog();
             if (result == true)
             {
-                await OpenNewFile(OpenFileWindow.FileName);
+                await OpenNewFileAsync(OpenFileWindow.FileName);
             }
-            /*else
-            {
-                //cancelled dialog
-            }*/
+            //else//cancelled dialog
         }
 
         private void OnShortcutClick(object sender, RoutedEventArgs e)
@@ -964,7 +956,7 @@ namespace FIVStandard
 
             if (!selectedNew)//this should be called only when selecting new image from the thumbnail list
             {
-                await ChangeImage(0, true);
+                await ChangeImageAsync(0, true);
             }
         }
 
@@ -982,7 +974,7 @@ namespace FIVStandard
 
         private void OnThumbnailSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            _ = ReloadAllThumbnailsAsync();
+            ReloadAllThumbnailsAsync();
             ThumbnailSlider_DragStarted = false;
         }
 
@@ -1016,7 +1008,7 @@ namespace FIVStandard
 
             Settings.ReloadFolderFlag = false;
             if (File.Exists(ActivePath))
-                await OpenNewFile(ActivePath);
+                await OpenNewFileAsync(ActivePath);
         }
 
         private void OnThumbnailItemVisible(object sender, RoutedEventArgs e)
@@ -1122,7 +1114,7 @@ namespace FIVStandard
                 if (ImageItem is null)
                 {
                     selectedNew = true;
-                    await ChangeImage(0, false);
+                    await ChangeImageAsync(0, false);
                 }
 
                 OnPropertyChanged("TitleInformation");//Force update title information
@@ -1156,7 +1148,7 @@ namespace FIVStandard
                 if (ImageItem is null || ImageItem.ThumbnailName == e.Name)
                 {
                     selectedNew = true;
-                    await ChangeImage(0, false);
+                    await ChangeImageAsync(0, false);
                 }
 
                 OnPropertyChanged("TitleInformation");//force update title information
@@ -1201,7 +1193,7 @@ namespace FIVStandard
                                 if (ImageItem.ThumbnailName == e.Name)
                                 {
                                     selectedNew = true;
-                                    await ChangeImage(0, false);
+                                    await ChangeImageAsync(0, false);
                                 }
 
                                 NotificationContent.Title = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.RenamedWatcher), Localization.TranslationSource.Instance.CurrentCulture);
@@ -1213,7 +1205,7 @@ namespace FIVStandard
                             {
                                 ImagesData.RemoveAt(i);
                                 selectedNew = true;
-                                await ChangeImage(0, false);
+                                await ChangeImageAsync(0, false);
                             }
 
                             break;

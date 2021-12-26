@@ -473,7 +473,7 @@
                                 IsMoveToPointEnabled="True"
                                 IsTabStop="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                ValueChanged="MediaProgression_ValueChanged"
+                                ValueChanged="OnMediaProgression_ValueChanged"
                                 Visibility="Hidden"
                                 Value="{Binding Path=Position, ElementName=MediaView, Converter={StaticResource TimeSpanTickConverter}, Mode=TwoWay}"
                                 >

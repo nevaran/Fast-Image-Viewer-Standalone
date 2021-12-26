@@ -147,7 +147,7 @@ namespace FIVStandard.Core
             if (mainWindow.ImagesData.Count > 0 && mainWindow.ImageItem.FileType == FileMediaType.Image)//reload image if its supported by the downsize feature (not animated/media)
             {
                 //mainWindow.ImageSource = await Tools.LoadImage(mainWindow.ActivePath, mainWindow.ImgWidth, mainWindow.ImgHeight, mainWindow);
-                await mainWindow.ChangeImage(0, false, false);
+                await mainWindow.ChangeImageAsync(0, false, false);
             }
         }
 
