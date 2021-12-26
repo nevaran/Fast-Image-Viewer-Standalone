@@ -423,7 +423,7 @@ namespace FIVStandard
 
         private async Task OpenMedia(Uri uri)
         {
-            _ = await MediaView.Open(uri);
+            await MediaView.Open(uri);
 
             IsLoading = false;
         }
@@ -431,7 +431,7 @@ namespace FIVStandard
         private async Task CloseMedia()
         {
             if (!MediaView.IsClosing)
-                _ = await MediaView.Close();
+                await MediaView.Close();
         }
 
         private void TogglePause()
