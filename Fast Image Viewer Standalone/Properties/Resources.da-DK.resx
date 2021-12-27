@@ -318,4 +318,34 @@
   <data name="FileTypeInfo" xml:space="preserve">
     <value>Vælg hvilke filtyper der indlæses i fremviseren.</value>
   </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="CutToClipboard" xml:space="preserve">
+    <value>Klip til udklipsholder</value>
+  </data>
+  <data name="CopiedToClipboard" xml:space="preserve">
+    <value>Kopieret til udklipsholder</value>
+  </data>
+  <data name="AssociateTypeTooltip" xml:space="preserve">
+    <value>Knyt filtype til FIV</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Opdateringer</value>
+  </data>
+  <data name="ProgramSettings" xml:space="preserve">
+    <value>Program</value>
+  </data>
+  <data name="ShowDonateButton" xml:space="preserve">
+    <value>Vis doner-knap</value>
+  </data>
+  <data name="ShowDonateButtonInfo" xml:space="preserve">
+    <value>Skift synligheden af doner-knappen på programkommandovinduet.</value>
+  </data>
+  <data name="ErrorLoadingImageCorrupt" xml:space="preserve">
+    <value>Kunne ikke indlæse filen. Billedet kan være beskadiget</value>
+  </data>
 </root>

@@ -273,4 +273,7 @@
   <data name="Deleting" xml:space="preserve">
     <value>Raderar</value>
   </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>Generellt</value>
+  </data>
 </root>

@@ -318,4 +318,34 @@
   <data name="FileTypeInfo" xml:space="preserve">
     <value>Kies welke bestandstypes er geladen worden in de afspeler.</value>
   </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>Algemeen</value>
+  </data>
+  <data name="CutToClipboard" xml:space="preserve">
+    <value>naar klembord</value>
+  </data>
+  <data name="CopiedToClipboard" xml:space="preserve">
+    <value>Gekopieerd naar Klembord</value>
+  </data>
+  <data name="AssociateTypeTooltip" xml:space="preserve">
+    <value>Koppel het bestandstype aan FIV</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="ProgramSettings" xml:space="preserve">
+    <value>Programma</value>
+  </data>
+  <data name="ShowDonateButton" xml:space="preserve">
+    <value>Knop 'Doneer'</value>
+  </data>
+  <data name="ShowDonateButtonInfo" xml:space="preserve">
+    <value>Schakel de zichtbaarheid van de donatieknop in het programmaopdrachtvenster in.</value>
+  </data>
+  <data name="ErrorLoadingImageCorrupt" xml:space="preserve">
+    <value>Kan bestand niet laden. Afbeelding is mogelijk beschadigd</value>
+  </data>
 </root>

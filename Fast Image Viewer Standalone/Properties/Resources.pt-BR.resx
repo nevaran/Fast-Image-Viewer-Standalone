@@ -318,4 +318,28 @@
   <data name="FileTypeInfo" xml:space="preserve">
     <value>Escolha quais tipos de arquivo são carregados no visualizador.</value>
   </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>Geral</value>
+  </data>
+  <data name="CutToClipboard" xml:space="preserve">
+    <value>Cortar para a área de transferência</value>
+  </data>
+  <data name="CopiedToClipboard" xml:space="preserve">
+    <value>Copiado para clipboard</value>
+  </data>
+  <data name="AssociateTypeTooltip" xml:space="preserve">
+    <value>Associe o tipo de arquivo ao FIV</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tudo</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Atualizações</value>
+  </data>
+  <data name="ProgramSettings" xml:space="preserve">
+    <value>Programa</value>
+  </data>
+  <data name="ShowDonateButton" xml:space="preserve">
+    <value>Botão de Doação</value>
+  </data>
 </root>
