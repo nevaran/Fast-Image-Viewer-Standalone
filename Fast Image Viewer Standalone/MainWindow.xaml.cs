@@ -423,7 +423,7 @@ namespace FIVStandard
 
         private async Task OpenMediaAsync(Uri uri)
         {
-            await MediaView.Open(uri);
+            _ = await MediaView.Open(uri);
 
             IsLoading = false;
         }
@@ -431,7 +431,7 @@ namespace FIVStandard
         private async Task CloseMediaAsync()
         {
             if (!MediaView.IsClosing)
-                await MediaView.Close();
+                _ = await MediaView.Close();
         }
 
         private void TogglePause()
@@ -1002,7 +1002,7 @@ namespace FIVStandard
             MetroTabControl tc = (MetroTabControl)sender;
             TabControlSelectedTab = tc.SelectedIndex;
 
-            _ = TabControlSelectedTab == 0 ? (MediaView?.Play()) : (MediaView?.Pause());
+            _ = TabControlSelectedTab == 0 ? (MediaView?.Play()) : (MediaView?.Pause());//resume playing a media, if there is any, when we get back to the general tab
 
             if (Settings.ReloadFolderFlag == false) return;//dont re-open folder with file if not flagged
 
