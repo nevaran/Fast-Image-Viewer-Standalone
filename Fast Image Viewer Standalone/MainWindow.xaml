@@ -359,7 +359,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
+                        
                         <!--  Thumbnail List Control  -->
                         <ListBox
                             x:Name="thumbnailList"
@@ -374,9 +374,10 @@
                             SelectedItem="{Binding ImageItem, Mode=TwoWay}"
                             SelectionChanged="OnThumbnailList_SelectionChanged"
                             VirtualizingStackPanel.IsVirtualizing="True"
+                            ScrollViewer.PanningMode="VerticalOnly"
                             Visibility="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                             >
-
+                            
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel
@@ -390,7 +391,7 @@
                                 <DataTemplate>
                                     <Border
                                         BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                        BorderThickness="2"
+                                        BorderThickness="1"
                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         >
                                         <StackPanel
@@ -406,12 +407,13 @@
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Text="{Binding ThumbnailName, Mode=OneWay, IsAsync=True}"
                                                 TextAlignment="Center"
+                                                TextOptions.TextRenderingMode="Grayscale"
                                                 TextTrimming="CharacterEllipsis"
                                                 />
                                             <Image
                                                 Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 Height="{Binding Settings.ThumbnailSize, Mode=OneWay}"
-                                                RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                RenderOptions.BitmapScalingMode="LowQuality"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}"
                                                 />
@@ -536,7 +538,7 @@
                             </Slider>
                         </Grid>
 
-                        <!--  Media Control  -->
+                        <!--  MediaElement Control  -->
                         <utils:ZoomBorder
                             x:Name="borderMed"
                             Grid.Column="1"
@@ -574,7 +576,7 @@
                             >
                             <Image
                                 Name="PictureView"
-                                RenderOptions.BitmapScalingMode="Fant"
+                                RenderOptions.BitmapScalingMode="HighQuality"
                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Source="{Binding ImageSource, Mode=OneWay, IsAsync=True}"
                                 StretchDirection="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"
