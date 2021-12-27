@@ -73,14 +73,14 @@ namespace FIVStandard.Core
         /// <returns></returns>
         public static void LoadSingleThumbnailData(string fullPath, ThumbnailItemData tid, bool overrideThumbnail = false)
         {
+            if (Path.GetExtension(fullPath) == ".webm" || !File.Exists(fullPath)) return;
+
             if (overrideThumbnail || tid.ThumbnailImage is null)//load thumbnail only if its set for override or is empty
                 LoadThumbnailData(fullPath, tid);
         }
 
         private static void LoadThumbnailData(string path, ThumbnailItemData tid)
         {
-            if (Path.GetExtension(path) == ".webm" || !File.Exists(path)) return;
-
             try
             {
                 using MagickImage image = new(path);
