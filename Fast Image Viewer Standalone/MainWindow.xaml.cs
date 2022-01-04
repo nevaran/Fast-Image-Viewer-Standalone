@@ -1014,21 +1014,21 @@ namespace FIVStandard
         private void OnThumbnailItemVisible(object sender, RoutedEventArgs e)
         {
             ListBoxItem lbi = sender as ListBoxItem;
-            ThumbnailItemData dataItem = (ThumbnailItemData)lbi.Content;
+            ThumbnailItemData tid = (ThumbnailItemData)lbi.Content;
 
-            if (Path.GetExtension(dataItem.ThumbnailName) == ".webm")//load a shell thumbnail if we are dealing with video types
+            if (Path.GetExtension(tid.ThumbnailName) == ".webm")//load a shell thumbnail if we are dealing with video types
             {
                 try
                 {
-                    ShellObject shellFile = ShellObject.FromParsingName(Path.Combine(ActiveFolder, dataItem.ThumbnailName));
-                    dataItem.ThumbnailImage = shellFile.Thumbnail.BitmapSource;
+                    ShellObject shellFile = ShellObject.FromParsingName(Path.Combine(ActiveFolder, tid.ThumbnailName));
+                    tid.ThumbnailImage = shellFile.Thumbnail.BitmapSource;
 
                     shellFile.Dispose();
                 }
                 catch { }
             }
             else
-                _ = Task.Run(() => Tools.LoadSingleThumbnailData(Path.Combine(ActiveFolder, dataItem.ThumbnailName), dataItem));
+                _ = Task.Run(() => Tools.LoadSingleThumbnailData(Path.Combine(ActiveFolder, tid.ThumbnailName), tid));
         }
 
         private void OnDonateClick(object sender, RoutedEventArgs e)
@@ -1102,14 +1102,14 @@ namespace FIVStandard
             {
                 if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray)) return;//ignore if the file is not a valid type
 
-                ThumbnailItemData tt = new()
+                ThumbnailItemData tid = new()
                 {
                     ThumbnailName = e.Name,
                     FileType = Tools.IsAnimatedExtension(Path.GetExtension(e.Name).ToLower()),
                 };
-                ImagesData.Add(tt);
+                ImagesData.Add(tid);
 
-                _ = Task.Run(() => Tools.LoadSingleThumbnailData(e.FullPath, tt));
+                _ = Task.Run(() => Tools.LoadSingleThumbnailData(e.FullPath, tid));
 
                 if (ImageItem is null)
                 {
@@ -1145,7 +1145,7 @@ namespace FIVStandard
 
                 if (!Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray) && !dirty) return;//dont send a message if its not one of our files
 
-                if (ImageItem is null || ImageItem.ThumbnailName == e.Name)
+                if (ImageItem is null || ImageItem.ThumbnailName == e.Name)//if the viewed item is the changed one, update it
                 {
                     selectedNew = true;
                     await ChangeImageAsync(0, false);
@@ -1172,7 +1172,7 @@ namespace FIVStandard
                         {
                             if (Tools.IsOfType(e.Name, Settings.JSettings.FilterActiveArray))
                             {
-                                var oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
+                                BitmapSource oldThumbnail = ImagesData[i].ThumbnailImage;//save the thumbnail so we dont have to generate it again
 
                                 ThumbnailItemData tt = new()
                                 {
@@ -1184,8 +1184,7 @@ namespace FIVStandard
 
                                 ImagesData[i] = tt;
 
-                                //if the viewed item is the changed one, update it
-                                if (ActiveFile == e.OldName)
+                                if (ActiveFile == e.OldName)//if the viewed item is the changed one, update it
                                 {
                                     ActiveFile = ImagesData[i].ThumbnailName;
                                 }
