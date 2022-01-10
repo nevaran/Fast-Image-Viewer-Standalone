@@ -35,7 +35,7 @@ namespace FIVStandard
         private ThumbnailItemData imageItem;
 
         /// <summary>
-        /// The class is always the currently viewed image
+        /// The class variable is always the currently viewed image
         /// </summary>
         public ThumbnailItemData ImageItem
         {
