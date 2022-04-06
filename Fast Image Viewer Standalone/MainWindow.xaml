@@ -51,7 +51,7 @@
 
             <Setter Property="Padding" Value="5" />
             <Setter Property="IsTabStop" Value="False" />
-            <!--  Fixes spacebar not working and some other bugs if selecting via mouse but disables now the actual selecing  -->
+            <!--  Fixes spacebar not working and some other bugs if selecting thumbnail list via mouse but disables now the actual selecing  -->
             <Setter Property="Focusable" Value="False" />
             <EventSetter
                 Event="PreviewMouseDown"
@@ -66,15 +66,11 @@
 
     <!--  Window Bar Buttons  -->
     <Controls:MetroWindow.RightWindowCommands>
-        <Controls:WindowCommands
-            IsTabStop="False"
-            ScrollViewer.VerticalScrollBarVisibility="Disabled"
-            >
+        <Controls:WindowCommands IsTabStop="False">
             <Button
                 Click="OnDonateClick"
                 Focusable="False"
                 IsTabStop="False"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <StackPanel
                     Orientation="Horizontal"
@@ -84,7 +80,6 @@
                     <iconPacks:PackIconBoxIcons
                         IsTabStop="False"
                         Kind="LogosPaypal"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         />
                 </StackPanel>
             </Button>
@@ -93,28 +88,25 @@
                 Focusable="False"
                 IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
                 IsTabStop="False"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{local:Loc CheckForUpdates, IsAsync=True}" />
                     <iconPacks:PackIconUnicons
                         IsTabStop="False"
                         Kind="Sync"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         />
                 </StackPanel>
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
-    <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
+    <Grid>
         <!--  Toggled Options Indicator Icons  -->
         <StackPanel
             Height="25"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Orientation="Horizontal"
-            ScrollViewer.VerticalScrollBarVisibility="Disabled"
             >
 
             <iconPacks:PackIconBoxIcons
@@ -126,7 +118,6 @@
                 Foreground="{DynamicResource MahApps.Brushes.Accent}"
                 IsTabStop="False"
                 Kind="SolidMoon"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{local:Loc DarkModeOnTooltip,
                                     IsAsync=True}"
                 Visibility="{Binding Settings.JSettings.DarkModeToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
@@ -140,7 +131,6 @@
                 Foreground="{DynamicResource MahApps.Brushes.Accent}"
                 IsTabStop="False"
                 Kind="RegularExpand"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{local:Loc StretchOnTooltip,
                                     IsAsync=True}"
                 Visibility="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
@@ -154,7 +144,6 @@
                 Foreground="{DynamicResource MahApps.Brushes.Accent}"
                 IsTabStop="False"
                 Kind="ImageResizeSquare"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{local:Loc DownsizeOnTooltip,
                                     IsAsync=True}"
                 Visibility="{Binding Settings.JSettings.DownsizeImageToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
@@ -168,7 +157,6 @@
                 Foreground="{DynamicResource MahApps.Brushes.Accent}"
                 IsTabStop="False"
                 Kind="RegularListUl"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ToolTip="{local:Loc ThumbnailListOnTooltip,
                                     IsAsync=True}"
                 Visibility="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay, IsAsync=True}"
@@ -179,7 +167,6 @@
             Focusable="False"
             IsEnabled="{Binding Settings.JSettings.ShortcutButtonsOn, Mode=OneWay}"
             IsTabStop="False"
-            ScrollViewer.VerticalScrollBarVisibility="Disabled"
             SelectionChanged="OnMetroTabControl_SelectionChanged"
             >
             <!--  KeepVisualTreeInMemoryWhenChangingTabs="True"  -->
@@ -189,10 +176,9 @@
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc General,
                                    IsAsync=True}"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
 
-                <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <Grid>
                     <!--  Context Menu | Window  -->
                     <Grid.ContextMenu>
                         <ContextMenu>
@@ -201,21 +187,18 @@
                                 Focusable="False"
                                 Header="{local:Loc OpenFileLocation,
                                                    IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <MenuItem
                                 Click="OnCopyToClipboard"
                                 Focusable="False"
                                 Header="{local:Loc CopyImageToClipboard,
                                                    IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <MenuItem
                                 Click="OnCutToClipboard"
                                 Focusable="False"
                                 Header="{local:Loc CutFileToClipboard,
                                                    IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                             <Separator />
                             <MenuItem
@@ -223,15 +206,11 @@
                                 Focusable="False"
                                 Header="{local:Loc Delete,
                                                    IsAsync=True}"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 />
                         </ContextMenu>
                     </Grid.ContextMenu>
 
-                    <Separator
-                        VerticalAlignment="Top"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        />
+                    <Separator VerticalAlignment="Top" />
 
                     <!--  Image Information  -->
                     <Border
@@ -240,12 +219,10 @@
                         Margin="12,2,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="14"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             Text="{Binding ImageInfo.ImgResStringFormat, Mode=OneWay, IsAsync=True}"
                             TextWrapping="Wrap"
                             />
@@ -262,7 +239,6 @@
                         Click="OnClick_Prev"
                         Focusable="False"
                         IsTabStop="False"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
                         <iconPacks:PackIconBoxIcons
                             Width="15"
@@ -270,7 +246,6 @@
                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                             IsTabStop="False"
                             Kind="SolidLeftArrow"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             />
                     </Button>
 
@@ -285,7 +260,6 @@
                         Click="OnClick_Pause"
                         Focusable="False"
                         IsTabStop="False"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         Visibility="Collapsed"
                         >
                         <iconPacks:PackIconBoxIcons
@@ -294,7 +268,6 @@
                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                             IsTabStop="False"
                             Kind="RegularPauseCircle"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             />
                     </Button>
 
@@ -309,7 +282,6 @@
                         Click="OnClick_Next"
                         Focusable="False"
                         IsTabStop="False"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
                         <iconPacks:PackIconBoxIcons
                             Width="15"
@@ -317,7 +289,6 @@
                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                             IsTabStop="False"
                             Kind="SolidRightArrow"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             />
                     </Button>
 
@@ -352,14 +323,13 @@
                         AllowDrop="True"
                         Drop="OnMedia_Drop"
                         MouseMove="MediaImageView_MouseMove"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        
+
                         <!--  Thumbnail List Control  -->
                         <ListBox
                             x:Name="thumbnailList"
@@ -371,19 +341,18 @@
                             ItemContainerStyle="{StaticResource ListBoxItemStyle}"
                             ItemsSource="{Binding ImagesDataView, Mode=OneWay}"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            ScrollViewer.PanningMode="VerticalOnly"
                             SelectedItem="{Binding ImageItem, Mode=TwoWay}"
                             SelectionChanged="OnThumbnailList_SelectionChanged"
                             VirtualizingStackPanel.IsVirtualizing="True"
-                            ScrollViewer.PanningMode="VerticalOnly"
                             Visibility="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                             >
-                            
+
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel
                                         VerticalAlignment="Top"
                                         IsItemsHost="True"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
@@ -392,19 +361,16 @@
                                     <Border
                                         BorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                         BorderThickness="1"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         >
                                         <StackPanel
                                             Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                             Height="{Binding Settings.ThumbnailSizePlusText, Mode=OneWay}"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             ToolTip="{Binding ThumbnailName, Mode=OneWay, IsAsync=True}"
                                             >
 
                                             <TextBlock
                                                 Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 FontSize="10"
-                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Text="{Binding ThumbnailName, Mode=OneWay, IsAsync=True}"
                                                 TextAlignment="Center"
                                                 TextOptions.TextRenderingMode="Grayscale"
@@ -414,7 +380,6 @@
                                                 Width="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 Height="{Binding Settings.ThumbnailSize, Mode=OneWay}"
                                                 RenderOptions.BitmapScalingMode="LowQuality"
-                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Source="{Binding ThumbnailImage, Mode=OneWay, IsAsync=True}"
                                                 />
 
@@ -428,7 +393,6 @@
                                                 Foreground="{DynamicResource MahApps.Brushes.Accent}"
                                                 IsTabStop="False"
                                                 Kind="SolidVideo"
-                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Visibility="{Binding IsAnimated, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                                                 />
                                         </StackPanel>
@@ -441,7 +405,6 @@
                         <Grid
                             Grid.Column="1"
                             Margin="10,0,0,2"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             >
 
                             <Grid.ColumnDefinitions>
@@ -459,7 +422,6 @@
                                 Margin="10,0,10,0"
                                 VerticalAlignment="Bottom"
                                 FontSize="14"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{Binding MediaTimeElapsedFormat, Mode=OneWay}"
                                 TextAlignment="Center"
                                 Visibility="Collapsed"
@@ -474,7 +436,6 @@
                                 Focusable="False"
                                 IsMoveToPointEnabled="True"
                                 IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ValueChanged="OnMediaProgression_ValueChanged"
                                 Visibility="Hidden"
                                 Value="{Binding Path=Position, ElementName=MediaView, Converter={StaticResource TimeSpanTickConverter}, Mode=TwoWay}"
@@ -500,7 +461,6 @@
                                 Focusable="False"
                                 Foreground="{x:Null}"
                                 IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Visibility="Hidden"
                                 >
                                 <iconPacks:PackIconBoxIcons
@@ -508,7 +468,6 @@
                                     Foreground="{DynamicResource MahApps.Brushes.Accent}"
                                     IsTabStop="False"
                                     Kind="{Binding Settings.JSettings.VolumeIcon, Mode=OneWay}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     />
                             </Button>
 
@@ -527,7 +486,6 @@
                                 IsTabStop="False"
                                 Maximum="1"
                                 Minimum="0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 SmallChange="0.01"
                                 Visibility="Collapsed"
                                 Value="{Binding Settings.JSettings.MediaVolume, Mode=TwoWay}"
@@ -546,7 +504,6 @@
                             Background="Transparent"
                             ClampLimitMultiplier="1"
                             ClipToBounds="True"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             ZoomSensitivity="{Binding Settings.JSettings.ZoomSensitivity, Mode=OneWay}"
                             >
                             <ffme:MediaElement
@@ -555,7 +512,6 @@
                                 LoadedBehavior="Play"
                                 LoopingBehavior="Play"
                                 MediaOpened="OnMediaView_MediaOpened"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ScrubbingEnabled="True"
                                 SpeedRatio="1"
                                 StretchDirection="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay}"
@@ -571,13 +527,11 @@
                             Background="Transparent"
                             ClampLimitMultiplier="1"
                             ClipToBounds="True"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             ZoomSensitivity="{Binding Settings.JSettings.ZoomSensitivity, Mode=OneWay}"
                             >
                             <Image
                                 Name="PictureView"
                                 RenderOptions.BitmapScalingMode="HighQuality"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Source="{Binding ImageSource, Mode=OneWay, IsAsync=True}"
                                 StretchDirection="{Binding Settings.JSettings.StretchImageToggle, Converter={StaticResource BoolToStretchDirectionConverter}, Mode=OneWay, IsAsync=True}"
                                 />
@@ -588,7 +542,6 @@
                             Grid.Column="1"
                             IsHitTestVisible="False"
                             IsTabStop="False"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                             />
                     </Grid>
@@ -609,9 +562,8 @@
                     <StackPanel
                         Margin="0,0,0,10"
                         HorizontalAlignment="Left"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         >
-                        <Separator ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                        <Separator />
 
                         <!--  Reset Settings Button  -->
                         <Button
@@ -622,7 +574,6 @@
                             Content="{local:Loc ResetSettingsButton,
                                                 IsAsync=True}"
                             FontSize="14"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             />
 
                         <!--  Window Settings  -->
@@ -639,7 +590,6 @@
                                         VerticalAlignment="Center"
                                         IsTabStop="False"
                                         Kind="WindowGrid"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <TextBlock
                                         FontSize="16"
@@ -649,14 +599,13 @@
                                 </StackPanel>
                             </GroupBox.Header>
 
-                            <StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <StackPanel>
                                 <!--  Language Dropdown  -->
                                 <DockPanel>
                                     <TextBlock
                                         VerticalAlignment="Top"
                                         DockPanel.Dock="Top"
                                         FontWeight="DemiBold"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Text="{local:Loc Language,
                                                          IsAsync=True}"
                                         TextAlignment="Left"
@@ -672,7 +621,6 @@
                                         DockPanel.Dock="Bottom"
                                         ItemsSource="{Binding Settings.JSettings.GetLanguageString, Mode=OneTime}"
                                         Orientation="Vertical"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         SelectedIndex="{Binding Settings.JSettings.ShownLanguageDropIndex, Mode=TwoWay}"
                                         >
                                         <Controls:SplitButton.ItemContainerStyle>
@@ -696,7 +644,6 @@
                                                                IsAsync=True}"
                                         OnContent="{local:Loc On,
                                                               IsAsync=True}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         ToolTip="{local:Loc DarkModeInfo,
                                                             IsAsync=True}"
                                         />
@@ -771,7 +718,6 @@
                                         VerticalAlignment="Center"
                                         IsTabStop="False"
                                         Kind="Image"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <TextBlock
                                         FontSize="16"
@@ -781,7 +727,7 @@
                                 </StackPanel>
                             </GroupBox.Header>
 
-                            <StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <StackPanel>
                                 <!--  Stretch Image Toggle  -->
                                 <DockPanel>
                                     <Controls:ToggleSwitch
@@ -814,7 +760,6 @@
                                                                IsAsync=True}"
                                         OnContent="{local:Loc On,
                                                               IsAsync=True}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         ToolTip="{local:Loc DownsizeImageInfo,
                                                             IsAsync=True}"
                                         />
@@ -826,7 +771,6 @@
                                         VerticalAlignment="Center"
                                         DockPanel.Dock="Top"
                                         FontWeight="DemiBold"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Text="{local:Loc ZoomSensitivity,
                                                          IsAsync=True}"
                                         TextAlignment="Left"
@@ -838,7 +782,6 @@
                                         VerticalAlignment="Center"
                                         DockPanel.Dock="Bottom"
                                         FontWeight="DemiBold"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Text="{Binding Settings.JSettings.ZoomSensitivityString, Mode=OneWay}"
                                         TextAlignment="Center"
                                         />
@@ -850,7 +793,6 @@
                                         LargeChange="0.05"
                                         Maximum="2"
                                         Minimum="0.1"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         TickFrequency="0.05"
                                         Value="{Binding Settings.JSettings.ZoomSensitivity, Mode=TwoWay}"
                                         />
@@ -865,7 +807,6 @@
                                         VerticalAlignment="Bottom"
                                         Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                         DockPanel.Dock="Bottom"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Controls:ToggleSwitch
                                         VerticalAlignment="Center"
@@ -878,7 +819,6 @@
                                                                IsAsync=True}"
                                         OnContent="{local:Loc On,
                                                               IsAsync=True}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         ToolTip="{local:Loc EnableThumbnailListInfo,
                                                             IsAsync=True}"
                                         />
@@ -892,14 +832,12 @@
                                         HorizontalAlignment="Left"
                                         Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                         DockPanel.Dock="Left"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <TextBlock
                                         Margin="10,0,0,0"
                                         VerticalAlignment="Center"
                                         DockPanel.Dock="Top"
                                         FontWeight="DemiBold"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Text="{local:Loc ThumbnailSize,
                                                          IsAsync=True}"
                                         TextAlignment="Left"
@@ -911,7 +849,6 @@
                                         VerticalAlignment="Center"
                                         DockPanel.Dock="Bottom"
                                         FontWeight="DemiBold"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Text="{Binding Settings.JSettings.ThumbnailSize, Mode=OneWay}"
                                         TextAlignment="Center"
                                         />
@@ -924,7 +861,6 @@
                                         LargeChange="5"
                                         Maximum="240"
                                         Minimum="40"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         SmallChange="5"
                                         TickFrequency="5"
                                         Value="{Binding Settings.JSettings.ThumbnailSize, Mode=TwoWay}"
@@ -939,14 +875,12 @@
                                         HorizontalAlignment="Left"
                                         Background="{Binding Settings.JSettings.EnableThumbnailListToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                         DockPanel.Dock="Left"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <TextBlock
                                         Margin="10,0,0,0"
                                         VerticalAlignment="Center"
                                         DockPanel.Dock="Top"
                                         FontWeight="DemiBold"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Text="{local:Loc ThumbnailRes,
                                                          IsAsync=True}"
                                         TextAlignment="Left"
@@ -958,7 +892,6 @@
                                         VerticalAlignment="Center"
                                         DockPanel.Dock="Bottom"
                                         FontWeight="DemiBold"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Text="{Binding Settings.JSettings.ThumbnailRes, Mode=OneWay}"
                                         TextAlignment="Center"
                                         />
@@ -971,7 +904,6 @@
                                         LargeChange="5"
                                         Maximum="240"
                                         Minimum="40"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         SmallChange="5"
                                         Thumb.DragCompleted="OnThumbnailSlider_DragCompleted"
                                         Thumb.DragStarted="OnThumbnailSlider_DragStarted"
@@ -996,7 +928,6 @@
                                         VerticalAlignment="Center"
                                         IsTabStop="False"
                                         Kind="DownloadAlt"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <TextBlock
                                         FontSize="16"
@@ -1006,7 +937,7 @@
                                 </StackPanel>
                             </GroupBox.Header>
 
-                            <StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <StackPanel>
                                 <!--  Check for Updates at Startup  -->
                                 <DockPanel>
                                     <Border
@@ -1016,7 +947,6 @@
                                         HorizontalAlignment="Left"
                                         Background="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                         DockPanel.Dock="Bottom"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Controls:ToggleSwitch
                                         Padding="0,0,0,0"
@@ -1030,7 +960,6 @@
                                                                IsAsync=True}"
                                         OnContent="{local:Loc On,
                                                               IsAsync=True}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         ToolTip="{local:Loc CheckForUpdatesStartToggleInfo,
                                                             IsAsync=True}"
                                         />
@@ -1044,7 +973,6 @@
                                         HorizontalAlignment="Left"
                                         Background="{Binding Settings.JSettings.CheckForUpdatesStartToggle, Converter={StaticResource BoolFromAccentToGrayConverter}, Mode=OneWay, IsAsync=True}"
                                         DockPanel.Dock="Left"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Controls:ToggleSwitch
                                         Padding="10,0,0,0"
@@ -1059,7 +987,6 @@
                                                                IsAsync=True}"
                                         OnContent="{local:Loc On,
                                                               IsAsync=True}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         ToolTip="{local:Loc AutoupdateToggleInfo,
                                                             IsAsync=True}"
                                         />
@@ -1081,7 +1008,6 @@
                                         VerticalAlignment="Center"
                                         IsTabStop="False"
                                         Kind="FileExclamation"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <TextBlock
                                         FontSize="16"
@@ -1093,7 +1019,7 @@
                                 </StackPanel>
                             </GroupBox.Header>
 
-                            <StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <StackPanel>
                                 <CheckBox
                                     Height="25"
                                     Click="OnAllTypeCheckBox_Changed"
@@ -1111,7 +1037,6 @@
                                         Height="25"
                                         Content=".jpg"
                                         IsChecked="{Binding Settings.JSettings.FilterJpg, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1120,7 +1045,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".jpg"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1128,7 +1052,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1143,7 +1066,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".jpeg"
                                         IsChecked="{Binding Settings.JSettings.FilterJpeg, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1152,7 +1074,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".jpeg"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1160,7 +1081,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1175,7 +1095,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".png"
                                         IsChecked="{Binding Settings.JSettings.FilterPng, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1184,7 +1103,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".png"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1192,7 +1110,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1207,7 +1124,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".gif"
                                         IsChecked="{Binding Settings.JSettings.FilterGif, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1216,7 +1132,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".gif"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1224,7 +1139,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1239,7 +1153,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".bmp"
                                         IsChecked="{Binding Settings.JSettings.FilterBmp, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1248,7 +1161,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".bmp"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1256,7 +1168,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1271,7 +1182,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".tiff"
                                         IsChecked="{Binding Settings.JSettings.FilterTiff, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1280,7 +1190,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".tiff"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1288,7 +1197,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1303,7 +1211,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".ico"
                                         IsChecked="{Binding Settings.JSettings.FilterIco, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1312,7 +1219,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".ico"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1320,7 +1226,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1335,7 +1240,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".svg"
                                         IsChecked="{Binding Settings.JSettings.FilterSvg, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1344,7 +1248,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".svg"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1352,7 +1255,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1367,7 +1269,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".webp"
                                         IsChecked="{Binding Settings.JSettings.FilterWebp, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1376,7 +1277,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".webp"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1384,7 +1284,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1399,7 +1298,6 @@
                                         HorizontalAlignment="Left"
                                         Content=".webm"
                                         IsChecked="{Binding Settings.JSettings.FilterWebm, Mode=TwoWay}"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <Button
                                         Width="20"
@@ -1408,7 +1306,6 @@
                                         Padding="0"
                                         Click="OnAssociateFileButton_Click"
                                         Loaded="OnAssociateFileButtonShown"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         Tag=".webm"
                                         ToolTip="{local:Loc AssociateTypeTooltip,
                                                             IsAsync=True}"
@@ -1416,7 +1313,6 @@
                                         <iconPacks:PackIconUnicons
                                             IsTabStop="False"
                                             Kind="FileExclamation"
-                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                             />
                                     </Button>
                                 </StackPanel>
@@ -1436,7 +1332,6 @@
                                         VerticalAlignment="Center"
                                         IsTabStop="False"
                                         Kind="Keyboard"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                     <TextBlock
                                         FontSize="16"
@@ -1446,7 +1341,7 @@
                                 </StackPanel>
                             </GroupBox.Header>
 
-                            <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -1470,7 +1365,6 @@
                                 <TextBlock
                                     Grid.Row="2"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc PreviousImageShortcut,
                                                      IsAsync=True}"
                                     />
@@ -1482,7 +1376,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.GoBackwardKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1495,7 +1388,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.GoBackwardKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1504,7 +1396,6 @@
                                 <TextBlock
                                     Grid.Row="3"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc NextImageShortcut,
                                                      IsAsync=True}"
                                     />
@@ -1516,7 +1407,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.GoForwardKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1529,7 +1419,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.GoForwardKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1538,7 +1427,6 @@
                                 <TextBlock
                                     Grid.Row="4"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc PauseAnimationShortcut,
                                                      IsAsync=True}"
                                     />
@@ -1550,7 +1438,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.PauseKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1563,7 +1450,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.PauseKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1572,7 +1458,6 @@
                                 <TextBlock
                                     Grid.Row="5"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc DeleteImageShortcut,
                                                      IsAsync=True}"
                                     />
@@ -1584,7 +1469,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.DeleteKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1597,7 +1481,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.DeleteKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1606,7 +1489,6 @@
                                 <TextBlock
                                     Grid.Row="6"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc StretchImageShortcut,
                                                      IsAsync=True}"
                                     />
@@ -1618,7 +1500,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.StretchImageKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1631,7 +1512,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.StretchImageKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1640,7 +1520,6 @@
                                 <TextBlock
                                     Grid.Row="7"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc DownsizeImageShortcut,
                                                      IsAsync=True}"
                                     />
@@ -1652,7 +1531,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.DownsizeImageKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1665,7 +1543,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.DownsizeImageKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1674,7 +1551,6 @@
                                 <TextBlock
                                     Grid.Row="8"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc ExploreImageLocationShortcut,
                                                      IsAsync=True}"
                                     />
@@ -1686,7 +1562,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.ExploreFileKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1699,7 +1574,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.ExploreFileKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1708,7 +1582,6 @@
                                 <TextBlock
                                     Grid.Row="9"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc CopyImageToClipboard,
                                                      IsAsync=True}"
                                     />
@@ -1720,7 +1593,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.CopyImageToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1733,7 +1605,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.CopyImageToClipboardKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1742,7 +1613,6 @@
                                 <TextBlock
                                     Grid.Row="10"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc CutFileToClipboard,
                                                      IsAsync=True}"
                                     />
@@ -1754,7 +1624,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.CutFileToClipboardKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1767,7 +1636,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.CutFileToClipboardKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1776,7 +1644,6 @@
                                 <TextBlock
                                     Grid.Row="11"
                                     Grid.Column="0"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Text="{local:Loc ShowThumbnailList,
                                                      IsAsync=True}"
                                     />
@@ -1788,7 +1655,6 @@
                                     HorizontalAlignment="Left"
                                     Click="OnShortcutClick"
                                     Content="{Binding Settings.JSettings.ThumbnailListKey, Converter={StaticResource KeyToStringConverter}}"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.ThumbnailListKey, Mode=TwoWay}"
                                     />
                                 <Button
@@ -1801,7 +1667,6 @@
                                     Background="#D14B4B"
                                     Click="OnRemoveShortcutClick"
                                     Content="X"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Tag="{Binding Settings.JSettings.ThumbnailListKey, Mode=TwoWay}"
                                     ToolTip="{local:Loc RemoveShortcut,
                                                         IsAsync=True}"
@@ -1817,7 +1682,6 @@
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc About,
                                    IsAsync=True}"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <ScrollViewer
                     Margin="5"
@@ -1825,10 +1689,7 @@
                     IsTabStop="False"
                     VerticalScrollBarVisibility="Auto"
                     >
-                    <Grid
-                        Margin="10"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        >
+                    <Grid Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -2012,25 +1873,20 @@
                 Controls:HeaderedControlHelper.HeaderFontSize="16"
                 Header="{local:Loc WhatsNew,
                                    IsAsync=True}"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 >
                 <ScrollViewer
                     Margin="5,5,5,5"
                     Focusable="False"
                     >
-                    <StackPanel
-                        Orientation="Vertical"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        >
+                    <StackPanel Orientation="Vertical">
 
                         <TextBlock
                             Padding="10,0"
-                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
                             Text="{Binding AppUpdater.UpdaterMessage, Mode=OneWay}"
                             TextAlignment="Center"
                             />
 
-                        <Grid ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -2051,7 +1907,6 @@
                                 Focusable="False"
                                 IsEnabled="{Binding AppUpdater.NotUpdating, Mode=OneWay}"
                                 IsTabStop="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 ToolTip="{local:Loc DownloadLatestTooltip,
                                                     IsAsync=True}"
                                 >
@@ -2068,7 +1923,6 @@
                                         Margin="5,0,0,0"
                                         IsTabStop="False"
                                         Kind="RegularDownload"
-                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                         />
                                 </StackPanel>
 
@@ -2077,7 +1931,6 @@
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 >
                                 <TextBlock.Inlines>
                                     <Run
@@ -2092,7 +1945,6 @@
                                 Grid.Row="2"
                                 Grid.Column="0"
                                 Padding="20,0,0,0"
-                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                 Text="{Binding AppUpdater.DownloadedChangelog, Mode=OneWay, IsAsync=True}"
                                 TextWrapping="Wrap"
                                 />
