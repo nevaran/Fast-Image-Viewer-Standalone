@@ -58,7 +58,7 @@ namespace FIVStandard.Core
                 mainWindow.NotificationContent.Title = e.Message;
                 mainWindow.NotificationContent.Message = Properties.Resources.ResourceManager.GetString(nameof(Properties.Resources.ErrorLoadingImageCorrupt), Localization.TranslationSource.Instance.CurrentCulture);
                 mainWindow.NotificationContent.Type = NotificationType.Error;
-                _ = mainWindow.NotificationManager.ShowAsync(mainWindow.NotificationContent);
+                _ = mainWindow.NotificationManager.ShowAsync(mainWindow.NotificationContent, token: ct);
 
                 return Task.FromResult((BitmapSource)null);
             }
@@ -289,14 +289,13 @@ namespace FIVStandard.Core
         /// </summary>
         public static string GetUrlSourceImage(string str)
         {
-            string finalString = string.Empty;
             string firstString = "src=\"";
             string lastString = "\"";
 
             int startPos = str.IndexOf(firstString) + firstString.Length;
             string modifiedString = str[startPos..];
             int endPos = modifiedString.IndexOf(lastString);
-            finalString = modifiedString[..endPos];
+            string finalString = modifiedString[..endPos];
 
             return finalString;
         }

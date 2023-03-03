@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
 
     <RootNamespace>FIVStandard</RootNamespace>
@@ -18,8 +18,6 @@
     <Nullable>disable</Nullable>
 
     <StartupObject>FIVStandard.App</StartupObject>
-
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>

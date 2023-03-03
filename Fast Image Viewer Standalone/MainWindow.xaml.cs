@@ -240,10 +240,7 @@ namespace FIVStandard
         {
             get
             {
-                if (_notificationContent == null)//initialize only if module is required to improve startup speed
-                {
-                    _notificationContent = new NotificationContent();
-                }
+                _notificationContent ??= new NotificationContent();//initialize only if module is required to improve startup speed
 
                 return _notificationContent;
             }
