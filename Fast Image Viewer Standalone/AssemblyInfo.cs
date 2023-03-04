@@ -8,7 +8,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nevaran")]
 [assembly: AssemblyProduct("Fast Image Viewer")]
-[assembly: AssemblyCopyright("Copyright © Nevaran 2021")]
+[assembly: AssemblyCopyright("Copyright © Nevaran 2023")]
 [assembly: AssemblyTrademark("Nevaran")]
 [assembly: AssemblyCulture("")]
 
@@ -26,6 +26,6 @@ using System.Windows;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: AssemblyVersion("0.9.1.0")]//Version for updater
+[assembly: AssemblyVersion("0.9.1.1")]//Version for updater
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: NeutralResourcesLanguage("en")]
