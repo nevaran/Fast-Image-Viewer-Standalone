@@ -248,14 +248,14 @@ namespace FIVStandard.Core
         public static string RnJesus()//meme thing
         {
             Random rnd = new();
-            string[] rnj = new string[] {
+            string[] rnj = [
                         @"owo",
                         @"uwu",
                         @"ゴ ゴ ゴ ゴ",
                         @"I am Lagnar",
                         @"Made by ねヴぁらん",
                         @"¯\_(ツ)_/¯",
-            };
+            ];
 
             //10% chance to show meme
             return rnd.Next(0, 11) == 0 ? rnj[rnd.Next(0, rnj.Length)] : string.Empty;

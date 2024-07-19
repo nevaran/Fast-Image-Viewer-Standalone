@@ -9,7 +9,7 @@ namespace FIVStandard
         private App()
         {
             Library.FFmpegDirectory = @$"{AppDomain.CurrentDomain.BaseDirectory}\ffmpeg\bin";
-            Library.FFmpegLoadModeFlags = FFmpeg.AutoGen.FFmpegLoadMode.MinimumFeatures;
+            //Library.FFmpegLoadModeFlags = FFmpeg.AutoGen.FFmpegLoadMode.MinimumFeatures;
             //Library.LoadFFmpeg();
         }
     }

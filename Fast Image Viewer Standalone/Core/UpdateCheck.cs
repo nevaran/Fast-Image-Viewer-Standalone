@@ -329,7 +329,7 @@ namespace FIVStandard.Core
             //txt file containing version and update notes
             using var httpClient = new HttpClient();
             using var reader = new StreamReader(await httpClient.GetStreamAsync(changelogURL));
-            DownloadVersion = new Version(reader.ReadLine().Trim(new Char[] { '•' }));
+            DownloadVersion = new Version(reader.ReadLine().Trim(['•']));
             reader.ReadLine();//empty line between version and notes
             DownloadedChangelog = reader.ReadToEnd();
         }

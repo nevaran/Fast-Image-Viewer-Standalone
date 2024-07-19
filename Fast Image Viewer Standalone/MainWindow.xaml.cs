@@ -52,7 +52,7 @@ namespace FIVStandard
 
         public ListCollectionView ImagesDataView { get; }//sorted list - use this
 
-        public ObservableCollection<ThumbnailItemData> ImagesData { get; } = new();
+        public ObservableCollection<ThumbnailItemData> ImagesData { get; } = [];
 
         public string TitleInformation
         {
@@ -355,7 +355,7 @@ namespace FIVStandard
         private void GetDirectoryFiles(string searchFolder)
         {
             ImagesData.Clear();
-            List<string> filesFound = new();
+            List<string> filesFound = [];
 
             filesFound.AddRange(Directory.EnumerateFiles(searchFolder));//add all files of the folder to a list
 

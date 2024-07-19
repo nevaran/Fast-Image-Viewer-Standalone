@@ -342,4 +342,10 @@
   <data name="ShowDonateButton" xml:space="preserve">
     <value>Botão de Doação</value>
   </data>
+  <data name="ShowDonateButtonInfo" xml:space="preserve">
+    <value>Alternar a visibilidade do botão de doação na janela de comando do programa.</value>
+  </data>
+  <data name="ErrorLoadingImageCorrupt" xml:space="preserve">
+    <value>Não foi possível carregar o arquivo. A imagem pode estar corrompida</value>
+  </data>
 </root>
