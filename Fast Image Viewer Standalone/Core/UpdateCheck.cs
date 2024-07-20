@@ -30,6 +30,7 @@ namespace FIVStandard.Core
         ForcedVersionCheck
     }
 
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public sealed class UpdateCheck : INotifyPropertyChanged
     {
         /*[DllImport("kernel32.dll", SetLastError = true)]

@@ -25,10 +25,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-#pragma warning disable CA1416
-
 namespace FIVStandard
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
         #region Images

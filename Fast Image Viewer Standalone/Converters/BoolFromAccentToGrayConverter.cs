@@ -6,6 +6,7 @@ using static FIVStandard.Core.SettingsStore;
 
 namespace FIVStandard.Converters
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     class BoolFromAccentToGrayConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -26,7 +27,7 @@ namespace FIVStandard.Converters
                     B = 200
                 };
             }
-            SolidColorBrush brush = new SolidColorBrush(c);
+            SolidColorBrush brush = new(c);
 
             return brush;
         }

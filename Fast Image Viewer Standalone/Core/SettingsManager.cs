@@ -11,6 +11,7 @@ using System.Windows.Input;
 
 namespace FIVStandard.Core
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public sealed class SettingsManager
     {
         private readonly MainWindow mainWindow;
@@ -55,14 +56,16 @@ namespace FIVStandard.Core
             mainWindow.WindowState = JSettings.WindowState;
         }
 
+        private readonly JsonSerializerOptions jsonSerializerOptions = new()
+        {
+            WriteIndented = false,
+        };
+
         public void Save()
         {
             if (JSettings is null) return;
 
-            JsonSerializerOptions options = new()
-            {
-                WriteIndented = false,
-            };
+            JsonSerializerOptions options = jsonSerializerOptions;
             string jsonString = JsonSerializer.Serialize(JSettings, options);
             File.WriteAllText(settingsPath, jsonString);
 
@@ -209,7 +212,7 @@ namespace FIVStandard.Core
             else
                 JSettings.FilterAll = true;
 
-            JSettings.FilterActiveArray = JSettings.FilterActiveList.ToArray();
+            JSettings.FilterActiveArray = [.. JSettings.FilterActiveList];
 
             if (mainWindow.programLoaded == false) return;//fixes crash
 

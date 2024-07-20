@@ -4,6 +4,7 @@ using Unosquare.FFME;
 
 namespace FIVStandard
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class App : Application
     {
         private App()

@@ -9,6 +9,7 @@ using System.Windows.Media;
 
 namespace FIVStandard.Converters
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public class TextToColorConverter : IValueConverter
     {
         private class ThemeItem
@@ -17,7 +18,7 @@ namespace FIVStandard.Converters
             public Color PrimaryAccent { get; set; }
         }
 
-        private readonly List<ThemeItem> ThemeItemList = new List<ThemeItem>();
+        private readonly List<ThemeItem> ThemeItemList = [];
 
         public TextToColorConverter()
         {

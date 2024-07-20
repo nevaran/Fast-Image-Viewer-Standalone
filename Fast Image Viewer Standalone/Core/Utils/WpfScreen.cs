@@ -7,6 +7,7 @@ using System.Windows.Interop;
 
 namespace FIVStandard.Utils
 {
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public sealed class WpfScreen
     {
         public static IEnumerable<WpfScreen> AllScreens()
@@ -19,9 +20,9 @@ namespace FIVStandard.Utils
 
         public static WpfScreen GetScreenFrom(Window window)
         {
-            WindowInteropHelper windowInteropHelper = new WindowInteropHelper(window);
+            WindowInteropHelper windowInteropHelper = new(window);
             Screen screen = Screen.FromHandle(windowInteropHelper.Handle);
-            WpfScreen wpfScreen = new WpfScreen(screen);
+            WpfScreen wpfScreen = new(screen);
             return wpfScreen;
         }
 
@@ -31,9 +32,9 @@ namespace FIVStandard.Utils
             int y = (int)Math.Round(point.Y);
 
             // are x,y device-independent-pixels ??
-            System.Drawing.Point drawingPoint = new System.Drawing.Point(x, y);
+            System.Drawing.Point drawingPoint = new(x, y);
             Screen screen = Screen.FromPoint(drawingPoint);
-            WpfScreen wpfScreen = new WpfScreen(screen);
+            WpfScreen wpfScreen = new(screen);
 
             return wpfScreen;
         }
