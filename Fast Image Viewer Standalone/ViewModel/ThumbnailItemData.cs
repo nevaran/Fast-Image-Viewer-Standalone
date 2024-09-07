@@ -1,4 +1,4 @@
-﻿using FIVStandard.Core;
+﻿using FIVStandard.Core.Statics;
 using FIVStandard.Model;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

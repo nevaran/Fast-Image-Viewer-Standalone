@@ -1,5 +1,6 @@
 ﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
+using FIVStandard.Core.Statics;
 using FIVStandard.Model;
 using FIVStandard.Utils;
 using FIVStandard.ViewModel;
@@ -24,6 +25,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Unosquare.FFME;
 
 namespace FIVStandard
 {
@@ -407,6 +409,7 @@ namespace FIVStandard
             ImageSource = null;
             ImageInfo.ImgWidth = 0;
             ImageInfo.ImgHeight = 0;
+            ImageInfo.FileSize = "";
         }
 
         private async Task ClearViewerAsync()
@@ -415,6 +418,7 @@ namespace FIVStandard
             ImageSource = null;
             ImageInfo.ImgWidth = 0;
             ImageInfo.ImgHeight = 0;
+            ImageInfo.FileSize = "";
         }
 
         private async Task OpenMediaAsync(Uri uri)
@@ -519,6 +523,8 @@ namespace FIVStandard
                         Tools.GetImageInformation(ActivePath, ImageItem);
                         ImageInfo.ImgWidth = ImageItem.ImageWidth;
                         ImageInfo.ImgHeight = ImageItem.ImageHeight;
+
+                        ImageInfo.FileSize = Tools.ConvertBytesToDynamic(new FileInfo(path).Length);
                     }
                     if (ImageItem.FileType != FileMediaType.Image)//the image is animated, try to load it via FFME instead
                     {
@@ -631,9 +637,9 @@ namespace FIVStandard
 
             IsDeletingFile = true;
 
-            if (FileSystem.FileExists(path))
+            if (Microsoft.VisualBasic.FileIO.FileSystem.FileExists(path))
             {
-                FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
+                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
             }
             else
             {
@@ -727,6 +733,8 @@ namespace FIVStandard
 
                 ImageItem.ImageWidth = ImageInfo.ImgWidth;
                 ImageItem.ImageHeight = ImageInfo.ImgHeight;
+
+                ImageInfo.FileSize = Tools.ConvertBytesToDynamic(new FileInfo(e.Info.MediaSource).Length);
             }
 
             MediaTimeElapsedMax = MediaView.NaturalDuration.Value;
@@ -995,6 +1003,8 @@ namespace FIVStandard
 
         private async void OnMetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Library.LoadFFmpeg();
+
             MetroTabControl tc = (MetroTabControl)sender;
             TabControlSelectedTab = tc.SelectedIndex;
 

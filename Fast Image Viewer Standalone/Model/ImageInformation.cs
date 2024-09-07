@@ -1,4 +1,4 @@
-﻿using FIVStandard.Core;
+﻿using FIVStandard.Core.Statics;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -17,8 +17,8 @@ namespace FIVStandard.Model
             set
             {
                 imgWidth = value;
-                OnPropertyChanged();
-                OnPropertyChanged("ImgResStringFormat");
+                //OnPropertyChanged();
+                //OnPropertyChanged("ImgInfoStringFormat");
             }
         }
 
@@ -33,12 +33,30 @@ namespace FIVStandard.Model
             set
             {
                 imgHeight = value;
-                OnPropertyChanged();
-                OnPropertyChanged("ImgResStringFormat");
+                //OnPropertyChanged();
+                //OnPropertyChanged("ImgInfoStringFormat");
             }
         }
 
-        public string ImgResStringFormat
+        private string fileSize = "";
+
+        public string FileSize
+        {
+            get
+            {
+                return fileSize;
+            }
+            set
+            {
+                fileSize = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ImgWidth");
+                OnPropertyChanged("ImgHeight");
+                OnPropertyChanged("ImgInfoStringFormat");
+            }
+        }
+
+        public string ImgInfoStringFormat
         {
             get
             {
@@ -47,7 +65,7 @@ namespace FIVStandard.Model
                     return Tools.RnJesus();
                 }
                 else
-                    return $"{ImgWidth.ToString()}x{ImgHeight.ToString()}";
+                    return $"{FileSize} • {ImgWidth}x{ImgHeight}";
             }
         }
 

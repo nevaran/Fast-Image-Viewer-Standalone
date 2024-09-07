@@ -223,7 +223,7 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="14"
-                            Text="{Binding ImageInfo.ImgResStringFormat, Mode=OneWay, IsAsync=True}"
+                            Text="{Binding ImageInfo.ImgInfoStringFormat, Mode=OneWay, IsAsync=True}"
                             TextWrapping="Wrap"
                             />
                     </Border>

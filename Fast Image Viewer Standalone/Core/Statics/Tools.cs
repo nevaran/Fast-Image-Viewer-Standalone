@@ -16,7 +16,7 @@ using static FIVStandard.Core.SettingsStore;
 
 #pragma warning disable CA1416 // Validate platform compatibility
 
-namespace FIVStandard.Core
+namespace FIVStandard.Core.Statics
 {
     internal static class Tools
     {
@@ -37,7 +37,7 @@ namespace FIVStandard.Core
 
                     Rect r = nullableRect.Value;
                     if (imgWidth > r.Width || imgHeight > r.Height)
-                        image.Resize((int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
+                        image.Resize((uint)(int)(imgWidth * ScaleToBox(imgWidth, (int)r.Width, imgHeight, (int)r.Height)), 0);
                 }
                 image.AutoOrient();
 
@@ -51,7 +51,7 @@ namespace FIVStandard.Core
 
                 return Task.FromResult(bms);
             }
-            catch(MagickErrorException e)
+            catch (MagickErrorException e)
             {
                 mainWindow.IsLoading = false;
 
@@ -86,7 +86,7 @@ namespace FIVStandard.Core
                 using MagickImage image = new(path);
                 image.AutoOrient();
 
-                image.Thumbnail(Settings.ThumbnailRes, 0);
+                image.Thumbnail((uint)Settings.ThumbnailRes, 0);
 
                 tid.ThumbnailImage = image.ToBitmapSource();
                 tid.ThumbnailImage.Freeze();
@@ -106,25 +106,19 @@ namespace FIVStandard.Core
         public static void GetImageInformation(string path, ThumbnailItemData ImageItem)
         {
             if (ImageItem.ThumbnailImage is null)
-            {
                 _ = Task.Run(() => LoadSingleThumbnailData(path, ImageItem));
-            }
 
             if (ImageItem.ImageWidth != 0)//we already have a set width in the item data
-            {
                 return;
-            }
 
             System.Collections.Generic.IEnumerable<IMagickImageInfo> collection = MagickImageInfo.ReadCollection(path);
             if (collection.Count() > 1)//check if the image is not secretly a gif or other animated image magick.net supports detecting
-            {
                 ImageItem.FileType = FileMediaType.Gif;
-            }
 
             IMagickImageInfo first = collection.First();
 
-            ImageItem.ImageWidth = first.Width;
-            ImageItem.ImageHeight = first.Height;
+            ImageItem.ImageWidth = (int)first.Width;
+            ImageItem.ImageHeight = (int)first.Height;
 
             /*magickInfo.Read(path);
             ImageItem.ImageWidth = magickInfo.Width;
@@ -274,9 +268,7 @@ namespace FIVStandard.Core
         public static void ExploreFile(string path)
         {
             if (File.Exists(path))
-            {
                 _ = Process.Start("explorer.exe", $"/select,\"{path}\"");
-            }
         }
 
         public static Visibility BoolToVisibility(bool b)
@@ -324,6 +316,35 @@ namespace FIVStandard.Core
                 content.Type = NotificationType.Error;
                 manager.ShowAsync(content);
             }
+        }
+
+        static public string ConvertBytesToDynamic(long bytes)
+        {
+            double bytesd = bytes;
+            int i = 0;
+
+            while (bytesd > 1023d)
+            {
+                bytesd /= 1024d;
+                i++;
+            }
+
+            bytesd = Math.Round(bytesd, 2);
+
+            return i switch
+            {
+                //bytes
+                0 => $"{bytesd}b",
+                //KB   
+                1 => $"{bytesd}KB",
+                //MB   
+                2 => $"{bytesd}MB",
+                //GB   
+                3 => $"{bytesd}GB",
+                //TB   
+                4 => $"{bytesd}TB",
+                _ => $"Unable to determine. Value out of bounds",
+            };
         }
 
         /*public static BitmapImage WriteableBitmapToBitmapImage(WriteableBitmap wbm)

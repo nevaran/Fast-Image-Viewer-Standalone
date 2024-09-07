@@ -276,4 +276,76 @@
   <data name="GeneralSettings" xml:space="preserve">
     <value>Generellt</value>
   </data>
+  <data name="ThumbnailSizeInfo" xml:space="preserve">
+    <value>Rievdat sturrodaga juohke áššis smávvagovvalisttus. Default lea 80. (40-240)</value>
+  </data>
+  <data name="ThumbnailResInfo" xml:space="preserve">
+    <value>Juohke smávvagova resolušuvdna (pikselain). Unnit lohku unnida muittogeavaheami ja lasiha juohke smávvagova čállinjođánisvuođa. Default lea 80. (40-240)</value>
+  </data>
+  <data name="EnableThumbnailList" xml:space="preserve">
+    <value>Smávvagovvalistu</value>
+  </data>
+  <data name="ZoomSensitivity" xml:space="preserve">
+    <value>Zoom-sensitivitehta</value>
+  </data>
+  <data name="EnableThumbnailListInfo" xml:space="preserve">
+    <value>Čájet listtu mas leat smávva govat buot govain bealde.</value>
+  </data>
+  <data name="ThumbnailSize" xml:space="preserve">
+    <value>Smávvagova sturrodat</value>
+  </data>
+  <data name="ThumbnailRes" xml:space="preserve">
+    <value>Smávvagovva resolušuvdna</value>
+  </data>
+  <data name="ThemeAccent" xml:space="preserve">
+    <value>Fáddáakseanta</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Giella</value>
+  </data>
+  <data name="ShowThumbnailList" xml:space="preserve">
+    <value>Čájet smávvagovvalisttu</value>
+  </data>
+  <data name="ThumbnailListOnTooltip" xml:space="preserve">
+    <value>Smávvagovvalistu</value>
+  </data>
+  <data name="AutoupdateToggle" xml:space="preserve">
+    <value>Automáhtalaš ođasmahttin</value>
+  </data>
+  <data name="AutoupdateToggleInfo" xml:space="preserve">
+    <value>Automáhtalaččat viežžat ja installeret ođđa ođasmahttima.</value>
+  </data>
+  <data name="FileType" xml:space="preserve">
+    <value>Fiilašládja</value>
+  </data>
+  <data name="FileTypeInfo" xml:space="preserve">
+    <value>Vállje makkár fiillašlájat biddjojuvvojit geahččanrusttegii.</value>
+  </data>
+  <data name="CutToClipboard" xml:space="preserve">
+    <value>Čuohppat čujuhustávvalii</value>
+  </data>
+  <data name="CopiedToClipboard" xml:space="preserve">
+    <value>Kopieren čujuhustávvalii</value>
+  </data>
+  <data name="AssociateTypeTooltip" xml:space="preserve">
+    <value>Ovttastahttit fiillašlája FIV</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Buot</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Ođasmahttimat</value>
+  </data>
+  <data name="ProgramSettings" xml:space="preserve">
+    <value>Prográmma</value>
+  </data>
+  <data name="ShowDonateButton" xml:space="preserve">
+    <value>Čájet skeŋkeboalu</value>
+  </data>
+  <data name="ShowDonateButtonInfo" xml:space="preserve">
+    <value>Váldde oidnosii doarjjačuoggá prográmma gohččunoktavuođas.</value>
+  </data>
+  <data name="ErrorLoadingImageCorrupt" xml:space="preserve">
+    <value>Ii sáhttán bidjat fiilla. Govva soaitá leat billašuvvan</value>
+  </data>
 </root>

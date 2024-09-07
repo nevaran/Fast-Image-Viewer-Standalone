@@ -1,4 +1,5 @@
 ﻿using ControlzEx.Theming;
+using FIVStandard.Core.Statics;
 using FIVStandard.Model;
 using System;
 using System.ComponentModel;

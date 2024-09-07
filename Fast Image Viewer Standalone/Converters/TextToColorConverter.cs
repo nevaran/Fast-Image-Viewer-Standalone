@@ -1,5 +1,5 @@
 ﻿using ControlzEx.Theming;
-using FIVStandard.Core;
+using FIVStandard.Core.Statics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
