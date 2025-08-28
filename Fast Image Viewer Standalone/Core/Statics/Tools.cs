@@ -83,9 +83,24 @@ namespace FIVStandard.Core.Statics
         {
             try
             {
-                using MagickImage image = new(path);
+                var readSettings = new MagickReadSettings
+                {
+                    // these act as hints; honored by some decoders
+                    Width = (uint)Settings.ThumbnailRes,
+                    Height = (uint)Settings.ThumbnailRes
+                };
+
+                // set "decode-size" defines in a uniform way
+                // (ignored silently by formats that don't support them)
+                readSettings.SetDefine(MagickFormat.Jpeg, "size", $"{Settings.ThumbnailRes}x{Settings.ThumbnailRes}");
+                readSettings.SetDefine(MagickFormat.Pdf, "fit-page", $"{Settings.ThumbnailRes}x{Settings.ThumbnailRes}");
+                readSettings.SetDefine(MagickFormat.Jp2, "reduce-factor", "2");
+
+                using MagickImage image = new(path, readSettings);
+
                 image.AutoOrient();
 
+                // Thumbnail() is fast and keeps memory low
                 image.Thumbnail((uint)Settings.ThumbnailRes, 0);
 
                 tid.ThumbnailImage = image.ToBitmapSource();
@@ -108,7 +123,7 @@ namespace FIVStandard.Core.Statics
             if (ImageItem.ThumbnailImage is null)
                 _ = Task.Run(() => LoadSingleThumbnailData(path, ImageItem));
 
-            if (ImageItem.ImageWidth != 0)//we already have a set width in the item data
+            if (ImageItem.ImageWidth != 0)//we already have a set width data in the item data - assume theres an image already set or something is wrong with the file
                 return;
 
             System.Collections.Generic.IEnumerable<IMagickImageInfo> collection = MagickImageInfo.ReadCollection(path);
