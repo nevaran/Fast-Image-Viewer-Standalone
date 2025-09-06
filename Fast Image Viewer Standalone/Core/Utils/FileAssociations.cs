@@ -3,7 +3,7 @@ using System;
 
 #pragma warning disable CA1416 // Validate platform compatibility
 
-namespace FIVStandard.Core
+namespace FIVStandard.Core.Utils
 {
     public sealed class FileAssociation
     {
@@ -17,7 +17,7 @@ namespace FIVStandard.Core
     {
         // needed so that Explorer windows get refreshed after the registry is updated
         [System.Runtime.InteropServices.DllImport("Shell32.dll")]
-        private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+        private static extern int SHChangeNotify(int eventId, int flags, nint item1, nint item2);
 
         private const int SHCNE_ASSOCCHANGED = 0x8000000;
         private const int SHCNF_FLUSH = 0x1000;
@@ -44,16 +44,13 @@ namespace FIVStandard.Core
             madeChanges |= SetAssociation(
                     association.Extension,
                     association.FileTypeDescription,
-                    association.ExecutableFilePath,
-                    association.ProgId);
+                    association.ExecutableFilePath);
 
             if (madeChanges)
-            {
-                _ = SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_FLUSH, IntPtr.Zero, IntPtr.Zero);
-            }
+                _ = SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_FLUSH, nint.Zero, nint.Zero);
         }
 
-        public static bool SetAssociation(string extension, string fileTypeDescription, string applicationFilePath, string progId = "Fast Image Viewer")
+        public static bool SetAssociation(string extension, string fileTypeDescription, string applicationFilePath, string progId = "FastImageViewer.Image")
         {
             bool madeChanges = false;
             madeChanges |= SetKeyDefaultValue($@"Software\Classes\{extension}", progId);
@@ -88,15 +85,12 @@ namespace FIVStandard.Core
             return false;//already set, so its left unchanged
         }
 
-        public static bool GetAssociation(string extension, string progId = "Fast Image Viewer")
+        public static bool GetAssociation(string extension, string progId = "FastImageViewer.Image")
         {
             using (var key = Registry.CurrentUser.OpenSubKey($@"Software\Classes\{extension}"))
             {
                 if (key.GetValue(null) as string != progId)
-                {
-                    //key.SetValue(null, progId);
                     return true;
-                }
             }
 
             return false;

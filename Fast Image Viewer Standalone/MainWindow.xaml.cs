@@ -1,6 +1,7 @@
 ﻿using FIVStandard.Comparers;
 using FIVStandard.Core;
 using FIVStandard.Core.Statics;
+using FIVStandard.Core.Utils;
 using FIVStandard.Model;
 using FIVStandard.Utils;
 using FIVStandard.ViewModel;
@@ -1053,7 +1054,7 @@ namespace FIVStandard
                 new FileAssociation
                 {
                     Extension = (string)((Button)sender).Tag,
-                    ProgId = "Fast Image Viewer",
+                    //ProgId = "Fast Image Viewer",
                     FileTypeDescription = "Image viewer for efficient viewing",
                     ExecutableFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fast Image Viewer.exe")
                 });
